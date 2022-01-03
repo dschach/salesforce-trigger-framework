@@ -3,5 +3,13 @@
     "**/node_modules": true,
     "**/bower_components": true,
     "**/.sfdx": true
-  }
+  },
+  "apexPMD.enableCache": true,
+  "apexPMD.runOnFileChange": true,
+  "apexPMD.runOnFileOpen": true,
+  "apexPMD.rulesets": [
+    "pmd/AllApexPMDRules.xml",
+    "pmd/apexQuickStart.xml"
+  ],
+  "force.showApexJavadocTrailingCloseComment": false
 }

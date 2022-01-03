@@ -2,8 +2,14 @@
   "recommendations": [
     "salesforce.salesforcedx-vscode",
     "redhat.vscode-xml",
-    "dbaeumer.vscode-eslint",
+    "peterweinberg.apexdox-vs-code",
+    "matteopieroni.refresh-npm-packages",
+    "github.vscode-pull-request-github",
+    "financialforce.lana",
     "esbenp.prettier-vscode",
-    "financialforce.lana"
+    "eg2.vscode-npm-script",
+    "eamodio.gitlens",
+    "dbaeumer.vscode-eslint",
+    "chuckjonas.apex-pmd"
   ]
 }
