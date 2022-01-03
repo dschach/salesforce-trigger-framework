@@ -3,9 +3,13 @@
     {
       "path": "force-app",
       "default": true
+    },
+    {
+      "path": "sample",
+      "default": false
     }
   ],
-  "name": "salesforce-trigger-framework",
+  "name": "Trigger Framework",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "52.0"
