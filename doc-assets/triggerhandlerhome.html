@@ -1,22 +1,23 @@
+<h2>TriggerHandler</h2>
 <h1>General Theme</h1>
 <p><span>Each object has a single trigger</span></p>
-<p><span>Each trigger has a single HANDLER</span></p>
+<p><span>Each trigger has a single handler</span></p>
 <h1>Bypass Documentation</h1>
 <p>
-	<a class="" href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md" data-mce-href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md"
+	<a
+		class=""
+		href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md"
+		data-mce-href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md"
 		>https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md</a
 	>
 </p>
 <hr />
-
 <h1><span>Sample Trigger</span></h1>
-
 <code>
 	trigger AccountSampleTrigger on Account (before insert, after insert, before update, after update, before delete, after delete, after undelete) {<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;new AccountSampleTriggerHandler().run();<br />
-	}<br />
-</code>
-
+	}<br
+/></code>
 <h1>Sample Handler</h1>
 <code>
 	/**<br />
@@ -93,16 +94,19 @@
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&lt;Contact&gt;&nbsp;acctContacts&nbsp;=&nbsp;[SELECT&nbsp;Id&nbsp;FROM&nbsp;Contact&nbsp;WHERE&nbsp;AccountId&nbsp;IN&nbsp;:newRecordsMap.keyset()];<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update&nbsp;acctContacts;<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	}
-</code>
-<br /><br />
+	}</code
+><br /><br />
 <hr />
 <h1><span>Credits</span></h1>
 <p>
 	<span
 		>This trigger framework is from
-		<a href="https://github.com/dschach/sfdc-trigger-framework" data-mce-href="https://github.com/dschach/sfdc-trigger-framework">https://github.com/dschach/sfdc-trigger-framework</a> which is based
-		on Kevin O'Hara's framework
-		<a href="https://github.com/kevinohara80/sfdc-trigger-framework" data-mce-href="https://github.com/kevinohara80/sfdc-trigger-framework">https://github.com/kevinohara80/sfdc-trigger-framework</a>
+		<a href="https://github.com/dschach/sfdc-trigger-framework" data-mce-href="https://github.com/dschach/sfdc-trigger-framework"
+			>https://github.com/dschach/sfdc-trigger-framework</a
+		>
+		which is based on Kevin O'Hara's framework
+		<a href="https://github.com/kevinohara80/sfdc-trigger-framework" data-mce-href="https://github.com/kevinohara80/sfdc-trigger-framework"
+			>https://github.com/kevinohara80/sfdc-trigger-framework</a
+		>
 	</span>
 </p>

@@ -1,1278 +1,1758 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<title>Salesforce Trigger Handler code documentation</title>
-		<meta charset="UTF-8" />
-		<script type="module" src="./assets/index.js"></script>
-		<script type="module" src="./assets/search-idx.js"></script>
-		<script type="module" src="./assets/search.js"></script>
-		<script charset="UTF-8" src="./assets/highlight.js"></script>
-		<script charset="UTF-8" src="./assets/mark.js"></script>
-		<script charset="UTF-8" src="./assets/lunr.js"></script>
-		<link rel="stylesheet" href="./assets/highlight.css" />
-		<link rel="stylesheet" type="text/css" href="./assets/index.css" />
-		<link rel="shortcut icon" type="image/png" href="./assets/favicon.png" />
-	</head>
 
-	<body>
-		<div id="side-bar">
-			<div id="logo-container">
-				<div class="title">Salesforce Trigger Handler code documentation</div>
-				<img src="assets/logo.png" />
-				<div class="subtitle">Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a></div>
-			</div>
-			<div id="search-wrapper">
-				<div class="search-icon"></div>
-				<input id="search-input" type="text" autocomplete="off" placeholder="Search..." />
-			</div>
-			<ul id="search-results" class=""></ul>
-			<div class="navbar">
-				<nav role="navigation">
-					<a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');"> Home </a>
-					<details id="TriggerHandler" class="group-name">
-						<summary id="header-TriggerHandler" class="nav-header">
-							<span>TriggerHandler</span>
-						</summary>
-						<ul>
-							<!-- menu items -->
-							<li title="TriggerHandler" id="item-TriggerHandler" class="nav-item class public" onclick="goToLocation('TriggerHandler.html');">
-								<a tabindex="1" href="javascript:void(0)">TriggerHandler</a>
-							</li>
-							<li title="TriggerHandlerTest" id="item-TriggerHandlerTest" class="nav-item class private" onclick="goToLocation('TriggerHandlerTest.html');">
-								<a tabindex="1" href="javascript:void(0)">TriggerHandlerTest</a>
-							</li>
-						</ul>
-					</details>
-				</nav>
-			</div>
-		</div>
-		<table id="content">
-			<tr>
-				<td class="scoping-panel">
-					Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" /> <label for="cbx-all">All</label>&nbsp;&nbsp;
-					<input type="checkbox" checked="true" id="cbx-global" onclick="toggleScope('global', this.checked);" />
-					<label for="cbx-global"> global </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-public" onclick="toggleScope('public', this.checked);" />
-					<label for="cbx-public"> public </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
-					<label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
-					<label for="cbx-private"> private </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-webservice" onclick="toggleScope('webservice', this.checked);" />
-					<label for="cbx-webservice"> webService </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
-					<label for="cbx-testmethod"> testMethod </label>
-				</td>
-			</tr>
-			<tr>
-				<td class="doc-page">
-					<div class="section">
-						<h2 class="class-title top-level-type" id="TriggerHandler">
-							<a
-								target="_blank"
-								rel="noopener noreferrer"
-								title="Go to source"
-								class="source-link"
-								href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L11"
-							>
-								TriggerHandler
-							</a>
-						</h2>
-						<div class="class-container">
-							<div class="class-description">Trigger Handler virtual class as base for all trigger handlers</div>
-							<div class="class-subtitle">Signature</div>
+  <head>
+    <title>Salesforce Trigger Handler code documentation</title>
+    <meta charset="UTF-8">
+    <script type="module" src="./assets/index.js"></script>
+    <script type="module" src="./assets/search-idx.js"></script>
+    <script type="module" src="./assets/search.js"></script>
+    <script charset="UTF-8" src="./assets/highlight.js"></script>
+    <script charset="UTF-8" src="./assets/mark.js"></script>
+    <script charset="UTF-8" src="./assets/lunr.js"></script>
+    <link rel="stylesheet" href="./assets/highlight.css" />
+    <link rel="stylesheet" type="text/css" href="./assets/index.css" />
+    <link rel="shortcut icon" type="image/png" href="./assets/favicon.png" />
+  </head>
 
-							<div class="class-signature">public virtual class TriggerHandler</div>
-							<br />Kevin O&#39;Hara David Schach<br />2013
-						</div>
-						<div class="subsection properties TriggerHandler">
-							<h3 class="subsection-title properties">TriggerHandler Properties</h3>
-							<table class="attributes-table properties">
-								<tr>
-									<th>Name</th>
-									<th>Signature</th>
-									<th>Annotations</th>
-									<th>Description</th>
-								</tr>
-								<tr class="property private">
-									<td class="attribute-name">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L16"
-										>
-											loopCountMap
-										</a>
-									</td>
-									<td>
-										<div class="attribute-signature">private static Map&lt;String, LoopCount&gt; loopCountMap</div>
-									</td>
-									<td>
-										<div class="prop-annotations">@TestVisible</div>
-									</td>
+  <body>
+    <div id="side-bar">
 
-									<td class="attribute-description">static map of handlername, times run() was invoked</td>
-								</tr>
-								<tr class="property private">
-									<td class="attribute-name">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L21"
-										>
-											bypassedHandlers
-										</a>
-									</td>
-									<td>
-										<div class="attribute-signature">private static Set&lt;String&gt; bypassedHandlers</div>
-									</td>
-									<td>
-										<div class="prop-annotations">@TestVisible</div>
-									</td>
+      <div id="logo-container">
+        <div class="title">
+          Salesforce Trigger Handler code documentation
+        </div>
+        <img src="assets/logo.png" />
+        <div class="subtitle">
+          Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
+        </div>
+      </div>
+      <div id="search-wrapper">
+        <div class="search-icon"></div>
+        <input id="search-input" type="text" autocomplete="off" placeholder="Search...">
+      </div>
+      <ul id="search-results" class=""></ul>
+      <div class="navbar">
+        <nav role="navigation">
+          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');">
+            Home
+          </a>
+          <details id="SampleTriggerHandler" class="group-name">
+            <summary id="header-SampleTriggerHandler" class="nav-header">
+              <span>SampleTriggerHandler</span>
+            </summary>
+            <ul>
+              <!-- menu items -->
+              <li title="AccountSampleTriggerHandler" id="item-AccountSampleTriggerHandler" class="nav-item class " onclick="goToLocation('AccountSampleTriggerHandler.html');">
+                <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandler</a>
+              </li>
+              <li title="AccountSampleTriggerHandlerTest" id="item-AccountSampleTriggerHandlerTest" class="nav-item class " onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
+                <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandlerTest</a>
+              </li>
+            </ul>
+          </details>
+          <details id="TriggerHandler" class="group-name">
+            <summary id="header-TriggerHandler" class="nav-header">
+              <a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('triggerhandlerhome.html');">TriggerHandler</a>
+            </summary>
+            <ul>
+              <!-- menu items -->
+              <li title="TriggerHandler" id="item-TriggerHandler" class="nav-item class " onclick="goToLocation('TriggerHandler.html');">
+                <a tabindex="1" href="javascript:void(0)">TriggerHandler</a>
+              </li>
+              <li title="TriggerHandlerTest" id="item-TriggerHandlerTest" class="nav-item class " onclick="goToLocation('TriggerHandlerTest.html');">
+                <a tabindex="1" href="javascript:void(0)">TriggerHandlerTest</a>
+              </li>
+            </ul>
+          </details>
+        </nav>
+      </div>
+    </div>
+    <table id="content">
+      <tr>
+        <td class="scoping-panel">
+          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" />
+          <label for="cbx-all">All</label>&nbsp;&nbsp;
+          <input type="checkbox" checked="true" id="cbx-global" onclick="toggleScope('global', this.checked);" />
+          <label for="cbx-global">
+            global
+          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-public" onclick="toggleScope('public', this.checked);" />
+          <label for="cbx-public">
+            public
+          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
+          <label for="cbx-protected">
+            protected
+          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
+          <label for="cbx-private">
+            private
+          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-webservice" onclick="toggleScope('webservice', this.checked);" />
+          <label for="cbx-webservice">
+            webService
+          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
+          <label for="cbx-testmethod">
+            testMethod
+          </label>
+        </td>
+      </tr>
+      <tr>
+        <td class="doc-page">
 
-									<td class="attribute-description">All bypassed handlers</td>
-								</tr>
-								<tr class="property private">
-									<td class="attribute-name">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L26"
-										>
-											globalBypass
-										</a>
-									</td>
-									<td>
-										<div class="attribute-signature">private static Boolean globalBypass</div>
-									</td>
-									<td>
-										<div class="prop-annotations">@TestVisible</div>
-									</td>
+          <div class="section">
 
-									<td class="attribute-description">
-										<code class="code-inline">true</code> if we bypass all triggers without checking the contents of <code class="code-inline">bypassedHandlers</code>
-									</td>
-								</tr>
-								<tr class="property private">
-									<td class="attribute-name">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L31"
-										>
-											showLimits
-										</a>
-									</td>
-									<td>
-										<div class="attribute-signature">private static Boolean showLimits</div>
-									</td>
-									<td>
-										<div class="prop-annotations">@TestVisible</div>
-									</td>
+            <h2 class="class-title top-level-type" id="TriggerHandler">
 
-									<td class="attribute-description"><code class="code-inline">true</code> if we include a debug statement for limits</td>
-								</tr>
-								<tr class="property private">
-									<td class="attribute-name">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L36"
-										>
-											triggerEvent
-										</a>
-									</td>
-									<td>
-										<div class="attribute-signature">private System.TriggerOperation triggerEvent</div>
-									</td>
-									<td>
-										<div class="prop-annotations">@TestVisible</div>
-									</td>
+              <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L12">
+                TriggerHandler
+              </a>
+            </h2>
+            <div class="class-container">
 
-									<td class="attribute-description">the current triggerEvent of the trigger, overridable in tests</td>
-								</tr>
-								<tr class="property private">
-									<td class="attribute-name">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L42"
-										>
-											isTriggerExecuting
-										</a>
-									</td>
-									<td>
-										<div class="attribute-signature">private Boolean isTriggerExecuting</div>
-									</td>
-									<td>
-										<div class="prop-annotations">@TestVisible</div>
-									</td>
+              <div class="class-description">
+                Trigger Handler virtual class as base for all trigger handlers
+              </div>
+              <div class="class-subtitle">
+                Signature
+              </div>
 
-									<td class="attribute-description">Is this class executing in trigger context?</td>
-								</tr>
-								<tr class="property private">
-									<td class="attribute-name">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L427"
-										>
-											handlerName
-										</a>
-									</td>
-									<td>
-										<div class="attribute-signature">private String handlerName</div>
-									</td>
-									<td></td>
+              <div class="class-signature">
+                public virtual class TriggerHandler
+              </div>
+              <div class="class-subtitle">
+                See
+              </div>
+              <div class="class-subtitle-description">
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE">License</a>, <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-handler">GitHub</a>
+              </div><br />Kevin O&#39;Hara David Schach<br />2013
+            </div>
+            <div class="subsection properties TriggerHandler">
+              <h3 class="subsection-title properties">TriggerHandler Properties</h2>
+                <table class="attributes-table properties">
 
-									<td class="attribute-description">The name of this handler. Set by getHandlerName()</td>
-								</tr>
-							</table>
-						</div>
-						<div class="subsection methods">
-							<h3 class="subsection-title methods">TriggerHandler Constructors</h3>
-							<div class="methods-container">
-								<ul class="methods-toc">
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.TriggerHandler"> TriggerHandler () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.TriggerHandler_1"> TriggerHandler (handlerName) </a>
-									</li>
-								</ul>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.TriggerHandler">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L55"
-										>
-											TriggerHandler()
-										</a>
-									</h4>
-									<div class="method-description">Basic constructor</div>
-									<div class="method-subtitle">Signature</div>
+                  <tr>
+                    <th>Name</th>
+                    <th>Signature</th>
 
-									<div class="method-signature">public TriggerHandler()</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.TriggerHandler_1">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L64"
-										>
-											TriggerHandler(handlerName)
-										</a>
-									</h4>
-									<div class="method-description">Constructor with handler name to improve performance</div>
-									<div class="method-subtitle">Signature</div>
+                    <th>Description</th>
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L23">
+                        bypassedHandlers
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private static Set&lt;String&gt; bypassedHandlers
+                      </div>
+                    </td>
 
-									<div class="method-signature">public TriggerHandler(String handlerName)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">handlerName</div>
-									<div class="param-type">Type: <code class="code-inline">String</code></div>
-									<div class="param-description">The name of the handler</div>
-									<div class="method-subtitle">Author</div>
-									<div class="method-subtitle-description">David Schach</div>
-								</div>
-							</div>
-						</div>
-						<div class="subsection methods">
-							<h3 class="subsection-title methods">TriggerHandler Methods</h3>
-							<div class="methods-container">
-								<ul class="methods-toc">
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.run"> run () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.setMaxLoopCount"> setMaxLoopCount (max) </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.clearMaxLoopCount"> clearMaxLoopCount () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.bypass"> bypass (handlerName) </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.bypass_1"> bypass (handlerNames) </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.bypassAll"> bypassAll () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.clearBypass"> clearBypass (handlerName) </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.clearBypass_1"> clearBypass (handlersNames) </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.isBypassed"> isBypassed (handlerName) </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.bypassList"> bypassList () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.clearAllBypasses"> clearAllBypasses () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.clearGlobalBypass"> clearGlobalBypass () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.clearBypassList"> clearBypassList () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.setBypass"> setBypass (handlerName, desiredValue) </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.showLimits"> showLimits () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.showLimits_1"> showLimits (enabled) </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.getLoopCount"> getLoopCount (handlerName) </a>
-									</li>
-									<li class="method private">
-										<a class="methods-toc__entry" href="#TriggerHandler.setTriggerContext"> setTriggerContext () </a>
-									</li>
-									<li class="method private">
-										<a class="methods-toc__entry" href="#TriggerHandler.setTriggerContext_1"> setTriggerContext (opType, testMode) </a>
-									</li>
-									<li class="method private">
-										<a class="methods-toc__entry" href="#TriggerHandler.addToLoopCount"> addToLoopCount () </a>
-									</li>
-									<li class="method private">
-										<a class="methods-toc__entry" href="#TriggerHandler.validateRun"> validateRun () </a>
-									</li>
-									<li class="method private">
-										<a class="methods-toc__entry" href="#TriggerHandler.getHandlerName"> getHandlerName () </a>
-									</li>
-									<li class="method protected">
-										<a class="methods-toc__entry" href="#TriggerHandler.beforeInsert"> beforeInsert () </a>
-									</li>
-									<li class="method protected">
-										<a class="methods-toc__entry" href="#TriggerHandler.beforeUpdate"> beforeUpdate () </a>
-									</li>
-									<li class="method protected">
-										<a class="methods-toc__entry" href="#TriggerHandler.beforeDelete"> beforeDelete () </a>
-									</li>
-									<li class="method protected">
-										<a class="methods-toc__entry" href="#TriggerHandler.afterInsert"> afterInsert () </a>
-									</li>
-									<li class="method protected">
-										<a class="methods-toc__entry" href="#TriggerHandler.afterUpdate"> afterUpdate () </a>
-									</li>
-									<li class="method protected">
-										<a class="methods-toc__entry" href="#TriggerHandler.afterDelete"> afterDelete () </a>
-									</li>
-									<li class="method protected">
-										<a class="methods-toc__entry" href="#TriggerHandler.afterUndelete"> afterUndelete () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.LoopCount"> LoopCount (max) </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.increment"> increment () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.exceeded"> exceeded () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.getMax"> getMax () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.getCount"> getCount () </a>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.setMax"> setMax (max) </a>
-									</li>
-								</ul>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.run">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L77"
-										>
-											run()
-										</a>
-									</h4>
-									<div class="method-description">main method that will be called during execution</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@SuppressWarnings('PMD.AvoidDebugStatements')</div>
-									<div class="method-signature">public void run()</div>
-									<div class="method-subtitle">Author</div>
-									<div class="method-subtitle-description">Kevin O&#39;Hara David Schach</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.setMaxLoopCount">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L132"
-										>
-											setMaxLoopCount(max)
-										</a>
-									</h4>
-									<div class="method-description">setMaxLoopCount description</div>
-									<div class="method-subtitle">Signature</div>
 
-									<div class="method-signature">public void setMaxLoopCount(Integer max)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">max</div>
-									<div class="param-type">Type: <code class="code-inline">Integer</code></div>
-									<div class="param-description">max description</div>
-									<div class="method-subtitle">Author</div>
-									<div class="method-subtitle-description">David Schach</div>
-									<div class="method-subtitle">Example</div>
-									<pre class="code-example"><code> this.setMaxLoopCount(5);</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.clearMaxLoopCount">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L144"
-										>
-											clearMaxLoopCount()
-										</a>
-									</h4>
-									<div class="method-description">Removes the limit for the number of times we allow this class to run</div>
-									<div class="method-subtitle">Signature</div>
+                    <td class="attribute-description">
+                      All bypassed handlers
+                    </td>
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L619">
+                        errorOutsideTriggerContext
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private static String errorOutsideTriggerContext
+                      </div>
+                    </td>
 
-									<div class="method-signature">public void clearMaxLoopCount()</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.bypass">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L154"
-										>
-											bypass(handlerName)
-										</a>
-									</h4>
-									<div class="method-description">bypass by string, e.g. TriggerHandler.bypass(&#39;AccountTriggerHandler&#39;)</div>
-									<div class="method-subtitle">Signature</div>
 
-									<div class="method-signature">public static void bypass(String handlerName)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">handlerName</div>
-									<div class="param-type">Type: <code class="code-inline">String</code></div>
-									<div class="param-description">Name of the handler to be bypassed</div>
-									<div class="method-subtitle">Example</div>
-									<pre class="code-example"><code> TriggerHandler.bypass(&#39;AccountSampleTriggerHandler&#39;)</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.bypass_1">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L163"
-										>
-											bypass(handlerNames)
-										</a>
-									</h4>
-									<div class="method-description">bypass by list, e.g. TriggerHandler.bypass(listOfHandlerStrings)</div>
-									<div class="method-subtitle">Signature</div>
+                    <td class="attribute-description">
+                      Error text - assumes English for debug logs
+                    </td>
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L29">
+                        globalBypass
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private static Boolean globalBypass
+                      </div>
+                    </td>
 
-									<div class="method-signature">public static void bypass(List&lt;String&gt; handlerNames)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">handlerNames</div>
-									<div class="param-type">Type: <code class="code-inline">List&lt;String&gt;</code></div>
-									<div class="param-description">List of handlernames</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.bypassAll">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L170"
-										>
-											bypassAll()
-										</a>
-									</h4>
-									<div class="method-description">bypass all handlers (clear bypassedHandlers to prevent confusion)</div>
-									<div class="method-subtitle">Signature</div>
 
-									<div class="method-signature">public static void bypassAll()</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.clearBypass">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L182"
-										>
-											clearBypass(handlerName)
-										</a>
-									</h4>
-									<div class="method-description">bypass a specific handler</div>
-									<div class="method-subtitle">Signature</div>
+                    <td class="attribute-description">
+                      <code class="code-inline">true</code> if we bypass all triggers without checking the contents of <code class="code-inline">bypassedHandlers</code>
+                    </td>
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L471">
+                        handlerName
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private String handlerName
+                      </div>
+                    </td>
 
-									<div class="method-signature">public static void clearBypass(String handlerName)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">handlerName</div>
-									<div class="param-type">Type: <code class="code-inline">String</code></div>
-									<div class="param-description">The class name to be bypassed</div>
-									<div class="method-subtitle">Example</div>
-									<pre class="code-example"><code> TriggerHandler.clearBypass(&#39;AccountSampleTriggerHandler&#39;)</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.clearBypass_1">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L192"
-										>
-											clearBypass(handlersNames)
-										</a>
-									</h4>
-									<div class="method-description">bypass a list of handlers</div>
-									<div class="method-subtitle">Signature</div>
 
-									<div class="method-signature">public static void clearBypass(List&lt;String&gt; handlersNames)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">handlersNames</div>
-									<div class="param-type">Type: <code class="code-inline">List&lt;String&gt;</code></div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.isBypassed">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L204"
-										>
-											isBypassed(handlerName)
-										</a>
-									</h4>
-									<div class="method-description">a handler is considered bypassed if it was bypassed, or all handlers have been bypassed</div>
-									<div class="method-subtitle">Signature</div>
+                    <td class="attribute-description">
+                      The name of this handler. Set by <code class="code-inline">getHandlerName()</code>
+                    </td>
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L54">
+                        isTriggerExecuting
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private Boolean isTriggerExecuting
+                      </div>
+                    </td>
 
-									<div class="method-signature">public static Boolean isBypassed(String handlerName)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">handlerName</div>
-									<div class="param-type">Type: <code class="code-inline">String</code></div>
-									<div class="param-description">The class name of the handler we are checking is bypassed</div>
-									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description"><code class="code-inline">Boolean</code> Is this handler bypassed?</div>
-									<div class="method-subtitle">Example</div>
-									<pre class="code-example"><code> TriggerHandler.isBypassed(&#39;AccountTriggerHandler&#39;);</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.bypassList">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L216"
-										>
-											bypassList()
-										</a>
-									</h4>
-									<div class="method-description">return a list of the bypassed handlers</div>
-									<div class="method-subtitle">Signature</div>
 
-									<div class="method-signature">public static List&lt;String&gt; bypassList()</div>
-									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description">
-										<code class="code-inline">List&lt;String&gt;</code>
-									</div>
-									<div class="method-subtitle">Example</div>
-									<pre class="code-example"><code> TriggerHandler.bypassList();</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.clearAllBypasses">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L232"
-										>
-											clearAllBypasses()
-										</a>
-									</h4>
-									<div class="method-description">clear all bypasses - by clearing the global bypass and by clearing the list of bypassed handlers</div>
-									<div class="method-subtitle">Signature</div>
+                    <td class="attribute-description">
+                      Is this class executing in trigger context?
+                    </td>
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L17">
+                        loopCountMap
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private static Map&lt;String, LoopCount&gt; loopCountMap
+                      </div>
+                    </td>
 
-									<div class="method-signature">public static void clearAllBypasses()</div>
-									<div class="method-subtitle">Example</div>
-									<pre class="code-example"><code> TriggerHandler.clearAllBypasses();</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.clearGlobalBypass">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L243"
-										>
-											clearGlobalBypass()
-										</a>
-									</h4>
-									<div class="method-description">
-										clear only the global bypass flag, leaving the list of bypassed handlers intact <br />This is useful for keeping a base set of bypassed handlers intact for an entire operation
-									</div>
-									<div class="method-subtitle">Signature</div>
 
-									<div class="method-signature">public static void clearGlobalBypass()</div>
-									<div class="method-subtitle">Example</div>
-									<pre class="code-example"><code> TriggerHandler.clearGlobalBypass();</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.clearBypassList">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L253"
-										>
-											clearBypassList()
-										</a>
-									</h4>
-									<div class="method-description">
-										clear the entire bypass list, but keep the global bypass flag intact <br />This is useful for resetting the list of handlers to bypass while maintaining global bypassing
-									</div>
-									<div class="method-subtitle">Signature</div>
+                    <td class="attribute-description">
+                      static map of <code class="code-inline">handlerName</code>, times <code class="code-inline">run()</code> was invoked
+                    </td>
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L41">
+                        showDebug
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private static Boolean showDebug
+                      </div>
+                    </td>
 
-									<div class="method-signature">public static void clearBypassList()</div>
-									<div class="method-subtitle">Example</div>
-									<pre class="code-example"><code> TriggerHandler.clearBypassList();</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.setBypass">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L264"
-										>
-											setBypass(handlerName, desiredValue)
-										</a>
-									</h4>
-									<div class="method-description">Set bypass status to a specific value. Eliminates the need to know the current bypass status</div>
-									<div class="method-subtitle">Signature</div>
 
-									<div class="method-signature">public static void setBypass(String handlerName, Boolean desiredValue)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">handlerName</div>
-									<div class="param-type">Type: <code class="code-inline">String</code></div>
-									<div class="param-description">The name of the TriggerHandler class</div>
-									<div class="param-name">desiredValue</div>
-									<div class="param-type">Type: <code class="code-inline">Boolean</code></div>
-									<div class="param-description"><code class="code-inline">true</code> to bypass, and <code class="code-inline">false</code> to run the handler</div>
-									<div class="method-subtitle">Example</div>
-									<pre class="code-example"><code> TriggerHandler.setBypass(&#39;AccountTriggerHandler&#39;, false);</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.showLimits">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L291"
-										>
-											showLimits()
-										</a>
-									</h4>
-									<div class="method-description">Called in the trigger to force the class to debug limits when it runs</div>
-									<div class="method-subtitle">Signature</div>
+                    <td class="attribute-description">
+                      <code class="code-inline">true</code> if we include a debug statement for trigger entry and exit
+                    </td>
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L35">
+                        showLimits
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private static Boolean showLimits
+                      </div>
+                    </td>
 
-									<div class="method-signature">public static void showLimits()</div>
-									<div class="method-subtitle">Example</div>
-									<pre class="code-example"><code> new AccountSampleTriggerHandler.showLimits().run();</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.showLimits_1">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L302"
-										>
-											showLimits(enabled)
-										</a>
-									</h4>
-									<div class="method-description">Called in the trigger to force the class to debug limits when it runs. <br />Set to true to show limits.</div>
-									<div class="method-subtitle">Signature</div>
 
-									<div class="method-signature">public static void showLimits(Boolean enabled)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">enabled</div>
-									<div class="param-type">Type: <code class="code-inline">Boolean</code></div>
-									<div class="param-description">true to enable; false to disable</div>
-									<div class="method-subtitle">See</div>
-									<div class="method-subtitle-description">
-										<a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.showLimits')">TriggerHandler.showLimits</a>
-									</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.getLoopCount">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L312"
-										>
-											getLoopCount(handlerName)
-										</a>
-									</h4>
-									<div class="method-description">return the current loop count</div>
-									<div class="method-subtitle">Signature</div>
+                    <td class="attribute-description">
+                      <code class="code-inline">true</code> if we include a debug statement for limits
+                    </td>
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L47">
+                        triggerEvent
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private System.TriggerOperation triggerEvent
+                      </div>
+                    </td>
 
-									<div class="method-signature">public static Integer getLoopCount(String handlerName)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">handlerName</div>
-									<div class="param-type">Type: <code class="code-inline">String</code></div>
-									<div class="param-description">The handler class to check for the current loop count</div>
-									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description">
-										<code class="code-inline">Integer</code>
-									</div>
-								</div>
-								<div class="method private">
-									<h4 class="method-title" id="TriggerHandler.setTriggerContext">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L324"
-										>
-											setTriggerContext()
-										</a>
-									</h4>
-									<div class="method-description">Base method called by constructor to set the current context</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@TestVisible</div>
-									<div class="method-signature">private void setTriggerContext()</div>
-								</div>
-								<div class="method private">
-									<h4 class="method-title" id="TriggerHandler.setTriggerContext_1">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L337"
-										>
-											setTriggerContext(opType, testMode)
-										</a>
-									</h4>
-									<div class="method-description">
-										Set the current trigger context based on the System.TriggerOperation <br />If we are not in a trigger context, then we set isTriggerExecuting to false
-									</div>
-									<div class="method-subtitle">Signature</div>
 
-									<div class="method-signature">private void setTriggerContext( System.TriggerOperation opType, Boolean testMode )</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">opType</div>
-									<div class="param-type">Type: <code class="code-inline"> System.TriggerOperation</code></div>
-									<div class="param-description">The operation type - set automatically by the system</div>
-									<div class="param-name">testMode</div>
-									<div class="param-type">Type: <code class="code-inline"> Boolean</code></div>
-									<div class="param-description">Only used in test methods to force certain contexts</div>
-									<div class="method-subtitle">See</div>
-									<div class="method-subtitle-description">
-										<span title="A valid link could not be created with this identifier.">TriggerHandler.isTriggerExecuting</span>
-									</div>
-								</div>
-								<div class="method private">
-									<h4 class="method-title" id="TriggerHandler.addToLoopCount">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L389"
-										>
-											addToLoopCount()
-										</a>
-									</h4>
-									<div class="method-description">increment the loop count</div>
-									<div class="method-subtitle">Signature</div>
+                    <td class="attribute-description">
+                      the current triggerEvent of the trigger, overridable in tests
+                    </td>
+                  </tr>
+                </table>
+            </div>
+            <div class="subsection methods">
+              <h3 class="subsection-title methods">TriggerHandler Constructors</h3>
+              <div class="methods-container">
+                <ul class="methods-toc">
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.TriggerHandler">
+                      TriggerHandler ()
+                    </a>
 
-									<div class="method-signature">private void addToLoopCount()</div>
-									<div class="method-subtitle">Exceptions</div>
-									<div class="method-subtitle-description">TriggerHandlerException</div>
-									<div class="method-subtitle">See</div>
-									<div class="method-subtitle-description">
-										<a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.TriggerHandlerException')">TriggerHandler.TriggerHandlerException</a>
-									</div>
-								</div>
-								<div class="method private">
-									<h4 class="method-title" id="TriggerHandler.validateRun">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L415"
-										>
-											validateRun()
-										</a>
-									</h4>
-									<div class="method-description">Make sure this trigger should continue to run <br />Returning <code class="code-inline">false</code> causes trigger handler to exit</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@TestVisible</div>
-									<div class="method-signature">private Boolean validateRun()</div>
-									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description"><code class="code-inline">Boolean</code> is the run valid?</div>
-									<div class="method-subtitle">Exceptions</div>
-									<div class="method-subtitle-description">TriggerHandlerException</div>
-									<div class="method-subtitle">See</div>
-									<div class="method-subtitle-description">
-										<a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.TriggerHandlerException')">TriggerHandler.TriggerHandlerException</a>
-									</div>
-								</div>
-								<div class="method private">
-									<h4 class="method-title" id="TriggerHandler.getHandlerName">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L435"
-										>
-											getHandlerName()
-										</a>
-									</h4>
-									<div class="method-description">Get the name of the current handler. This can be set by using the constructor with the string parameter to improve performance</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@TestVisible</div>
-									<div class="method-signature">private String getHandlerName()</div>
-									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description"><code class="code-inline">String</code> handlerName</div>
-								</div>
-								<div class="method protected">
-									<h4 class="method-title" id="TriggerHandler.beforeInsert">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L450"
-										>
-											beforeInsert()
-										</a>
-									</h4>
-									<div class="method-description">Virtual method for the implementing class to override</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@SuppressWarnings('PMD.EmptyStatementBlock')</div>
-									<div class="method-signature">protected virtual void beforeInsert()</div>
-								</div>
-								<div class="method protected">
-									<h4 class="method-title" id="TriggerHandler.beforeUpdate">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L457"
-										>
-											beforeUpdate()
-										</a>
-									</h4>
-									<div class="method-description">Virtual method for the implementing class to override</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@SuppressWarnings('PMD.EmptyStatementBlock')</div>
-									<div class="method-signature">protected virtual void beforeUpdate()</div>
-								</div>
-								<div class="method protected">
-									<h4 class="method-title" id="TriggerHandler.beforeDelete">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L464"
-										>
-											beforeDelete()
-										</a>
-									</h4>
-									<div class="method-description">Virtual method for the implementing class to override</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@SuppressWarnings('PMD.EmptyStatementBlock')</div>
-									<div class="method-signature">protected virtual void beforeDelete()</div>
-								</div>
-								<div class="method protected">
-									<h4 class="method-title" id="TriggerHandler.afterInsert">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L471"
-										>
-											afterInsert()
-										</a>
-									</h4>
-									<div class="method-description">Virtual method for the implementing class to override</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@SuppressWarnings('PMD.EmptyStatementBlock')</div>
-									<div class="method-signature">protected virtual void afterInsert()</div>
-								</div>
-								<div class="method protected">
-									<h4 class="method-title" id="TriggerHandler.afterUpdate">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L478"
-										>
-											afterUpdate()
-										</a>
-									</h4>
-									<div class="method-description">Virtual method for the implementing class to override</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@SuppressWarnings('PMD.EmptyStatementBlock')</div>
-									<div class="method-signature">protected virtual void afterUpdate()</div>
-								</div>
-								<div class="method protected">
-									<h4 class="method-title" id="TriggerHandler.afterDelete">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L485"
-										>
-											afterDelete()
-										</a>
-									</h4>
-									<div class="method-description">Virtual method for the implementing class to override</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@SuppressWarnings('PMD.EmptyStatementBlock')</div>
-									<div class="method-signature">protected virtual void afterDelete()</div>
-								</div>
-								<div class="method protected">
-									<h4 class="method-title" id="TriggerHandler.afterUndelete">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L492"
-										>
-											afterUndelete()
-										</a>
-									</h4>
-									<div class="method-description">Virtual method for the implementing class to override</div>
-									<div class="method-subtitle">Signature</div>
-									<div class="method-annotations">@SuppressWarnings('PMD.EmptyStatementBlock')</div>
-									<div class="method-signature">protected virtual void afterUndelete()</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.LoopCount">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L518"
-										>
-											LoopCount(max)
-										</a>
-									</h4>
-									<div class="method-description">Constructor with specified max loops</div>
-									<div class="method-subtitle">Signature</div>
+                    <div class="methods-toc__description">
+                      Basic constructor
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.TriggerHandler_1">
+                      TriggerHandler (handlerName)
+                    </a>
 
-									<div class="method-signature">public LoopCount(Integer max)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">max</div>
-									<div class="param-type">Type: <code class="code-inline">Integer</code></div>
-									<div class="param-description">Max number of loops allowed</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.increment">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L529"
-										>
-											increment()
-										</a>
-									</h4>
-									<div class="method-description">Increment the internal counter returning the results of this.exceeded().</div>
-									<div class="method-subtitle">Signature</div>
+                    <div class="methods-toc__description">
+                      Constructor with handler name to improve performance
+                    </div>
+                  </li>
+                </ul>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.TriggerHandler">
 
-									<div class="method-signature">public Boolean increment()</div>
-									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description"><code class="code-inline">Boolean</code> true if count will exceed max count or is less than 0.</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.exceeded">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L538"
-										>
-											exceeded()
-										</a>
-									</h4>
-									<div class="method-description">Determines if this we&#39;re about to exceed the loop count.</div>
-									<div class="method-subtitle">Signature</div>
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L68">
+                      TriggerHandler()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Basic constructor
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
 
-									<div class="method-signature">public Boolean exceeded()</div>
-									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description"><code class="code-inline">Boolean</code> true if less than 0 or more than max.</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.getMax">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L546"
-										>
-											getMax()
-										</a>
-									</h4>
-									<div class="method-description">Returns the max loop count.</div>
-									<div class="method-subtitle">Signature</div>
+                  <div class="method-signature">
+                    public TriggerHandler()
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.TriggerHandler_1">
 
-									<div class="method-signature">public Integer getMax()</div>
-									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description"><code class="code-inline">Integer</code> max loop count.</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.getCount">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L554"
-										>
-											getCount()
-										</a>
-									</h4>
-									<div class="method-description">Returns the current loop count.</div>
-									<div class="method-subtitle">Signature</div>
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L77">
+                      TriggerHandler(handlerName)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Constructor with handler name to improve performance
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
 
-									<div class="method-signature">public Integer getCount()</div>
-									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description"><code class="code-inline">Integer</code> current loop count.</div>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.setMax">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L562"
-										>
-											setMax(max)
-										</a>
-									</h4>
-									<div class="method-description">Sets the max loop size</div>
-									<div class="method-subtitle">Signature</div>
+                  <div class="method-signature">
+                    public TriggerHandler(String handlerName)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">handlerName</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">String</code>
+                  </div>
+                  <div class="param-description">The name of the handler</div>
+                  <div class="method-subtitle">
+                    Author
+                  </div>
+                  <div class="method-subtitle-description">
+                    David Schach
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="subsection methods">
+              <h3 class="subsection-title methods">TriggerHandler Methods</h3>
+              <div class="methods-container">
+                <ul class="methods-toc">
+                  <li class="method private">
+                    <a class="methods-toc__entry " href="#TriggerHandler.addToLoopCount">
+                      addToLoopCount ()
+                    </a>
 
-									<div class="method-signature">public void setMax(Integer max)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">max</div>
-									<div class="param-type">Type: <code class="code-inline">Integer</code></div>
-									<div class="param-description">The integer to set max to.</div>
-								</div>
-							</div>
-						</div>
-					</div>
+                    <div class="methods-toc__description">
+                      increment the loop count
+                    </div>
+                  </li>
+                  <li class="method protected">
+                    <a class="methods-toc__entry " href="#TriggerHandler.afterDelete">
+                      afterDelete ()
+                    </a>
 
-					<div class="section">
-						<h2 class="class-title" id="TriggerHandler.LoopCount">
-							<a
-								target="_blank"
-								rel="noopener noreferrer"
-								title="Go to source"
-								class="source-link"
-								href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L501"
-							>
-								TriggerHandler.LoopCount
-							</a>
-						</h2>
-						<div class="class-container">
-							<div class="class-description">inner class for managing the loop count per handler</div>
-							<div class="class-subtitle">Signature</div>
-							<div class="class-annotations">@TestVisible</div>
-							<div class="class-signature">private class LoopCount</div>
-						</div>
-						<div class="subsection properties TriggerHandler_LoopCount">
-							<h3 class="subsection-title properties">TriggerHandler.LoopCount Properties</h3>
-							<table class="attributes-table properties">
-								<tr>
-									<th>Name</th>
-									<th>Signature</th>
-								</tr>
-								<tr class="property private">
-									<td class="attribute-name">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L502"
-										>
-											max
-										</a>
-									</td>
-									<td>
-										<div class="attribute-signature">private Integer max</div>
-									</td>
-								</tr>
-								<tr class="property private">
-									<td class="attribute-name">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L503"
-										>
-											count
-										</a>
-									</td>
-									<td>
-										<div class="attribute-signature">private Integer count</div>
-									</td>
-								</tr>
-							</table>
-						</div>
-						<div class="subsection methods">
-							<h3 class="subsection-title methods">TriggerHandler.LoopCount Constructors</h3>
-							<div class="methods-container">
-								<ul class="methods-toc">
-									<li class="method public">
-										<a class="methods-toc__entry" href="#TriggerHandler.LoopCount.LoopCount"> LoopCount () </a>
-									</li>
-								</ul>
-								<div class="method public">
-									<h4 class="method-title" id="TriggerHandler.LoopCount.LoopCount">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L508"
-										>
-											LoopCount()
-										</a>
-									</h4>
-									<div class="method-description">Default loop count to 5</div>
-									<div class="method-subtitle">Signature</div>
+                    <div class="methods-toc__description">
+                      Virtual method for the implementing class to override
+                    </div>
+                  </li>
+                  <li class="method protected">
+                    <a class="methods-toc__entry " href="#TriggerHandler.afterInsert">
+                      afterInsert ()
+                    </a>
 
-									<div class="method-signature">public LoopCount()</div>
-								</div>
-							</div>
-						</div>
-					</div>
+                    <div class="methods-toc__description">
+                      Virtual method for the implementing class to override
+                    </div>
+                  </li>
+                  <li class="method protected">
+                    <a class="methods-toc__entry " href="#TriggerHandler.afterUndelete">
+                      afterUndelete ()
+                    </a>
 
-					<div class="section">
-						<h2 class="class-title" id="TriggerHandler.TriggerHandlerException">
-							<a
-								target="_blank"
-								rel="noopener noreferrer"
-								title="Go to source"
-								class="source-link"
-								href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L570"
-							>
-								TriggerHandler.TriggerHandlerException
-							</a>
-						</h2>
-						<div class="class-container">
-							<div class="class-description">Exception class</div>
-							<div class="class-subtitle">Signature</div>
+                    <div class="methods-toc__description">
+                      Virtual method for the implementing class to override
+                    </div>
+                  </li>
+                  <li class="method protected">
+                    <a class="methods-toc__entry " href="#TriggerHandler.afterUpdate">
+                      afterUpdate ()
+                    </a>
 
-							<div class="class-signature">public class TriggerHandlerException extends Exception</div>
-						</div>
-						<div class="subsection properties TriggerHandler_TriggerHandlerException">
-							<h3 class="subsection-title properties">TriggerHandler.TriggerHandlerException Properties</h3>
-							<table class="attributes-table properties">
-								<tr>
-									<th>Name</th>
-									<th>Signature</th>
-									<th>Annotations</th>
-									<th>Description</th>
-								</tr>
-								<tr class="property private">
-									<td class="attribute-name">
-										<a
-											target="_blank"
-											rel="noopener noreferrer"
-											title="Go to source"
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L577"
-										>
-											errorOutsideTriggerContext
-										</a>
-									</td>
-									<td>
-										<div class="attribute-signature">private static String errorOutsideTriggerContext</div>
-									</td>
-									<td>
-										<div class="prop-annotations">@TestVisible</div>
-									</td>
+                    <div class="methods-toc__description">
+                      Virtual method for the implementing class to override
+                    </div>
+                  </li>
+                  <li class="method protected">
+                    <a class="methods-toc__entry " href="#TriggerHandler.beforeDelete">
+                      beforeDelete ()
+                    </a>
 
-									<td class="attribute-description">Error text - assumes English for debug logs</td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td class="footer">
-					<div>
-						<a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer"> Powered By ApexDox VS Code </a>
-					</div>
-				</td>
-			</tr>
-		</table>
-	</body>
+                    <div class="methods-toc__description">
+                      Virtual method for the implementing class to override
+                    </div>
+                  </li>
+                  <li class="method protected">
+                    <a class="methods-toc__entry " href="#TriggerHandler.beforeInsert">
+                      beforeInsert ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Virtual method for the implementing class to override
+                    </div>
+                  </li>
+                  <li class="method protected">
+                    <a class="methods-toc__entry " href="#TriggerHandler.beforeUpdate">
+                      beforeUpdate ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Virtual method for the implementing class to override
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.bypass">
+                      bypass (handlerName)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      bypass by string, e.g. TriggerHandler.bypass(&#39;AccountTriggerHandler&#39;)
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.bypass_1">
+                      bypass (handlerNames)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      bypass by list, e.g. TriggerHandler.bypass(listOfHandlerStrings)
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.bypassAll">
+                      bypassAll ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      bypass all handlers (clear bypassedHandlers to prevent confusion)
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.bypassList">
+                      bypassList ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      return a list of the bypassed handlers
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.clearAllBypasses">
+                      clearAllBypasses ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      clear all bypasses - by clearing the global bypass and by clearing the list of bypassed handlers
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.clearBypass">
+                      clearBypass (handlerName)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      bypass a specific handler
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.clearBypass_1">
+                      clearBypass (handlersNames)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      bypass a list of handlers
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.clearBypassList">
+                      clearBypassList ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      clear the entire bypass list, but keep the global bypass flag intact <br>This is useful for resetting the list of handlers to bypass while maintaining global bypassing
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.clearGlobalBypass">
+                      clearGlobalBypass ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      clear only the global bypass flag, leaving the list of bypassed handlers intact <br>This is useful for keeping a base set of bypassed handlers intact for an entire operation
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.clearMaxLoopCount">
+                      clearMaxLoopCount ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Removes the limit for the number of times we allow this class to run
+                    </div>
+                  </li>
+                  <li class="method private">
+                    <a class="methods-toc__entry " href="#TriggerHandler.getHandlerName">
+                      getHandlerName ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Get the name of the current handler. This can be set by using the constructor with the string parameter to improve performance
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.getLoopCount">
+                      getLoopCount (handlerName)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      return the current loop count
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.isBypassed">
+                      isBypassed (handlerName)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      a handler is considered bypassed if it was bypassed, or all handlers have been bypassed
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.run">
+                      run ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      main method that will be called during execution <br> See the sample trigger for the best way to set up your handler
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.setBypass">
+                      setBypass (handlerName, desiredValue)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Set bypass status to a specific value. Eliminates the need to know the current bypass status
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.setMaxLoopCount">
+                      setMaxLoopCount (max)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      setMaxLoopCount description
+                    </div>
+                  </li>
+                  <li class="method private">
+                    <a class="methods-toc__entry " href="#TriggerHandler.setTriggerContext">
+                      setTriggerContext ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Base method called by constructor to set the current context
+                    </div>
+                  </li>
+                  <li class="method private">
+                    <a class="methods-toc__entry " href="#TriggerHandler.setTriggerContext_1">
+                      setTriggerContext (opType, testMode)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Set the current trigger context based on the System.TriggerOperation <br>If we are not in a trigger context, then we set isTriggerExecuting to false
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.showDebug">
+                      showDebug ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Called in the trigger to force the class to debug trigger entry and exit with context. <br>This is only shown in Test context, to speed org performance
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.showDebug_1">
+                      showDebug (enabled)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Called in the trigger to force the class to debug trigger entry and exit with context. <br>Set to true to show entry and exit. <br>This is only shown in Test context, to speed org performance
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.showLimits">
+                      showLimits ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Called in the trigger to force the class to debug query limits when it runs
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.showLimits_1">
+                      showLimits (enabled)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Called in the trigger to force the class to debug limits when it runs. <br>Set to true to show limits.
+                    </div>
+                  </li>
+                  <li class="method private">
+                    <a class="methods-toc__entry " href="#TriggerHandler.validateRun">
+                      validateRun ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Make sure this trigger should continue to run <br>Returning <code class="code-inline">false</code> causes trigger handler to exit
+                    </div>
+                  </li>
+                </ul>
+                <div class="method private">
+                  <h4 class="method-title " id="TriggerHandler.addToLoopCount">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L441">
+                      addToLoopCount()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    increment the loop count
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    private void addToLoopCount()
+                  </div>
+                  <div class="method-subtitle">
+                    Exceptions
+                  </div>
+                  <div class="method-subtitle-description">
+                    TriggerHandlerException
+                  </div>
+                  <div class="method-subtitle">
+                    See
+                  </div>
+                  <div class="method-subtitle-description">
+                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.TriggerHandlerException')">TriggerHandler.TriggerHandlerException</a>
+                  </div>
+                </div>
+                <div class="method protected">
+                  <h4 class="method-title " id="TriggerHandler.afterDelete">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L527">
+                      afterDelete()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Virtual method for the implementing class to override
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    protected virtual void afterDelete()
+                  </div>
+                </div>
+                <div class="method protected">
+                  <h4 class="method-title " id="TriggerHandler.afterInsert">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L513">
+                      afterInsert()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Virtual method for the implementing class to override
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    protected virtual void afterInsert()
+                  </div>
+                </div>
+                <div class="method protected">
+                  <h4 class="method-title " id="TriggerHandler.afterUndelete">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L534">
+                      afterUndelete()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Virtual method for the implementing class to override
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    protected virtual void afterUndelete()
+                  </div>
+                </div>
+                <div class="method protected">
+                  <h4 class="method-title " id="TriggerHandler.afterUpdate">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L520">
+                      afterUpdate()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Virtual method for the implementing class to override
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    protected virtual void afterUpdate()
+                  </div>
+                </div>
+                <div class="method protected">
+                  <h4 class="method-title " id="TriggerHandler.beforeDelete">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L506">
+                      beforeDelete()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Virtual method for the implementing class to override
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    protected virtual void beforeDelete()
+                  </div>
+                </div>
+                <div class="method protected">
+                  <h4 class="method-title " id="TriggerHandler.beforeInsert">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L493">
+                      beforeInsert()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Virtual method for the implementing class to override
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    protected virtual void beforeInsert()
+                  </div>
+                </div>
+                <div class="method protected">
+                  <h4 class="method-title " id="TriggerHandler.beforeUpdate">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L500">
+                      beforeUpdate()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Virtual method for the implementing class to override
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    protected virtual void beforeUpdate()
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.bypass">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L177">
+                      bypass(handlerName)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    bypass by string, e.g. TriggerHandler.bypass(&#39;AccountTriggerHandler&#39;)
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void bypass(String handlerName)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">handlerName</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">String</code>
+                  </div>
+                  <div class="param-description">Name of the handler to be bypassed</div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> TriggerHandler.bypass(&#39;AccountSampleTriggerHandler&#39;)</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.bypass_1">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L186">
+                      bypass(handlerNames)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    bypass by list, e.g. TriggerHandler.bypass(listOfHandlerStrings)
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void bypass(List&lt;String&gt; handlerNames)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">handlerNames</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">List&lt;String&gt;</code>
+                  </div>
+                  <div class="param-description">List of handlernames</div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.bypassAll">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L193">
+                      bypassAll()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    bypass all handlers (clear bypassedHandlers to prevent confusion)
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void bypassAll()
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.bypassList">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L244">
+                      bypassList()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    return a list of the bypassed handlers
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static List&lt;String&gt; bypassList()
+                  </div>
+                  <div class="method-subtitle">
+                    Returns
+                  </div>
+                  <div class="method-subtitle-description">
+                    <code class="code-inline">List&lt;String&gt;</code>
+                  </div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> TriggerHandler.bypassList();</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.clearAllBypasses">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L260">
+                      clearAllBypasses()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    clear all bypasses - by clearing the global bypass and by clearing the list of bypassed handlers
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void clearAllBypasses()
+                  </div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> TriggerHandler.clearAllBypasses();</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.clearBypass">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L205">
+                      clearBypass(handlerName)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    bypass a specific handler
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void clearBypass(String handlerName)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">handlerName</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">String</code>
+                  </div>
+                  <div class="param-description">The class name to be bypassed</div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> TriggerHandler.clearBypass(&#39;AccountSampleTriggerHandler&#39;)</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.clearBypass_1">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L219">
+                      clearBypass(handlersNames)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    bypass a list of handlers
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void clearBypass(List&lt;String&gt; handlersNames)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">handlersNames</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">List&lt;String&gt;</code>
+                  </div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> List&lt;String&gt; classList = [&#39;AccountTriggerHandler&#39;,&#39;ContactTriggerHandler&#39;]; 
+ TriggerHandler.clearBypass(classList;</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.clearBypassList">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L281">
+                      clearBypassList()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    clear the entire bypass list, but keep the global bypass flag intact <br>This is useful for resetting the list of handlers to bypass while maintaining global bypassing
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void clearBypassList()
+                  </div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> TriggerHandler.clearBypassList();</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.clearGlobalBypass">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L271">
+                      clearGlobalBypass()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    clear only the global bypass flag, leaving the list of bypassed handlers intact <br>This is useful for keeping a base set of bypassed handlers intact for an entire operation
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void clearGlobalBypass()
+                  </div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> TriggerHandler.clearGlobalBypass();</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.clearMaxLoopCount">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L167">
+                      clearMaxLoopCount()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Removes the limit for the number of times we allow this class to run
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public void clearMaxLoopCount()
+                  </div>
+                </div>
+                <div class="method private">
+                  <h4 class="method-title " id="TriggerHandler.getHandlerName">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L480">
+                      getHandlerName()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Get the name of the current handler. This can be set by using the constructor with the string parameter to improve performance
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    private String getHandlerName()
+                  </div>
+                  <div class="method-subtitle">
+                    Returns
+                  </div>
+                  <div class="method-subtitle-description">
+                    <code class="code-inline">String</code> handlerName
+                  </div>
+                  <div class="method-subtitle">
+                    See
+                  </div>
+                  <div class="method-subtitle-description">
+                    <span title="A valid link could not be created with this identifier.">TriggerHandler.handlerName</span>
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.getLoopCount">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L367">
+                      getLoopCount(handlerName)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    return the current loop count
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static Integer getLoopCount(String handlerName)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">handlerName</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">String</code>
+                  </div>
+                  <div class="param-description">The handler class to check for the current loop count</div>
+                  <div class="method-subtitle">
+                    Returns
+                  </div>
+                  <div class="method-subtitle-description">
+                    <code class="code-inline">Integer</code>
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.isBypassed">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L233">
+                      isBypassed(handlerName)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    a handler is considered bypassed if it was bypassed, or all handlers have been bypassed
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static Boolean isBypassed(String handlerName)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">handlerName</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">String</code>
+                  </div>
+                  <div class="param-description">The class name of the handler we are checking is bypassed</div>
+                  <div class="method-subtitle">
+                    Returns
+                  </div>
+                  <div class="method-subtitle-description">
+                    <code class="code-inline">Boolean</code> Is this handler bypassed?
+                  </div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> TriggerHandler.isBypassed(&#39;AccountTriggerHandler&#39;);</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.run">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L91">
+                      run()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    main method that will be called during execution <br> See the sample trigger for the best way to set up your handler
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public void run()
+                  </div>
+                  <div class="method-subtitle">
+                    Author
+                  </div>
+                  <div class="method-subtitle-description">
+                    Kevin O&#39;Hara, David Schach
+                  </div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> new AccountSampleTriggerHandler().run();</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.setBypass">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L292">
+                      setBypass(handlerName, desiredValue)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Set bypass status to a specific value. Eliminates the need to know the current bypass status
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void setBypass(String handlerName, Boolean desiredValue)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">handlerName</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">String</code>
+                  </div>
+                  <div class="param-description"> The name of the TriggerHandler class</div>
+                  <div class="param-name">desiredValue</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">Boolean</code>
+                  </div>
+                  <div class="param-description"><code class="code-inline">true</code> to bypass, and <code class="code-inline">false</code> to run the handler</div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> TriggerHandler.setBypass(&#39;AccountTriggerHandler&#39;, false);</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.setMaxLoopCount">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L155">
+                      setMaxLoopCount(max)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    setMaxLoopCount description
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public void setMaxLoopCount(Integer max)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">max</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">Integer</code>
+                  </div>
+                  <div class="param-description">max description</div>
+                  <div class="method-subtitle">
+                    Author
+                  </div>
+                  <div class="method-subtitle-description">
+                    David Schach
+                  </div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> TriggerHandler.setMaxLoopCount(5);</code></pre>
+                </div>
+                <div class="method private">
+                  <h4 class="method-title " id="TriggerHandler.setTriggerContext">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L379">
+                      setTriggerContext()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Base method called by constructor to set the current context
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    private void setTriggerContext()
+                  </div>
+                </div>
+                <div class="method private">
+                  <h4 class="method-title " id="TriggerHandler.setTriggerContext_1">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L392">
+                      setTriggerContext(opType, testMode)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Set the current trigger context based on the System.TriggerOperation <br>If we are not in a trigger context, then we set isTriggerExecuting to false
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    private void setTriggerContext(System.TriggerOperation opType, Boolean testMode)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">opType</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">System.TriggerOperation</code>
+                  </div>
+                  <div class="param-description"> The operation type - set automatically by the system</div>
+                  <div class="param-name">testMode</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">Boolean</code>
+                  </div>
+                  <div class="param-description">Only used in test methods to force certain contexts</div>
+                  <div class="method-subtitle">
+                    See
+                  </div>
+                  <div class="method-subtitle-description">
+                    <span title="A valid link could not be created with this identifier.">TriggerHandler.isTriggerExecuting</span>
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.showDebug">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L341">
+                      showDebug()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Called in the trigger to force the class to debug trigger entry and exit with context. <br>This is only shown in Test context, to speed org performance
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void showDebug()
+                  </div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> new AccountSampleTriggerHandler.showDebug().showLimits().run();</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.showDebug_1">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L353">
+                      showDebug(enabled)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Called in the trigger to force the class to debug trigger entry and exit with context. <br>Set to true to show entry and exit. <br>This is only shown in Test context, to speed org performance
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void showDebug(Boolean enabled)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">enabled</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">Boolean</code>
+                  </div>
+                  <div class="param-description">true to enable; false to disable</div>
+                  <div class="method-subtitle">
+                    See
+                  </div>
+                  <div class="method-subtitle-description">
+                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.showDebug')">TriggerHandler.showDebug</a>
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.showLimits">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L319">
+                      showLimits()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Called in the trigger to force the class to debug query limits when it runs
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void showLimits()
+                  </div>
+                  <div class="method-subtitle">
+                    Example
+                  </div>
+                  <pre class="code-example"><code> new AccountSampleTriggerHandler.showLimits().run();</code></pre>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.showLimits_1">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L330">
+                      showLimits(enabled)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Called in the trigger to force the class to debug limits when it runs. <br>Set to true to show limits.
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public static void showLimits(Boolean enabled)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">enabled</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">Boolean</code>
+                  </div>
+                  <div class="param-description">true to enable; false to disable</div>
+                  <div class="method-subtitle">
+                    See
+                  </div>
+                  <div class="method-subtitle-description">
+                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.showLimits')">TriggerHandler.showLimits</a>
+                  </div>
+                </div>
+                <div class="method private">
+                  <h4 class="method-title " id="TriggerHandler.validateRun">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L461">
+                      validateRun()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Make sure this trigger should continue to run <br>Returning <code class="code-inline">false</code> causes trigger handler to exit
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    private Boolean validateRun()
+                  </div>
+                  <div class="method-subtitle">
+                    Returns
+                  </div>
+                  <div class="method-subtitle-description">
+                    <code class="code-inline">Boolean</code> is the run valid?
+                  </div>
+                  <div class="method-subtitle">
+                    Exceptions
+                  </div>
+                  <div class="method-subtitle-description">
+                    TriggerHandlerException
+                  </div>
+                  <div class="method-subtitle">
+                    See
+                  </div>
+                  <div class="method-subtitle-description">
+                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.TriggerHandlerException')">TriggerHandler.TriggerHandlerException</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+
+            <h2 class="class-title " id="TriggerHandler.LoopCount">
+
+              <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L543">
+                TriggerHandler.LoopCount
+              </a>
+            </h2>
+            <div class="class-container">
+
+              <div class="class-description">
+                inner class for managing the loop count per handler
+              </div>
+              <div class="class-subtitle">
+                Signature
+              </div>
+              <div class="class-annotations">@TestVisible</div>
+              <div class="class-signature">
+                private class LoopCount
+              </div>
+            </div>
+            <div class="subsection properties TriggerHandler_LoopCount">
+              <h3 class="subsection-title properties">TriggerHandler.LoopCount Properties</h2>
+                <table class="attributes-table properties">
+
+                  <tr>
+                    <th>Name</th>
+                    <th>Signature</th>
+
+
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L545">
+                        count
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private Integer count
+                      </div>
+                    </td>
+
+
+                  </tr>
+                  <tr class="property ">
+                    <td class="attribute-name">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L544">
+                        max
+                      </a></td>
+                    <td>
+                      <div class="attribute-signature">
+                        private Integer max
+                      </div>
+                    </td>
+
+
+                  </tr>
+                </table>
+            </div>
+            <div class="subsection methods">
+              <h3 class="subsection-title methods">TriggerHandler.LoopCount Constructors</h3>
+              <div class="methods-container">
+                <ul class="methods-toc">
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.LoopCount.LoopCount">
+                      LoopCount ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Default loop count to 5
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.LoopCount.LoopCount_1">
+                      LoopCount (max)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Constructor with specified max loops
+                    </div>
+                  </li>
+                </ul>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.LoopCount.LoopCount">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L550">
+                      LoopCount()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Default loop count to 5
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public LoopCount()
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.LoopCount.LoopCount_1">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L560">
+                      LoopCount(max)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Constructor with specified max loops
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public LoopCount(Integer max)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">max</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">Integer</code>
+                  </div>
+                  <div class="param-description"> Max number of loops allowed</div>
+                </div>
+              </div>
+            </div>
+            <div class="subsection methods">
+              <h3 class="subsection-title methods">TriggerHandler.LoopCount Methods</h3>
+              <div class="methods-container">
+                <ul class="methods-toc">
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.LoopCount.exceeded">
+                      exceeded ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Determines if we&#39;re about to exceed the loop count.
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.LoopCount.getCount">
+                      getCount ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Returns the current loop count.
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.LoopCount.getMax">
+                      getMax ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Returns the max loop count.
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.LoopCount.increment">
+                      increment ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Increment the internal counter returning the results of this.exceeded().
+                    </div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry " href="#TriggerHandler.LoopCount.setMax">
+                      setMax (max)
+                    </a>
+
+                    <div class="methods-toc__description">
+                      Sets the max loop size
+                    </div>
+                  </li>
+                </ul>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.LoopCount.exceeded">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L580">
+                      exceeded()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Determines if we&#39;re about to exceed the loop count.
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public Boolean exceeded()
+                  </div>
+                  <div class="method-subtitle">
+                    Returns
+                  </div>
+                  <div class="method-subtitle-description">
+                    <code class="code-inline">Boolean</code> true if less than 0 or more than max.
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.LoopCount.getCount">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L596">
+                      getCount()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Returns the current loop count.
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public Integer getCount()
+                  </div>
+                  <div class="method-subtitle">
+                    Returns
+                  </div>
+                  <div class="method-subtitle-description">
+                    <code class="code-inline">Integer</code> current loop count.
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.LoopCount.getMax">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L588">
+                      getMax()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Returns the max loop count.
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public Integer getMax()
+                  </div>
+                  <div class="method-subtitle">
+                    Returns
+                  </div>
+                  <div class="method-subtitle-description">
+                    <code class="code-inline">Integer</code> max loop count.
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.LoopCount.increment">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L571">
+                      increment()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Increment the internal counter returning the results of this.exceeded().
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public Boolean increment()
+                  </div>
+                  <div class="method-subtitle">
+                    Returns
+                  </div>
+                  <div class="method-subtitle-description">
+                    <code class="code-inline">Boolean</code> true if count will exceed max count or is less than 0.
+                  </div>
+                </div>
+                <div class="method public">
+                  <h4 class="method-title " id="TriggerHandler.LoopCount.setMax">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L604">
+                      setMax(max)
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    Sets the max loop size
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    public void setMax(Integer max)
+                  </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">max</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">Integer</code>
+                  </div>
+                  <div class="param-description"> The integer to set max to.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+
+            <h2 class="class-title " id="TriggerHandler.TriggerHandlerException">
+
+              <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L612">
+                TriggerHandler.TriggerHandlerException
+              </a>
+            </h2>
+            <div class="class-container">
+
+              <div class="class-description">
+                Exception class
+              </div>
+              <div class="class-subtitle">
+                Signature
+              </div>
+
+              <div class="class-signature">
+                public class TriggerHandlerException extends Exception
+              </div>
+            </div>
+          </div>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="footer">
+
+          <div>
+            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer">
+              Powered By ApexDox VS Code
+            </a>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </body>
+
 </html>
