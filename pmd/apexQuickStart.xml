@@ -204,7 +204,7 @@
    <rule ref="category/apex/documentation.xml/ApexDoc" message="Document classes, methods, and properties that are public or global.">
       <priority>3</priority>
       <properties>
-         <property name="reportMissingDescription" value="false" />
+         <property name="reportMissingDescription" value="true" />
       </properties>
    </rule>
 
