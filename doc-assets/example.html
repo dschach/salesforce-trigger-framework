@@ -1,0 +1,108 @@
+<h1>General Theme</h1>
+<p><span>Each object has a single trigger</span></p>
+<p><span>Each trigger has a single HANDLER</span></p>
+<h1>Bypass Documentation</h1>
+<p>
+	<a class="" href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md" data-mce-href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md"
+		>https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md</a
+	>
+</p>
+<hr />
+
+<h1><span>Sample Trigger</span></h1>
+
+<code>
+	trigger AccountSampleTrigger on Account (before insert, after insert, before update, after update, before delete, after delete, after undelete) {<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;new AccountSampleTriggerHandler().run();<br />
+	}<br />
+</code>
+
+<h1>Sample Handler</h1>
+<code>
+	/**<br />
+	&nbsp;*&nbsp;@description&nbsp;A&nbsp;sample&nbsp;Account&nbsp;trigger&nbsp;handler,&nbsp;with&nbsp;some&nbsp;comments<br />
+	&nbsp;*<br />
+	&nbsp;*&nbsp;@author&nbsp;David&nbsp;Schach<br />
+	&nbsp;*&nbsp;@since&nbsp;2021<br />
+	&nbsp;*&nbsp;@see&nbsp;AccountSampleTriggerHandlerTest<br />
+	&nbsp;*/<br />
+	public&nbsp;without&nbsp;sharing&nbsp;class&nbsp;AccountSampleTriggerHandler&nbsp;extends&nbsp;TriggerHandler&nbsp;{<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;List&lt;Account&gt;&nbsp;newRecords;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;List&lt;Account&gt;&nbsp;oldRecords;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;Map&lt;Id,&nbsp;Account&gt;&nbsp;newRecordsMap;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;Map&lt;Id,&nbsp;Account&gt;&nbsp;oldRecordsMap;<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;AccountSampleTriggerHandler()&nbsp;{<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super('AccountSampleTriggerHandler');<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.newRecords&nbsp;=&nbsp;(List&lt;Account&gt;)Trigger.new;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.oldRecords&nbsp;=&nbsp;(List&lt;Account&gt;)Trigger.old;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.newRecordsMap&nbsp;=&nbsp;(Map&lt;Id,&nbsp;Account&gt;)Trigger.newMap;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.oldRecordsMap&nbsp;=&nbsp;(Map&lt;Id,&nbsp;Account&gt;)Trigger.oldMap;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;void&nbsp;beforeInsert(){<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method1();<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method2();<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TriggerHandler.clearAllBypass();<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;void&nbsp;beforeUpdate(){<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method2();<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;//public&nbsp;override&nbsp;void&nbsp;beforeDelete(){}<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;void&nbsp;afterInsert(){<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TriggerHandler.bypass('ContactTriggerHandler');<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;updateContacts();<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TriggerHandler.clearBypass('ContactTriggerHandler');<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;void&nbsp;afterUpdate(){<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TriggerHandler.bypass('CaseSampleTriggerHandler');<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;do&nbsp;something<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TriggerHandler.clearAllBypasses();<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;//public&nbsp;override&nbsp;void&nbsp;afterDelete(){}<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;//public&nbsp;override&nbsp;void&nbsp;afterUndelete(){}<br />
+	<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;//**************************************************<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;All&nbsp;&quot;handler&quot;&nbsp;methods&nbsp;are&nbsp;here&nbsp;for&nbsp;easier&nbsp;reading&nbsp;and&nbsp;reuse&nbsp;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;//**************************************************<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;void&nbsp;method1(){<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(Account&nbsp;a&nbsp;:&nbsp;newRecords){<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.Name&nbsp;=&nbsp;a.Name.toUpperCase();<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;void&nbsp;method2(){<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(Account&nbsp;a&nbsp;:&nbsp;newRecords){<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.Name&nbsp;=&nbsp;a.Name.toLowerCase();<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;/**<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Try&nbsp;to&nbsp;keep&nbsp;all&nbsp;updates&nbsp;on&nbsp;other&nbsp;objects&nbsp;in&nbsp;a&nbsp;single&nbsp;DML&nbsp;statement<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@author&nbsp;Author&nbsp;Name<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;*/<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;void&nbsp;updateContacts(){<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&lt;Contact&gt;&nbsp;acctContacts&nbsp;=&nbsp;[SELECT&nbsp;Id&nbsp;FROM&nbsp;Contact&nbsp;WHERE&nbsp;AccountId&nbsp;IN&nbsp;:newRecordsMap.keyset()];<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update&nbsp;acctContacts;<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
+	}
+</code>
+<br /><br />
+<hr />
+<h1><span>Credits</span></h1>
+<p>
+	<span
+		>This trigger framework is from
+		<a href="https://github.com/dschach/sfdc-trigger-framework" data-mce-href="https://github.com/dschach/sfdc-trigger-framework">https://github.com/dschach/sfdc-trigger-framework</a> which is based
+		on Kevin O'Hara's framework
+		<a href="https://github.com/kevinohara80/sfdc-trigger-framework" data-mce-href="https://github.com/kevinohara80/sfdc-trigger-framework">https://github.com/kevinohara80/sfdc-trigger-framework</a>
+	</span>
+</p>
