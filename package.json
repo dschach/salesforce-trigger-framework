@@ -6,6 +6,10 @@
 	"scripts": {
 		"lint": "eslint **/{aura,lwc}/**",
 		"test": "npm run test:unit",
+		"prettier:apex:local": "prettier --apex-standalone-parser built-in --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+		"prettier:verify:apex:local": "prettier --apex-standalone-parser built-in --check \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+		"apex:local:start": "node node_modules/prettier-plugin-apex/bin/start-apex-server.js",
+		"apex:local:stop": "node node_modules/prettier-plugin-apex/bin/stop-apex-server.js",
 		"test:unit": "sfdx-lwc-jest",
 		"test:unit:watch": "sfdx-lwc-jest --watch",
 		"test:unit:debug": "sfdx-lwc-jest --debug",
