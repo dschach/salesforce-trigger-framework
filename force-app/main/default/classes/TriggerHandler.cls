@@ -530,7 +530,7 @@ public virtual class TriggerHandler {
 		}
 
 		/**
-		 * @description Determines if this we're about to exceed the loop count.
+		 * @description Determines if we're about to exceed the loop count.
 		 * @return     `Boolean` true if less than 0 or more than max.
 		 */
 		public Boolean exceeded() {
