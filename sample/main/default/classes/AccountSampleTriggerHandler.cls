@@ -1,3 +1,4 @@
+@SuppressWarnings('PMD')
 /**
  * Account Sample handler
  * @author David Schach

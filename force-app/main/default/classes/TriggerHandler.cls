@@ -1,11 +1,12 @@
+@SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.FieldDeclarationsShouldBeAtStart, PMD.EmptyStatementBlock')
 /**
  * @description Trigger Handler virtual class as base for all trigger handlers
  * @author Kevin O'Hara
  * @author David Schach
  * @since 2013
  * @group TriggerHandler
+ * @group-content doc-assets/example.html
  */
-@SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.FieldDeclarationsShouldBeAtStart')
 public virtual class TriggerHandler {
 	/**
 	 * static map of handlername, times run() was invoked
@@ -68,10 +69,13 @@ public virtual class TriggerHandler {
 
 	/**
 	 * @description main method that will be called during execution
+	 * <br> See the sample trigger for the best way to set up your handler
 	 * @author Kevin O'Hara
 	 * @author David Schach
+	 * @example
+	 * new AccountSampleTriggerHandler().run();
 	 */
-	@SuppressWarnings('PMD.AvoidDebugStatements')
+
 	public void run() {
 		if (!validateRun()) {
 			return;
@@ -107,8 +111,18 @@ public virtual class TriggerHandler {
 		if (showLimits) {
 			System.debug(
 				LoggingLevel.DEBUG,
-				String.format('{0} on {1} ({2}/{3} queries)', new List<String>{ this.triggerEvent + '', getHandlerName(), Limits.getQueries() + '', Limits.getLimitQueries() + '' })
-			);
+				String.format(
+					'{0} on {1} ({2}/{3} queries) and ({4}/{5} DML calls',
+					new List<String>{
+						this.triggerEvent + '',
+						getHandlerName(),
+						Limits.getQueries() + '',
+						Limits.getLimitQueries() + '',
+						Limits.getDmlStatements() + '',
+						Limits.getLimitDmlStatements() + ''
+					}
+				)
+			); // NOPMD
 		}
 	}
 
@@ -117,7 +131,7 @@ public virtual class TriggerHandler {
 	 * @author David Schach
 	 * @param  max max description
 	 * @example
-	 * this.setMaxLoopCount(5);
+	 * TriggerHandler.setMaxLoopCount(5);
 	 */
 	public void setMaxLoopCount(Integer max) {
 		String handlerName = getHandlerName();
@@ -177,6 +191,9 @@ public virtual class TriggerHandler {
 	 * @description         bypass a list of handlers
 	 *
 	 * @param handlersNames
+	 * @example
+	 * List<String> classList = ['AccountTriggerHandler','ContactTriggerHandler'];
+	 * TriggerHandler.clearBypass(classList;
 	 */
 	public static void clearBypass(List<String> handlersNames) {
 		TriggerHandler.bypassedHandlers.removeAll(handlersNames);
@@ -272,7 +289,7 @@ public virtual class TriggerHandler {
 
 	// handle limits
 	/**
-	 * @description Called in the trigger to force the class to debug limits when it runs
+	 * @description Called in the trigger to force the class to debug query limits when it runs
 	 * @example
 	 * new AccountSampleTriggerHandler.showLimits().run();
 	 */
@@ -423,49 +440,42 @@ public virtual class TriggerHandler {
 	 * @description Virtual method for the implementing class to override
 	 */
 	@TestVisible
-	@SuppressWarnings('PMD.EmptyStatementBlock')
 	protected virtual void beforeInsert() {
 	}
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
 	@TestVisible
-	@SuppressWarnings('PMD.EmptyStatementBlock')
 	protected virtual void beforeUpdate() {
 	}
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
 	@TestVisible
-	@SuppressWarnings('PMD.EmptyStatementBlock')
 	protected virtual void beforeDelete() {
 	}
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
 	@TestVisible
-	@SuppressWarnings('PMD.EmptyStatementBlock')
 	protected virtual void afterInsert() {
 	}
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
 	@TestVisible
-	@SuppressWarnings('PMD.EmptyStatementBlock')
 	protected virtual void afterUpdate() {
 	}
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
 	@TestVisible
-	@SuppressWarnings('PMD.EmptyStatementBlock')
 	protected virtual void afterDelete() {
 	}
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
 	@TestVisible
-	@SuppressWarnings('PMD.EmptyStatementBlock')
 	protected virtual void afterUndelete() {
 	}
 

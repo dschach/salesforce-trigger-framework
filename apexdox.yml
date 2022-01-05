@@ -2,8 +2,8 @@ engine:
   source:
     - path: "${workspaceFolder}/force-app/main/default/classes"
       sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes
-  #    - path: "${workspaceFolder}/sample/main/default/classes"
-  #      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample/main/default/classes
+  # - path: "${workspaceFolder}/sample/main/default/classes"
+  #  sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample/main/default/classes
   #    - path: "${workspaceFolder}/sample/main/default/triggers"
   #      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample/main/default/triggers
   #    - path: "${workspaceFolder}/force-app/main/default/tests"
@@ -13,9 +13,9 @@ engine:
   #  - "*Test.cls"
   title: Salesforce Trigger Handler code documentation
   subtitle: Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
-  sortOrder: logical
-  cleanDir: false
-  showTOCSnippets: false
+  sortOrder: alpha
+  cleanDir: true
+  showTOCSnippets: true
   scope:
     - global
     - public
@@ -23,7 +23,7 @@ engine:
     - private
     - webService
     - testMethod
-  homePagePath: "${workspaceFolder}/doc-assets/example.html"
+  homePagePath: "${workspaceFolder}/doc-assets/bypassAPI.html"
   #pages:
   #  - "${workspaceFolder}/documentation/Funny.html"
   assets:
