@@ -6,38 +6,45 @@
  * @since 2013
  * @group TriggerHandler
  * @group-content doc-assets/example.html
+ * @see [License](https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE)
+ * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
  */
 public virtual class TriggerHandler {
-	/**
-	 * static map of handlername, times run() was invoked
-	 */
 	@TestVisible
+	/**
+	 * static map of `handlerName`, times `run()` was invoked
+	 */
 	private static Map<String, LoopCount> loopCountMap;
+
+	@TestVisible
 	/**
 	 * All bypassed handlers
 	 */
-	@TestVisible
 	private static Set<String> bypassedHandlers;
+
+	@TestVisible
 	/**
 	 * `true` if we bypass all triggers without checking the contents of `bypassedHandlers`
 	 */
-	@TestVisible
 	private static Boolean globalBypass;
+
+	@TestVisible
 	/**
 	 * `true` if we include a debug statement for limits
 	 */
-	@TestVisible
 	private static Boolean showLimits;
+
+	@TestVisible
 	/**
 	 * the current triggerEvent of the trigger, overridable in tests
 	 * */
-	@TestVisible
 	private System.TriggerOperation triggerEvent;
+
+	@TestVisible
 	/**
 	 * Is this class executing in trigger context?
 	 * @author David Schach
 	 */
-	@TestVisible
 	private Boolean isTriggerExecuting;
 
 	// static initialization variables
@@ -75,7 +82,6 @@ public virtual class TriggerHandler {
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
 	 */
-
 	public void run() {
 		if (!validateRun()) {
 			return;
@@ -322,14 +328,15 @@ public virtual class TriggerHandler {
 	}
 
 	//private instancemethods
+	@TestVisible
 	/**
 	 * @description Base method called by constructor to set the current context
 	 */
-	@TestVisible
 	private void setTriggerContext() {
 		this.setTriggerContext(Trigger.operationType, false);
 	}
 
+	@TestVisible
 	/**
 	 * @description    Set the current trigger context based on the System.TriggerOperation
 	 * <br>If we are not in a trigger context, then we set isTriggerExecuting to false
@@ -338,7 +345,6 @@ public virtual class TriggerHandler {
 	 * @param testMode Only used in test methods to force certain contexts
 	 * @see TriggerHandler.isTriggerExecuting
 	 */
-	@TestVisible
 	private void setTriggerContext(System.TriggerOperation opType, Boolean testMode) {
 		if (!Trigger.isExecuting && !testMode) {
 			this.isTriggerExecuting = false;
@@ -399,6 +405,7 @@ public virtual class TriggerHandler {
 		}
 	}
 
+	@TestVisible
 	/**
 	 * @description Make sure this trigger should continue to run
 	 * <br>Returning `false` causes trigger handler to exit
@@ -407,7 +414,6 @@ public virtual class TriggerHandler {
 	 * @exception   TriggerHandlerException
 	 * @see TriggerHandler.TriggerHandlerException
 	 */
-	@TestVisible
 	private Boolean validateRun() {
 		if (!this.isTriggerExecuting || this.triggerEvent == null) {
 			throw new TriggerHandlerException(errorOutsideTriggerContext);
@@ -416,17 +422,17 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description The name of this handler. Set by getHandlerName()
-	 * @see TriggerHandler.getHandlerName()
+	 * @description The name of this handler. Set by `getHandlerName()`
 	 */
 	private String handlerName;
 
+	@TestVisible
 	/**
 	 * @description Get the name of the current handler. This can be set by using the constructor with the string parameter to improve performance
 	 *
 	 * @return      `String` handlerName
+	 * @see         TriggerHandler.handlerName
 	 */
-	@TestVisible
 	private String getHandlerName() {
 		if (String.isBlank(this.handlerName)) {
 			this.handlerName = String.valueOf(this).substring(0, String.valueOf(this).indexOf(':'));
@@ -436,46 +442,51 @@ public virtual class TriggerHandler {
 
 	//triggerEvent methods
 
+	@TestVisible
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
-	@TestVisible
 	protected virtual void beforeInsert() {
 	}
+
+	@TestVisible
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
-	@TestVisible
 	protected virtual void beforeUpdate() {
 	}
+	@TestVisible
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
-	@TestVisible
 	protected virtual void beforeDelete() {
 	}
+
+	@TestVisible
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
-	@TestVisible
 	protected virtual void afterInsert() {
 	}
+
+	@TestVisible
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
-	@TestVisible
 	protected virtual void afterUpdate() {
 	}
+
+	@TestVisible
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
-	@TestVisible
 	protected virtual void afterDelete() {
 	}
+
+	@TestVisible
 	/**
 	 * @description Virtual method for the implementing class to override
 	 */
-	@TestVisible
 	protected virtual void afterUndelete() {
 	}
 
@@ -557,9 +568,9 @@ public virtual class TriggerHandler {
 	public class TriggerHandlerException extends Exception {
 	}
 
+	@TestVisible
 	/**
 	 * @description Error text - assumes English for debug logs
 	 */
-	@TestVisible
 	private static String errorOutsideTriggerContext = 'Trigger handler called outside of Trigger execution'; //NOPMD
 }

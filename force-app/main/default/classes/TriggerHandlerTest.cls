@@ -19,7 +19,7 @@ private class TriggerHandlerTest {
 	// contexts tests
 
 	@isTest
-	static void testBeforeInsert() {
+	private static void testBeforeInsert() {
 		beforeInsertMode();
 		handler.run();
 		System.assertEquals('beforeInsert', lastMethodCalled, 'last method should be beforeInsert');
@@ -27,49 +27,49 @@ private class TriggerHandlerTest {
 	}
 
 	@isTest
-	static void testBeforeUpdate() {
+	private static void testBeforeUpdate() {
 		beforeUpdateMode();
 		handler.run();
 		System.assertEquals('beforeUpdate', lastMethodCalled, 'last method should be beforeUpdate');
 	}
 
 	@isTest
-	static void testBeforeDelete() {
+	private static void testBeforeDelete() {
 		beforeDeleteMode();
 		handler.run();
 		System.assertEquals('beforeDelete', lastMethodCalled, 'last method should be beforeDelete');
 	}
 
 	@isTest
-	static void testAfterInsert() {
+	private static void testAfterInsert() {
 		afterInsertMode();
 		handler.run();
 		System.assertEquals('afterInsert', lastMethodCalled, 'last method should be afterInsert');
 	}
 
 	@isTest
-	static void testAfterUpdate() {
+	private static void testAfterUpdate() {
 		afterUpdateMode();
 		handler.run();
 		System.assertEquals('afterUpdate', lastMethodCalled, 'last method should be afterUpdate');
 	}
 
 	@isTest
-	static void testAfterDelete() {
+	private static void testAfterDelete() {
 		afterDeleteMode();
 		handler.run();
 		System.assertEquals('afterDelete', lastMethodCalled, 'last method should be afterDelete');
 	}
 
 	@isTest
-	static void testAfterUndelete() {
+	private static void testAfterUndelete() {
 		afterUndeleteMode();
 		handler.run();
 		System.assertEquals('afterUndelete', lastMethodCalled, 'last method should be afterUndelete');
 	}
 
 	@isTest
-	static void testNonTriggerContext() {
+	private static void testNonTriggerContext() {
 		try {
 			handler.run();
 			System.assert(false, 'the handler ran but should have thrown an exception');
@@ -81,7 +81,7 @@ private class TriggerHandlerTest {
 	}
 
 	@isTest
-	static void testConstructorWithParameter() {
+	private static void testConstructorWithParameter() {
 		handler = new TriggerHandlerTest.TestHandler('TestHandler');
 		// override its internal trigger detection
 		handler.isTriggerExecuting = true;
@@ -92,7 +92,7 @@ private class TriggerHandlerTest {
 	}
 
 	@isTest
-	static void testConstructorWithParametersAndBypass() {
+	private static void testConstructorWithParametersAndBypass() {
 		handler = new TriggerHandlerTest.TestHandler('TestHandler');
 		// override its internal trigger detection
 		handler.isTriggerExecuting = true;
@@ -110,7 +110,7 @@ private class TriggerHandlerTest {
 	 */
 	@SuppressWarnings('PMD.NcssMethodCount')
 	@isTest
-	static void testBypassAPI() {
+	private static void testBypassAPI() {
 		afterUpdateMode();
 
 		// test a bypass by string and run handler
@@ -193,12 +193,12 @@ private class TriggerHandlerTest {
 	 * @description Test and show limits
 	 */
 	@isTest
-	static void testBeforeInsertWithLimits() {
+	private static void testBeforeInsertWithLimits() {
 		beforeInsertMode();
 		TriggerHandler.showLimits(false);
 		TriggerHandler.showLimits();
 		handler.run();
-		System.assert(TriggerHandler.showLimits, 'We should be showing limits');
+		System.assert(TriggerHandler.showLimits, 'We should be showing limits'); //NOPMD
 		TriggerHandler.getLoopCount('TestHandler');
 		System.assertEquals('beforeInsert', lastMethodCalled, 'last method should be beforeInsert');
 	}
@@ -207,7 +207,7 @@ private class TriggerHandlerTest {
 	 * @description instance method tests
 	 */
 	@isTest
-	static void testLoopCount() {
+	private static void testLoopCount() {
 		beforeInsertMode();
 
 		// set the max loops to 2
@@ -253,7 +253,7 @@ private class TriggerHandlerTest {
 	}
 
 	@isTest
-	static void testLoopCountClass() {
+	private static void testLoopCountClass() {
 		TriggerHandler.LoopCount lc = new TriggerHandler.LoopCount();
 		System.assertEquals(5, lc.getMax(), 'max should be five on init');
 		System.assertEquals(0, lc.getCount(), 'count should be zero on init');
@@ -355,14 +355,13 @@ private class TriggerHandlerTest {
 			super('TestHandler');
 		}
 
+		@SuppressWarnings('PMD.EmptyStatementBlock')
 		/**
 		 * @description       Override the trigger handler constructor that takes the handler name as a parameter
 		 *
 		 * @param handlerName The handler name to instantiate
 		 */
-		@SuppressWarnings('PMD.EmptyStatementBlock')
 		public TestHandler(String handlerName) {
-			//super(handlerName);
 		}
 
 		public override void beforeInsert() {
