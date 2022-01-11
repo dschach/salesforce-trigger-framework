@@ -4,6 +4,7 @@
  * @author David Schach
  * @since 2013
  * @group TriggerHandler
+ * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
  */
 @isTest
 private class TriggerHandlerTest {

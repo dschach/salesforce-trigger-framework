@@ -42,17 +42,17 @@ In your trigger handler, to add logic to any of the trigger contexts, you only n
 public class OpportunityTriggerHandler extends TriggerHandler {
 
   public OpportunityTriggerHandler(){
-      // Optional Constructor overload - better performance
+      /* Optional Constructor overload - better performance */
       super('OpportunityTriggerHandler');
   }
 
   public override void beforeUpdate() {
 	for(Opportunity o : (List<Opportunity>) Trigger.new) {
-	  // do something
+	  /* do something */
 	}
   }
 
-  // add overrides for other contexts
+  /* add overrides for other contexts */
 
 }
 ```
@@ -61,15 +61,15 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 
 ```java
 public class OpportunityTriggerHandler extends TriggerHandler {
-  private Map<Id, Opportunity> newOppMap;
+  private Map<Id, Opportunity> newRecordsMap;
 
   public OpportunityTriggerHandler(){
-	super('OpportunityTriggerHandler');
-	this.newOppMap = (Map<Id, Opportunity>) Trigger.newMap;
+	  super('OpportunityTriggerHandler');
+	  this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
   }
 
   public override void afterUpdate() {
-	// do something
+	  /* do something */
   }
 
 }
@@ -116,7 +116,7 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 
 	/* Optional Constructor - better performance */
   public OpportunityTriggerHandler(){
-	super('OpportunityTriggerHandler');
+	  super('OpportunityTriggerHandler');
   }
 
   public override void afterUpdate() {
@@ -143,18 +143,18 @@ If you need to check if a handler is bypassed, use the `isBypassed` method:
 
 ```java
 if (TriggerHandler.isBypassed('AccountTriggerHandler')) {
-  // ... do something if the Account trigger handler is bypassed!
+  /* ... do something if the Account trigger handler is bypassed! */
 }
 ```
 
 If you want to clear all bypasses for the transaction, simple use the `clearAllBypasses` method, as in:
 
 ```java
-// ... done with bypasses!
+/* ... done with bypasses! */
 
 TriggerHandler.clearAllBypasses();
 
-// ... now handlers won't be ignored!
+/* ... now handlers won't be ignored! */
 ```
 
 ## Overridable Methods

@@ -17,13 +17,14 @@
 	certain aspects of execution and control flow.
 </p>
 <p class="has-line-data" data-line-start="18" data-line-end="19">But the most important part of this framework is that it’s minimal and simple to use.</p>
-<p>See the sample handler documentation at <a href="example.html">TriggerHandler</a>.</p>
+<p>See the sample handler documentation at <a href="triggerhandlerhome.html">TriggerHandler</a>.</p>
 
 <h2 class="code-line" data-line-start="26" data-line-end="27"><a id="Usage_26"></a>Usage</h2>
 <p class="has-line-data" data-line-start="28" data-line-end="29">
-	To create a trigger handler, you simply need to create a class that inherits from <strong>TriggerHandler.cls</strong>. Here is an example for creating an Opportunity trigger
-	handler.
+	To create a trigger handler, you simply need to create a class that inherits from <strong><a href="./TriggerHandler.html">TriggerHandler</a></strong
+	>. Here is an example for creating an Opportunity trigger handler.
 </p>
+<!--
 <pre><code class="has-line-data" data-line-start="31" data-line-end="33" class="language-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OpportunityTriggerHandler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">TriggerHandler</span> </span>{
 </code></pre>
 
@@ -47,23 +48,33 @@
   <span class="hljs-comment">/* add overrides for other contexts */</span><br />
 }<br />
 </code></pre>
-
+-->
 <p class="has-line-data" data-line-start="55" data-line-end="56">
 	<strong>Note:</strong> When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This means that
 	you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for oldMap and newMap, but
 	for completeness, I encourage casting Trigger.new and Trigger.old as well.
 </p>
 <pre><code class="has-line-data" data-line-start="58" data-line-end="72" class="language-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">OpportunityTriggerHandler</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">TriggerHandler</span> </span>{<br />
-  <span class="hljs-keyword">private</span> Map&lt;Id, Opportunity&gt; newOppMap;<br />
+  <span class="hljs-keyword">private</span> List&lt;Opportunity&gt; newRecords;<br />
+  <span class="hljs-keyword">private</span> Map&lt;Id, Opportunity&gt; newRecordsMap;<br />
   <br />
   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">OpportunityTriggerHandler</span><span class="hljs-params">()</span></span>{<br />
+    <span class="hljs-comment">/* Optional Constructor overload - better performance */</span><br />
     <span class="hljs-keyword">super</span>(<span class="hljs-string">'OpportunityTriggerHandler'</span>);<br />
-    <span class="hljs-keyword">this</span>.newOppMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br />
+    <span class="hljs-keyword">this</span>.newRecords = (List&lt;Opportunity&gt;) Trigger.new;<br />
+    <span class="hljs-keyword">this</span>.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br />
+  }<br />
+  <br />
+  <span class="hljs-function"><span class="hljs-keyword">public</span> override <span class="hljs-keyword">void</span> <span class="hljs-title">beforeUpdate</span><span class="hljs-params">()</span> </span>{<br />
+    <span class="hljs-keyword">for</span>(Opportunity o : newRecords) {<br />
+      <span class="hljs-comment">/* do something */</span><br />
+    }<br />
   }<br />
   <br />
   <span class="hljs-function"><span class="hljs-keyword">public</span> override <span class="hljs-keyword">void</span> <span class="hljs-title">afterUpdate</span><span class="hljs-params">()</span> </span>{<br />
     <span class="hljs-comment">/* do something */</span><br />
   }<br />
+  <span class="hljs-comment">/* add overrides for other contexts */</span><br />
 }<br />
 </code></pre>
 <p class="has-line-data" data-line-start="73" data-line-end="74">

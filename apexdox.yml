@@ -2,8 +2,8 @@ engine:
   source:
     - path: "${workspaceFolder}/force-app/main/default/classes"
       sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes
-  # - path: "${workspaceFolder}/sample/main/default/classes"
-  #  sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample/main/default/classes
+    - path: "${workspaceFolder}/sample-handler/main/default/classes"
+      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes
   #    - path: "${workspaceFolder}/sample/main/default/triggers"
   #      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample/main/default/triggers
   #    - path: "${workspaceFolder}/force-app/main/default/tests"
