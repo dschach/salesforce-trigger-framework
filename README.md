@@ -14,6 +14,8 @@ Based on Kevin O'Hara's famous framework [sfdc-trigger-framework](https://github
 
 ## Overview
 
+(from Kevin O'Hara)
+
 Triggers should (IMO) be logicless. Putting logic into your triggers creates un-testable, difficult-to-maintain code. It's widely accepted that a best-practice is to move trigger logic into a handler class.
 
 This trigger framework bundles a single **TriggerHandler** base class that you can inherit from in all of your trigger handlers. The base class includes context-specific methods that are automatically called when a trigger is executed.
@@ -36,41 +38,32 @@ To create a trigger handler, you simply need to create a class that inherits fro
 public class OpportunityTriggerHandler extends TriggerHandler {
 ```
 
-In your trigger handler, to add logic to any of the trigger contexts, you only need to override them in your trigger handler. Here is how we would add logic to a `beforeUpdate` trigger.
-
-```java
-public class OpportunityTriggerHandler extends TriggerHandler {
-
-  public OpportunityTriggerHandler(){
-      /* Optional Constructor overload - better performance */
-      super('OpportunityTriggerHandler');
-  }
-
-  public override void beforeUpdate() {
-	for(Opportunity o : (List<Opportunity>) Trigger.new) {
-	  /* do something */
-	}
-  }
-
-  /* add overrides for other contexts */
-
-}
-```
+In your trigger handler, to add logic to any of the trigger contexts, you only need to override them in your trigger handler. Here is how we would add logic to a `beforeUpdate, afterUpdate` trigger.
 
 **Note:** When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This means that you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for oldMap and newMap, but for completeness, I encourage casting Trigger.new and Trigger.old as well.
 
 ```java
 public class OpportunityTriggerHandler extends TriggerHandler {
+  private List<Opportunity> newRecords;
   private Map<Id, Opportunity> newRecordsMap;
 
   public OpportunityTriggerHandler(){
-	  super('OpportunityTriggerHandler');
-	  this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
+    super('OpportunityTriggerHandler');
+    this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
+    this.newRecords = Trigger.new;
+  }
+
+  public override void beforeUpdate() {
+    for(Opportunity o : newRecords) {
+      /* do something */
+    }
   }
 
   public override void afterUpdate() {
 	  /* do something */
   }
+
+  /* add overrides for other contexts */
 
 }
 ```
@@ -85,42 +78,22 @@ trigger OpportunityTrigger on Opportunity (before insert, after update) {
 
 ## Cool Stuff
 
-### Max Loop Count
-
-To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, and exception will be thrown. A great use case is when you want to ensure that your trigger runs once and only once within a single execution. Example:
-
-```java
-public class OpportunityTriggerHandler extends TriggerHandler {
-
-
-  public OpportunityTriggerHandler(){
-  	// Optional Constructor overload - better performance
-	super('OpportunityTriggerHandler');
-	this.setMaxLoopCount(1);
-  }
-
-  public override void afterUpdate() {
-	List<Opportunity> opps = [SELECT Id FROM Opportunity WHERE Id IN :Trigger.newMap.keySet()];
-	update opps;
-  }
-
-}
-```
-
 ### Bypass API
 
 What if you want to tell other trigger handlers to halt execution? That's easy with the bypass api:
 
 ```java
 public class OpportunityTriggerHandler extends TriggerHandler {
+  private Map<Id, Opportunity> newRecordsMap;
 
-	/* Optional Constructor - better performance */
+  /* Optional Constructor - better performance */
   public OpportunityTriggerHandler(){
-	  super('OpportunityTriggerHandler');
+    super('OpportunityTriggerHandler');
+    this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
   }
 
   public override void afterUpdate() {
-	List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :Trigger.newMap.keySet()];
+	List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];
 
 	Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId];
 
@@ -147,7 +120,24 @@ if (TriggerHandler.isBypassed('AccountTriggerHandler')) {
 }
 ```
 
-If you want to clear all bypasses for the transaction, simple use the `clearAllBypasses` method, as in:
+To bypass all handlers, set the global bypass variable:
+
+```java
+TriggerHandler.setGlobalBypass();
+```
+
+This will also add an entry 'bypassAll' to the list of handlers returned in `bypassList`.
+
+If you are not sure in a transaction if a handler is bypassed, but want to bypass it (or clear the bypass) and then set it to its original value, use the `setBybass` method:
+
+```java
+Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');
+TriggerHandler.bypass('AccountTriggerHandler');
+/* do something here */
+TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
+```
+
+If you want to clear all bypasses for the transaction, simply use the `clearAllBypasses` method, as in:
 
 ```java
 /* ... done with bypasses! */
@@ -156,6 +146,44 @@ TriggerHandler.clearAllBypasses();
 
 /* ... now handlers won't be ignored! */
 ```
+
+This will clear the list of bypassed handlers and set the `globalBypass` Boolean to false.
+
+To store all currently bypassed handlers, temporarily bypass all handlers, and then restore the originally bypassed list:
+
+```java
+List<String> bypassedHandlers = TriggerHandler.bypassList();
+TriggerHandler.bypassAll();
+TriggerHandler.clearAllBypasses(); /* or TriggerHandler.clearGlobalBypass() */
+TriggerHandler.bypass(bypassedHandlers);
+```
+
+### Max Loop Count
+
+To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, and exception will be thrown. A great use case is when you want to ensure that your trigger runs once and only once within a single execution. Example:
+
+```java
+public class OpportunityTriggerHandler extends TriggerHandler {
+  private Map<Id, Opportunity> newRecordsMap;
+
+  public OpportunityTriggerHandler(){
+    /* Optional Constructor overload - better performance */
+	  super('OpportunityTriggerHandler');
+	  this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
+    this.setMaxLoopCount(1);
+  }
+
+  public override void afterUpdate() {
+    List<Opportunity> opps = [SELECT Id FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];
+    update opps;
+  }
+}
+```
+
+### Debug Statements
+
+There are two methods that will show additional information.
+`showLimits()` will show Apex query and DML limits when the trigger handler has completed
 
 ## Overridable Methods
 
