@@ -32,6 +32,17 @@ But the most important part of this framework is that it's minimal and simple to
 
 ## Usage
 
+### Trigger
+
+This is the way to write a trigger that will run the trigger handlers below. Note that some objects do not work in every context, so ensure that you list only applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead to deployment problems.
+
+```java
+trigger AccountSampleTrigger on Account(before insert, after insert, before update, after update, before delete, after delete, after undelete) {
+  new AccountSampleTriggerHandler().run();
+}
+```
+### Trigger Handler
+
 To create a trigger handler, you simply need to create a class that inherits from **TriggerHandler.cls**. Here is an example for creating an Opportunity trigger handler.
 
 ```java
@@ -60,7 +71,7 @@ public class OpportunityTriggerHandler extends TriggerHandler {
   }
 
   public override void afterUpdate() {
-	  /* do something */
+      /* do something */
   }
 
   /* add overrides for other contexts */
@@ -93,24 +104,25 @@ public class OpportunityTriggerHandler extends TriggerHandler {
   }
 
   public override void afterUpdate() {
-	List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];
+    List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];
 
-	Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId];
+    Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId];
 
-	TriggerHandler.bypass('AccountTriggerHandler');
+    TriggerHandler.bypass('AccountTriggerHandler');
 
-	acc.Name = 'No Trigger';
-	update acc; // won't invoke the AccountTriggerHandler
+    acc.Name = 'No Trigger';
+    update acc; // won't invoke the AccountTriggerHandler
 
-	TriggerHandler.clearBypass('AccountTriggerHandler');
+    TriggerHandler.clearBypass('AccountTriggerHandler');
 
-	acc.Name = 'With Trigger';
-	update acc; // will invoke the AccountTriggerHandler
+    acc.Name = 'With Trigger';
+    update acc; // will invoke the AccountTriggerHandler
 
   }
 
 }
 ```
+### Check Bypass Status
 
 If you need to check if a handler is bypassed, use the `isBypassed` method:
 
@@ -119,6 +131,7 @@ if (TriggerHandler.isBypassed('AccountTriggerHandler')) {
   /* ... do something if the Account trigger handler is bypassed! */
 }
 ```
+### Global Bypass
 
 To bypass all handlers, set the global bypass variable:
 
@@ -128,16 +141,7 @@ TriggerHandler.setGlobalBypass();
 
 This will also add an entry 'bypassAll' to the list of handlers returned in `bypassList`.
 
-If you are not sure in a transaction if a handler is bypassed, but want to bypass it (or clear the bypass) and then set it to its original value, use the `setBybass` method:
-
-```java
-Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');
-TriggerHandler.bypass('AccountTriggerHandler');
-/* do something here */
-TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
-```
-
-If you want to clear all bypasses for the transaction, simply use the `clearAllBypasses` method, as in:
+To clear all bypasses for the transaction, simply use the `clearAllBypasses` method, as in:
 
 ```java
 /* ... done with bypasses! */
@@ -149,12 +153,28 @@ TriggerHandler.clearAllBypasses();
 
 This will clear the list of bypassed handlers and set the `globalBypass` Boolean to false.
 
+### Set Bypass
+
+If you are not sure in a transaction if a handler is bypassed, but want to bypass it (or clear the bypass) and then set it to its original value, use the `setBybass` method:
+
+```java
+Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');
+TriggerHandler.bypass('AccountTriggerHandler');
+
+/* do something here */
+
+TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
+```
+
 To store all currently bypassed handlers, temporarily bypass all handlers, and then restore the originally bypassed list:
 
 ```java
 List<String> bypassedHandlers = TriggerHandler.bypassList();
 TriggerHandler.bypassAll();
-TriggerHandler.clearAllBypasses(); /* or TriggerHandler.clearGlobalBypass() */
+
+/* do something here */
+
+TriggerHandler.clearAllBypasses(); // or TriggerHandler.clearGlobalBypass()
 TriggerHandler.bypass(bypassedHandlers);
 ```
 
@@ -168,8 +188,8 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 
   public OpportunityTriggerHandler(){
     /* Optional Constructor overload - better performance */
-	  super('OpportunityTriggerHandler');
-	  this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
+    super('OpportunityTriggerHandler');
+    this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
     this.setMaxLoopCount(1);
   }
 
@@ -183,7 +203,15 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 ### Debug Statements
 
 There are two methods that will show additional information.
+
 `showLimits()` will show Apex query and DML limits when the trigger handler has completed
+
+`showDebug()` will show trigger entry and exit, but only during Apex testing. This is to ensure org performance.
+
+To use one or both of these, amend them to the trigger:
+```java
+new AccountSampleTriggerHandler().showLimits().showDebug().run();
+```
 
 ## Overridable Methods
 
