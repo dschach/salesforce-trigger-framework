@@ -5,7 +5,6 @@
  * @author David Schach
  * @since 2013
  * @group TriggerHandler
- * @group-content doc-assets/triggerhandlerhome.html
  * @see [License](https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE)
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
  */
@@ -36,6 +35,12 @@ public virtual class TriggerHandler {
 
 	@TestVisible
 	/**
+	 * `true` if we include a debug statement for trigger entry and exit
+	 */
+	private static Boolean showDebug;
+
+	@TestVisible
+	/**
 	 * the current triggerEvent of the trigger, overridable in tests
 	 * */
 	private System.TriggerOperation triggerEvent;
@@ -53,6 +58,7 @@ public virtual class TriggerHandler {
 		bypassedHandlers = new Set<String>();
 		globalBypass = false;
 		showLimits = false;
+		showDebug = false;
 	}
 
 	/**
@@ -77,8 +83,7 @@ public virtual class TriggerHandler {
 	/**
 	 * @description main method that will be called during execution
 	 * <br> See the sample trigger for the best way to set up your handler
-	 * @author Kevin O'Hara
-	 * @author David Schach
+	 * @author Kevin O'Hara, David Schach
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
 	 */
@@ -88,6 +93,10 @@ public virtual class TriggerHandler {
 		}
 
 		addToLoopCount();
+
+		if (showDebug) {
+			System.debug(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent + '' })); // NOPMD
+		}
 
 		// dispatch to the correct handler method
 		switch on this.triggerEvent {
@@ -129,6 +138,9 @@ public virtual class TriggerHandler {
 					}
 				)
 			); // NOPMD
+		}
+		if (showDebug) {
+			System.debug(LoggingLevel.DEBUG, String.format('Exiting {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent + '' })); // NOPMD
 		}
 	}
 
@@ -312,6 +324,32 @@ public virtual class TriggerHandler {
 	 */
 	public static void showLimits(Boolean enabled) {
 		showLimits = enabled;
+	}
+
+	// handle debugs
+	/**
+	 * @description Called in the trigger to force the class to debug trigger entry and exit with context.
+	 * <br>This is only shown in Test context, to speed org performance
+	 * @example
+	 * new AccountSampleTriggerHandler.showDebug().showLimits().run();
+	 */
+	public static void showDebug() {
+		showDebug(true);
+	}
+
+	/**
+	 * @description   Called in the trigger to force the class to debug trigger entry and exit with context.
+	 * <br>Set to true to show entry and exit.
+	 * <br>This is only shown in Test context, to speed org performance
+	 *
+	 * @param enabled true to enable; false to disable
+	 * @see TriggerHandler.showDebug[0]
+	 */
+	public static void showDebug(Boolean enabled) {
+		if (Test.isRunningTest()) {
+			showDebug = enabled;
+		} else
+			showDebug = false;
 	}
 
 	/**
