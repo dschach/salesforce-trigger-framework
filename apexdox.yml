@@ -4,8 +4,6 @@ engine:
       sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes
     - path: "${workspaceFolder}/sample-handler/main/default/classes"
       sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes
-  #    - path: "${workspaceFolder}/sample/main/default/triggers"
-  #      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample/main/default/triggers
   #    - path: "${workspaceFolder}/force-app/main/default/tests"
   #      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/tests
   targetDirectory: "${workspaceFolder}/docs"
@@ -23,13 +21,15 @@ engine:
     - private
     - webService
     - testMethod
-  homePagePath: "${workspaceFolder}/doc-assets/bypassAPI.html"
+  homePagePath: "${workspaceFolder}/doc-assets/homePage.html"
   #pages:
   #  - "${workspaceFolder}/documentation/Funny.html"
   assets:
     - "${workspaceFolder}/doc-assets/logo.png"
     - "${workspaceFolder}/doc-assets/favicon.png"
     - "${workspaceFolder}/doc-assets/icon.png"
+    - "${workspaceFolder}/doc-assets/styling.css"
+    - "${workspaceFolder}/doc-assets/highlight.css"
   #  - "${workspaceFolder}/documentation/meme.jpg"
   port: 9090
 docblock:

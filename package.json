@@ -16,6 +16,8 @@
 		"test:unit:coverage": "sfdx-lwc-jest --coverage",
 		"prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
 		"prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+		"initialize": ". scripts/initialize.sh",
+		"orginit": ". scripts/orginit.sh",
 		"postinstall": "husky install",
 		"precommit": "lint-staged"
 	},

@@ -32,18 +32,9 @@ But the most important part of this framework is that it's minimal and simple to
 
 ## Usage
 
-### Trigger
-
-This is the way to write a trigger that will run the trigger handlers below. Note that some objects do not work in every context, so ensure that you list only applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead to deployment problems.
-
-```java
-trigger AccountSampleTrigger on Account(before insert, after insert, before update, after update, before delete, after delete, after undelete) {
-  new AccountSampleTriggerHandler().run();
-}
-```
 ### Trigger Handler
 
-To create a trigger handler, you simply need to create a class that inherits from **TriggerHandler.cls**. Here is an example for creating an Opportunity trigger handler.
+To create a trigger handler, you simply need to create a class that inherits from [TriggerHandler.cls](https://github.com/dschach/salesforce-trigger-framework/blob/main/force-app/main/default/classes/TriggerHandler.cls). Here is an example for creating an Opportunity trigger handler.
 
 ```java
 public class OpportunityTriggerHandler extends TriggerHandler {
@@ -51,17 +42,23 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 
 In your trigger handler, to add logic to any of the trigger contexts, you only need to override them in your trigger handler. Here is how we would add logic to a `beforeUpdate, afterUpdate` trigger.
 
+A sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes) class has been included in this repository, as well as a sample [trigger](https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger).
+
 **Note:** When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This means that you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for oldMap and newMap, but for completeness, I encourage casting Trigger.new and Trigger.old as well.
 
 ```java
 public class OpportunityTriggerHandler extends TriggerHandler {
   private List<Opportunity> newRecords;
+  private List<Opportunity> oldRecords;
   private Map<Id, Opportunity> newRecordsMap;
+  private Map<Id, Opportunity> oldRecordsMap;
 
   public OpportunityTriggerHandler(){
     super('OpportunityTriggerHandler');
-    this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
     this.newRecords = Trigger.new;
+    this.oldRecords = Trigger.old;
+    this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
+    this.oldRecordsMap = (Map<Id, Opportunity>) Trigger.oldMap;
   }
 
   public override void beforeUpdate() {
@@ -78,11 +75,14 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 
 }
 ```
+### Trigger
 
-To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger handler itself and call the `run()` method. Here is an example of the Opportunity trigger.
+To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger handler itself and call the `run()` method. Here is an example of an Opportunity trigger.
+
+This is the way to write a trigger that will run the trigger handlers below. Note that some objects do not work in every context, so ensure that you list only applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead to deployment problems.
 
 ```java
-trigger OpportunityTrigger on Opportunity (before insert, after update) {
+trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler().run();
 }
 ```
@@ -111,12 +111,12 @@ public class OpportunityTriggerHandler extends TriggerHandler {
     TriggerHandler.bypass('AccountTriggerHandler');
 
     acc.Name = 'No Trigger';
-    update acc; // won't invoke the AccountTriggerHandler
+    update acc; /* won't invoke the AccountTriggerHandler */
 
     TriggerHandler.clearBypass('AccountTriggerHandler');
 
     acc.Name = 'With Trigger';
-    update acc; // will invoke the AccountTriggerHandler
+    update acc; /* will invoke the AccountTriggerHandler */
 
   }
 
@@ -174,7 +174,7 @@ TriggerHandler.bypassAll();
 
 /* do something here */
 
-TriggerHandler.clearAllBypasses(); // or TriggerHandler.clearGlobalBypass()
+TriggerHandler.clearAllBypasses(); /* or TriggerHandler.clearGlobalBypass() */
 TriggerHandler.bypass(bypassedHandlers);
 ```
 

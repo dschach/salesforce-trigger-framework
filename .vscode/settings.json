@@ -10,5 +10,7 @@
   "apexPMD.rulesets": [
     "pmd/apexQuickStart.xml"
   ],
-  "force.showApexJavadocTrailingCloseComment": false
+  "force.showApexJavadocTrailingCloseComment": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": false
 }

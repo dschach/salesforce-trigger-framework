@@ -11,3 +11,6 @@ coverage/
 
 # ApexDox website
 docs/
+
+# markdown
+*.md

@@ -5,6 +5,7 @@
 #
 
 package.xml
+*.md
 
 # LWC configuration files
 **/jsconfig.json
