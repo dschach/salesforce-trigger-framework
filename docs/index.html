@@ -97,6 +97,7 @@
       <tr>
         <td class="doc-page">
           <h2 class='section-title'>Home</h2>
+          <link href="assets/styling.css" rel="stylesheet" />
           <h1 class="code-line" data-line-start="0" data-line-end="1"><a id="Salesforce_Trigger_Framework_0"></a>Salesforce Trigger Framework</h1>
           <h2 class="code-line" data-line-start="2" data-line-end="3"><a id="Credit_2"></a>Credit</h2>
           <p class="has-line-data" data-line-start="4" data-line-end="5"> Based on Kevin O’Hara’s famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a></p>
@@ -110,7 +111,7 @@
           <p class="has-line-data" data-line-start="28" data-line-end="29"> To create a trigger handler, you simply need to create a class that inherits from <strong><a href="./TriggerHandler.html">TriggerHandler</a></strong>. Here is an example for creating an Opportunity trigger handler.</p><pre><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/></code></pre>
           <p> In your trigger handler, to add logic to any of the trigger contexts, you only need to override them in your trigger handler. Here is how we would add logic to a <code>beforeUpdate, afterUpdate</code> trigger.</p>
           <p> A sample <a href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes">AccountSampleTriggerHandler</a> class has been included in this repository, as well as a sample <a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger">trigger</a>.</p>
-          <p> <strong>Note:</strong> When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This means that you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for oldMap and newMap, but for completeness, I encourage casting Trigger.new and Trigger.old as well.</p><pre ><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/>  private List&lt;Opportunity&gt; newRecords;<br/>  private List&lt;Opportunity&gt; oldRecords;<br/>  private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>  private Map&lt;Id, Opportunity&gt; oldRecordsMap;<br/><br/>  public OpportunityTriggerHandler(){<br/>    super('OpportunityTriggerHandler');<br/>    this.newRecords = Trigger.new;<br/>    this.oldRecords = Trigger.old;<br/>    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br/>    this.oldRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.oldMap;<br/>  }<br/><br/>  public override void beforeUpdate() {<br/>    for(Opportunity o : newRecords) {<br/>      /* do something */<br/>    }<br/>  }<br/><br/>  public override void afterUpdate() {<br/>      /* do something */<br/>  }<br/><br/>  /* add overrides for other contexts */<br/><br/>}<br/></code></pre>
+          <p> <strong>Note:</strong> When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This means that you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for oldMap and newMap, but for completeness, I encourage casting Trigger.new and Trigger.old as well.</p><pre><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/>  private List&lt;Opportunity&gt; newRecords;<br/>  private List&lt;Opportunity&gt; oldRecords;<br/>  private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>  private Map&lt;Id, Opportunity&gt; oldRecordsMap;<br/><br/>  public OpportunityTriggerHandler(){<br/>    super('OpportunityTriggerHandler');<br/>    this.newRecords = Trigger.new;<br/>    this.oldRecords = Trigger.old;<br/>    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br/>    this.oldRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.oldMap;<br/>  }<br/><br/>  public override void beforeUpdate() {<br/>    for(Opportunity o : newRecords) {<br/>      /* do something */<br/>    }<br/>  }<br/><br/>  public override void afterUpdate() {<br/>      /* do something */<br/>  }<br/><br/>  /* add overrides for other contexts */<br/><br/>}<br/></code></pre>
           <h3 id="trigger">Trigger</h3>
           <p> To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger handler itself and call the <code>run()</code> method. Here is an example of an Opportunity trigger.</p>
           <p> This is the way to write a trigger that will run the trigger handlers below. Note that some objects do not work in every context, so ensure that you list only applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead to deployment problems.</p><pre><code>trigger OpportunityTrigger on Opportunity (before update, after update) {<br/>  new OpportunityTriggerHandler().run();<br/>}<br/></code></pre>
@@ -145,6 +146,15 @@
             <li><code>afterDelete()</code></li>
             <li><code>afterUndelete()</code></li> <br />
           </ul>
+          <style>
+            code {
+              background-color: #f6f8fa;
+            }
+
+            pre {
+              background-color: #f6f8fa;
+            }
+          </style>
         </td>
       </tr>
       <tr>

@@ -348,8 +348,9 @@ public virtual class TriggerHandler {
 	public static void showDebug(Boolean enabled) {
 		if (Test.isRunningTest()) {
 			showDebug = enabled;
-		} else
+		} else {
 			showDebug = false;
+		}
 	}
 
 	/**
