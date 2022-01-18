@@ -214,7 +214,7 @@ public virtual class TriggerHandler {
 	 * @param handlersNames
 	 * @example
 	 * List<String> classList = ['AccountTriggerHandler','ContactTriggerHandler'];
-	 * TriggerHandler.clearBypass(classList;
+	 * TriggerHandler.clearBypass(classList);
 	 */
 	public static void clearBypass(List<String> handlersNames) {
 		for (String s : handlersNames) {
