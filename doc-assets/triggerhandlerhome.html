@@ -1,115 +1,224 @@
-<h1>General Theme</h1>
-<p><span>Each object has a single trigger</span></p>
-<p><span>Each trigger has a single handler</span></p>
-<h1>Bypass Documentation</h1>
-<p>
-	<a
-		class=""
-		href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md"
-		data-mce-href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md"
-		>https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md</a
-	>
-</p>
-<hr />
+<body>
+	<link href="assets/styling.css" rel="stylesheet" />
+	<h1 id="salesforcetriggerframework">Salesforce Trigger Framework</h1>
+	<h2 id="credit">Credit</h2>
+	<p>Based on Kevin O'Hara's famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a></p>
 
-<h1><span>Sample Trigger</span></h1>
+	<h2 id="overview">Overview</h2>
+	<p>(from Kevin O'Hara)</p>
 
-<code>
-	trigger AccountSampleTrigger on Account (before insert, after insert, before update, after update, before delete, after delete, after undelete) {<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;new AccountSampleTriggerHandler().run();<br />
-	}<br />
-</code>
+	<p>
+		Triggers should (IMO) be logicless. Putting logic into your triggers creates un-testable, difficult-to-maintain code. It's widely accepted that a best-practice is to move
+		trigger logic into a handler class.
+	</p>
 
-<h1>Sample Handler</h1>
-<code>
-	/**<br />
-	&nbsp;*&nbsp;@description&nbsp;A&nbsp;sample&nbsp;Account&nbsp;trigger&nbsp;handler,&nbsp;with&nbsp;some&nbsp;comments<br />
-	&nbsp;*<br />
-	&nbsp;*&nbsp;@author&nbsp;David&nbsp;Schach<br />
-	&nbsp;*&nbsp;@since&nbsp;2021<br />
-	&nbsp;*&nbsp;@see&nbsp;AccountSampleTriggerHandlerTest<br />
-	&nbsp;*/<br />
-	public&nbsp;without&nbsp;sharing&nbsp;class&nbsp;AccountSampleTriggerHandler&nbsp;extends&nbsp;TriggerHandler&nbsp;{<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;List&lt;Account&gt;&nbsp;newRecords;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;List&lt;Account&gt;&nbsp;oldRecords;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;Map&lt;Id,&nbsp;Account&gt;&nbsp;newRecordsMap;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;Map&lt;Id,&nbsp;Account&gt;&nbsp;oldRecordsMap;<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;AccountSampleTriggerHandler()&nbsp;{<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;super('AccountSampleTriggerHandler');<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.newRecords&nbsp;=&nbsp;(List&lt;Account&gt;)Trigger.new;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.oldRecords&nbsp;=&nbsp;(List&lt;Account&gt;)Trigger.old;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.newRecordsMap&nbsp;=&nbsp;(Map&lt;Id,&nbsp;Account&gt;)Trigger.newMap;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.oldRecordsMap&nbsp;=&nbsp;(Map&lt;Id,&nbsp;Account&gt;)Trigger.oldMap;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;void&nbsp;beforeInsert(){<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method1();<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method2();<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TriggerHandler.clearAllBypass();<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;void&nbsp;beforeUpdate(){<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;method2();<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;//public&nbsp;override&nbsp;void&nbsp;beforeDelete(){}<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;void&nbsp;afterInsert(){<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TriggerHandler.bypass('ContactTriggerHandler');<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;updateContacts();<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TriggerHandler.clearBypass('ContactTriggerHandler');<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;public&nbsp;override&nbsp;void&nbsp;afterUpdate(){<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TriggerHandler.bypass('CaseSampleTriggerHandler');<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;do&nbsp;something<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TriggerHandler.clearAllBypasses();<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;//public&nbsp;override&nbsp;void&nbsp;afterDelete(){}<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;//public&nbsp;override&nbsp;void&nbsp;afterUndelete(){}<br />
-	<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;//**************************************************<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;//&nbsp;All&nbsp;&quot;handler&quot;&nbsp;methods&nbsp;are&nbsp;here&nbsp;for&nbsp;easier&nbsp;reading&nbsp;and&nbsp;reuse&nbsp;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;//**************************************************<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;void&nbsp;method1(){<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(Account&nbsp;a&nbsp;:&nbsp;newRecords){<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.Name&nbsp;=&nbsp;a.Name.toUpperCase();<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;void&nbsp;method2(){<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;for(Account&nbsp;a&nbsp;:&nbsp;newRecords){<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a.Name&nbsp;=&nbsp;a.Name.toLowerCase();<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;/**<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;Try&nbsp;to&nbsp;keep&nbsp;all&nbsp;updates&nbsp;on&nbsp;other&nbsp;objects&nbsp;in&nbsp;a&nbsp;single&nbsp;DML&nbsp;statement<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@author&nbsp;Author&nbsp;Name<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;*/<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;private&nbsp;void&nbsp;updateContacts(){<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;List&lt;Contact&gt;&nbsp;acctContacts&nbsp;=&nbsp;[SELECT&nbsp;Id&nbsp;FROM&nbsp;Contact&nbsp;WHERE&nbsp;AccountId&nbsp;IN&nbsp;:newRecordsMap.keyset()];<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update&nbsp;acctContacts;<br />
-	&nbsp;&nbsp;&nbsp;&nbsp;}<br />
-	}
-</code>
-<br /><br />
-<hr />
-<h1><span>Credits</span></h1>
-<p>
-	<span
-		>This trigger framework is from
-		<a href="https://github.com/dschach/sfdc-trigger-framework" data-mce-href="https://github.com/dschach/sfdc-trigger-framework"
-			>https://github.com/dschach/sfdc-trigger-framework</a
-		>
-		which is based on Kevin O'Hara's framework
-		<a href="https://github.com/kevinohara80/sfdc-trigger-framework" data-mce-href="https://github.com/kevinohara80/sfdc-trigger-framework"
-			>https://github.com/kevinohara80/sfdc-trigger-framework</a
-		>
-	</span>
-</p>
+	<p>
+		This trigger framework bundles a single <strong>TriggerHandler</strong> base class that you can inherit from in all of your trigger handlers. The base class includes
+		context-specific methods that are automatically called when a trigger is executed.
+	</p>
+
+	<p>
+		The base class also provides a secondary role as a supervisor for Trigger execution. It acts like a watchdog, monitoring trigger activity and providing an api for controlling
+		certain aspects of execution and control flow.
+	</p>
+
+	<p>But the most important part of this framework is that it's minimal and simple to use.</p>
+
+	<h2 id="usage">Usage</h2>
+	<h3 id="triggerhandler">Trigger Handler</h3>
+	<p>
+		To create a trigger handler, you simply need to create a class that inherits from <strong>TriggerHandler.cls</strong>. Here is an example for creating an Opportunity trigger
+		handler.
+	</p>
+
+	<pre><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+</code></pre>
+
+	<p>
+		In your trigger handler, to add logic to any of the trigger contexts, you only need to override them in your trigger handler. Here is how we would add logic to a
+		<code>beforeUpdate, afterUpdate</code> trigger.
+	</p>
+
+	<p>
+		A sample <a href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes">AccountSampleTriggerHandler</a> class has been included
+		in this repository, as well as a sample
+		<a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger">trigger</a>.
+	</p>
+
+	<p>
+		<strong>Note:</strong> When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This means that
+		you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for oldMap and newMap,
+		but for completeness, I encourage casting Trigger.new and Trigger.old as well.
+	</p>
+
+	<pre><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+  private List&lt;Opportunity&gt; newRecords;<br/>
+  private List&lt;Opportunity&gt; oldRecords;<br/>
+  private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>
+  private Map&lt;Id, Opportunity&gt; oldRecordsMap;<br/>
+<br/>
+  public OpportunityTriggerHandler(){<br/>
+    super('OpportunityTriggerHandler');<br/>
+    this.newRecords = Trigger.new;<br/>
+    this.oldRecords = Trigger.old;<br/>
+    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br/>
+    this.oldRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.oldMap;<br/>
+  }<br/>
+<br/>
+  public override void beforeUpdate() {<br/>
+    for(Opportunity o : newRecords) {<br/>
+      /* do something */<br/>
+    }<br/>
+  }<br/>
+<br/>
+  public override void afterUpdate() {<br/>
+      /* do something */<br/>
+  }<br/>
+<br/>
+  /* add overrides for other contexts */<br/>
+<br/>
+}<br/>
+</code></pre>
+	<h3 id="trigger">Trigger</h3>
+	<p>
+		To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger handler itself and call the <code>run()</code> method. Here is an
+		example of the Opportunity trigger.
+	</p>
+
+	<p>
+		This is the way to write a trigger that will run the trigger handlers below. Note that some objects do not work in every context, so ensure that you list only applicable
+		trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead
+		to deployment problems.
+	</p>
+
+	<pre><code>trigger OpportunityTrigger on Opportunity (before update, after update) {<br/>
+  new OpportunityTriggerHandler().run();<br/>
+}<br/>
+</code></pre>
+	<h2 id="coolstuff">Cool Stuff</h2>
+	<h3 id="bypassapi">Bypass API</h3>
+	<p>What if you want to tell other trigger handlers to halt execution? That's easy with the bypass api:</p>
+
+	<pre><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+  private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>
+<br/>
+  /* Optional Constructor - better performance */<br/>
+  public OpportunityTriggerHandler(){<br/>
+    super('OpportunityTriggerHandler');<br/>
+    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br/>
+  }<br/>
+<br/>
+  public override void afterUpdate() {<br/>
+    List&lt;Opportunity&gt; opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];<br/>
+<br/>
+    Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId];<br/>
+<br/>
+    TriggerHandler.bypass('AccountTriggerHandler');<br/>
+<br/>
+    acc.Name = 'No Trigger';<br/>
+    update acc; /* won't invoke the AccountTriggerHandler */<br/>
+<br/>
+    TriggerHandler.clearBypass('AccountTriggerHandler');<br/>
+<br/>
+    acc.Name = 'With Trigger';<br/>
+    update acc; /* will invoke the AccountTriggerHandler */<br/>
+<br/>
+  }<br/>
+<br/>
+}<br/>
+</code></pre>
+	<h3 id="checkbypassstatus">Check Bypass Status</h3>
+	<p>If you need to check if a handler is bypassed, use the <code>isBypassed</code> method:</p>
+
+	<pre><code>if (TriggerHandler.isBypassed('AccountTriggerHandler')) {<br/>
+  /* ... do something if the Account trigger handler is bypassed! */<br/>
+}<br/>
+</code></pre>
+	<h3 id="globalbypass">Global Bypass</h3>
+	<p>To bypass all handlers, set the global bypass variable:</p>
+
+	<pre><code>TriggerHandler.setGlobalBypass();<br/>
+</code></pre>
+	<p>This will also add an entry 'bypassAll' to the list of handlers returned in <code>bypassList</code>.</p>
+
+	<p>To clear all bypasses for the transaction, simply use the <code>clearAllBypasses</code> method, as in:</p>
+
+	<pre><code>/* ... done with bypasses! */<br/>
+<br/>
+TriggerHandler.clearAllBypasses();<br/>
+<br/>
+/* ... now handlers won't be ignored! */<br/>
+</code></pre>
+	<p>This will clear the list of bypassed handlers and set the <code>globalBypass</code> Boolean to false.</p>
+
+	<h3 id="setbypass">Set Bypass</h3>
+	<p>
+		If you are not sure in a transaction if a handler is bypassed, but want to bypass it (or clear the bypass) and then set it to its original value, use the
+		<code>setBybass</code> method:
+	</p>
+
+	<pre><code>Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');<br/>
+TriggerHandler.bypass('AccountTriggerHandler');<br/>
+<br/>
+/* do something here */<br/>
+<br/>
+TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);<br/>
+</code></pre>
+	<p>To store all currently bypassed handlers, temporarily bypass all handlers, and then restore the originally bypassed list:</p>
+
+	<pre><code>List&lt;String&gt; bypassedHandlers = TriggerHandler.bypassList();<br/>
+TriggerHandler.bypassAll();<br/>
+<br/>
+/* do something here */<br/>
+<br/>
+TriggerHandler.clearAllBypasses(); /* or TriggerHandler.clearGlobalBypass() */<br/>
+TriggerHandler.bypass(bypassedHandlers);<br/>
+</code></pre>
+	<h3 id="maxloopcount">Max Loop Count</h3>
+	<p>
+		To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, and exception will be thrown. A great use case is when you want to ensure that
+		your trigger runs once and only once within a single execution. Example:
+	</p>
+
+	<pre><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+  private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>
+<br/>
+  public OpportunityTriggerHandler(){<br/>
+    /* Optional Constructor overload - better performance */<br/>
+    super('OpportunityTriggerHandler');<br/>
+    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br/>
+    this.setMaxLoopCount(1);<br/>
+  }<br/>
+<br/>
+  public override void afterUpdate() {<br/>
+    List&lt;Opportunity&gt; opps = [SELECT Id FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];<br/>
+    update opps;<br/>
+  }<br/>
+}<br/>
+</code></pre>
+	<h3 id="debugstatements">Debug Statements</h3>
+	<p>There are two methods that will show additional information.</p>
+
+	<p><code>showLimits()</code> will show Apex query and DML limits when the trigger handler has completed</p>
+
+	<p><code>showDebug()</code> will show trigger entry and exit, but only during Apex testing. This is to ensure org performance.</p>
+
+	<p>To use one or both of these, amend them to the trigger:</p>
+
+	<pre><code>new AccountSampleTriggerHandler().showLimits().showDebug().run();<br/>
+</code></pre>
+	<h2 id="overridablemethods">Overridable Methods</h2>
+	<p>Here are all of the methods that you can override. All of the context possibilities are supported.</p>
+
+	<ul>
+		<br />
+		<li><code>beforeInsert()</code></li>
+		<li><code>beforeUpdate()</code></li>
+		<li><code>beforeDelete()</code></li>
+		<li><code>afterInsert()</code></li>
+		<li><code>afterUpdate()</code></li>
+		<li><code>afterDelete()</code></li>
+		<li><code>afterUndelete()</code></li>
+		<br />
+	</ul>
+</body>
