@@ -127,7 +127,7 @@ public virtual class TriggerHandler {
 			System.debug(
 				LoggingLevel.DEBUG,
 				String.format(
-					'{0} on {1} ({2}/{3} queries) and ({4}/{5} DML calls',
+					'{0} on {1} ({2}/{3} queries) and ({4}/{5} DML calls)',
 					new List<String>{
 						this.triggerEvent + '',
 						getHandlerName(),
@@ -202,7 +202,9 @@ public virtual class TriggerHandler {
 	 * TriggerHandler.clearBypass('AccountSampleTriggerHandler')
 	 */
 	public static void clearBypass(String handlerName) {
-		TriggerHandler.bypassedHandlers.remove(handlerName);
+		if (TriggerHandler.bypassedHandlers.contains(handlerName)) {
+			TriggerHandler.bypassedHandlers.remove(handlerName);
+		}
 	}
 
 	/**
@@ -214,7 +216,9 @@ public virtual class TriggerHandler {
 	 * TriggerHandler.clearBypass(classList;
 	 */
 	public static void clearBypass(List<String> handlersNames) {
-		TriggerHandler.bypassedHandlers.removeAll(handlersNames);
+		for (String s : handlersNames) {
+			clearBypass(s);
+		}
 	}
 
 	/**

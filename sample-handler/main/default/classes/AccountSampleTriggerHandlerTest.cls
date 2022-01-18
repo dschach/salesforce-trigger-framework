@@ -8,6 +8,7 @@
 private class AccountSampleTriggerHandlerTest {
 	@IsTest
 	static void insertUpdateAccount() {
+		TriggerHandler.showDebug();
 		Account a = new Account(Name = 'TestAcct');
 
 		Test.startTest();
