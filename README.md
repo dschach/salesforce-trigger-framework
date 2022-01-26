@@ -204,7 +204,7 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 
 There are two methods that will show additional information.
 
-`TriggerHandler.showLimits()` will show Apex query and DML limits when the trigger handler has completed
+`TriggerHandler.showLimits()` will show Apex query and DML limits when the trigger handler has completed.
 
 `TriggerHandler.showDebug()` will show trigger entry and exit, but only during Apex testing. This is to ensure org performance.
 
@@ -213,6 +213,8 @@ To use one or both of these, add them to the trigger:
 TriggerHandler.showLimits();
 TriggerHandler.showDebug();
 new AccountSampleTriggerHandler().run();
+TriggerHandler.showLimits(false);
+TriggerHandler.showDebug(false);
 ```
 or just put them in your Apex code before and after DML statements.
 
