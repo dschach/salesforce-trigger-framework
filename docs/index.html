@@ -134,7 +134,7 @@
           <p>There are two methods that will show additional information.</p>
           <p><code>showLimits()</code> will show Apex query and DML limits when the trigger handler has completed</p>
           <p><code>showDebug()</code> will show trigger entry and exit, but only during Apex testing. This is to ensure org performance.</p>
-          <p>To use one or both of these, amend them to the trigger:</p><pre><code>new AccountSampleTriggerHandler().showLimits().showDebug().run();<br/></code></pre>
+          <p>To use one or both of these, amend them to the trigger:</p><pre><code>  TriggerHandler.showLimits();<br/>  TriggerHandler.showDebug();<br/>  new AccountSampleTriggerHandler().run();<br/>  TriggerHandler.showLimits(false);<br/>  TriggerHandler.showDebug(false);<br/></code></pre>
           <h2 id="overridablemethods">Overridable Methods</h2>
           <p>Here are all of the methods that you can override. All of the context possibilities are supported.</p>
           <ul> <br />
