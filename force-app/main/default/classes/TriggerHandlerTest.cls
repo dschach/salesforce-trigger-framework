@@ -191,7 +191,7 @@ private class TriggerHandlerTest {
 	}
 
 	/**
-	 * Test bypass by Type
+	 * @description Test bypass by Type
 	 */
 	@IsTest
 	static void testBypassByType() {
@@ -199,7 +199,6 @@ private class TriggerHandlerTest {
 
 		// test a bypass by string and run handler
 		TriggerHandler.bypass(TestHandler.class);
-		System.debug(TriggerHandler.bypassList());
 		System.assert(TriggerHandler.isBypassed('TriggerHandlerTest.TestHandler'), 'test handler should be bypassed');
 		System.assert(TriggerHandler.isBypassed(Testhandler.class), 'test handler class should be bypassed');
 		handler.run();
