@@ -1,8 +1,8 @@
 @SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.FieldDeclarationsShouldBeAtStart, PMD.EmptyStatementBlock')
 /**
  * @description Trigger Handler virtual class as base for all trigger handlers
- * @author Kevin O'Hara
- * @author David Schach
+ * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
+ * @author {@link [David Schach](https://github.com/dschach)}
  * @since 2013
  * @group TriggerHandler
  * @group-content doc-assets/triggerhandlerhome.html
@@ -64,6 +64,8 @@ public virtual class TriggerHandler {
 
 	/**
 	 * @description Basic constructor
+	 * @example
+	 * new AccountSampleTriggerHandler().run();
 	 */
 	public TriggerHandler() {
 		this.setTriggerContext();
@@ -73,6 +75,11 @@ public virtual class TriggerHandler {
 	 * @description Constructor with handler name to improve performance
 	 * @author David Schach
 	 * @param  handlerName The name of the handler
+	 * @example
+	 * new AccountSampleTriggerHandler('AccountSampleTriggerHandler').run();
+	 * (in Trigger Handler)
+	 * public AccountSampleTriggerHandler(String className) {
+	 * }
 	 */
 	public TriggerHandler(String handlerName) {
 		this.handlerName = handlerName;
@@ -84,7 +91,8 @@ public virtual class TriggerHandler {
 	/**
 	 * @description main method that will be called during execution
 	 * <br> See the sample trigger for the best way to set up your handler
-	 * @author Kevin O'Hara, David Schach
+	 * @author Kevin O'Hara
+	 * @author David Schach
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
 	 */
@@ -169,13 +177,24 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description       bypass by string, e.g. TriggerHandler.bypass('AccountTriggerHandler')
+	 * @description       bypass by string
 	 *
 	 * @param handlerName Name of the handler to be bypassed
 	 * @example TriggerHandler.bypass('AccountSampleTriggerHandler')
 	 */
 	public static void bypass(String handlerName) {
 		TriggerHandler.bypassedHandlers.add(handlerName);
+	}
+
+	/**
+	 * @description       Bypass by type/class. This is probably best for avoiding typos.
+	 *
+	 * @param handlerType The Class to be bypassed. Must end with ".class"
+	 * @author {@link [vr8hub](https://github.com/vr8hub)}
+	 * @example TriggerHandler.bypass(AccountTriggerHandler.class);
+	 */
+	public static void bypass(Type handlerType) {
+		TriggerHandler.bypass(handlerType.getName());
 	}
 
 	/**
@@ -196,9 +215,10 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description bypass a specific handler
+	 * @description bypass a specific handler by name
 	 *
 	 * @param handlerName The class name to be bypassed
+	 * @author {@link [vr8hub](https://github.com/vr8hub)}
 	 * @example
 	 * TriggerHandler.clearBypass('AccountSampleTriggerHandler')
 	 */
@@ -209,21 +229,32 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description         bypass a list of handlers
+	 * @description bypass a specific handler by type
 	 *
-	 * @param handlersNames
+	 * @param handlerType The class to be bypassed. Must end with ".class"
+	 * @example
+	 * TriggerHandler.clearBypass(AccountSampleTriggerHandler.class)
+	 */
+	public static void clearBypass(Type handlerType) {
+		TriggerHandler.clearBypass(handlerType.getName());
+	}
+
+	/**
+	 * @description         Bypass a list of handlers
+	 *
+	 * @param handlerNames List of Strings of handlers to bypass
 	 * @example
 	 * List<String> classList = ['AccountTriggerHandler','ContactTriggerHandler'];
 	 * TriggerHandler.clearBypass(classList);
 	 */
-	public static void clearBypass(List<String> handlersNames) {
-		for (String s : handlersNames) {
+	public static void clearBypass(List<String> handlerNames) {
+		for (String s : handlerNames) {
 			clearBypass(s);
 		}
 	}
 
 	/**
-	 * @description       a handler is considered bypassed if it was bypassed, or all handlers have been bypassed
+	 * @description       A handler is considered bypassed if it was bypassed, or all handlers have been bypassed
 	 *
 	 * @param handlerName The class name of the handler we are checking is bypassed
 	 * @return            `Boolean` Is this handler bypassed?
@@ -232,6 +263,18 @@ public virtual class TriggerHandler {
 	 */
 	public static Boolean isBypassed(String handlerName) {
 		return (globalBypass || TriggerHandler.bypassedHandlers.contains(handlerName));
+	}
+
+	/**
+	 * @description       A handler is considered bypassed if it was bypassed, or all handlers have been bypassed
+	 *
+	 * @param handlerType The handler class we are checking is bypassed
+	 * @return            `Boolean` Is this handler bypassed?
+	 * @example
+	 * TriggerHandler.isBypassed(AccountTriggerHandler.class);
+	 */
+	public static Boolean isBypassed(Type handlerType) {
+		return (globalBypass || TriggerHandler.bypassedHandlers.contains(handlerType.getName()));
 	}
 
 	/**
@@ -285,7 +328,7 @@ public virtual class TriggerHandler {
 	/**
 	 * @description Set bypass status to a specific value. Eliminates the need to know the current bypass status
 	 * @param  handlerName  The name of the TriggerHandler class
-	 * @param  desiredValue `true` to bypass, and `false` to run the handler
+	 * @param  desiredValue `true` to bypass, and `false` to run the handler/clear the bypass
 	 * @example
 	 * TriggerHandler.setBypass('AccountTriggerHandler', false);
 	 */
@@ -298,7 +341,6 @@ public virtual class TriggerHandler {
 				TriggerHandler.clearBypass(handlerName);
 			}
 		}
-
 		if (TriggerHandler.isBypassed(handlerName)) {
 			if (desiredValue == false) {
 				TriggerHandler.clearBypass(handlerName);
@@ -312,16 +354,20 @@ public virtual class TriggerHandler {
 
 	// handle limits
 	/**
-	 * @description Called in the trigger to force the class to debug query limits when it runs
+	 * @description Called before the trigger to force the class to debug query limits when it runs
+	 * @see TriggerHandler.showLimits[1]
 	 * @example
-	 * new AccountSampleTriggerHandler.showLimits().run();
+	 * TriggerHandler.showLimits();
+	 * new AccountSampleTriggerHandler.run();
+	 * -or-
+	 * AccountSampleTriggerHandler.showLimits();
 	 */
 	public static void showLimits() {
 		showLimits(true);
 	}
 
 	/**
-	 * @description   Called in the trigger to force the class to debug limits when it runs.
+	 * @description   Called before the trigger to enable the class to debug (or not) query limits when it runs.
 	 * <br>Set to true to show limits.
 	 *
 	 * @param enabled true to enable; false to disable
@@ -334,9 +380,13 @@ public virtual class TriggerHandler {
 	// handle debugs
 	/**
 	 * @description Called in the trigger to force the class to debug trigger entry and exit with context.
-	 * <br>This is only shown in Test context, to speed org performance
+	 * @author David Schach
+	 * @see TriggerHandler.showLimits[1]
 	 * @example
-	 * new AccountSampleTriggerHandler.showDebug().showLimits().run();
+	 * TriggerHandler.showDebug();
+	 * new AccountSampleTriggerHandler.run();
+	 * -or-
+	 * AccountSampleTriggerHandler.showDebug();
 	 */
 	public static void showDebug() {
 		showDebug(true);
@@ -345,8 +395,8 @@ public virtual class TriggerHandler {
 	/**
 	 * @description   Called in the trigger to force the class to debug trigger entry and exit with context.
 	 * <br>Set to true to show entry and exit.
-	 * <br>This is only shown in Test context, to speed org performance
 	 *
+	 * @author David Schach
 	 * @param enabled true to enable; false to disable
 	 * @see TriggerHandler.showDebug[0]
 	 */

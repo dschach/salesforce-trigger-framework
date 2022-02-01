@@ -1,6 +1,6 @@
-@SuppressWarnings('PMD')
+//@SuppressWarnings('PMD')
 /**
- * Account Sample handler
+ * @description Account Sample handler
  * @author David Schach
  * @since 2021
  * @group SampleTriggerHandler
@@ -12,11 +12,11 @@ public without sharing class AccountSampleTriggerHandler extends TriggerHandler 
 	private Map<Id, Account> oldRecordsMap;
 
 	/**
-	 * @description Constructor using super() method for faster performance
+	 * @description Constructor using passed-in class name constructor for faster performance
 	 * <br>We cast all four trigger collections
+	 * @param className The name if this class. Pass in the string to make the handler run faster
 	 */
-	public AccountSampleTriggerHandler() {
-		super('AccountSampleTriggerHandler');
+	public AccountSampleTriggerHandler(String className) {
 		this.newRecords = (List<Account>) Trigger.new;
 		this.oldRecords = (List<Account>) Trigger.old;
 		this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;

@@ -191,6 +191,29 @@ private class TriggerHandlerTest {
 	}
 
 	/**
+	 * @description Test bypass by Type
+	 */
+	@IsTest
+	static void testBypassByType() {
+		afterUpdateMode();
+
+		// test a bypass by string and run handler
+		TriggerHandler.bypass(TestHandler.class);
+		System.assert(TriggerHandler.isBypassed('TriggerHandlerTest.TestHandler'), 'test handler should be bypassed');
+		System.assert(TriggerHandler.isBypassed(Testhandler.class), 'test handler class should be bypassed');
+		handler.run();
+		//System.assertEquals(null, lastMethodCalled, 'last method should be null when bypassed');
+		resetTest();
+
+		// clear that bypass and run handler
+		TriggerHandler.clearBypass(TestHandler.class);
+		handler.run();
+		System.assertEquals('afterUpdate', lastMethodCalled, 'last method called should be afterUpdate');
+		System.assertEquals(false, TriggerHandler.isBypassed('TriggerHandlerTest.TestHandler'), 'test handler should not be bypassed');
+		resetTest();
+	}
+
+	/**
 	 * @description Test and show limits and debug
 	 */
 	@isTest
