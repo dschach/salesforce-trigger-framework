@@ -43,10 +43,10 @@
             </summary>
             <ul>
               <!-- menu items -->
-              <li title="AccountSampleTriggerHandler" id="item-AccountSampleTriggerHandler" class="nav-item class public" onclick="goToLocation('AccountSampleTriggerHandler.html');">
+              <li title="AccountSampleTriggerHandler" id="item-AccountSampleTriggerHandler" class="nav-item class " onclick="goToLocation('AccountSampleTriggerHandler.html');">
                 <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandler</a>
               </li>
-              <li title="AccountSampleTriggerHandlerTest" id="item-AccountSampleTriggerHandlerTest" class="nav-item class private" onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
+              <li title="AccountSampleTriggerHandlerTest" id="item-AccountSampleTriggerHandlerTest" class="nav-item class " onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
                 <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandlerTest</a>
               </li>
             </ul>
@@ -57,10 +57,10 @@
             </summary>
             <ul>
               <!-- menu items -->
-              <li title="TriggerHandler" id="item-TriggerHandler" class="nav-item class public" onclick="goToLocation('TriggerHandler.html');">
+              <li title="TriggerHandler" id="item-TriggerHandler" class="nav-item class " onclick="goToLocation('TriggerHandler.html');">
                 <a tabindex="1" href="javascript:void(0)">TriggerHandler</a>
               </li>
-              <li title="TriggerHandlerTest" id="item-TriggerHandlerTest" class="nav-item class private" onclick="goToLocation('TriggerHandlerTest.html');">
+              <li title="TriggerHandlerTest" id="item-TriggerHandlerTest" class="nav-item class " onclick="goToLocation('TriggerHandlerTest.html');">
                 <a tabindex="1" href="javascript:void(0)">TriggerHandlerTest</a>
               </li>
             </ul>
@@ -128,7 +128,7 @@
 
 
                   </tr>
-                  <tr class="property private">
+                  <tr class="property ">
                     <td class="attribute-name">
                       <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L9">
                         newRecords
@@ -141,7 +141,7 @@
 
 
                   </tr>
-                  <tr class="property private">
+                  <tr class="property ">
                     <td class="attribute-name">
                       <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L11">
                         newRecordsMap
@@ -154,7 +154,7 @@
 
 
                   </tr>
-                  <tr class="property private">
+                  <tr class="property ">
                     <td class="attribute-name">
                       <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L10">
                         oldRecords
@@ -167,7 +167,7 @@
 
 
                   </tr>
-                  <tr class="property private">
+                  <tr class="property ">
                     <td class="attribute-name">
                       <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L12">
                         oldRecordsMap
@@ -188,31 +188,37 @@
                 <ul class="methods-toc">
                   <li class="method public">
                     <a class="methods-toc__entry " href="#AccountSampleTriggerHandler.AccountSampleTriggerHandler">
-                      AccountSampleTriggerHandler ()
+                      AccountSampleTriggerHandler (className)
                     </a>
 
                     <div class="methods-toc__description">
-                      Constructor using super() method for faster performance <br>We cast all four trigger collections
+                      Constructor using passed-in class name constructor for faster performance <br>We cast all four trigger collections
                     </div>
                   </li>
                 </ul>
                 <div class="method public">
                   <h4 class="method-title " id="AccountSampleTriggerHandler.AccountSampleTriggerHandler">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L18">
-                      AccountSampleTriggerHandler()
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L19">
+                      AccountSampleTriggerHandler(className)
                     </a>
                   </h4>
                   <div class="method-description">
-                    Constructor using super() method for faster performance <br>We cast all four trigger collections
+                    Constructor using passed-in class name constructor for faster performance <br>We cast all four trigger collections
                   </div>
                   <div class="method-subtitle">
                     Signature
                   </div>
 
                   <div class="method-signature">
-                    public AccountSampleTriggerHandler()
+                    public AccountSampleTriggerHandler(String className)
                   </div>
+                  <div class="method-subtitle">Parameters</div>
+                  <div class="param-name">className</div>
+                  <div class="param-type">
+                    Type: <code class="code-inline">String</code>
+                  </div>
+                  <div class="param-description">The name if this class. Pass in the string to make the handler run faster</div>
                 </div>
               </div>
             </div>
