@@ -8,7 +8,7 @@
   "apexPMD.runOnFileChange": true,
   "apexPMD.runOnFileOpen": true,
   "apexPMD.rulesets": [
-    "pmd/apexQuickStart.xml"
+    "pmd/ruleset.xml"
   ],
   "force.showApexJavadocTrailingCloseComment": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
