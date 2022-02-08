@@ -35,4 +35,4 @@ engine:
 docblock:
   alignItems: true
   spacious: true
-  omitDescriptionTag: false
+  omitDescriptionTag: true
