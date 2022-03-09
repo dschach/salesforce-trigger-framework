@@ -4,4 +4,13 @@ code {
 
 pre {
 	background-color: #f6f8fa;
+	white-space: pre;
+}
+
+pre code {
+  white-space: pre;
+}
+
+.hljs {
+	background: #f6f8fa;
 }

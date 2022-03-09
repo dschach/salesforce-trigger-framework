@@ -1,15 +1,17 @@
 {
-  "trailingComma": "none",
-  "useTabs": true,
-  "printWidth": 180,
-  "overrides": [
-    {
-      "files": "**/lwc/**/*.html",
-      "options": { "parser": "lwc" }
-    },
-    {
-      "files": "*.{cmp,page,component}",
-      "options": { "parser": "html" }
-    }
-  ]
+	"trailingComma": "none",
+	"useTabs": true,
+	"printWidth": 180,
+	"bracketSameLine": true,
+	"bracketSpacing": true,
+	"overrides": [
+		{
+			"files": "**/lwc/**/*.html",
+			"options": { "parser": "lwc" }
+		},
+		{
+			"files": "*.{cmp,page,component}",
+			"options": { "parser": "html" }
+		}
+	]
 }
