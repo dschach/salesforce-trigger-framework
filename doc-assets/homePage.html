@@ -56,15 +56,15 @@
 <br/>
   public override void beforeUpdate() {<br/>
     for(Opportunity o : newRecords) {<br/>
-      /* do something */<br/>
+      // do something <br/>
     }<br/>
   }<br/>
 <br/>
   public override void afterUpdate() {<br/>
-      /* do something */<br/>
+      // do something <br/>
   }<br/>
 <br/>
-  /* add overrides for other contexts */<br/>
+  // add overrides for other contexts <br/>
 <br/>
 }<br/>
 </code></pre>
@@ -104,12 +104,12 @@
     TriggerHandler.bypass('AccountTriggerHandler');<br/>
 <br/>
     acc.Name = 'No Trigger';<br/>
-    update acc; /* won't invoke the AccountTriggerHandler */<br/>
+    update acc; // won't invoke the AccountTriggerHandler<br/>
 <br/>
     TriggerHandler.clearBypass('AccountTriggerHandler');<br/>
 <br/>
     acc.Name = 'With Trigger';<br/>
-    update acc; /* will invoke the AccountTriggerHandler */<br/>
+    update acc; // will invoke the AccountTriggerHandler <br/>
 <br/>
   }<br/>
 <br/>
@@ -119,7 +119,7 @@
 <p>If you need to check if a handler is bypassed, use the <code>isBypassed</code> method:</p>
 
 <pre><code class="language-java">if (TriggerHandler.isBypassed('AccountTriggerHandler')) {<br/>
-  /* ... do something if the Account trigger handler is bypassed! */<br/>
+  // ... do something if the Account trigger handler is bypassed!<br/>
 }<br/>
 </code></pre>
 <h3 id="globalbypass">Global Bypass</h3>
@@ -130,11 +130,11 @@
 <p>This will also add an entry 'bypassAll' to the list of handlers returned in <code>bypassList</code>.</p>
 <p>To clear all bypasses for the transaction, simply use the <code>clearAllBypasses</code> method, as in:</p>
 
-<pre><code class="language-java">/* ... done with bypasses! */<br/>
+<pre><code class="language-java">// ... done with bypasses! <br/>
 <br/>
 TriggerHandler.clearAllBypasses();<br/>
 <br/>
-/* ... now handlers won't be ignored! */<br/>
+// ... now handlers won't be ignored! <br/>
 </code></pre>
 <p>This will clear the list of bypassed handlers and set the <code>globalBypass</code> Boolean to false.</p>
 
@@ -147,7 +147,7 @@ TriggerHandler.clearAllBypasses();<br/>
 <pre><code class="language-java">Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');<br/>
 TriggerHandler.bypass('AccountTriggerHandler');<br/>
 <br/>
-/* do something here */<br/>
+// do something here <br/>
 <br/>
 TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);<br/>
 </code></pre>
@@ -156,9 +156,9 @@ TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);<br/>
 <pre><code class="language-java">List&lt;String&gt; bypassedHandlers = TriggerHandler.bypassList();<br/>
 TriggerHandler.bypassAll();<br/>
 <br/>
-/* do something here */<br/>
+// do something here <br/>
 <br/>
-TriggerHandler.clearAllBypasses(); /* or TriggerHandler.clearGlobalBypass() */<br/>
+TriggerHandler.clearAllBypasses(); // or TriggerHandler.clearGlobalBypass() <br/>
 TriggerHandler.bypass(bypassedHandlers);<br/>
 </code></pre>
 <h3 id="maxloopcount">Max Loop Count</h3>
