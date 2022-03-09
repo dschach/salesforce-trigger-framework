@@ -28,9 +28,10 @@ engine:
     - "${workspaceFolder}/doc-assets/logo.png"
     - "${workspaceFolder}/doc-assets/favicon.png"
     - "${workspaceFolder}/doc-assets/icon.png"
-    - "${workspaceFolder}/doc-assets/styling.css"
     - "${workspaceFolder}/doc-assets/highlight.css"
-  #  - "${workspaceFolder}/documentation/meme.jpg"
+    - "${workspaceFolder}/doc-assets/styling.css"
+    #- "${workspaceFolder}/doc-assets/highlight.js"
+    #- "${workspaceFolder}/doc-assets/index.js"
   port: 9090
 docblock:
   alignItems: true

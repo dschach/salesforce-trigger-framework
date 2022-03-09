@@ -5,3 +5,7 @@ code {
 pre {
 	background-color: #f6f8fa;
 }
+
+.hljs {
+	background: #f6f8fa;
+}

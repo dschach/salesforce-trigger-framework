@@ -1,34 +1,30 @@
 <link href="assets/styling.css" rel="stylesheet" />
-
-<h1 class="code-line" data-line-start="0" data-line-end="1"><a id="Salesforce_Trigger_Framework_0"></a>Salesforce Trigger Framework</h1>
-<h2 class="code-line" data-line-start="2" data-line-end="3"><a id="Credit_2"></a>Credit</h2>
-<p class="has-line-data" data-line-start="4" data-line-end="5">
-	Based on Kevin O’Hara’s famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a>
-</p>
-<h2 class="code-line" data-line-start="10" data-line-end="11"><a id="Overview_10"></a>Overview</h2>
-<p class="has-line-data" data-line-start="12" data-line-end="13">
-	Triggers should be logicless. Putting logic into your triggers creates un-testable, difficult-to-maintain code. It’s widely accepted that a best-practice is to move trigger logic
+<h1><a id="Salesforce_Trigger_Framework_0"></a>Salesforce Trigger Framework</h1>
+<h2><a id="Credit_2"></a>Credit</h2>
+<p>Based on Kevin O’Hara’s famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a></p>
+<h2><a id="Overview_10"></a>Overview</h2>
+<p>
+	Triggers should be logicless. Putting logic into your triggers creates un-testable, difficult-to-maintain code. It's widely accepted that a best-practice is to move trigger logic
 	into a handler class.
 </p>
-<p class="has-line-data" data-line-start="14" data-line-end="15">
+<p>
 	This trigger framework bundles a single <strong>TriggerHandler</strong> base class that you can inherit from in all of your trigger handlers. The base class includes
 	context-specific methods that are automatically called when a trigger is executed.
 </p>
-<p class="has-line-data" data-line-start="16" data-line-end="17">
+<p>
 	The base class also provides a secondary role as a supervisor for Trigger execution. It acts like a watchdog, monitoring trigger activity and providing an api for controlling
 	certain aspects of execution and control flow.
 </p>
-<p class="has-line-data" data-line-start="18" data-line-end="19">But the most important part of this framework is that it’s minimal and simple to use.</p>
+<p>But the most important part of this framework is that it's minimal and simple to use.</p>
 <!-- <p>See the sample handler documentation at <a href="triggerhandlerhome.html">TriggerHandler</a>.</p> -->
 
 <h2 id="usage">Usage</h2>
 <h3 id="triggerhandler">Trigger Handler</h3>
-<p class="has-line-data" data-line-start="28" data-line-end="29">
+<p>
 	To create a trigger handler, you simply need to create a class that inherits from <strong><a href="./TriggerHandler.html">TriggerHandler</a></strong
 	>. Here is an example for creating an Opportunity trigger handler.
 </p>
-<pre><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/>
-</code></pre>
+<pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {</code></pre>
 <p>
 	In your trigger handler, to add logic to any of the trigger contexts, you only need to override them in your trigger handler. Here is how we would add logic to a
 	<code>beforeUpdate, afterUpdate</code> trigger.
@@ -44,7 +40,7 @@
 	for completeness, I encourage casting Trigger.new and Trigger.old as well.
 </p>
 
-<pre><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+<pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
   private List&lt;Opportunity&gt; newRecords;<br/>
   private List&lt;Opportunity&gt; oldRecords;<br/>
   private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>
@@ -52,8 +48,8 @@
 <br/>
   public OpportunityTriggerHandler(){<br/>
     super('OpportunityTriggerHandler');<br/>
-    this.newRecords = Trigger.new;<br/>
-    this.oldRecords = Trigger.old;<br/>
+    this.newRecords = (List&lt;Opportunity&gt;) Trigger.new;<br/>
+    this.oldRecords = (List&lt;Opportunity&gt;) Trigger.old;<br/>
     this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br/>
     this.oldRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.oldMap;<br/>
   }<br/>
@@ -83,7 +79,7 @@
 	deployment problems.
 </p>
 
-<pre><code>trigger OpportunityTrigger on Opportunity (before update, after update) {<br/>
+<pre><code class="language-java">trigger OpportunityTrigger on Opportunity (before update, after update) {<br/>
   new OpportunityTriggerHandler().run();<br/>
 }<br/>
 </code></pre>
@@ -91,7 +87,7 @@
 <h3 id="bypassapi">Bypass API</h3>
 <p>What if you want to tell other trigger handlers to halt execution? That's easy with the bypass api:</p>
 
-<pre><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+<pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
   private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>
 <br/>
   /* Optional Constructor - better performance */<br/>
@@ -122,19 +118,19 @@
 <h3 id="checkbypassstatus">Check Bypass Status</h3>
 <p>If you need to check if a handler is bypassed, use the <code>isBypassed</code> method:</p>
 
-<pre><code>if (TriggerHandler.isBypassed('AccountTriggerHandler')) {<br/>
+<pre><code class="language-java">if (TriggerHandler.isBypassed('AccountTriggerHandler')) {<br/>
   /* ... do something if the Account trigger handler is bypassed! */<br/>
 }<br/>
 </code></pre>
 <h3 id="globalbypass">Global Bypass</h3>
 <p>To bypass all handlers, set the global bypass variable:</p>
 
-<pre><code>TriggerHandler.setGlobalBypass();<br/>
+<pre><code class="language-java">TriggerHandler.setGlobalBypass();<br/>
 </code></pre>
 <p>This will also add an entry 'bypassAll' to the list of handlers returned in <code>bypassList</code>.</p>
 <p>To clear all bypasses for the transaction, simply use the <code>clearAllBypasses</code> method, as in:</p>
 
-<pre><code>/* ... done with bypasses! */<br/>
+<pre><code class="language-java">/* ... done with bypasses! */<br/>
 <br/>
 TriggerHandler.clearAllBypasses();<br/>
 <br/>
@@ -148,7 +144,7 @@ TriggerHandler.clearAllBypasses();<br/>
 	<code>setBybass</code> method:
 </p>
 
-<pre><code>Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');<br/>
+<pre><code class="language-java">Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');<br/>
 TriggerHandler.bypass('AccountTriggerHandler');<br/>
 <br/>
 /* do something here */<br/>
@@ -157,7 +153,7 @@ TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);<br/>
 </code></pre>
 <p>To store all currently bypassed handlers, temporarily bypass all handlers, and then restore the originally bypassed list:</p>
 
-<pre><code>List&lt;String&gt; bypassedHandlers = TriggerHandler.bypassList();<br/>
+<pre><code class="language-java">List&lt;String&gt; bypassedHandlers = TriggerHandler.bypassList();<br/>
 TriggerHandler.bypassAll();<br/>
 <br/>
 /* do something here */<br/>
@@ -170,8 +166,7 @@ TriggerHandler.bypass(bypassedHandlers);<br/>
 	To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, and exception will be thrown. A great use case is when you want to ensure that
 	your trigger runs once and only once within a single execution. Example:
 </p>
-
-<pre><code>public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+<pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
   private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>
 <br/>
   public OpportunityTriggerHandler(){<br/>
@@ -191,9 +186,9 @@ TriggerHandler.bypass(bypassedHandlers);<br/>
 <p>There are two methods that will show additional information.</p>
 <p><code>showLimits()</code> will debug Apex query and DML limits when the trigger handler has completed.</p>
 <p><code>showDebug()</code> will debug trigger entry and exit.</p>
-<p>To use one or both of these, amend them to the trigger - you can assign them for everyhandler or only specific ones:</p>
+<p>To use one or both of these, amend them to the trigger - you can assign them for every handler or only specific ones:</p>
 
-<pre><code>
+<pre><code class="language-java">
   TriggerHandler.showLimits();<br/>
   AccountTriggerHandler.showDebug();<br/>
   new AccountSampleTriggerHandler().run();<br/>
@@ -204,7 +199,6 @@ TriggerHandler.bypass(bypassedHandlers);<br/>
 <p>Here are all of the methods that you can override. All of the context possibilities are supported.</p>
 
 <ul>
-	<br />
 	<li><code>beforeInsert()</code></li>
 	<li><code>beforeUpdate()</code></li>
 	<li><code>beforeDelete()</code></li>
@@ -212,7 +206,6 @@ TriggerHandler.bypass(bypassedHandlers);<br/>
 	<li><code>afterUpdate()</code></li>
 	<li><code>afterDelete()</code></li>
 	<li><code>afterUndelete()</code></li>
-	<br />
 </ul>
 <style>
 	code {

@@ -1,67 +1,84 @@
-/*
-
-Visual Studio-like style based on original C# coloring by Jason Diamond <jason@diamond.name>
-
-*/
-.hljs {
+pre code.hljs {
 	display: block;
 	overflow-x: auto;
-	padding: 0.5em;
-	/*background: white;*/
-	color: black;
+	padding: 1em;
 }
-
+code.hljs {
+	padding: 3px 5px;
+}
+.hljs {
+	background: #fff;
+	color: #000;
+}
+.xml .hljs-meta {
+	color: silver;
+}
 .hljs-comment,
-.hljs-quote,
-.hljs-variable {
-	color: #008000;
+.hljs-quote {
+	color: #007400;
 }
-
-.hljs-keyword,
-.hljs-selector-tag,
-.hljs-built_in,
-.hljs-name,
-.hljs-tag {
-	color: #00f;
-}
-
-.hljs-string,
-.hljs-title,
-.hljs-section,
 .hljs-attribute,
+.hljs-keyword,
 .hljs-literal,
-.hljs-template-tag,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-tag {
+	color: #aa0d91;
+}
 .hljs-template-variable,
-.hljs-type,
-.hljs-addition {
-	color: #a31515;
+.hljs-variable {
+	color: #3f6e74;
 }
-
-.hljs-deletion,
-.hljs-selector-attr,
-.hljs-selector-pseudo,
-.hljs-meta {
-	color: #2b91af;
+.hljs-code,
+.hljs-meta .hljs-string,
+.hljs-string {
+	color: #c41a16;
 }
-
-.hljs-doctag {
-	color: #808080;
+.hljs-link,
+.hljs-regexp {
+	color: #0e0eff;
 }
-
-.hljs-attr {
-	color: #f00;
-}
-
-.hljs-symbol,
 .hljs-bullet,
-.hljs-link {
-	color: #00b0e8;
+.hljs-number,
+.hljs-symbol,
+.hljs-title {
+	color: #1c00cf;
 }
-
-.hljs-emphasis {
+.hljs-meta,
+.hljs-section {
+	color: #643820;
+}
+.hljs-built_in,
+.hljs-class .hljs-title,
+.hljs-params,
+.hljs-title.class_,
+.hljs-type {
+	color: #5c2699;
+}
+.hljs-attr {
+	color: #836c28;
+}
+.hljs-subst {
+	color: #000;
+}
+.hljs-formula {
+	background-color: #eee;
 	font-style: italic;
 }
-
+.hljs-addition {
+	background-color: #baeeba;
+}
+.hljs-deletion {
+	background-color: #ffc8bd;
+}
+.hljs-selector-class,
+.hljs-selector-id {
+	color: #9b703f;
+}
+.hljs-doctag,
 .hljs-strong {
-	font-weight: bold;
+	font-weight: 700;
+}
+.hljs-emphasis {
+	font-style: italic;
 }
