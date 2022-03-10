@@ -180,7 +180,7 @@ TriggerHandler.bypass(bypassedHandlers);
 
 ### Max Loop Count
 
-To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, and exception will be thrown. A great use case is when you want to ensure that your trigger runs once and only once within a single execution. Example:
+To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, the trigger will silently stop running. If `showDebug()` has been included, a statement that the max loop count has been reached will be sent to the debug log. A great use case is when you want to ensure that your trigger runs once and only once within a single execution.
 
 ```java
 public class OpportunityTriggerHandler extends TriggerHandler {

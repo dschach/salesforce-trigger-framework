@@ -249,17 +249,10 @@ private class TriggerHandlerTest {
 
 		// clear the tests
 		resetTest();
+		TriggerHandler.showDebug();
 
-		try {
-			// try running it. This should exceed the limit.
-			handler.run();
-			System.assert(false, 'the handler should throw on the 3rd run when maxloopcount is 3');
-		} catch (TriggerHandler.TriggerHandlerException te) {
-			// we're expecting to get here
-			System.assertEquals(null, lastMethodCalled, 'last method should be null');
-		} catch (Exception e) {
-			System.assert(false, 'the exception thrown was not expected: ' + e.getTypeName() + ': ' + e.getMessage());
-		}
+		handler.run();
+		System.assert(TriggerHandler.loopCountMap.get('TestHandler').getCount() > TriggerHandler.loopCountMap.get('TestHandler').getMax(), 'We should have exceeded the max count');
 
 		// clear the tests
 		resetTest();
@@ -267,15 +260,8 @@ private class TriggerHandlerTest {
 		// now clear the loop count
 		handler.clearMaxLoopCount();
 
-		try {
-			// re-run the handler. We shouldn't throw now.
-			handler.run();
-			System.assertEquals('beforeInsert', lastMethodCalled, 'last method should be beforeInsert');
-		} catch (TriggerHandler.TriggerHandlerException te) {
-			System.assert(false, 'running the handler after clearing the loop count should not throw');
-		} catch (Exception e) {
-			System.assert(false, 'the exception thrown was not expected: ' + e.getTypeName() + ': ' + e.getMessage());
-		}
+		handler.run();
+		System.assertEquals('beforeInsert', lastMethodCalled, 'last method should be beforeInsert');
 	}
 
 	@isTest
