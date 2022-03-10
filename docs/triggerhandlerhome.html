@@ -105,78 +105,79 @@
           <h1>Bypass Documentation</h1>
           <p> <a class="" href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md" data-mce-href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md">https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md</a></p>
           <hr />
-          <h1>Sample Trigger</h1><pre><code class="language-java">trigger AccountSampleTrigger on Account (before insert, after insert, before update, after update, before delete, after delete, after undelete) {
-	new AccountSampleTriggerHandler().run();
-}
+          <h1>Sample Trigger</h1><pre><code class="language-java">trigger AccountSampleTrigger on Account (before insert, after insert, before update, after update, before delete, after delete, after undelete) {<br/>
+	new AccountSampleTriggerHandler().run();<br/>
+}<br/>
 </code></pre>
-          <h1>Sample Handler</h1><pre><code class="language-java">/**
- * @description A sample Account trigger handler, with some comments
- *
- * @author David Schach
- * @since 2021
- * @see AccountSampleTriggerHandlerTest
- */
-public without sharing class AccountSampleTriggerHandler extends TriggerHandler {
-
-    private List&lt;Account&gt; newRecords;
-    private List&lt;Account&gt; oldRecords;
-    private Map&lt;Id, Account&gt; newRecordsMap;
-    private Map&lt;Id, Account&gt; oldRecordsMap;
-
-    public AccountSampleTriggerHandler() {
-        super('AccountSampleTriggerHandler');
-        this.newRecords = (List&lt;Account&gt;)Trigger.new;
-        this.oldRecords = (List&lt;Account&gt;)Trigger.old;
-        this.newRecordsMap = (Map&lt;Id, Account&gt;)Trigger.newMap;
-        this.oldRecordsMap = (Map&lt;Id, Account&gt;)Trigger.oldMap;
-    }
-
-    public override void beforeInsert(){
-        method1();
-        method2();
-        TriggerHandler.clearAllBypass();
-    }
-
-    public override void beforeUpdate(){
-        method2();
-    }
-
-    public override void afterInsert(){
-        TriggerHandler.bypass('ContactTriggerHandler');
-        updateContacts();
-        TriggerHandler.clearBypass('ContactTriggerHandler');
-    }
-
-    public override void afterUpdate(){
-        TriggerHandler.bypass('CaseSampleTriggerHandler');
-        /* do something */
-        TriggerHandler.clearAllBypasses();
-    }
-
-    //public override void beforeDelete(){}
-    //public override void afterDelete(){}
-    //public override void afterUndelete(){}
-
-    private void method1(){
-        for(Account a : newRecords){
-            a.Name = a.Name.toUpperCase();
-        }
-    }
-
-    private void method2(){
-        for(Account a : newRecords){
-            a.Name = a.Name.toLowerCase();
-        }
-    }
-
-    /**
-    * Try to keep all updates on other objects in a single DML statement
-    * @author Author Name
-    */
-    private void updateContacts(){
-        List&lt;Contact&gt; acctContacts = [SELECT Id FROM Contact WHERE AccountId IN :newRecordsMap.keyset()];
-        update acctContacts;
-    }
+          <h1>Sample Handler</h1><pre><code class="language-java">/**<br/>
+ * @description A sample Account trigger handler, with some comments<br/>
+ *<br/>
+ * @author David Schach<br/>
+ * @since 2021<br/>
+ * @see AccountSampleTriggerHandlerTest<br/>
+ */<br/>
+public without sharing class AccountSampleTriggerHandler extends TriggerHandler {<br/>
+<br/>
+    private List&lt;Account&gt; newRecords;<br/>
+    private List&lt;Account&gt; oldRecords;<br/>
+    private Map&lt;Id, Account&gt; newRecordsMap;<br/>
+    private Map&lt;Id, Account&gt; oldRecordsMap;<br/>
+<br/>
+    public AccountSampleTriggerHandler() {<br/>
+        super('AccountSampleTriggerHandler');<br/>
+        this.newRecords = (List&lt;Account&gt;)Trigger.new;<br/>
+        this.oldRecords = (List&lt;Account&gt;)Trigger.old;<br/>
+        this.newRecordsMap = (Map&lt;Id, Account&gt;)Trigger.newMap;<br/>
+        this.oldRecordsMap = (Map&lt;Id, Account&gt;)Trigger.oldMap;<br/>
+    }<br/>
+<br/>
+    public override void beforeInsert(){<br/>
+        method1();<br/>
+        method2();<br/>
+        TriggerHandler.clearAllBypass();<br/>
+    }<br/>
+<br/>
+    public override void beforeUpdate(){<br/>
+        method2();<br/>
+    }<br/>
+<br/>
+    public override void afterInsert(){<br/>
+        TriggerHandler.bypass('ContactTriggerHandler');<br/>
+        updateContacts();<br/>
+        TriggerHandler.clearBypass('ContactTriggerHandler');<br/>
+    }<br/>
+<br/>
+    public override void afterUpdate(){<br/>
+        TriggerHandler.bypass('CaseSampleTriggerHandler');<br/>
+        /* do something */<br/>
+        TriggerHandler.clearAllBypasses();<br/>
+    }<br/>
+<br/>
+    //public override void beforeDelete(){}<br/>
+    //public override void afterDelete(){}<br/>
+    //public override void afterUndelete(){}<br/>
+<br/>
+<br/>
+    private void method1(){<br/>
+        for(Account a : newRecords){<br/>
+            a.Name = a.Name.toUpperCase();<br/>
+        }<br/>
+    }<br/>
+<br/>
+    private void method2(){<br/>
+        for(Account a : newRecords){<br/>
+            a.Name = a.Name.toLowerCase();<br/>
+        }<br/>
+    }<br/>
+<br/>
+    /**<br/>
+    * Try to keep all updates on other objects in a single DML statement<br/>
+    * @author Author Name<br/>
+    */<br/>
+    private void updateContacts(){<br/>
+        List&lt;Contact&gt; acctContacts = [SELECT Id FROM Contact WHERE AccountId IN :newRecordsMap.keyset()];<br/>
+        update acctContacts;<br/>
+    }<br/>
 }</code></pre><br /><br />
           <hr />
           <h1>Credits</h1>

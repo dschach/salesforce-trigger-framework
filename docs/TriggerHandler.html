@@ -152,7 +152,7 @@
                   </tr>
                   <tr class="property private">
                     <td class="attribute-name">
-                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L669">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L677">
                         errorOutsideTriggerContext
                       </a></td>
                     <td>
@@ -184,7 +184,7 @@
                   </tr>
                   <tr class="property private">
                     <td class="attribute-name">
-                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L521">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L529">
                         handlerName
                       </a></td>
                     <td>
@@ -352,7 +352,7 @@
                     Author
                   </div>
                   <div class="method-subtitle-description">
-                    David Schach
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
                   </div>
                   <div class="method-subtitle">
                     Example
@@ -368,15 +368,6 @@
               <h3 class="subsection-title methods">TriggerHandler Methods</h3>
               <div class="methods-container">
                 <ul class="methods-toc">
-                  <li class="method private">
-                    <a class="methods-toc__entry " href="#TriggerHandler.addToLoopCount">
-                      addToLoopCount ()
-                    </a>
-
-                    <div class="methods-toc__description">
-                      increment the loop count
-                    </div>
-                  </li>
                   <li class="method protected">
                     <a class="methods-toc__entry " href="#TriggerHandler.afterDelete">
                       afterDelete ()
@@ -566,6 +557,15 @@
                       return the current loop count
                     </div>
                   </li>
+                  <li class="method private">
+                    <a class="methods-toc__entry " href="#TriggerHandler.incrementCheckLoopCount">
+                      incrementCheckLoopCount ()
+                    </a>
+
+                    <div class="methods-toc__description">
+                      increment the loop count and check if we exceeded the max loop count.
+                    </div>
+                  </li>
                   <li class="method public">
                     <a class="methods-toc__entry " href="#TriggerHandler.isBypassed">
                       isBypassed (handlerName)
@@ -675,40 +675,10 @@
                     </div>
                   </li>
                 </ul>
-                <div class="method private">
-                  <h4 class="method-title " id="TriggerHandler.addToLoopCount">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L491">
-                      addToLoopCount()
-                    </a>
-                  </h4>
-                  <div class="method-description">
-                    increment the loop count
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
-
-                  <div class="method-signature">
-                    private void addToLoopCount()
-                  </div>
-                  <div class="method-subtitle">
-                    Exceptions
-                  </div>
-                  <div class="method-subtitle-description">
-                    TriggerHandlerException
-                  </div>
-                  <div class="method-subtitle">
-                    See
-                  </div>
-                  <div class="method-subtitle-description">
-                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.TriggerHandlerException')">TriggerHandler.TriggerHandlerException</a>
-                  </div>
-                </div>
                 <div class="method protected">
                   <h4 class="method-title " id="TriggerHandler.afterDelete">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L577">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L585">
                       afterDelete()
                     </a>
                   </h4>
@@ -726,7 +696,7 @@
                 <div class="method protected">
                   <h4 class="method-title " id="TriggerHandler.afterInsert">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L563">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L571">
                       afterInsert()
                     </a>
                   </h4>
@@ -744,7 +714,7 @@
                 <div class="method protected">
                   <h4 class="method-title " id="TriggerHandler.afterUndelete">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L584">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L592">
                       afterUndelete()
                     </a>
                   </h4>
@@ -762,7 +732,7 @@
                 <div class="method protected">
                   <h4 class="method-title " id="TriggerHandler.afterUpdate">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L570">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L578">
                       afterUpdate()
                     </a>
                   </h4>
@@ -780,7 +750,7 @@
                 <div class="method protected">
                   <h4 class="method-title " id="TriggerHandler.beforeDelete">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L556">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L564">
                       beforeDelete()
                     </a>
                   </h4>
@@ -798,7 +768,7 @@
                 <div class="method protected">
                   <h4 class="method-title " id="TriggerHandler.beforeInsert">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L543">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L551">
                       beforeInsert()
                     </a>
                   </h4>
@@ -816,7 +786,7 @@
                 <div class="method protected">
                   <h4 class="method-title " id="TriggerHandler.beforeUpdate">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L550">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L558">
                       beforeUpdate()
                     </a>
                   </h4>
@@ -834,7 +804,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.bypass">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L185">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L186">
                       bypass(handlerName)
                     </a>
                   </h4>
@@ -862,7 +832,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.bypass_1">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L196">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L197">
                       bypass(handlerType)
                     </a>
                   </h4>
@@ -896,7 +866,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.bypass_2">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L205">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L206">
                       bypass(handlerNames)
                     </a>
                   </h4>
@@ -920,7 +890,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.bypassAll">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L212">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L213">
                       bypassAll()
                     </a>
                   </h4>
@@ -938,7 +908,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.bypassList">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L287">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L288">
                       bypassList()
                     </a>
                   </h4>
@@ -966,7 +936,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.clearAllBypasses">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L303">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L304">
                       clearAllBypasses()
                     </a>
                   </h4>
@@ -988,7 +958,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.clearBypass">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L225">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L226">
                       clearBypass(handlerName)
                     </a>
                   </h4>
@@ -1022,7 +992,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.clearBypass_1">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L238">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L239">
                       clearBypass(handlerType)
                     </a>
                   </h4>
@@ -1050,7 +1020,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.clearBypass_2">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L250">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L251">
                       clearBypass(handlerNames)
                     </a>
                   </h4>
@@ -1079,7 +1049,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.clearBypassList">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L324">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L325">
                       clearBypassList()
                     </a>
                   </h4>
@@ -1101,7 +1071,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.clearGlobalBypass">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L314">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L315">
                       clearGlobalBypass()
                     </a>
                   </h4>
@@ -1123,7 +1093,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.clearMaxLoopCount">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L175">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L176">
                       clearMaxLoopCount()
                     </a>
                   </h4>
@@ -1141,7 +1111,7 @@
                 <div class="method private">
                   <h4 class="method-title " id="TriggerHandler.getHandlerName">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L530">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L538">
                       getHandlerName()
                     </a>
                   </h4>
@@ -1171,7 +1141,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.getLoopCount">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L417">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L418">
                       getLoopCount(handlerName)
                     </a>
                   </h4>
@@ -1198,10 +1168,40 @@
                     <code class="code-inline">Integer</code>
                   </div>
                 </div>
+                <div class="method private">
+                  <h4 class="method-title " id="TriggerHandler.incrementCheckLoopCount">
+
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L492">
+                      incrementCheckLoopCount()
+                    </a>
+                  </h4>
+                  <div class="method-description">
+                    increment the loop count and check if we exceeded the max loop count.
+                  </div>
+                  <div class="method-subtitle">
+                    Signature
+                  </div>
+
+                  <div class="method-signature">
+                    private Boolean incrementCheckLoopCount()
+                  </div>
+                  <div class="method-subtitle">
+                    Returns
+                  </div>
+                  <div class="method-subtitle-description">
+                    <code class="code-inline">Boolean</code> Should the trigger continue execution?
+                  </div>
+                  <div class="method-subtitle">
+                    Author
+                  </div>
+                  <div class="method-subtitle-description">
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a> <a target="_blank" rel="noopener noreferrer" href="https://github.com/fbouzeraa">fbouzeraa</a>
+                  </div>
+                </div>
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.isBypassed">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L264">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L265">
                       isBypassed(handlerName)
                     </a>
                   </h4>
@@ -1235,7 +1235,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.isBypassed_1">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L276">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L277">
                       isBypassed(handlerType)
                     </a>
                   </h4>
@@ -1269,7 +1269,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.run">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L99">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L97">
                       run()
                     </a>
                   </h4>
@@ -1287,7 +1287,7 @@
                     Author
                   </div>
                   <div class="method-subtitle-description">
-                    Kevin O&#39;Hara David Schach
+                    Kevin O&#39;Hara <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
                   </div>
                   <div class="method-subtitle">
                     Example
@@ -1297,7 +1297,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.setBypass">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L335">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L336">
                       setBypass(handlerName, desiredValue)
                     </a>
                   </h4>
@@ -1330,7 +1330,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.setMaxLoopCount">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L163">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L164">
                       setMaxLoopCount(max)
                     </a>
                   </h4>
@@ -1354,7 +1354,7 @@
                     Author
                   </div>
                   <div class="method-subtitle-description">
-                    David Schach
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
                   </div>
                   <div class="method-subtitle">
                     Example
@@ -1364,7 +1364,7 @@
                 <div class="method private">
                   <h4 class="method-title " id="TriggerHandler.setTriggerContext">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L429">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L430">
                       setTriggerContext()
                     </a>
                   </h4>
@@ -1382,7 +1382,7 @@
                 <div class="method private">
                   <h4 class="method-title " id="TriggerHandler.setTriggerContext_1">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L442">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L443">
                       setTriggerContext(opType, testMode)
                     </a>
                   </h4>
@@ -1417,7 +1417,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.showDebug">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L391">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L392">
                       showDebug()
                     </a>
                   </h4>
@@ -1441,7 +1441,7 @@
                     Author
                   </div>
                   <div class="method-subtitle-description">
-                    David Schach
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
                   </div>
                   <div class="method-subtitle">
                     Example
@@ -1454,7 +1454,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.showDebug_1">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L403">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L404">
                       showDebug(enabled)
                     </a>
                   </h4>
@@ -1484,13 +1484,13 @@
                     Author
                   </div>
                   <div class="method-subtitle-description">
-                    David Schach
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
                   </div>
                 </div>
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.showLimits">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L365">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L366">
                       showLimits()
                     </a>
                   </h4>
@@ -1521,7 +1521,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.showLimits_1">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L376">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L377">
                       showLimits(enabled)
                     </a>
                   </h4>
@@ -1551,7 +1551,7 @@
                 <div class="method private">
                   <h4 class="method-title " id="TriggerHandler.validateRun">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L511">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L519">
                       validateRun()
                     </a>
                   </h4>
@@ -1592,7 +1592,7 @@
 
             <h2 class="class-title " id="TriggerHandler.LoopCount">
 
-              <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L593">
+              <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L601">
                 TriggerHandler.LoopCount
               </a>
             </h2>
@@ -1621,7 +1621,7 @@
                   </tr>
                   <tr class="property private">
                     <td class="attribute-name">
-                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L595">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L603">
                         count
                       </a></td>
                     <td>
@@ -1634,7 +1634,7 @@
                   </tr>
                   <tr class="property private">
                     <td class="attribute-name">
-                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L594">
+                      <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L602">
                         max
                       </a></td>
                     <td>
@@ -1673,7 +1673,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.LoopCount.LoopCount">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L600">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L608">
                       LoopCount()
                     </a>
                   </h4>
@@ -1691,7 +1691,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.LoopCount.LoopCount_1">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L610">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L618">
                       LoopCount(max)
                     </a>
                   </h4>
@@ -1767,7 +1767,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.LoopCount.exceeded">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L630">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L638">
                       exceeded()
                     </a>
                   </h4>
@@ -1791,7 +1791,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.LoopCount.getCount">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L646">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L654">
                       getCount()
                     </a>
                   </h4>
@@ -1815,7 +1815,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.LoopCount.getMax">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L638">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L646">
                       getMax()
                     </a>
                   </h4>
@@ -1839,7 +1839,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.LoopCount.increment">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L621">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L629">
                       increment()
                     </a>
                   </h4>
@@ -1863,7 +1863,7 @@
                 <div class="method public">
                   <h4 class="method-title " id="TriggerHandler.LoopCount.setMax">
 
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L654">
+                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L662">
                       setMax(max)
                     </a>
                   </h4>
@@ -1892,7 +1892,7 @@
 
             <h2 class="class-title " id="TriggerHandler.TriggerHandlerException">
 
-              <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L662">
+              <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L670">
                 TriggerHandler.TriggerHandlerException
               </a>
             </h2>

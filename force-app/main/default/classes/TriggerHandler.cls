@@ -49,7 +49,7 @@ public virtual class TriggerHandler {
 	@TestVisible
 	/**
 	 * Is this class executing in trigger context?
-	 * @author David Schach
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 */
 	private Boolean isTriggerExecuting;
 
@@ -73,7 +73,7 @@ public virtual class TriggerHandler {
 
 	/**
 	 * @description Constructor with handler name to improve performance
-	 * @author David Schach
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @param  handlerName The name of the handler
 	 * @example
 	 * new AccountSampleTriggerHandler('AccountSampleTriggerHandler').run();
@@ -86,13 +86,11 @@ public virtual class TriggerHandler {
 		this.setTriggerContext();
 	}
 
-	// public instance methods
-
 	/**
 	 * @description main method that will be called during execution
 	 * <br> See the sample trigger for the best way to set up your handler
 	 * @author Kevin O'Hara
-	 * @author David Schach
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
 	 */
@@ -101,7 +99,10 @@ public virtual class TriggerHandler {
 			return;
 		}
 
-		addToLoopCount();
+		// Do not throw an exception if we exceed the loop count - just stop executing
+		if (!incrementCheckLoopCount()) {
+			return;
+		}
 
 		if (showDebug) {
 			System.debug(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent + '' })); // NOPMD
@@ -155,7 +156,7 @@ public virtual class TriggerHandler {
 
 	/**
 	 * @description setMaxLoopCount description
-	 * @author David Schach
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @param  max max description
 	 * @example
 	 * TriggerHandler.setMaxLoopCount(5);
@@ -380,7 +381,7 @@ public virtual class TriggerHandler {
 	// handle debugs
 	/**
 	 * @description Called in the trigger to force the class to debug trigger entry and exit with context.
-	 * @author David Schach
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @see TriggerHandler.showLimits[1]
 	 * @example
 	 * TriggerHandler.showDebug();
@@ -396,7 +397,7 @@ public virtual class TriggerHandler {
 	 * @description   Called in the trigger to force the class to debug trigger entry and exit with context.
 	 * <br>Set to true to show entry and exit.
 	 *
-	 * @author David Schach
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @param enabled true to enable; false to disable
 	 * @see TriggerHandler.showDebug[0]
 	 */
@@ -483,20 +484,27 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description increment the loop count
-	 *
-	 * @exception   TriggerHandlerException
-	 * @see TriggerHandler.TriggerHandlerException
+	 * @description increment the loop count and check if  we exceeded the max loop count.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @author {@link [fbouzeraa](https://github.com/fbouzeraa)}
+	 * @return   `Boolean` Should the trigger continue execution?
 	 */
-	private void addToLoopCount() {
+	private Boolean incrementCheckLoopCount() {
 		String handlerName = getHandlerName();
 		if (TriggerHandler.loopCountMap.containsKey(handlerName)) {
 			Boolean exceeded = TriggerHandler.loopCountMap.get(handlerName).increment();
 			if (exceeded) {
-				Integer max = TriggerHandler.loopCountMap.get(handlerName).max;
-				throw new TriggerHandlerException('Maximum loop count of ' + String.valueOf(max) + ' reached in ' + handlerName);
+				/* Integer max = TriggerHandler.loopCountMap.get(handlerName).max;
+				 throw new TriggerHandlerException('Maximum loop count of ' + String.valueOf(max) + ' reached in ' + handlerName); */
+				if (showDebug) {
+					Integer max = TriggerHandler.loopCountMap.get(handlerName).max;
+					System.debug('Maximum loop count of ' + String.valueOf(max) + ' reached in ' + handlerName);
+				}
+				return false;
 			}
+			return true;
 		}
+		return true;
 	}
 
 	@TestVisible
