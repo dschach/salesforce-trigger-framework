@@ -249,6 +249,7 @@ private class TriggerHandlerTest {
 
 		// clear the tests
 		resetTest();
+		TriggerHandler.showDebug();
 
 		handler.run();
 		System.assert(TriggerHandler.loopCountMap.get('TestHandler').getCount() > TriggerHandler.loopCountMap.get('TestHandler').getMax(), 'We should have exceeded the max count');
