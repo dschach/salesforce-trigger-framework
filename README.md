@@ -36,7 +36,7 @@ But the most important part of this framework is that it's minimal and simple to
 
 To create a trigger handler, you simply need to create a class that inherits from [TriggerHandler.cls](https://github.com/dschach/salesforce-trigger-framework/blob/main/force-app/main/default/classes/TriggerHandler.cls). Here is an example for creating an Opportunity trigger handler.
 
-```java
+```apex
 public class OpportunityTriggerHandler extends TriggerHandler {
 ```
 
@@ -46,7 +46,7 @@ A sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-tri
 
 **Note:** When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This means that you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for oldMap and newMap, but for completeness, I encourage casting Trigger.new and Trigger.old as well.
 
-```java
+```apex
 public class OpportunityTriggerHandler extends TriggerHandler {
   private List<Opportunity> newRecords;
   private List<Opportunity> oldRecords;
@@ -81,7 +81,7 @@ To use the trigger handler, you only need to construct an instance of your trigg
 
 This is the way to write a trigger that will run the trigger handlers below. Note that some objects do not work in every context, so ensure that you list only applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead to deployment problems.
 
-```java
+```apex
 trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler().run();
 }
@@ -93,7 +93,7 @@ trigger OpportunityTrigger on Opportunity (before update, after update) {
 
 What if you want to tell other trigger handlers to halt execution? That's easy with the bypass api:
 
-```java
+```apex
 public class OpportunityTriggerHandler extends TriggerHandler {
   private Map<Id, Opportunity> newRecordsMap;
 
@@ -126,7 +126,7 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 
 If you need to check if a handler is bypassed, use the `isBypassed` method:
 
-```java
+```apex
 if (TriggerHandler.isBypassed('AccountTriggerHandler')) {
   /* ... do something if the Account trigger handler is bypassed! */
 }
@@ -135,7 +135,7 @@ if (TriggerHandler.isBypassed('AccountTriggerHandler')) {
 
 To bypass all handlers, set the global bypass variable:
 
-```java
+```apex
 TriggerHandler.setGlobalBypass();
 ```
 
@@ -143,7 +143,7 @@ This will also add an entry 'bypassAll' to the list of handlers returned in `byp
 
 To clear all bypasses for the transaction, simply use the `clearAllBypasses` method, as in:
 
-```java
+```apex
 /* ... done with bypasses! */
 
 TriggerHandler.clearAllBypasses();
@@ -157,7 +157,7 @@ This will clear the list of bypassed handlers and set the `globalBypass` Boolean
 
 If you are not sure in a transaction if a handler is bypassed, but want to bypass it (or clear the bypass) and then set it to its original value, use the `setBybass` method:
 
-```java
+```apex
 Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');
 TriggerHandler.bypass('AccountTriggerHandler');
 
@@ -168,7 +168,7 @@ TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
 
 To store all currently bypassed handlers, temporarily bypass all handlers, and then restore the originally bypassed list:
 
-```java
+```apex
 List<String> bypassedHandlers = TriggerHandler.bypassList();
 TriggerHandler.bypassAll();
 
@@ -182,7 +182,7 @@ TriggerHandler.bypass(bypassedHandlers);
 
 To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, the trigger will silently stop running. If `showDebug()` has been included, a statement that the max loop count has been reached will be sent to the debug log. A great use case is when you want to ensure that your trigger runs once and only once within a single execution.
 
-```java
+```apex
 public class OpportunityTriggerHandler extends TriggerHandler {
   private Map<Id, Opportunity> newRecordsMap;
 
@@ -209,9 +209,9 @@ There are two methods that will show additional information.
 `TriggerHandler.showDebug()` will show trigger entry and exit, but only during Apex testing. This is to ensure org performance.
 
 To use one or both of these, add them to the trigger:
-```java
+```apex
 TriggerHandler.showLimits();
- AccountTriggerHandler.showDebug();
+AccountTriggerHandler.showDebug();
 new AccountSampleTriggerHandler().run();
 TriggerHandler.showLimits(false);
 AccountTriggerHandler.showDebug(false);
