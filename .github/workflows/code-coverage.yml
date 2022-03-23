@@ -2,6 +2,8 @@ name: code-coverage
 on:
   workflow_dispatch:
   push:
+  pull_request:
+    types: [edited, opened, synchronize, reopened, review_requested]
 jobs:
   build:
     runs-on: ubuntu-latest
