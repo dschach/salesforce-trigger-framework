@@ -10,6 +10,7 @@
 		"apex:local:stop": "node node_modules/prettier-plugin-apex/bin/stop-apex-server.js",
 		"prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
 		"prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
+		"prettier:docs": ". doc-assets/docscleanup.sh | prettier --write \"docs/*.html\"",
 		"initialize": ". scripts/initialize.sh",
 		"orginit": ". scripts/orginit.sh",
 		"postinstall": "husky install",
@@ -25,6 +26,10 @@
 	"lint-staged": {
 		"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
 			"prettier --write"
+		],
+		"docs/*.html": [
+			"sed -i '' 's|<h3 class=\"subsection-title\\([^/]*\\)</h2>|<h3 class=\"subsection-title\\1</h3>|g'",
+			"prettier --write --tab-width 2"
 		]
 	}
 }
