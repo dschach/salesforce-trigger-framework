@@ -4,6 +4,8 @@
 	"printWidth": 180,
 	"bracketSameLine": true,
 	"bracketSpacing": true,
+	"apexInsertFinalNewline": false,
+	"htmlWhitespaceSensitivity": "ignore",
 	"overrides": [
 		{
 			"files": "**/lwc/**/*.html",
