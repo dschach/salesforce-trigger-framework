@@ -1,10 +1,10 @@
 code {
-	background-color: #f6f8fa;
+  background-color: #f6f8fa;
 }
 
 pre {
-	background-color: #f6f8fa;
-	white-space: pre;
+  background-color: #f6f8fa;
+  white-space: pre;
 }
 
 pre code {
@@ -12,5 +12,5 @@ pre code {
 }
 
 .hljs {
-	background: #f6f8fa;
+  background: #f6f8fa;
 }
