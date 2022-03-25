@@ -1,3 +1,5 @@
 {
-	"bracketSameLine": true
+	"bracketSameLine": true,
+	"tabWidth": 2,
+	"printWidth": 180
 }

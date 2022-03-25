@@ -20,41 +20,20 @@
         <div class="title">Salesforce Trigger Handler code documentation</div>
         <img src="assets/logo.png" />
         <div class="subtitle">
-          Documentation for
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/dschach/salesforce-trigger-framework"
-            >Trigger Framework</a
-          >
+          Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
         </div>
       </div>
       <div id="search-wrapper">
         <div class="search-icon"></div>
-        <input
-          id="search-input"
-          type="text"
-          autocomplete="off"
-          placeholder="Search..." />
+        <input id="search-input" type="text" autocomplete="off" placeholder="Search..." />
       </div>
       <ul id="search-results" class=""></ul>
       <div class="navbar">
         <nav role="navigation">
-          <a
-            class="nav-header"
-            id="home"
-            href="javascript:void(0)"
-            onclick="goToLocation('index.html');">
-            Home
-          </a>
+          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');"> Home </a>
           <details id="SampleTriggerHandler" class="group-name">
             <summary id="header-SampleTriggerHandler" class="nav-header">
-              <a
-                href="javascript:void(0)"
-                title="See Class Group info"
-                onclick="goToLocation('triggerhandlerhome.html');"
-                >SampleTriggerHandler</a
-              >
+              <a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('triggerhandlerhome.html');">SampleTriggerHandler</a>
             </summary>
             <ul>
               <!-- menu items -->
@@ -63,44 +42,27 @@
                 id="item-AccountSampleTriggerHandler"
                 class="nav-item class public"
                 onclick="goToLocation('AccountSampleTriggerHandler.html');">
-                <a tabindex="1" href="javascript:void(0)"
-                  >AccountSampleTriggerHandler</a
-                >
+                <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandler</a>
               </li>
               <li
                 title="AccountSampleTriggerHandlerTest"
                 id="item-AccountSampleTriggerHandlerTest"
                 class="nav-item class private"
                 onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
-                <a tabindex="1" href="javascript:void(0)"
-                  >AccountSampleTriggerHandlerTest</a
-                >
+                <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandlerTest</a>
               </li>
             </ul>
           </details>
           <details id="TriggerHandler" class="group-name">
             <summary id="header-TriggerHandler" class="nav-header">
-              <a
-                href="javascript:void(0)"
-                title="See Class Group info"
-                onclick="goToLocation('triggerhandlerhome.html');"
-                >TriggerHandler</a
-              >
+              <a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('triggerhandlerhome.html');">TriggerHandler</a>
             </summary>
             <ul>
               <!-- menu items -->
-              <li
-                title="TriggerHandler"
-                id="item-TriggerHandler"
-                class="nav-item class public"
-                onclick="goToLocation('TriggerHandler.html');">
+              <li title="TriggerHandler" id="item-TriggerHandler" class="nav-item class public" onclick="goToLocation('TriggerHandler.html');">
                 <a tabindex="1" href="javascript:void(0)">TriggerHandler</a>
               </li>
-              <li
-                title="TriggerHandlerTest"
-                id="item-TriggerHandlerTest"
-                class="nav-item class private"
-                onclick="goToLocation('TriggerHandlerTest.html');">
+              <li title="TriggerHandlerTest" id="item-TriggerHandlerTest" class="nav-item class private" onclick="goToLocation('TriggerHandlerTest.html');">
                 <a tabindex="1" href="javascript:void(0)">TriggerHandlerTest</a>
               </li>
             </ul>
@@ -111,33 +73,11 @@
     <table id="content">
       <tr>
         <td class="scoping-panel">
-          Show:
-          <input
-            type="checkbox"
-            checked="true"
-            id="cbx-all"
-            onclick="toggleAllScopes(this.checked);" />
-          <label for="cbx-all">All</label>&nbsp;&nbsp;
-          <input
-            type="checkbox"
-            checked="true"
-            id="cbx-public"
-            onclick="toggleScope('public', this.checked);" />
-          <label for="cbx-public"> public </label>&nbsp;&nbsp;<input
-            type="checkbox"
-            checked="true"
-            id="cbx-private"
-            onclick="toggleScope('private', this.checked);" />
-          <label for="cbx-private"> private </label>&nbsp;&nbsp;<input
-            type="checkbox"
-            checked="true"
-            id="cbx-protected"
-            onclick="toggleScope('protected', this.checked);" />
-          <label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input
-            type="checkbox"
-            checked="true"
-            id="cbx-testmethod"
-            onclick="toggleScope('testmethod', this.checked);" />
+          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" /> <label for="cbx-all">All</label>&nbsp;&nbsp;
+          <input type="checkbox" checked="true" id="cbx-public" onclick="toggleScope('public', this.checked);" />
+          <label for="cbx-public"> public </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
+          <label for="cbx-private"> private </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
+          <label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
           <label for="cbx-testmethod"> testMethod </label>
         </td>
       </tr>
@@ -155,51 +95,21 @@
               </a>
             </h2>
             <div class="class-container">
-              <div class="class-description">
-                Trigger Handler virtual class as base for all trigger handlers
-              </div>
+              <div class="class-description">Trigger Handler virtual class as base for all trigger handlers</div>
               <div class="class-subtitle">Signature</div>
 
-              <div class="class-signature">
-                public virtual class TriggerHandler
-              </div>
+              <div class="class-signature">public virtual class TriggerHandler</div>
               <div class="class-subtitle">See</div>
               <div class="class-subtitle-description">
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE"
-                  >License</a
-                >,
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href="https://github.com/dschach/salesforce-trigger-handler"
-                  >GitHub</a
-                >,
-                <a
-                  href="javascript:void(0)"
-                  onclick="goToLocation('TriggerHandlerTest.html')"
-                  >TriggerHandlerTest</a
-                >
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE">License</a>,
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-handler">GitHub</a>,
+                <a href="javascript:void(0)" onclick="goToLocation('TriggerHandlerTest.html')">TriggerHandlerTest</a>
               </div>
-              <br /><a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://github.com/kevinohara80"
-                >Kevin OHara</a
-              >
-              <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://github.com/dschach"
-                >David Schach</a
-              ><br />2013
+              <br /><a target="_blank" rel="noopener noreferrer" href="https://github.com/kevinohara80">Kevin OHara</a>
+              <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a><br />2013
             </div>
             <div class="subsection properties TriggerHandler">
-              <h3 class="subsection-title properties">
-                TriggerHandler Properties
-              </h3>
+              <h3 class="subsection-title properties">TriggerHandler Properties</h3>
               <table class="attributes-table properties">
                 <tr>
                   <th>Name</th>
@@ -219,15 +129,10 @@
                     </a>
                   </td>
                   <td>
-                    <div class="attribute-signature">
-                      private static final String BYPASS_ALL_ALIAS
-                    </div>
+                    <div class="attribute-signature">private static final String BYPASS_ALL_ALIAS</div>
                   </td>
 
-                  <td class="attribute-description">
-                    This is the value that will be in the returned list or set
-                    when global bypass is active
-                  </td>
+                  <td class="attribute-description">This is the value that will be in the returned list or set when global bypass is active</td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
@@ -241,9 +146,7 @@
                     </a>
                   </td>
                   <td>
-                    <div class="attribute-signature">
-                      private static Set&lt;String&gt; bypassedHandlers
-                    </div>
+                    <div class="attribute-signature">private static Set&lt;String&gt; bypassedHandlers</div>
                   </td>
 
                   <td class="attribute-description">All bypassed handlers</td>
@@ -260,14 +163,10 @@
                     </a>
                   </td>
                   <td>
-                    <div class="attribute-signature">
-                      private static final String ERROR_TRIGGERCONTEXT
-                    </div>
+                    <div class="attribute-signature">private static final String ERROR_TRIGGERCONTEXT</div>
                   </td>
 
-                  <td class="attribute-description">
-                    Error text - assumes English for debug logs
-                  </td>
+                  <td class="attribute-description">Error text - assumes English for debug logs</td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
@@ -281,15 +180,11 @@
                     </a>
                   </td>
                   <td>
-                    <div class="attribute-signature">
-                      private static Boolean globalBypass
-                    </div>
+                    <div class="attribute-signature">private static Boolean globalBypass</div>
                   </td>
 
                   <td class="attribute-description">
-                    <code class="code-inline">true</code> if we bypass all
-                    triggers without checking the contents of
-                    <code class="code-inline">bypassedHandlers</code>
+                    <code class="code-inline">true</code> if we bypass all triggers without checking the contents of <code class="code-inline">bypassedHandlers</code>
                   </td>
                 </tr>
                 <tr class="property private">
@@ -304,15 +199,10 @@
                     </a>
                   </td>
                   <td>
-                    <div class="attribute-signature">
-                      private String handlerName
-                    </div>
+                    <div class="attribute-signature">private String handlerName</div>
                   </td>
 
-                  <td class="attribute-description">
-                    The name of this handler. Set by
-                    <code class="code-inline">getHandlerName()</code>
-                  </td>
+                  <td class="attribute-description">The name of this handler. Set by <code class="code-inline">getHandlerName()</code></td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
@@ -326,14 +216,10 @@
                     </a>
                   </td>
                   <td>
-                    <div class="attribute-signature">
-                      private Boolean isTriggerExecuting
-                    </div>
+                    <div class="attribute-signature">private Boolean isTriggerExecuting</div>
                   </td>
 
-                  <td class="attribute-description">
-                    Is this class executing in trigger context?
-                  </td>
+                  <td class="attribute-description">Is this class executing in trigger context?</td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
@@ -347,15 +233,10 @@
                     </a>
                   </td>
                   <td>
-                    <div class="attribute-signature">
-                      private static Map&lt;String, LoopCount&gt; loopCountMap
-                    </div>
+                    <div class="attribute-signature">private static Map&lt;String, LoopCount&gt; loopCountMap</div>
                   </td>
 
-                  <td class="attribute-description">
-                    Map of <code class="code-inline">handlerName</code> =&gt;
-                    times <code class="code-inline">run()</code> was invoked
-                  </td>
+                  <td class="attribute-description">Map of <code class="code-inline">handlerName</code> =&gt; times <code class="code-inline">run()</code> was invoked</td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
@@ -369,15 +250,10 @@
                     </a>
                   </td>
                   <td>
-                    <div class="attribute-signature">
-                      private static Boolean showDebug
-                    </div>
+                    <div class="attribute-signature">private static Boolean showDebug</div>
                   </td>
 
-                  <td class="attribute-description">
-                    <code class="code-inline">true</code> if we include a debug
-                    statement for trigger entry and exit
-                  </td>
+                  <td class="attribute-description"><code class="code-inline">true</code> if we include a debug statement for trigger entry and exit</td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
@@ -391,15 +267,10 @@
                     </a>
                   </td>
                   <td>
-                    <div class="attribute-signature">
-                      private static Boolean showLimits
-                    </div>
+                    <div class="attribute-signature">private static Boolean showLimits</div>
                   </td>
 
-                  <td class="attribute-description">
-                    <code class="code-inline">true</code> if we include a debug
-                    statement for limits
-                  </td>
+                  <td class="attribute-description"><code class="code-inline">true</code> if we include a debug statement for limits</td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
@@ -413,45 +284,26 @@
                     </a>
                   </td>
                   <td>
-                    <div class="attribute-signature">
-                      private System.TriggerOperation triggerEvent
-                    </div>
+                    <div class="attribute-signature">private System.TriggerOperation triggerEvent</div>
                   </td>
 
-                  <td class="attribute-description">
-                    The current triggerEvent of the trigger, overridable in
-                    tests
-                  </td>
+                  <td class="attribute-description">The current triggerEvent of the trigger, overridable in tests</td>
                 </tr>
               </table>
             </div>
             <div class="subsection methods">
-              <h3 class="subsection-title methods">
-                TriggerHandler Constructors
-              </h3>
+              <h3 class="subsection-title methods">TriggerHandler Constructors</h3>
               <div class="methods-container">
                 <ul class="methods-toc">
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.TriggerHandler">
-                      TriggerHandler ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.TriggerHandler"> TriggerHandler () </a>
 
-                    <div class="methods-toc__description">
-                      Basic constructor. Slower than the other one
-                    </div>
+                    <div class="methods-toc__description">Basic constructor. Slower than the other one</div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.TriggerHandler_1">
-                      TriggerHandler (handlerName)
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.TriggerHandler_1"> TriggerHandler (handlerName) </a>
 
-                    <div class="methods-toc__description">
-                      Constructor with handler name to improve performance
-                    </div>
+                    <div class="methods-toc__description">Constructor with handler name to improve performance</div>
                   </li>
                 </ul>
                 <div class="method public">
@@ -465,23 +317,16 @@
                       TriggerHandler()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Basic constructor. Slower than the other one
-                  </div>
+                  <div class="method-description">Basic constructor. Slower than the other one</div>
                   <div class="method-subtitle">Signature</div>
 
                   <div class="method-signature">public TriggerHandler()</div>
                   <div class="method-subtitle">See</div>
                   <div class="method-subtitle-description">
-                    <a
-                      href="javascript:void(0)"
-                      onclick="goToLocation('TriggerHandler.html#TriggerHandler.TriggerHandler_1')"
-                      >TriggerHandler.TriggerHandler</a
-                    >
+                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.TriggerHandler_1')">TriggerHandler.TriggerHandler</a>
                   </div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> new AccountSampleTriggerHandler().run();</code></pre>
+                  <pre class="code-example"><code> new AccountSampleTriggerHandler().run();</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.TriggerHandler_1">
@@ -494,34 +339,22 @@
                       TriggerHandler(handlerName)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Constructor with handler name to improve performance
-                  </div>
+                  <div class="method-description">Constructor with handler name to improve performance</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public TriggerHandler(String handlerName)
-                  </div>
+                  <div class="method-signature">public TriggerHandler(String handlerName)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerName</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">String</code>
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">String</code></div>
                   <div class="param-description">The name of the handler</div>
                   <div class="method-subtitle">Author</div>
                   <div class="method-subtitle-description">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://github.com/dschach"
-                      >David Schach</a
-                    >
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
                   </div>
                   <div class="method-subtitle">Since</div>
                   <div class="method-subtitle-description">2021</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> new AccountSampleTriggerHandler(&#39;AccountSampleTriggerHandler&#39;).run(); 
+                  <pre class="code-example"><code> new AccountSampleTriggerHandler(&#39;AccountSampleTriggerHandler&#39;).run(); 
  (in Trigger Handler) 
  public AccountSampleTriggerHandler(String className) { 
    this.newRecords = (List&lt;Account&gt;)Trigger.new; 
@@ -537,417 +370,202 @@
               <div class="methods-container">
                 <ul class="methods-toc">
                   <li class="method protected">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.afterDelete">
-                      afterDelete ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.afterDelete"> afterDelete () </a>
 
-                    <div class="methods-toc__description">
-                      Virtual method for the implementing class to override
-                    </div>
+                    <div class="methods-toc__description">Virtual method for the implementing class to override</div>
                   </li>
                   <li class="method protected">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.afterInsert">
-                      afterInsert ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.afterInsert"> afterInsert () </a>
 
-                    <div class="methods-toc__description">
-                      Virtual method for the implementing class to override
-                    </div>
+                    <div class="methods-toc__description">Virtual method for the implementing class to override</div>
                   </li>
                   <li class="method protected">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.afterUndelete">
-                      afterUndelete ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.afterUndelete"> afterUndelete () </a>
 
-                    <div class="methods-toc__description">
-                      Virtual method for the implementing class to override
-                    </div>
+                    <div class="methods-toc__description">Virtual method for the implementing class to override</div>
                   </li>
                   <li class="method protected">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.afterUpdate">
-                      afterUpdate ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.afterUpdate"> afterUpdate () </a>
 
-                    <div class="methods-toc__description">
-                      Virtual method for the implementing class to override
-                    </div>
+                    <div class="methods-toc__description">Virtual method for the implementing class to override</div>
                   </li>
                   <li class="method protected">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.beforeDelete">
-                      beforeDelete ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.beforeDelete"> beforeDelete () </a>
 
-                    <div class="methods-toc__description">
-                      Virtual method for the implementing class to override
-                    </div>
+                    <div class="methods-toc__description">Virtual method for the implementing class to override</div>
                   </li>
                   <li class="method protected">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.beforeInsert">
-                      beforeInsert ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.beforeInsert"> beforeInsert () </a>
 
-                    <div class="methods-toc__description">
-                      Virtual method for the implementing class to override
-                    </div>
+                    <div class="methods-toc__description">Virtual method for the implementing class to override</div>
                   </li>
                   <li class="method protected">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.beforeUpdate">
-                      beforeUpdate ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.beforeUpdate"> beforeUpdate () </a>
 
-                    <div class="methods-toc__description">
-                      Virtual method for the implementing class to override
-                    </div>
+                    <div class="methods-toc__description">Virtual method for the implementing class to override</div>
                   </li>
                   <li class="method public">
-                    <a class="methods-toc__entry" href="#TriggerHandler.bypass">
-                      bypass (handlerName)
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.bypass"> bypass (handlerName) </a>
 
                     <div class="methods-toc__description">Bypass by string</div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.bypass_1">
-                      bypass (handlerType)
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.bypass_1"> bypass (handlerType) </a>
+
+                    <div class="methods-toc__description">Bypass by type/class. This is probably best for avoiding typos.</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.bypass_2"> bypass (handlerNames) </a>
+
+                    <div class="methods-toc__description">Bypass by list, e.g. TriggerHandler.bypass(listOfHandlerStrings)</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.bypassAll"> bypassAll () </a>
+
+                    <div class="methods-toc__description">Bypass all handlers (clear bypassedHandlers to prevent confusion)</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.bypassList"> bypassList () </a>
 
                     <div class="methods-toc__description">
-                      Bypass by type/class. This is probably best for avoiding
-                      typos.
+                      Return a list of the bypassed handlers <br />Though both Set and List allow contains(value), we include both methods for convenience
                     </div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.bypass_2">
-                      bypass (handlerNames)
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.bypassSet"> bypassSet () </a>
 
                     <div class="methods-toc__description">
-                      Bypass by list, e.g.
-                      TriggerHandler.bypass(listOfHandlerStrings)
+                      Return a Set of the bypassed handlers <br />Though both Set and List allow contains(value), we include both methods for convenience
                     </div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.bypassAll">
-                      bypassAll ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.clearAllBypasses"> clearAllBypasses () </a>
+
+                    <div class="methods-toc__description">Clear all bypasses - by clearing the global bypass and by clearing the list of bypassed handlers</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.clearBypass"> clearBypass (handlerName) </a>
+
+                    <div class="methods-toc__description">Bypass a specific handler by name</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.clearBypass_1"> clearBypass (handlerType) </a>
+
+                    <div class="methods-toc__description">Bypass a specific handler by type</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.clearBypass_2"> clearBypass (handlerNames) </a>
+
+                    <div class="methods-toc__description">Bypass a list of handlers</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.clearBypassList"> clearBypassList () </a>
 
                     <div class="methods-toc__description">
-                      Bypass all handlers (clear bypassedHandlers to prevent
-                      confusion)
+                      Clear the entire bypass list, but keep the global bypass flag intact <br />This is useful for resetting the list of handlers to bypass while maintaining
+                      global bypassing
                     </div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.bypassList">
-                      bypassList ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.clearGlobalBypass"> clearGlobalBypass () </a>
 
                     <div class="methods-toc__description">
-                      Return a list of the bypassed handlers <br />Though both
-                      Set and List allow contains(value), we include both
-                      methods for convenience
+                      Clear only the global bypass flag, leaving the list of bypassed handlers intact <br />This is useful for keeping a base set of bypassed handlers intact for an
+                      entire operation
                     </div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.bypassSet">
-                      bypassSet ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.clearMaxLoopCount"> clearMaxLoopCount () </a>
+
+                    <div class="methods-toc__description">Removes the limit for the number of times we allow this class to run</div>
+                  </li>
+                  <li class="method private">
+                    <a class="methods-toc__entry" href="#TriggerHandler.getHandlerName"> getHandlerName () </a>
 
                     <div class="methods-toc__description">
-                      Return a Set of the bypassed handlers <br />Though both
-                      Set and List allow contains(value), we include both
-                      methods for convenience
+                      Get the name of the current handler. This can be set by using the constructor with the string parameter to improve performance
                     </div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.clearAllBypasses">
-                      clearAllBypasses ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.getLoopCount"> getLoopCount (handlerName) </a>
+
+                    <div class="methods-toc__description">return the current loop count</div>
+                  </li>
+                  <li class="method private">
+                    <a class="methods-toc__entry" href="#TriggerHandler.incrementCheckLoopCount"> incrementCheckLoopCount () </a>
 
                     <div class="methods-toc__description">
-                      Clear all bypasses - by clearing the global bypass and by
-                      clearing the list of bypassed handlers
+                      Increment the loop count and check if we exceeded the max loop count. <br />Silently exit if we have exceeded it. (Log to System.debug)
                     </div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.clearBypass">
-                      clearBypass (handlerName)
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.isBypassed"> isBypassed (handlerName) </a>
+
+                    <div class="methods-toc__description">A handler is considered bypassed if it was bypassed, or all handlers have been bypassed</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.isBypassed_1"> isBypassed (handlerType) </a>
+
+                    <div class="methods-toc__description">A handler is considered bypassed if it was bypassed, or all handlers have been bypassed</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.run"> run () </a>
 
                     <div class="methods-toc__description">
-                      Bypass a specific handler by name
+                      Main method that will be called during execution <br />See the sample trigger for the best way to set up your handler
                     </div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.clearBypass_1">
-                      clearBypass (handlerType)
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.setBypass"> setBypass (handlerName, desiredValue) </a>
+
+                    <div class="methods-toc__description">Set bypass status to a specific value. Eliminates the need to know the current bypass status</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.setMaxLoopCount"> setMaxLoopCount (max) </a>
+
+                    <div class="methods-toc__description">Limit the number of times this handler can be run before it fails silently</div>
+                  </li>
+                  <li class="method private">
+                    <a class="methods-toc__entry" href="#TriggerHandler.setTriggerContext"> setTriggerContext () </a>
+
+                    <div class="methods-toc__description">Base method called by constructor to set the current context</div>
+                  </li>
+                  <li class="method private">
+                    <a class="methods-toc__entry" href="#TriggerHandler.setTriggerContext_1"> setTriggerContext (opType, testMode) </a>
 
                     <div class="methods-toc__description">
-                      Bypass a specific handler by type
+                      Set the current trigger context based on the System.TriggerOperation <br />If we are not in a trigger context, then we set isTriggerExecuting to false
                     </div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.clearBypass_2">
-                      clearBypass (handlerNames)
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.showDebug"> showDebug () </a>
+
+                    <div class="methods-toc__description">Called in the trigger to force the class to debug trigger entry and exit with context.</div>
+                  </li>
+                  <li class="method public">
+                    <a class="methods-toc__entry" href="#TriggerHandler.showDebug_1"> showDebug (enabled) </a>
 
                     <div class="methods-toc__description">
-                      Bypass a list of handlers
+                      Called in the trigger to force the class to debug trigger entry and exit with context. <br />Set to true to show entry and exit.
                     </div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.clearBypassList">
-                      clearBypassList ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.showLimits"> showLimits () </a>
 
-                    <div class="methods-toc__description">
-                      Clear the entire bypass list, but keep the global bypass
-                      flag intact <br />This is useful for resetting the list of
-                      handlers to bypass while maintaining global bypassing
-                    </div>
+                    <div class="methods-toc__description">Called before the trigger to force the class to debug query limits when it runs</div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.clearGlobalBypass">
-                      clearGlobalBypass ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.showLimits_1"> showLimits (enabled) </a>
 
                     <div class="methods-toc__description">
-                      Clear only the global bypass flag, leaving the list of
-                      bypassed handlers intact <br />This is useful for keeping
-                      a base set of bypassed handlers intact for an entire
-                      operation
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.clearMaxLoopCount">
-                      clearMaxLoopCount ()
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Removes the limit for the number of times we allow this
-                      class to run
+                      Called before the trigger to enable the class to debug (or not) query limits when it runs. <br />Set to true to show limits.
                     </div>
                   </li>
                   <li class="method private">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.getHandlerName">
-                      getHandlerName ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.validateRun"> validateRun () </a>
 
                     <div class="methods-toc__description">
-                      Get the name of the current handler. This can be set by
-                      using the constructor with the string parameter to improve
-                      performance
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.getLoopCount">
-                      getLoopCount (handlerName)
-                    </a>
-
-                    <div class="methods-toc__description">
-                      return the current loop count
-                    </div>
-                  </li>
-                  <li class="method private">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.incrementCheckLoopCount">
-                      incrementCheckLoopCount ()
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Increment the loop count and check if we exceeded the max
-                      loop count. <br />Silently exit if we have exceeded it.
-                      (Log to System.debug)
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.isBypassed">
-                      isBypassed (handlerName)
-                    </a>
-
-                    <div class="methods-toc__description">
-                      A handler is considered bypassed if it was bypassed, or
-                      all handlers have been bypassed
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.isBypassed_1">
-                      isBypassed (handlerType)
-                    </a>
-
-                    <div class="methods-toc__description">
-                      A handler is considered bypassed if it was bypassed, or
-                      all handlers have been bypassed
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a class="methods-toc__entry" href="#TriggerHandler.run">
-                      run ()
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Main method that will be called during execution <br />See
-                      the sample trigger for the best way to set up your handler
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.setBypass">
-                      setBypass (handlerName, desiredValue)
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Set bypass status to a specific value. Eliminates the need
-                      to know the current bypass status
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.setMaxLoopCount">
-                      setMaxLoopCount (max)
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Limit the number of times this handler can be run before
-                      it fails silently
-                    </div>
-                  </li>
-                  <li class="method private">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.setTriggerContext">
-                      setTriggerContext ()
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Base method called by constructor to set the current
-                      context
-                    </div>
-                  </li>
-                  <li class="method private">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.setTriggerContext_1">
-                      setTriggerContext (opType, testMode)
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Set the current trigger context based on the
-                      System.TriggerOperation <br />If we are not in a trigger
-                      context, then we set isTriggerExecuting to false
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.showDebug">
-                      showDebug ()
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Called in the trigger to force the class to debug trigger
-                      entry and exit with context.
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.showDebug_1">
-                      showDebug (enabled)
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Called in the trigger to force the class to debug trigger
-                      entry and exit with context. <br />Set to true to show
-                      entry and exit.
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.showLimits">
-                      showLimits ()
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Called before the trigger to force the class to debug
-                      query limits when it runs
-                    </div>
-                  </li>
-                  <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.showLimits_1">
-                      showLimits (enabled)
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Called before the trigger to enable the class to debug (or
-                      not) query limits when it runs. <br />Set to true to show
-                      limits.
-                    </div>
-                  </li>
-                  <li class="method private">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.validateRun">
-                      validateRun ()
-                    </a>
-
-                    <div class="methods-toc__description">
-                      Make sure this trigger should continue to run
-                      <br />Returning
-                      <code class="code-inline">false</code> causes trigger
-                      handler to exit
+                      Make sure this trigger should continue to run <br />Returning <code class="code-inline">false</code> causes trigger handler to exit
                     </div>
                   </li>
                 </ul>
@@ -962,14 +580,10 @@
                       afterDelete()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Virtual method for the implementing class to override
-                  </div>
+                  <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    protected virtual void afterDelete()
-                  </div>
+                  <div class="method-signature">protected virtual void afterDelete()</div>
                 </div>
                 <div class="method protected">
                   <h4 class="method-title" id="TriggerHandler.afterInsert">
@@ -982,14 +596,10 @@
                       afterInsert()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Virtual method for the implementing class to override
-                  </div>
+                  <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    protected virtual void afterInsert()
-                  </div>
+                  <div class="method-signature">protected virtual void afterInsert()</div>
                 </div>
                 <div class="method protected">
                   <h4 class="method-title" id="TriggerHandler.afterUndelete">
@@ -1002,14 +612,10 @@
                       afterUndelete()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Virtual method for the implementing class to override
-                  </div>
+                  <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    protected virtual void afterUndelete()
-                  </div>
+                  <div class="method-signature">protected virtual void afterUndelete()</div>
                 </div>
                 <div class="method protected">
                   <h4 class="method-title" id="TriggerHandler.afterUpdate">
@@ -1022,14 +628,10 @@
                       afterUpdate()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Virtual method for the implementing class to override
-                  </div>
+                  <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    protected virtual void afterUpdate()
-                  </div>
+                  <div class="method-signature">protected virtual void afterUpdate()</div>
                 </div>
                 <div class="method protected">
                   <h4 class="method-title" id="TriggerHandler.beforeDelete">
@@ -1042,14 +644,10 @@
                       beforeDelete()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Virtual method for the implementing class to override
-                  </div>
+                  <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    protected virtual void beforeDelete()
-                  </div>
+                  <div class="method-signature">protected virtual void beforeDelete()</div>
                 </div>
                 <div class="method protected">
                   <h4 class="method-title" id="TriggerHandler.beforeInsert">
@@ -1062,14 +660,10 @@
                       beforeInsert()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Virtual method for the implementing class to override
-                  </div>
+                  <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    protected virtual void beforeInsert()
-                  </div>
+                  <div class="method-signature">protected virtual void beforeInsert()</div>
                 </div>
                 <div class="method protected">
                   <h4 class="method-title" id="TriggerHandler.beforeUpdate">
@@ -1082,14 +676,10 @@
                       beforeUpdate()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Virtual method for the implementing class to override
-                  </div>
+                  <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    protected virtual void beforeUpdate()
-                  </div>
+                  <div class="method-signature">protected virtual void beforeUpdate()</div>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.bypass">
@@ -1105,20 +695,13 @@
                   <div class="method-description">Bypass by string</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void bypass(String handlerName)
-                  </div>
+                  <div class="method-signature">public static void bypass(String handlerName)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerName</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">String</code>
-                  </div>
-                  <div class="param-description">
-                    Name of the handler to be bypassed
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">String</code></div>
+                  <div class="param-description">Name of the handler to be bypassed</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.bypass(&#39;AccountSampleTriggerHandler&#39;)</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.bypass(&#39;AccountSampleTriggerHandler&#39;)</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.bypass_1">
@@ -1131,35 +714,20 @@
                       bypass(handlerType)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Bypass by type/class. This is probably best for avoiding
-                    typos.
-                  </div>
+                  <div class="method-description">Bypass by type/class. This is probably best for avoiding typos.</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void bypass(Type handlerType)
-                  </div>
+                  <div class="method-signature">public static void bypass(Type handlerType)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerType</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">Type</code>
-                  </div>
-                  <div class="param-description">
-                    The Class to be bypassed. Must end with &quot;.class&quot;
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">Type</code></div>
+                  <div class="param-description">The Class to be bypassed. Must end with &quot;.class&quot;</div>
                   <div class="method-subtitle">Author</div>
                   <div class="method-subtitle-description">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://github.com/vr8hub"
-                      >vr8hub</a
-                    >
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/vr8hub">vr8hub</a>
                   </div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.bypass(AccountTriggerHandler.class);</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.bypass(AccountTriggerHandler.class);</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.bypass_2">
@@ -1172,20 +740,13 @@
                       bypass(handlerNames)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Bypass by list, e.g.
-                    TriggerHandler.bypass(listOfHandlerStrings)
-                  </div>
+                  <div class="method-description">Bypass by list, e.g. TriggerHandler.bypass(listOfHandlerStrings)</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void bypass(List&lt;String&gt; handlerNames)
-                  </div>
+                  <div class="method-signature">public static void bypass(List&lt;String&gt; handlerNames)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerNames</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">List&lt;String&gt;</code>
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">List&lt;String&gt;</code></div>
                   <div class="param-description">List of handlernames</div>
                 </div>
                 <div class="method public">
@@ -1199,18 +760,12 @@
                       bypassAll()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Bypass all handlers (clear bypassedHandlers to prevent
-                    confusion)
-                  </div>
+                  <div class="method-description">Bypass all handlers (clear bypassedHandlers to prevent confusion)</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void bypassAll()
-                  </div>
+                  <div class="method-signature">public static void bypassAll()</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.bypassAll();</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.bypassAll();</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.bypassList">
@@ -1224,23 +779,15 @@
                     </a>
                   </h4>
                   <div class="method-description">
-                    Return a list of the bypassed handlers <br />Though both Set
-                    and List allow contains(value), we include both methods for
-                    convenience
+                    Return a list of the bypassed handlers <br />Though both Set and List allow contains(value), we include both methods for convenience
                   </div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static List&lt;String&gt; bypassList()
-                  </div>
+                  <div class="method-signature">public static List&lt;String&gt; bypassList()</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">List&lt;String&gt;</code> List of
-                    bypassed handlers
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">List&lt;String&gt;</code> List of bypassed handlers</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.bypassList();</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.bypassList();</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.bypassSet">
@@ -1254,25 +801,17 @@
                     </a>
                   </h4>
                   <div class="method-description">
-                    Return a Set of the bypassed handlers <br />Though both Set
-                    and List allow contains(value), we include both methods for
-                    convenience
+                    Return a Set of the bypassed handlers <br />Though both Set and List allow contains(value), we include both methods for convenience
                   </div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static Set&lt;String&gt; bypassSet()
-                  </div>
+                  <div class="method-signature">public static Set&lt;String&gt; bypassSet()</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">Set&lt;String&gt;</code> Set of
-                    bypassed handlers
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">Set&lt;String&gt;</code> Set of bypassed handlers</div>
                   <div class="method-subtitle">Since</div>
                   <div class="method-subtitle-description">2022</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> if(TriggerHandler.bypassSet().contains(&#39;AccountSampleTriggerHandler&#39;){ 
+                  <pre class="code-example"><code> if(TriggerHandler.bypassSet().contains(&#39;AccountSampleTriggerHandler&#39;){ 
    // do something 
  }</code></pre>
                 </div>
@@ -1287,18 +826,12 @@
                       clearAllBypasses()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Clear all bypasses - by clearing the global bypass and by
-                    clearing the list of bypassed handlers
-                  </div>
+                  <div class="method-description">Clear all bypasses - by clearing the global bypass and by clearing the list of bypassed handlers</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void clearAllBypasses()
-                  </div>
+                  <div class="method-signature">public static void clearAllBypasses()</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.clearAllBypasses();</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.clearAllBypasses();</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.clearBypass">
@@ -1311,34 +844,20 @@
                       clearBypass(handlerName)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Bypass a specific handler by name
-                  </div>
+                  <div class="method-description">Bypass a specific handler by name</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void clearBypass(String handlerName)
-                  </div>
+                  <div class="method-signature">public static void clearBypass(String handlerName)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerName</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">String</code>
-                  </div>
-                  <div class="param-description">
-                    The class name to be bypassed
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">String</code></div>
+                  <div class="param-description">The class name to be bypassed</div>
                   <div class="method-subtitle">Author</div>
                   <div class="method-subtitle-description">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://github.com/vr8hub"
-                      >vr8hub</a
-                    >
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/vr8hub">vr8hub</a>
                   </div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.clearBypass(&#39;AccountSampleTriggerHandler&#39;)</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.clearBypass(&#39;AccountSampleTriggerHandler&#39;)</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.clearBypass_1">
@@ -1351,25 +870,16 @@
                       clearBypass(handlerType)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Bypass a specific handler by type
-                  </div>
+                  <div class="method-description">Bypass a specific handler by type</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void clearBypass(Type handlerType)
-                  </div>
+                  <div class="method-signature">public static void clearBypass(Type handlerType)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerType</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">Type</code>
-                  </div>
-                  <div class="param-description">
-                    The class to be bypassed. Must end with &quot;.class&quot;
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">Type</code></div>
+                  <div class="param-description">The class to be bypassed. Must end with &quot;.class&quot;</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.clearBypass(AccountSampleTriggerHandler.class)</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.clearBypass(AccountSampleTriggerHandler.class)</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.clearBypass_2">
@@ -1382,26 +892,16 @@
                       clearBypass(handlerNames)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Bypass a list of handlers
-                  </div>
+                  <div class="method-description">Bypass a list of handlers</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void clearBypass(List&lt;String&gt;
-                    handlerNames)
-                  </div>
+                  <div class="method-signature">public static void clearBypass(List&lt;String&gt; handlerNames)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerNames</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">List&lt;String&gt;</code>
-                  </div>
-                  <div class="param-description">
-                    List of Strings of handlers to bypass
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">List&lt;String&gt;</code></div>
+                  <div class="param-description">List of Strings of handlers to bypass</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> List&lt;String&gt; classList = [&#39;AccountTriggerHandler&#39;,&#39;ContactTriggerHandler&#39;]; 
+                  <pre class="code-example"><code> List&lt;String&gt; classList = [&#39;AccountTriggerHandler&#39;,&#39;ContactTriggerHandler&#39;]; 
  TriggerHandler.clearBypass(classList);</code></pre>
                 </div>
                 <div class="method public">
@@ -1416,23 +916,17 @@
                     </a>
                   </h4>
                   <div class="method-description">
-                    Clear the entire bypass list, but keep the global bypass
-                    flag intact <br />This is useful for resetting the list of
-                    handlers to bypass while maintaining global bypassing
+                    Clear the entire bypass list, but keep the global bypass flag intact <br />This is useful for resetting the list of handlers to bypass while maintaining global
+                    bypassing
                   </div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void clearBypassList()
-                  </div>
+                  <div class="method-signature">public static void clearBypassList()</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.clearBypassList();</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.clearBypassList();</code></pre>
                 </div>
                 <div class="method public">
-                  <h4
-                    class="method-title"
-                    id="TriggerHandler.clearGlobalBypass">
+                  <h4 class="method-title" id="TriggerHandler.clearGlobalBypass">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -1443,23 +937,17 @@
                     </a>
                   </h4>
                   <div class="method-description">
-                    Clear only the global bypass flag, leaving the list of
-                    bypassed handlers intact <br />This is useful for keeping a
-                    base set of bypassed handlers intact for an entire operation
+                    Clear only the global bypass flag, leaving the list of bypassed handlers intact <br />This is useful for keeping a base set of bypassed handlers intact for an
+                    entire operation
                   </div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void clearGlobalBypass()
-                  </div>
+                  <div class="method-signature">public static void clearGlobalBypass()</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.clearGlobalBypass();</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.clearGlobalBypass();</code></pre>
                 </div>
                 <div class="method public">
-                  <h4
-                    class="method-title"
-                    id="TriggerHandler.clearMaxLoopCount">
+                  <h4 class="method-title" id="TriggerHandler.clearMaxLoopCount">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -1469,15 +957,10 @@
                       clearMaxLoopCount()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Removes the limit for the number of times we allow this
-                    class to run
-                  </div>
+                  <div class="method-description">Removes the limit for the number of times we allow this class to run</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public void clearMaxLoopCount()
-                  </div>
+                  <div class="method-signature">public void clearMaxLoopCount()</div>
                 </div>
                 <div class="method private">
                   <h4 class="method-title" id="TriggerHandler.getHandlerName">
@@ -1491,26 +974,16 @@
                     </a>
                   </h4>
                   <div class="method-description">
-                    Get the name of the current handler. This can be set by
-                    using the constructor with the string parameter to improve
-                    performance
+                    Get the name of the current handler. This can be set by using the constructor with the string parameter to improve performance
                   </div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private String getHandlerName()
-                  </div>
+                  <div class="method-signature">private String getHandlerName()</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">String</code> Name of the current
-                    handler
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">String</code> Name of the current handler</div>
                   <div class="method-subtitle">See</div>
                   <div class="method-subtitle-description">
-                    <span
-                      title="A valid link could not be created with this identifier."
-                      >TriggerHandler.handlerName</span
-                    >
+                    <span title="A valid link could not be created with this identifier.">TriggerHandler.handlerName</span>
                   </div>
                 </div>
                 <div class="method public">
@@ -1524,32 +997,19 @@
                       getLoopCount(handlerName)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    return the current loop count
-                  </div>
+                  <div class="method-description">return the current loop count</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static Integer getLoopCount(String handlerName)
-                  </div>
+                  <div class="method-signature">public static Integer getLoopCount(String handlerName)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerName</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">String</code>
-                  </div>
-                  <div class="param-description">
-                    The handler class to check for the current loop count
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">String</code></div>
+                  <div class="param-description">The handler class to check for the current loop count</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">Integer</code> How many times has
-                    this handler run?
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">Integer</code> How many times has this handler run?</div>
                 </div>
                 <div class="method private">
-                  <h4
-                    class="method-title"
-                    id="TriggerHandler.incrementCheckLoopCount">
+                  <h4 class="method-title" id="TriggerHandler.incrementCheckLoopCount">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -1560,34 +1020,17 @@
                     </a>
                   </h4>
                   <div class="method-description">
-                    Increment the loop count and check if we exceeded the max
-                    loop count. <br />Silently exit if we have exceeded it. (Log
-                    to System.debug)
+                    Increment the loop count and check if we exceeded the max loop count. <br />Silently exit if we have exceeded it. (Log to System.debug)
                   </div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private Boolean incrementCheckLoopCount()
-                  </div>
+                  <div class="method-signature">private Boolean incrementCheckLoopCount()</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">Boolean</code> Should the trigger
-                    continue execution?
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">Boolean</code> Should the trigger continue execution?</div>
                   <div class="method-subtitle">Author</div>
                   <div class="method-subtitle-description">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://github.com/dschach"
-                      >David Schach</a
-                    >
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://github.com/fbouzeraa"
-                      >fbouzeraa</a
-                    >
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/fbouzeraa">fbouzeraa</a>
                   </div>
                 </div>
                 <div class="method public">
@@ -1601,31 +1044,18 @@
                       isBypassed(handlerName)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    A handler is considered bypassed if it was bypassed, or all
-                    handlers have been bypassed
-                  </div>
+                  <div class="method-description">A handler is considered bypassed if it was bypassed, or all handlers have been bypassed</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static Boolean isBypassed(String handlerName)
-                  </div>
+                  <div class="method-signature">public static Boolean isBypassed(String handlerName)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerName</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">String</code>
-                  </div>
-                  <div class="param-description">
-                    The class name of the handler we are checking is bypassed
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">String</code></div>
+                  <div class="param-description">The class name of the handler we are checking is bypassed</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">Boolean</code> Is this handler
-                    bypassed?
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">Boolean</code> Is this handler bypassed?</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.isBypassed(&#39;AccountTriggerHandler&#39;);</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.isBypassed(&#39;AccountTriggerHandler&#39;);</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.isBypassed_1">
@@ -1638,33 +1068,20 @@
                       isBypassed(handlerType)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    A handler is considered bypassed if it was bypassed, or all
-                    handlers have been bypassed
-                  </div>
+                  <div class="method-description">A handler is considered bypassed if it was bypassed, or all handlers have been bypassed</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static Boolean isBypassed(Type handlerType)
-                  </div>
+                  <div class="method-signature">public static Boolean isBypassed(Type handlerType)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerType</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">Type</code>
-                  </div>
-                  <div class="param-description">
-                    The handler class we are checking is bypassed
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">Type</code></div>
+                  <div class="param-description">The handler class we are checking is bypassed</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">Boolean</code> Is this handler
-                    bypassed?
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">Boolean</code> Is this handler bypassed?</div>
                   <div class="method-subtitle">Since</div>
                   <div class="method-subtitle-description">2021</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.isBypassed(AccountTriggerHandler.class);</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.isBypassed(AccountTriggerHandler.class);</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.run">
@@ -1677,26 +1094,14 @@
                       run()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Main method that will be called during execution <br />See
-                    the sample trigger for the best way to set up your handler
-                  </div>
+                  <div class="method-description">Main method that will be called during execution <br />See the sample trigger for the best way to set up your handler</div>
                   <div class="method-subtitle">Signature</div>
 
                   <div class="method-signature">public void run()</div>
                   <div class="method-subtitle">Author</div>
-                  <div class="method-subtitle-description">
-                    Kevin O&#39;Hara
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://github.com/dschach"
-                      >David Schach</a
-                    >
-                  </div>
+                  <div class="method-subtitle-description">Kevin O&#39;Hara <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a></div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> new AccountSampleTriggerHandler().run();</code></pre>
+                  <pre class="code-example"><code> new AccountSampleTriggerHandler().run();</code></pre>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.setBypass">
@@ -1709,47 +1114,27 @@
                       setBypass(handlerName, desiredValue)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Set bypass status to a specific value. Eliminates the need
-                    to know the current bypass status
-                  </div>
+                  <div class="method-description">Set bypass status to a specific value. Eliminates the need to know the current bypass status</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void setBypass(String handlerName, Boolean
-                    desiredValue)
-                  </div>
+                  <div class="method-signature">public static void setBypass(String handlerName, Boolean desiredValue)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerName</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">String</code>
-                  </div>
-                  <div class="param-description">
-                    The name of the TriggerHandler class
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">String</code></div>
+                  <div class="param-description">The name of the TriggerHandler class</div>
                   <div class="param-name">desiredValue</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">Boolean</code>
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">Boolean</code></div>
                   <div class="param-description">
-                    <code class="code-inline">true</code> to bypass, and
-                    <code class="code-inline">false</code> to run the
-                    handler/clear the bypass
+                    <code class="code-inline">true</code> to bypass, and <code class="code-inline">false</code> to run the handler/clear the bypass
                   </div>
                   <div class="method-subtitle">Author</div>
                   <div class="method-subtitle-description">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://github.com/dschach"
-                      >David Schach</a
-                    >
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
                   </div>
                   <div class="method-subtitle">Since</div>
                   <div class="method-subtitle-description">2021</div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.setBypass(&#39;AccountTriggerHandler&#39;, false); 
+                  <pre class="code-example"><code> TriggerHandler.setBypass(&#39;AccountTriggerHandler&#39;, false); 
  -or- 
  Boolean isBypassed = TriggerHandler.isBypassed(&#39;AccountTriggerHandler&#39;); 
  TriggerHandler.bypass(&#39;AccountTriggerHandler&#39;); 
@@ -1767,38 +1152,23 @@
                       setMaxLoopCount(max)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Limit the number of times this handler can be run before it
-                    fails silently
-                  </div>
+                  <div class="method-description">Limit the number of times this handler can be run before it fails silently</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public void setMaxLoopCount(Integer max)
-                  </div>
+                  <div class="method-signature">public void setMaxLoopCount(Integer max)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">max</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">Integer</code>
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">Integer</code></div>
                   <div class="param-description">Naximum number of times</div>
                   <div class="method-subtitle">Author</div>
                   <div class="method-subtitle-description">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://github.com/dschach"
-                      >David Schach</a
-                    >
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
                   </div>
                   <div class="method-subtitle">Example</div>
-                  <pre
-                    class="code-example"><code> TriggerHandler.setMaxLoopCount(5);</code></pre>
+                  <pre class="code-example"><code> TriggerHandler.setMaxLoopCount(5);</code></pre>
                 </div>
                 <div class="method private">
-                  <h4
-                    class="method-title"
-                    id="TriggerHandler.setTriggerContext">
+                  <h4 class="method-title" id="TriggerHandler.setTriggerContext">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -1808,19 +1178,13 @@
                       setTriggerContext()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Base method called by constructor to set the current context
-                  </div>
+                  <div class="method-description">Base method called by constructor to set the current context</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private void setTriggerContext()
-                  </div>
+                  <div class="method-signature">private void setTriggerContext()</div>
                 </div>
                 <div class="method private">
-                  <h4
-                    class="method-title"
-                    id="TriggerHandler.setTriggerContext_1">
+                  <h4 class="method-title" id="TriggerHandler.setTriggerContext_1">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -1831,38 +1195,21 @@
                     </a>
                   </h4>
                   <div class="method-description">
-                    Set the current trigger context based on the
-                    System.TriggerOperation <br />If we are not in a trigger
-                    context, then we set isTriggerExecuting to false
+                    Set the current trigger context based on the System.TriggerOperation <br />If we are not in a trigger context, then we set isTriggerExecuting to false
                   </div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private void setTriggerContext(System.TriggerOperation
-                    opType, Boolean testMode)
-                  </div>
+                  <div class="method-signature">private void setTriggerContext(System.TriggerOperation opType, Boolean testMode)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">opType</div>
-                  <div class="param-type">
-                    Type:
-                    <code class="code-inline">System.TriggerOperation</code>
-                  </div>
-                  <div class="param-description">
-                    The operation type - set automatically by the system
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">System.TriggerOperation</code></div>
+                  <div class="param-description">The operation type - set automatically by the system</div>
                   <div class="param-name">testMode</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">Boolean</code>
-                  </div>
-                  <div class="param-description">
-                    Only used in test methods to force certain contexts
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">Boolean</code></div>
+                  <div class="param-description">Only used in test methods to force certain contexts</div>
                   <div class="method-subtitle">See</div>
                   <div class="method-subtitle-description">
-                    <span
-                      title="A valid link could not be created with this identifier."
-                      >TriggerHandler.isTriggerExecuting</span
-                    >
+                    <span title="A valid link could not be created with this identifier.">TriggerHandler.isTriggerExecuting</span>
                   </div>
                 </div>
                 <div class="method public">
@@ -1876,31 +1223,17 @@
                       showDebug()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Called in the trigger to force the class to debug trigger
-                    entry and exit with context.
-                  </div>
+                  <div class="method-description">Called in the trigger to force the class to debug trigger entry and exit with context.</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void showDebug()
-                  </div>
+                  <div class="method-signature">public static void showDebug()</div>
                   <div class="method-subtitle">See</div>
                   <div class="method-subtitle-description">
-                    <a
-                      href="javascript:void(0)"
-                      onclick="goToLocation('TriggerHandler.html#TriggerHandler.showLimits_1')"
-                      >TriggerHandler.showLimits</a
-                    >
+                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.showLimits_1')">TriggerHandler.showLimits</a>
                   </div>
                   <div class="method-subtitle">Author</div>
                   <div class="method-subtitle-description">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://github.com/dschach"
-                      >David Schach</a
-                    >
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
                   </div>
                   <div class="method-subtitle">Since</div>
                   <div class="method-subtitle-description">2021</div>
@@ -1922,39 +1255,22 @@
                     </a>
                   </h4>
                   <div class="method-description">
-                    Called in the trigger to force the class to debug trigger
-                    entry and exit with context. <br />Set to true to show entry
-                    and exit.
+                    Called in the trigger to force the class to debug trigger entry and exit with context. <br />Set to true to show entry and exit.
                   </div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void showDebug(Boolean enabled)
-                  </div>
+                  <div class="method-signature">public static void showDebug(Boolean enabled)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">enabled</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">Boolean</code>
-                  </div>
-                  <div class="param-description">
-                    true to enable; false to disable
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">Boolean</code></div>
+                  <div class="param-description">true to enable; false to disable</div>
                   <div class="method-subtitle">See</div>
                   <div class="method-subtitle-description">
-                    <a
-                      href="javascript:void(0)"
-                      onclick="goToLocation('TriggerHandler.html#TriggerHandler.showDebug')"
-                      >TriggerHandler.showDebug</a
-                    >
+                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.showDebug')">TriggerHandler.showDebug</a>
                   </div>
                   <div class="method-subtitle">Author</div>
                   <div class="method-subtitle-description">
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://github.com/dschach"
-                      >David Schach</a
-                    >
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a>
                   </div>
                   <div class="method-subtitle">Since</div>
                   <div class="method-subtitle-description">2021</div>
@@ -1970,22 +1286,13 @@
                       showLimits()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Called before the trigger to force the class to debug query
-                    limits when it runs
-                  </div>
+                  <div class="method-description">Called before the trigger to force the class to debug query limits when it runs</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void showLimits()
-                  </div>
+                  <div class="method-signature">public static void showLimits()</div>
                   <div class="method-subtitle">See</div>
                   <div class="method-subtitle-description">
-                    <a
-                      href="javascript:void(0)"
-                      onclick="goToLocation('TriggerHandler.html#TriggerHandler.showLimits_1')"
-                      >TriggerHandler.showLimits</a
-                    >
+                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.showLimits_1')">TriggerHandler.showLimits</a>
                   </div>
                   <div class="method-subtitle">Example</div>
                   <pre class="code-example"><code> TriggerHandler.showLimits(); 
@@ -2004,31 +1311,17 @@
                       showLimits(enabled)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Called before the trigger to enable the class to debug (or
-                    not) query limits when it runs. <br />Set to true to show
-                    limits.
-                  </div>
+                  <div class="method-description">Called before the trigger to enable the class to debug (or not) query limits when it runs. <br />Set to true to show limits.</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public static void showLimits(Boolean enabled)
-                  </div>
+                  <div class="method-signature">public static void showLimits(Boolean enabled)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">enabled</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">Boolean</code>
-                  </div>
-                  <div class="param-description">
-                    true to enable; false to disable
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">Boolean</code></div>
+                  <div class="param-description">true to enable; false to disable</div>
                   <div class="method-subtitle">See</div>
                   <div class="method-subtitle-description">
-                    <a
-                      href="javascript:void(0)"
-                      onclick="goToLocation('TriggerHandler.html#TriggerHandler.showLimits')"
-                      >TriggerHandler.showLimits</a
-                    >
+                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.showLimits')">TriggerHandler.showLimits</a>
                   </div>
                 </div>
                 <div class="method private">
@@ -2043,31 +1336,18 @@
                     </a>
                   </h4>
                   <div class="method-description">
-                    Make sure this trigger should continue to run
-                    <br />Returning
-                    <code class="code-inline">false</code> causes trigger
-                    handler to exit
+                    Make sure this trigger should continue to run <br />Returning <code class="code-inline">false</code> causes trigger handler to exit
                   </div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private Boolean validateRun()
-                  </div>
+                  <div class="method-signature">private Boolean validateRun()</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">Boolean</code> Is the run valid?
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">Boolean</code> Is the run valid?</div>
                   <div class="method-subtitle">Exceptions</div>
-                  <div class="method-subtitle-description">
-                    TriggerHandlerException
-                  </div>
+                  <div class="method-subtitle-description">TriggerHandlerException</div>
                   <div class="method-subtitle">See</div>
                   <div class="method-subtitle-description">
-                    <a
-                      href="javascript:void(0)"
-                      onclick="goToLocation('TriggerHandler.html#TriggerHandler.TriggerHandlerException')"
-                      >TriggerHandler.TriggerHandlerException</a
-                    >
+                    <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html#TriggerHandler.TriggerHandlerException')">TriggerHandler.TriggerHandlerException</a>
                   </div>
                 </div>
               </div>
@@ -2086,17 +1366,13 @@
               </a>
             </h2>
             <div class="class-container">
-              <div class="class-description">
-                Inner class for managing the loop count per handler
-              </div>
+              <div class="class-description">Inner class for managing the loop count per handler</div>
               <div class="class-subtitle">Signature</div>
               <div class="class-annotations">@TestVisible</div>
               <div class="class-signature">private class LoopCount</div>
             </div>
             <div class="subsection properties TriggerHandler_LoopCount">
-              <h3 class="subsection-title properties">
-                TriggerHandler.LoopCount Properties
-              </h3>
+              <h3 class="subsection-title properties">TriggerHandler.LoopCount Properties</h3>
               <table class="attributes-table properties">
                 <tr>
                   <th>Name</th>
@@ -2119,9 +1395,7 @@
                     <div class="attribute-signature">private Integer count</div>
                   </td>
 
-                  <td class="attribute-description">
-                    Number of times this handler has been run
-                  </td>
+                  <td class="attribute-description">Number of times this handler has been run</td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
@@ -2138,46 +1412,27 @@
                     <div class="attribute-signature">private Integer max</div>
                   </td>
 
-                  <td class="attribute-description">
-                    Maximum number of times this handler should be run
-                  </td>
+                  <td class="attribute-description">Maximum number of times this handler should be run</td>
                 </tr>
               </table>
             </div>
             <div class="subsection methods">
-              <h3 class="subsection-title methods">
-                TriggerHandler.LoopCount Constructors
-              </h3>
+              <h3 class="subsection-title methods">TriggerHandler.LoopCount Constructors</h3>
               <div class="methods-container">
                 <ul class="methods-toc">
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.LoopCount.LoopCount">
-                      LoopCount ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.LoopCount.LoopCount"> LoopCount () </a>
 
-                    <div class="methods-toc__description">
-                      Standard constructor <br />Default max to 5 <br />Default
-                      count to 0
-                    </div>
+                    <div class="methods-toc__description">Standard constructor <br />Default max to 5 <br />Default count to 0</div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.LoopCount.LoopCount_1">
-                      LoopCount (max)
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.LoopCount.LoopCount_1"> LoopCount (max) </a>
 
-                    <div class="methods-toc__description">
-                      Constructor with specified max loops
-                    </div>
+                    <div class="methods-toc__description">Constructor with specified max loops</div>
                   </li>
                 </ul>
                 <div class="method public">
-                  <h4
-                    class="method-title"
-                    id="TriggerHandler.LoopCount.LoopCount">
+                  <h4 class="method-title" id="TriggerHandler.LoopCount.LoopCount">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -2187,18 +1442,13 @@
                       LoopCount()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Standard constructor <br />Default max to 5 <br />Default
-                    count to 0
-                  </div>
+                  <div class="method-description">Standard constructor <br />Default max to 5 <br />Default count to 0</div>
                   <div class="method-subtitle">Signature</div>
 
                   <div class="method-signature">public LoopCount()</div>
                 </div>
                 <div class="method public">
-                  <h4
-                    class="method-title"
-                    id="TriggerHandler.LoopCount.LoopCount_1">
+                  <h4 class="method-title" id="TriggerHandler.LoopCount.LoopCount_1">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -2208,92 +1458,49 @@
                       LoopCount(max)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Constructor with specified max loops
-                  </div>
+                  <div class="method-description">Constructor with specified max loops</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public LoopCount(Integer max)
-                  </div>
+                  <div class="method-signature">public LoopCount(Integer max)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">max</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">Integer</code>
-                  </div>
-                  <div class="param-description">
-                    Max number of loops allowed
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">Integer</code></div>
+                  <div class="param-description">Max number of loops allowed</div>
                 </div>
               </div>
             </div>
             <div class="subsection methods">
-              <h3 class="subsection-title methods">
-                TriggerHandler.LoopCount Methods
-              </h3>
+              <h3 class="subsection-title methods">TriggerHandler.LoopCount Methods</h3>
               <div class="methods-container">
                 <ul class="methods-toc">
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.LoopCount.exceeded">
-                      exceeded ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.LoopCount.exceeded"> exceeded () </a>
 
-                    <div class="methods-toc__description">
-                      Determines if we&#39;re about to exceed the loop count.
-                    </div>
+                    <div class="methods-toc__description">Determines if we&#39;re about to exceed the loop count.</div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.LoopCount.getCount">
-                      getCount ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.LoopCount.getCount"> getCount () </a>
 
-                    <div class="methods-toc__description">
-                      Returns the current loop count.
-                    </div>
+                    <div class="methods-toc__description">Returns the current loop count.</div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.LoopCount.getMax">
-                      getMax ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.LoopCount.getMax"> getMax () </a>
 
-                    <div class="methods-toc__description">
-                      Returns the max loop count.
-                    </div>
+                    <div class="methods-toc__description">Returns the max loop count.</div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.LoopCount.increment">
-                      increment ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.LoopCount.increment"> increment () </a>
 
-                    <div class="methods-toc__description">
-                      Increment the internal counter returning the results of
-                      this.exceeded().
-                    </div>
+                    <div class="methods-toc__description">Increment the internal counter returning the results of this.exceeded().</div>
                   </li>
                   <li class="method public">
-                    <a
-                      class="methods-toc__entry"
-                      href="#TriggerHandler.LoopCount.setMax">
-                      setMax (max)
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandler.LoopCount.setMax"> setMax (max) </a>
 
-                    <div class="methods-toc__description">
-                      Sets the max loop count
-                    </div>
+                    <div class="methods-toc__description">Sets the max loop count</div>
                   </li>
                 </ul>
                 <div class="method public">
-                  <h4
-                    class="method-title"
-                    id="TriggerHandler.LoopCount.exceeded">
+                  <h4 class="method-title" id="TriggerHandler.LoopCount.exceeded">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -2303,22 +1510,15 @@
                       exceeded()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Determines if we&#39;re about to exceed the loop count.
-                  </div>
+                  <div class="method-description">Determines if we&#39;re about to exceed the loop count.</div>
                   <div class="method-subtitle">Signature</div>
 
                   <div class="method-signature">public Boolean exceeded()</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">Boolean</code> True if less than 0
-                    or more than max.
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">Boolean</code> True if less than 0 or more than max.</div>
                 </div>
                 <div class="method public">
-                  <h4
-                    class="method-title"
-                    id="TriggerHandler.LoopCount.getCount">
+                  <h4 class="method-title" id="TriggerHandler.LoopCount.getCount">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -2328,16 +1528,12 @@
                       getCount()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Returns the current loop count.
-                  </div>
+                  <div class="method-description">Returns the current loop count.</div>
                   <div class="method-subtitle">Signature</div>
 
                   <div class="method-signature">public Integer getCount()</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">Integer</code> Current loop count.
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">Integer</code> Current loop count.</div>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.LoopCount.getMax">
@@ -2350,21 +1546,15 @@
                       getMax()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Returns the max loop count.
-                  </div>
+                  <div class="method-description">Returns the max loop count.</div>
                   <div class="method-subtitle">Signature</div>
 
                   <div class="method-signature">public Integer getMax()</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">Integer</code> Max loop count.
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">Integer</code> Max loop count.</div>
                 </div>
                 <div class="method public">
-                  <h4
-                    class="method-title"
-                    id="TriggerHandler.LoopCount.increment">
+                  <h4 class="method-title" id="TriggerHandler.LoopCount.increment">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
@@ -2374,18 +1564,12 @@
                       increment()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Increment the internal counter returning the results of
-                    this.exceeded().
-                  </div>
+                  <div class="method-description">Increment the internal counter returning the results of this.exceeded().</div>
                   <div class="method-subtitle">Signature</div>
 
                   <div class="method-signature">public Boolean increment()</div>
                   <div class="method-subtitle">Returns</div>
-                  <div class="method-subtitle-description">
-                    <code class="code-inline">Boolean</code> true if count will
-                    exceed max count or is less than 0.
-                  </div>
+                  <div class="method-subtitle-description"><code class="code-inline">Boolean</code> true if count will exceed max count or is less than 0.</div>
                 </div>
                 <div class="method public">
                   <h4 class="method-title" id="TriggerHandler.LoopCount.setMax">
@@ -2401,17 +1585,11 @@
                   <div class="method-description">Sets the max loop count</div>
                   <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public void setMax(Integer max)
-                  </div>
+                  <div class="method-signature">public void setMax(Integer max)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">max</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">Integer</code>
-                  </div>
-                  <div class="param-description">
-                    The integer to set max to.
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">Integer</code></div>
+                  <div class="param-description">The integer to set max to.</div>
                 </div>
               </div>
             </div>
@@ -2432,9 +1610,7 @@
               <div class="class-description">Exception class</div>
               <div class="class-subtitle">Signature</div>
 
-              <div class="class-signature">
-                public class TriggerHandlerException extends Exception
-              </div>
+              <div class="class-signature">public class TriggerHandlerException extends Exception</div>
             </div>
           </div>
         </td>
@@ -2442,12 +1618,7 @@
       <tr>
         <td class="footer">
           <div>
-            <a
-              href="https://github.com/no-stack-dub-sack/apexdox-vs-code"
-              target="_blank"
-              rel="noopener noreferrer">
-              Powered By ApexDox VS Code
-            </a>
+            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer"> Powered By ApexDox VS Code </a>
           </div>
         </td>
       </tr>

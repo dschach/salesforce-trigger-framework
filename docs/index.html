@@ -20,41 +20,20 @@
         <div class="title">Salesforce Trigger Handler code documentation</div>
         <img src="assets/logo.png" />
         <div class="subtitle">
-          Documentation for
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/dschach/salesforce-trigger-framework"
-            >Trigger Framework</a
-          >
+          Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
         </div>
       </div>
       <div id="search-wrapper">
         <div class="search-icon"></div>
-        <input
-          id="search-input"
-          type="text"
-          autocomplete="off"
-          placeholder="Search..." />
+        <input id="search-input" type="text" autocomplete="off" placeholder="Search..." />
       </div>
       <ul id="search-results" class=""></ul>
       <div class="navbar">
         <nav role="navigation">
-          <a
-            class="nav-header"
-            id="home"
-            href="javascript:void(0)"
-            onclick="goToLocation('index.html');">
-            Home
-          </a>
+          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');"> Home </a>
           <details id="SampleTriggerHandler" class="group-name">
             <summary id="header-SampleTriggerHandler" class="nav-header">
-              <a
-                href="javascript:void(0)"
-                title="See Class Group info"
-                onclick="goToLocation('triggerhandlerhome.html');"
-                >SampleTriggerHandler</a
-              >
+              <a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('triggerhandlerhome.html');">SampleTriggerHandler</a>
             </summary>
             <ul>
               <!-- menu items -->
@@ -63,44 +42,27 @@
                 id="item-AccountSampleTriggerHandler"
                 class="nav-item class public"
                 onclick="goToLocation('AccountSampleTriggerHandler.html');">
-                <a tabindex="1" href="javascript:void(0)"
-                  >AccountSampleTriggerHandler</a
-                >
+                <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandler</a>
               </li>
               <li
                 title="AccountSampleTriggerHandlerTest"
                 id="item-AccountSampleTriggerHandlerTest"
                 class="nav-item class private"
                 onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
-                <a tabindex="1" href="javascript:void(0)"
-                  >AccountSampleTriggerHandlerTest</a
-                >
+                <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandlerTest</a>
               </li>
             </ul>
           </details>
           <details id="TriggerHandler" class="group-name">
             <summary id="header-TriggerHandler" class="nav-header">
-              <a
-                href="javascript:void(0)"
-                title="See Class Group info"
-                onclick="goToLocation('triggerhandlerhome.html');"
-                >TriggerHandler</a
-              >
+              <a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('triggerhandlerhome.html');">TriggerHandler</a>
             </summary>
             <ul>
               <!-- menu items -->
-              <li
-                title="TriggerHandler"
-                id="item-TriggerHandler"
-                class="nav-item class public"
-                onclick="goToLocation('TriggerHandler.html');">
+              <li title="TriggerHandler" id="item-TriggerHandler" class="nav-item class public" onclick="goToLocation('TriggerHandler.html');">
                 <a tabindex="1" href="javascript:void(0)">TriggerHandler</a>
               </li>
-              <li
-                title="TriggerHandlerTest"
-                id="item-TriggerHandlerTest"
-                class="nav-item class private"
-                onclick="goToLocation('TriggerHandlerTest.html');">
+              <li title="TriggerHandlerTest" id="item-TriggerHandlerTest" class="nav-item class private" onclick="goToLocation('TriggerHandlerTest.html');">
                 <a tabindex="1" href="javascript:void(0)">TriggerHandlerTest</a>
               </li>
             </ul>
@@ -111,33 +73,11 @@
     <table id="content">
       <tr>
         <td class="scoping-panel">
-          Show:
-          <input
-            type="checkbox"
-            checked="true"
-            id="cbx-all"
-            onclick="toggleAllScopes(this.checked);" />
-          <label for="cbx-all">All</label>&nbsp;&nbsp;
-          <input
-            type="checkbox"
-            checked="true"
-            id="cbx-public"
-            onclick="toggleScope('public', this.checked);" />
-          <label for="cbx-public"> public </label>&nbsp;&nbsp;<input
-            type="checkbox"
-            checked="true"
-            id="cbx-private"
-            onclick="toggleScope('private', this.checked);" />
-          <label for="cbx-private"> private </label>&nbsp;&nbsp;<input
-            type="checkbox"
-            checked="true"
-            id="cbx-protected"
-            onclick="toggleScope('protected', this.checked);" />
-          <label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input
-            type="checkbox"
-            checked="true"
-            id="cbx-testmethod"
-            onclick="toggleScope('testmethod', this.checked);" />
+          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" /> <label for="cbx-all">All</label>&nbsp;&nbsp;
+          <input type="checkbox" checked="true" id="cbx-public" onclick="toggleScope('public', this.checked);" />
+          <label for="cbx-public"> public </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
+          <label for="cbx-private"> private </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
+          <label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
           <label for="cbx-testmethod"> testMethod </label>
         </td>
       </tr>
@@ -147,72 +87,42 @@
           <link href="assets/styling.css" rel="stylesheet" />
           <h1>Salesforce Trigger Framework</h1>
           <h2>Credit</h2>
-          <p>
-            Based on Kevin O’Hara’s famous framework
-            <a href="https://github.com/kevinohara80/sfdc-trigger-framework"
-              >sfdc-trigger-framework</a
-            >
-          </p>
+          <p>Based on Kevin O’Hara’s famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a></p>
           <h2>Overview</h2>
           <p>
-            Triggers should be logicless. Putting logic into your triggers
-            creates un-testable, difficult-to-maintain code. It's widely
-            accepted that a best-practice is to move trigger logic into a
-            handler class.
+            Triggers should be logicless. Putting logic into your triggers creates un-testable, difficult-to-maintain code. It's widely accepted that a best-practice is to move
+            trigger logic into a handler class.
           </p>
           <p>
-            This trigger framework bundles a single
-            <strong>TriggerHandler</strong> base class that you can inherit from
-            in all of your trigger handlers. The base class includes
-            context-specific methods that are automatically called when a
-            trigger is executed.
+            This trigger framework bundles a single <strong>TriggerHandler</strong> base class that you can inherit from in all of your trigger handlers. The base class includes
+            context-specific methods that are automatically called when a trigger is executed.
           </p>
           <p>
-            The base class also provides a secondary role as a supervisor for
-            Trigger execution. It acts like a watchdog, monitoring trigger
-            activity and providing an api for controlling certain aspects of
-            execution and control flow.
+            The base class also provides a secondary role as a supervisor for Trigger execution. It acts like a watchdog, monitoring trigger activity and providing an api for
+            controlling certain aspects of execution and control flow.
           </p>
-          <p>
-            But the most important part of this framework is that it's minimal
-            and simple to use.
-          </p>
+          <p>But the most important part of this framework is that it's minimal and simple to use.</p>
           <!-- <p>See the sample handler documentation at <a href="triggerhandlerhome.html">TriggerHandler</a>.</p> -->
           <h2 id="usage">Usage</h2>
           <h3 id="triggerhandler">Trigger Handler</h3>
           <p>
-            To create a trigger handler, you simply need to create a class that
-            inherits from
-            <strong><a href="./TriggerHandler.html">TriggerHandler</a></strong
+            To create a trigger handler, you simply need to create a class that inherits from <strong><a href="./TriggerHandler.html">TriggerHandler</a></strong
             >. Here is an example for creating an Opportunity trigger handler.
           </p>
           <pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {</code></pre>
           <p>
-            In your trigger handler, to add logic to any of the trigger
-            contexts, you only need to override them in your trigger handler.
-            Here is how we would add logic to a
+            In your trigger handler, to add logic to any of the trigger contexts, you only need to override them in your trigger handler. Here is how we would add logic to a
             <code>beforeUpdate, afterUpdate</code> trigger.
           </p>
           <p>
-            A sample
-            <a
-              href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes"
-              >AccountSampleTriggerHandler</a
-            >
-            class has been included in this repository, as well as a sample
-            <a
-              href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger"
-              >trigger</a
-            >.
+            A sample <a href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes">AccountSampleTriggerHandler</a> class has been
+            included in this repository, as well as a sample
+            <a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger">trigger</a>.
           </p>
           <p>
-            <strong>Note:</strong> When referencing the Trigger static maps
-            within a class, SObjects are returned versus SObject subclasses like
-            Opportunity, Account, etc. This means that you must cast when you
-            reference them in your trigger handler. You could do this in your
-            constructor if you wanted. Technically, you only need to cast for
-            oldMap and newMap, but for completeness, I encourage casting
-            Trigger.new and Trigger.old as well.
+            <strong>Note:</strong> When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This
+            means that you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for
+            oldMap and newMap, but for completeness, I encourage casting Trigger.new and Trigger.old as well.
           </p>
           <pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {
   private List&lt;Opportunity&gt; newRecords;
@@ -244,36 +154,27 @@
 </code></pre>
           <h3 id="trigger">Trigger</h3>
           <p>
-            To use the trigger handler, you only need to construct an instance
-            of your trigger handler within the trigger handler itself and call
-            the <code>run()</code> method. Here is an example of an Opportunity
-            trigger.
+            To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger handler itself and call the <code>run()</code> method.
+            Here is an example of an Opportunity trigger.
           </p>
           <p>
-            This is the way to write a trigger that will run the trigger
-            handlers below. Note that some objects do not work in every context,
-            so ensure that you list only applicable trigger contexts in your
-            trigger definition and that you only override those contexts. If you
-            include extra contexts, they will not be covered by Apex tests,
+            This is the way to write a trigger that will run the trigger handlers below. Note that some objects do not work in every context, so ensure that you list only
+            applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests,
             which could lead to deployment problems.
           </p>
           <pre><code class="language-java">trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler().run();
 }
 </code></pre>
-          There is also a faster way to write the trigger, specifying the
-          handler class name so the handler does not need to describe the class
-          for its name, saving precious execution time:
+          There is also a faster way to write the trigger, specifying the handler class name so the handler does not need to describe the class for its name, saving precious
+          execution time:
           <pre><code class="language-java">trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler('OpportunityTriggerHandler').run();
 }
 </code></pre>
           <h2 id="coolstuff">Cool Stuff</h2>
           <h3 id="bypassapi">Bypass API</h3>
-          <p>
-            What if you want to tell other trigger handlers to halt execution?
-            That's easy with the bypass api:
-          </p>
+          <p>What if you want to tell other trigger handlers to halt execution? That's easy with the bypass api:</p>
           <pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {
   private Map&lt;Id, Opportunity&gt; newRecordsMap;
 
@@ -303,10 +204,7 @@
 }
 </code></pre>
           <h3 id="checkbypassstatus">Check Bypass Status</h3>
-          <p>
-            If you need to check if a handler is bypassed, use the
-            <code>isBypassed</code> method:
-          </p>
+          <p>If you need to check if a handler is bypassed, use the <code>isBypassed</code> method:</p>
           <pre><code class="language-java">if (TriggerHandler.isBypassed('AccountTriggerHandler')) {
   // ... do something if the Account trigger handler is bypassed!
 }
@@ -315,29 +213,19 @@
           <p>To bypass all handlers, set the global bypass variable:</p>
           <pre><code class="language-java">TriggerHandler.setGlobalBypass();
 </code></pre>
-          <p>
-            This will also add an entry 'bypassAll' to the list of handlers
-            returned in <code>bypassList</code>.
-          </p>
-          <p>
-            To clear all bypasses for the transaction, simply use the
-            <code>clearAllBypasses</code> method, as in:
-          </p>
+          <p>This will also add an entry 'bypassAll' to the list of handlers returned in <code>bypassList</code>.</p>
+          <p>To clear all bypasses for the transaction, simply use the <code>clearAllBypasses</code> method, as in:</p>
           <pre><code class="language-java">// ... done with bypasses!
 
 TriggerHandler.clearAllBypasses();
 
 // ... now handlers won't be ignored! 
 </code></pre>
-          <p>
-            This will clear the list of bypassed handlers and set the
-            <code>globalBypass</code> Boolean to false.
-          </p>
+          <p>This will clear the list of bypassed handlers and set the <code>globalBypass</code> Boolean to false.</p>
           <h3 id="setbypass">Set Bypass</h3>
           <p>
-            If you are not sure in a transaction if a handler is bypassed, but
-            want to bypass it (or clear the bypass) and then set it to its
-            original value, use the <code>setBybass</code> method:
+            If you are not sure in a transaction if a handler is bypassed, but want to bypass it (or clear the bypass) and then set it to its original value, use the
+            <code>setBybass</code> method:
           </p>
           <pre><code class="language-java">Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');
 TriggerHandler.bypass('AccountTriggerHandler');
@@ -346,10 +234,7 @@ TriggerHandler.bypass('AccountTriggerHandler');
 
 TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
 </code></pre>
-          <p>
-            To store all currently bypassed handlers, temporarily bypass all
-            handlers, and then restore the originally bypassed list:
-          </p>
+          <p>To store all currently bypassed handlers, temporarily bypass all handlers, and then restore the originally bypassed list:</p>
           <pre><code class="language-java">List&lt;String&gt; bypassedHandlers = TriggerHandler.bypassList();
 TriggerHandler.bypassAll();
 
@@ -360,10 +245,8 @@ TriggerHandler.bypass(bypassedHandlers);
 </code></pre>
           <h3 id="maxloopcount">Max Loop Count</h3>
           <p>
-            To prevent recursion, you can set a max loop count for Trigger
-            Handler. If this max is exceeded, and exception will be thrown. A
-            great use case is when you want to ensure that your trigger runs
-            once and only once within a single execution. Example:
+            To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, and exception will be thrown. A great use case is when you want to
+            ensure that your trigger runs once and only once within a single execution. Example:
           </p>
           <pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {
   private Map&lt;Id, Opportunity&gt; newRecordsMap;
@@ -383,15 +266,9 @@ TriggerHandler.bypass(bypassedHandlers);
 </code></pre>
           <h3 id="debugstatements">Debug Statements</h3>
           <p>There are two methods that will show additional information.</p>
-          <p>
-            <code>showLimits()</code> will debug Apex query and DML limits when
-            the trigger handler has completed.
-          </p>
+          <p><code>showLimits()</code> will debug Apex query and DML limits when the trigger handler has completed.</p>
           <p><code>showDebug()</code> will debug trigger entry and exit.</p>
-          <p>
-            To use one or both of these, amend them to the trigger - you can
-            assign them for every handler or only specific ones:
-          </p>
+          <p>To use one or both of these, amend them to the trigger - you can assign them for every handler or only specific ones:</p>
           <pre><code class="language-java">TriggerHandler.showLimits();
 AccountTriggerHandler.showDebug();
 new AccountSampleTriggerHandler().run();
@@ -399,10 +276,7 @@ TriggerHandler.showLimits(false);
 AccountTriggerHandler.showDebug(false);
 </code></pre>
           <h2 id="overridablemethods">Overridable Methods</h2>
-          <p>
-            Here are all of the methods that you can override. All of the
-            context possibilities are supported.
-          </p>
+          <p>Here are all of the methods that you can override. All of the context possibilities are supported.</p>
           <ul>
             <li><code>beforeInsert()</code></li>
             <li><code>beforeUpdate()</code></li>
@@ -417,12 +291,7 @@ AccountTriggerHandler.showDebug(false);
       <tr>
         <td class="footer">
           <div>
-            <a
-              href="https://github.com/no-stack-dub-sack/apexdox-vs-code"
-              target="_blank"
-              rel="noopener noreferrer">
-              Powered By ApexDox VS Code
-            </a>
+            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer"> Powered By ApexDox VS Code </a>
           </div>
         </td>
       </tr>
