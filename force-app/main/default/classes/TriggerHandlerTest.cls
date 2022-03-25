@@ -1,10 +1,11 @@
 /**
  * @description Test class for base TriggerHandler class
- * @author Kevin O'Hara
- * @author David Schach
+ * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
+ * @author {@link [David Schach](https://github.com/dschach)}
  * @since 2013
  * @group TriggerHandler
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
+ * @see TriggerHandler
  */
 @isTest
 private class TriggerHandlerTest {
@@ -75,7 +76,7 @@ private class TriggerHandlerTest {
 			handler.run();
 			System.assert(false, 'the handler ran but should have thrown an exception');
 		} catch (TriggerHandler.TriggerHandlerException te) {
-			System.assertEquals(TriggerHandler.errorOutsideTriggerContext, te.getMessage(), 'the exception message should match');
+			System.assertEquals(TriggerHandler.ERROR_TRIGGERCONTEXT, te.getMessage(), 'the exception message should match');
 		} catch (Exception e) {
 			System.assert(false, 'the exception thrown was not expected: ' + e.getTypeName() + ': ' + e.getMessage());
 		}
@@ -102,8 +103,8 @@ private class TriggerHandlerTest {
 		handler.run();
 		System.assertEquals(null, lastMethodCalled, 'last method should be null when bypassed');
 		System.assertEquals(true, TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
-		System.assert(!TriggerHandler.bypassList().isEmpty(), 'Should have no bypassed handlers');
-		System.assert(TriggerHandler.bypassList().contains('TestHandler'), 'The list of bypassed handlers should contain the test handler');
+		System.assert(!TriggerHandler.bypassList().isEmpty(), 'Should have bypassed sample handler');
+		System.assert(TriggerHandler.bypassSet().contains('TestHandler'), 'The set of bypassed handlers should contain the test handler');
 	}
 
 	/**
@@ -160,6 +161,7 @@ private class TriggerHandlerTest {
 		// bypass everything
 		TriggerHandler.bypassAll();
 		handler.run();
+		System.assert(TriggerHandler.bypassSet().contains(TriggerHandler.BYPASS_ALL_ALIAS), 'When global bypass is true, put an item in the bypassed set');
 		System.assert(TriggerHandler.bypassedHandlers.isEmpty(), 'on bypass all, just set global variable to true and leave list empty');
 		System.assert(TriggerHandler.globalBypass, 'bypassing all should set global bypass to true');
 		resetTest();
@@ -167,7 +169,7 @@ private class TriggerHandlerTest {
 		TriggerHandler.bypassAll();
 		handler.run();
 		System.assertEquals(true, TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
-		System.assert(!TriggerHandler.bypassList().isEmpty(), 'we should have a bypassed handler in the list');
+		System.assert(TriggerHandler.bypassList().contains(TriggerHandler.BYPASS_ALL_ALIAS), 'When global bypass is true, put an item in the bypassed list');
 		TriggerHandler.clearAllBypasses();
 		System.assert(TriggerHandler.bypassList().isEmpty(), 'all bypassed handlers should be cleared');
 
@@ -180,7 +182,7 @@ private class TriggerHandlerTest {
 		System.assert(TriggerHandler.bypassList().isEmpty(), 'Should have cleared all bypasses');
 		TriggerHandler.bypassAll();
 		TriggerHandler.setBypass('TestHandler', true);
-		System.assert(TriggerHandler.bypassList().contains('bypassAll'), 'Global bypass should be enabled');
+		System.assert(TriggerHandler.bypassList().contains(TriggerHandler.BYPASS_ALL_ALIAS), 'Global bypass should be enabled');
 		System.assert(TriggerHandler.bypassList().contains('TestHandler'), 'Bypass list should still contain test handler');
 		resetTest();
 
@@ -221,6 +223,8 @@ private class TriggerHandlerTest {
 		beforeInsertMode();
 		TriggerHandler.showLimits(false);
 		TriggerHandler.showLimits();
+		TriggerHandler.showDebug(null);
+		TriggerHandler.showDebug(true);
 		TriggerHandler.showDebug(false);
 		TriggerHandler.showDebug();
 		handler.run();
@@ -287,7 +291,7 @@ private class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description ensure that the current handler name is as expected
+	 * @description Ensure that the current handler name is as expected
 	 */
 	private static void assertTestHandlerName() {
 		System.assertEquals('TestHandler', handler.getHandlerName(), 'handler name should match class name');

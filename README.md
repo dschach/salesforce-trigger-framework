@@ -86,6 +86,12 @@ trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler().run();
 }
 ```
+There is also a faster way to write the trigger, specifying the handler class name so the handler does not need to describe the class for its name, saving precious execution time:
+```apex
+trigger OpportunityTrigger on Opportunity (before update, after update) {
+  new OpportunityTriggerHandler('OpportunityTriggerHandler').run();
+}
+```
 
 ## Cool Stuff
 

@@ -8,11 +8,12 @@
  * @group-content doc-assets/triggerhandlerhome.html
  * @see [License](https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE)
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
+ * @see TriggerHandlerTest
  */
 public virtual class TriggerHandler {
 	@TestVisible
 	/**
-	 * static map of `handlerName`, times `run()` was invoked
+	 * Map of `handlerName` => times `run()` was invoked
 	 */
 	private static Map<String, LoopCount> loopCountMap;
 
@@ -42,7 +43,7 @@ public virtual class TriggerHandler {
 
 	@TestVisible
 	/**
-	 * the current triggerEvent of the trigger, overridable in tests
+	 * The current triggerEvent of the trigger, overridable in tests
 	 * */
 	private System.TriggerOperation triggerEvent;
 
@@ -52,6 +53,12 @@ public virtual class TriggerHandler {
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 */
 	private Boolean isTriggerExecuting;
+
+	@TestVisible
+	/**
+	 * This is the value that will be in the returned list or set when global bypass is active
+	 */
+	private static final String BYPASS_ALL_ALIAS = 'BypassAll';
 
 	// static initialization variables
 	static {
@@ -63,7 +70,8 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Basic constructor
+	 * @description Basic constructor. Slower than the other one
+	 * @see TriggerHandler.TriggerHandler[1]
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
 	 */
@@ -74,11 +82,16 @@ public virtual class TriggerHandler {
 	/**
 	 * @description Constructor with handler name to improve performance
 	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2021
 	 * @param  handlerName The name of the handler
 	 * @example
 	 * new AccountSampleTriggerHandler('AccountSampleTriggerHandler').run();
 	 * (in Trigger Handler)
 	 * public AccountSampleTriggerHandler(String className) {
+	 *   this.newRecords = (List<Account>)Trigger.new;
+	 *   this.oldRecords = (List<Account>)Trigger.old;
+	 *   this.newRecordsMap = (Map<Id, Account>)Trigger.newMap;
+	 *   this.oldRecordsMap = (Map<Id, Account>)Trigger.oldMap;
 	 * }
 	 */
 	public TriggerHandler(String handlerName) {
@@ -87,8 +100,8 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description main method that will be called during execution
-	 * <br> See the sample trigger for the best way to set up your handler
+	 * @description Main method that will be called during execution
+	 * <br>See the sample trigger for the best way to set up your handler
 	 * @author Kevin O'Hara
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @example
@@ -155,9 +168,9 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description setMaxLoopCount description
+	 * @description Limit the number of times this handler can be run before it fails silently
 	 * @author {@link [David Schach](https://github.com/dschach)}
-	 * @param  max max description
+	 * @param  max Naximum number of times
 	 * @example
 	 * TriggerHandler.setMaxLoopCount(5);
 	 */
@@ -178,7 +191,7 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description       bypass by string
+	 * @description       Bypass by string
 	 *
 	 * @param handlerName Name of the handler to be bypassed
 	 * @example TriggerHandler.bypass('AccountSampleTriggerHandler')
@@ -199,7 +212,7 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description        bypass by list, e.g. TriggerHandler.bypass(listOfHandlerStrings)
+	 * @description        Bypass by list, e.g. TriggerHandler.bypass(listOfHandlerStrings)
 	 *
 	 * @param handlerNames List of handlernames
 	 */
@@ -208,7 +221,9 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description bypass all handlers (clear bypassedHandlers to prevent confusion)
+	 * @description Bypass all handlers (clear bypassedHandlers to prevent confusion)
+	 * @example
+	 * TriggerHandler.bypassAll();
 	 */
 	public static void bypassAll() {
 		TriggerHandler.bypassedHandlers.clear();
@@ -216,7 +231,7 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description bypass a specific handler by name
+	 * @description Bypass a specific handler by name
 	 *
 	 * @param handlerName The class name to be bypassed
 	 * @author {@link [vr8hub](https://github.com/vr8hub)}
@@ -230,7 +245,7 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description bypass a specific handler by type
+	 * @description Bypass a specific handler by type
 	 *
 	 * @param handlerType The class to be bypassed. Must end with ".class"
 	 * @example
@@ -269,6 +284,7 @@ public virtual class TriggerHandler {
 	/**
 	 * @description       A handler is considered bypassed if it was bypassed, or all handlers have been bypassed
 	 *
+	 * @since 2021
 	 * @param handlerType The handler class we are checking is bypassed
 	 * @return            `Boolean` Is this handler bypassed?
 	 * @example
@@ -279,9 +295,10 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description return a list of the bypassed handlers
+	 * @description Return a list of the bypassed handlers
+	 * <br>Though both Set and List allow contains(value), we include both methods for convenience
 	 *
-	 * @return      `List<String>`
+	 * @return      `List<String>` List of bypassed handlers
 	 * @example
 	 * TriggerHandler.bypassList();
 	 */
@@ -290,14 +307,35 @@ public virtual class TriggerHandler {
 		bypasses.sort();
 		// bypassAll clears bypassedHandlers, so bypasses is empty here
 		if (globalBypass) {
-			bypasses.add('bypassAll');
+			bypasses.add(BYPASS_ALL_ALIAS);
 		}
 
 		return bypasses;
 	}
 
 	/**
-	 * @description clear all bypasses - by clearing the global bypass and by clearing the list of bypassed handlers
+	 * @description Return a Set of the bypassed handlers
+	 * <br>Though both Set and List allow contains(value), we include both methods for convenience
+	 *
+	 * @since 2022
+	 * @return      `Set<String>` Set of bypassed handlers
+	 * @example
+	 * if(TriggerHandler.bypassSet().contains('AccountSampleTriggerHandler'){
+	 *   // do something
+	 * }
+	 */
+	public static Set<String> bypassSet() {
+		Set<String> bypasses = new Set<String>(TriggerHandler.bypassedHandlers);
+		// bypassAll clears bypassedHandlers, so bypasses is empty here
+		if (globalBypass) {
+			bypasses.add(BYPASS_ALL_ALIAS);
+		}
+
+		return bypasses;
+	}
+
+	/**
+	 * @description Clear all bypasses - by clearing the global bypass and by clearing the list of bypassed handlers
 	 * @example
 	 * TriggerHandler.clearAllBypasses();
 	 */
@@ -307,7 +345,7 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description clear only the global bypass flag, leaving the list of bypassed handlers intact
+	 * @description Clear only the global bypass flag, leaving the list of bypassed handlers intact
 	 * <br>This is useful for keeping a base set of bypassed handlers intact for an entire operation
 	 * @example
 	 * TriggerHandler.clearGlobalBypass();
@@ -317,7 +355,7 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description clear the entire bypass list, but keep the global bypass flag intact
+	 * @description Clear the entire bypass list, but keep the global bypass flag intact
 	 * <br>This is useful for resetting the list of handlers to bypass while maintaining global bypassing
 	 * @example
 	 * TriggerHandler.clearBypassList();
@@ -328,10 +366,17 @@ public virtual class TriggerHandler {
 
 	/**
 	 * @description Set bypass status to a specific value. Eliminates the need to know the current bypass status
+	 * @since 2021
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @param  handlerName  The name of the TriggerHandler class
 	 * @param  desiredValue `true` to bypass, and `false` to run the handler/clear the bypass
 	 * @example
 	 * TriggerHandler.setBypass('AccountTriggerHandler', false);
+	 * -or-
+	 * Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');
+	 * TriggerHandler.bypass('AccountTriggerHandler');
+	 * // do something here
+	 * TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
 	 */
 	public static void setBypass(String handlerName, Boolean desiredValue) {
 		if (globalBypass) {
@@ -353,7 +398,6 @@ public virtual class TriggerHandler {
 		}
 	}
 
-	// handle limits
 	/**
 	 * @description Called before the trigger to force the class to debug query limits when it runs
 	 * @see TriggerHandler.showLimits[1]
@@ -382,6 +426,7 @@ public virtual class TriggerHandler {
 	/**
 	 * @description Called in the trigger to force the class to debug trigger entry and exit with context.
 	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2021
 	 * @see TriggerHandler.showLimits[1]
 	 * @example
 	 * TriggerHandler.showDebug();
@@ -398,12 +443,15 @@ public virtual class TriggerHandler {
 	 * <br>Set to true to show entry and exit.
 	 *
 	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2021
 	 * @param enabled true to enable; false to disable
 	 * @see TriggerHandler.showDebug[0]
 	 */
 	public static void showDebug(Boolean enabled) {
-		if (Test.isRunningTest()) {
-			showDebug = enabled;
+		if (enabled == null) {
+			showDebug = false;
+		} else if (enabled) {
+			showDebug = true;
 		} else {
 			showDebug = false;
 		}
@@ -413,7 +461,7 @@ public virtual class TriggerHandler {
 	 * @description       return the current loop count
 	 *
 	 * @param handlerName The handler class to check for the current loop count
-	 * @return            `Integer`
+	 * @return            `Integer` How many times has this handler run?
 	 */
 	public static Integer getLoopCount(String handlerName) {
 		if (TriggerHandler.loopCountMap.containsKey(handlerName)) {
@@ -422,7 +470,6 @@ public virtual class TriggerHandler {
 		return 0;
 	}
 
-	//private instancemethods
 	@TestVisible
 	/**
 	 * @description Base method called by constructor to set the current context
@@ -484,7 +531,9 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description increment the loop count and check if  we exceeded the max loop count.
+	 * @description Increment the loop count and check if we exceeded the max loop count.
+	 * <br>Silently exit if we have exceeded it. (Log to System.debug)
+	 *
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @author {@link [fbouzeraa](https://github.com/fbouzeraa)}
 	 * @return   `Boolean` Should the trigger continue execution?
@@ -498,7 +547,7 @@ public virtual class TriggerHandler {
 				 throw new TriggerHandlerException('Maximum loop count of ' + String.valueOf(max) + ' reached in ' + handlerName); */
 				if (showDebug) {
 					Integer max = TriggerHandler.loopCountMap.get(handlerName).max;
-					System.debug('Maximum loop count of ' + String.valueOf(max) + ' reached in ' + handlerName);
+					System.debug(logginglevel.INFO, 'Maximum loop count of ' + String.valueOf(max) + ' reached in ' + handlerName);
 				}
 				return false;
 			}
@@ -512,13 +561,13 @@ public virtual class TriggerHandler {
 	 * @description Make sure this trigger should continue to run
 	 * <br>Returning `false` causes trigger handler to exit
 	 *
-	 * @return      `Boolean` is the run valid?
+	 * @return      `Boolean` Is the run valid?
 	 * @exception   TriggerHandlerException
 	 * @see TriggerHandler.TriggerHandlerException
 	 */
 	private Boolean validateRun() {
 		if (!this.isTriggerExecuting || this.triggerEvent == null) {
-			throw new TriggerHandlerException(errorOutsideTriggerContext);
+			throw new TriggerHandlerException(ERROR_TRIGGERCONTEXT);
 		}
 		return (!globalBypass && !TriggerHandler.bypassedHandlers.contains(getHandlerName()));
 	}
@@ -532,7 +581,7 @@ public virtual class TriggerHandler {
 	/**
 	 * @description Get the name of the current handler. This can be set by using the constructor with the string parameter to improve performance
 	 *
-	 * @return      `String` handlerName
+	 * @return      `String` Name of the current handler
 	 * @see         TriggerHandler.handlerName
 	 */
 	private String getHandlerName() {
@@ -595,15 +644,23 @@ public virtual class TriggerHandler {
 	// inner classes
 
 	/**
-	 * @description inner class for managing the loop count per handler
+	 * @description Inner class for managing the loop count per handler
 	 */
 	@TestVisible
 	private class LoopCount {
+		/**
+		 * Maximum number of times this handler should be run
+		 */
 		private Integer max;
+		/**
+		 * Number of times this handler has been run
+		 */
 		private Integer count;
 
 		/**
-		 * @description Default loop count to 5
+		 * Standard constructor
+		 * <br>Default max to 5
+		 * <br>Default count to 0
 		 */
 		public LoopCount() {
 			this.max = 5;
@@ -633,7 +690,7 @@ public virtual class TriggerHandler {
 
 		/**
 		 * @description Determines if we're about to exceed the loop count.
-		 * @return     `Boolean` true if less than 0 or more than max.
+		 * @return     `Boolean` True if less than 0 or more than max.
 		 */
 		public Boolean exceeded() {
 			return this.max >= 0 && this.count > this.max;
@@ -641,7 +698,7 @@ public virtual class TriggerHandler {
 
 		/**
 		 * @description Returns the max loop count.
-		 * @return     `Integer` max loop count.
+		 * @return     `Integer` Max loop count.
 		 */
 		public Integer getMax() {
 			return this.max;
@@ -649,14 +706,14 @@ public virtual class TriggerHandler {
 
 		/**
 		 * @description Returns the current loop count.
-		 * @return     `Integer` current loop count.
+		 * @return     `Integer` Current loop count.
 		 */
 		public Integer getCount() {
 			return this.count;
 		}
 
 		/**
-		 * @description Sets the max loop size
+		 * @description Sets the max loop count
 		 * @param max   The integer to set max to.
 		 */
 		public void setMax(Integer max) {
@@ -674,5 +731,5 @@ public virtual class TriggerHandler {
 	/**
 	 * @description Error text - assumes English for debug logs
 	 */
-	private static String errorOutsideTriggerContext = 'Trigger handler called outside of Trigger execution'; //NOPMD
+	private static final String ERROR_TRIGGERCONTEXT = 'Trigger handler called outside of Trigger execution'; //NOPMD
 }

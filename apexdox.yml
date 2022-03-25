@@ -4,22 +4,18 @@ engine:
       sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes
     - path: "${workspaceFolder}/sample-handler/main/default/classes"
       sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes
-  #    - path: "${workspaceFolder}/force-app/main/default/tests"
-  #      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/tests
   targetDirectory: "${workspaceFolder}/docs"
   #excludes:
   #  - "*Test.cls"
   title: Salesforce Trigger Handler code documentation
   subtitle: Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
   sortOrder: alpha
-  cleanDir: false
+  cleanDir: false # keep prettier config file
   showTOCSnippets: true
   scope:
-    - global
     - public
-    - protected
     - private
-    - webService
+    - protected
     - testMethod
   homePagePath: "${workspaceFolder}/doc-assets/homePage.html"
   #pages:

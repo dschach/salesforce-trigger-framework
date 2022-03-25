@@ -4,8 +4,8 @@
 	"printWidth": 180,
 	"bracketSameLine": true,
 	"bracketSpacing": true,
+	"tabWidth": 2,
 	"apexInsertFinalNewline": false,
-	"htmlWhitespaceSensitivity": "ignore",
 	"overrides": [
 		{
 			"files": "**/lwc/**/*.html",
@@ -14,6 +14,10 @@
 		{
 			"files": "*.{cmp,page,component}",
 			"options": { "parser": "html" }
+		},
+		{
+			"files": "*.html",
+			"options": { "useTabs": false, "tabWidth": 2 }
 		}
 	]
 }

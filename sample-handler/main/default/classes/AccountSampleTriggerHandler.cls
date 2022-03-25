@@ -1,9 +1,9 @@
-//@SuppressWarnings('PMD')
 /**
  * @description Account Sample handler
  * @author David Schach
  * @since 2021
  * @group SampleTriggerHandler
+ * @group-content doc-assets/triggerhandlerhome.html
  */
 public without sharing class AccountSampleTriggerHandler extends TriggerHandler {
 	private List<Account> newRecords;
@@ -14,7 +14,7 @@ public without sharing class AccountSampleTriggerHandler extends TriggerHandler 
 	/**
 	 * @description Constructor using passed-in class name constructor for faster performance
 	 * <br>We cast all four trigger collections
-	 * @param className The name if this class. Pass in the string to make the handler run faster
+	 * @param className The name of this class. Pass in the string to make the handler run faster
 	 */
 	public AccountSampleTriggerHandler(String className) {
 		this.newRecords = (List<Account>) Trigger.new;
@@ -56,8 +56,10 @@ public without sharing class AccountSampleTriggerHandler extends TriggerHandler 
 	}
 
 	private void method3() {
-		List<Contact> acctContacts = [SELECT Id FROM Contact WHERE AccountId IN :newRecordsMap.keyset()];
-		update acctContacts;
+		List<Contact> acctContacts = [SELECT Id FROM Contact WHERE AccountId IN :newRecordsMap.keyset() WITH SECURITY_ENFORCED];
+		if (Contact.getSObjectType().getDescribe().isUpdateable()) {
+			update acctContacts; //NOPMD
+		}
 		// do things here
 	}
 }

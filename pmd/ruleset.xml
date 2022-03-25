@@ -3,8 +3,7 @@
 	name="quickstart"
 	xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd"
->
+	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 	<description>Quickstart configuration of PMD for Salesforce Apex, customized.</description>
 	<exclude-pattern>.*/.sfdx/.*</exclude-pattern>
 
@@ -140,15 +139,13 @@
 	<!-- TESTS -->
 	<rule
 		ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveAsserts"
-		message="Apex unit test classes should have at least one System.assert() or assertEquals() or AssertNotEquals() call"
-	>
+		message="Apex unit test classes should have at least one System.assert() or assertEquals() or AssertNotEquals() call">
 		<priority>2</priority>
 	</rule>
 
 	<rule
 		ref="category/apex/bestpractices.xml/ApexUnitTestShouldNotUseSeeAllDataTrue"
-		message="@isTest(seeAllData=true) should not be used in Apex unit tests because it opens up the existing database data for unexpected modification by tests"
-	>
+		message="@isTest(seeAllData=true) should not be used in Apex unit tests because it opens up the existing database data for unexpected modification by tests">
 		<priority>2</priority>
 	</rule>
 

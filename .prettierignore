@@ -3,6 +3,7 @@
 #
 
 **/staticresources/**
+node_modules
 .localdevserver
 .sfdx
 .vscode
@@ -11,7 +12,6 @@ coverage/
 
 # ApexDox website
 docs/assets/*.js
-!docs/*
 doc-assets/highlight.js
 
 # markdown
