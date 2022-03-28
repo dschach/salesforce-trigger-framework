@@ -9,9 +9,11 @@ on:
   push:
     #branches:
     #  - main
-    paths-ignore:
+    paths:
+      - "force-app/**"
+      - "sample-handler/**"
       - "sfdx-project.json"
-      - "README.md"
+      - "package-lock.json"
 
 # Jobs to be executed
 jobs:
