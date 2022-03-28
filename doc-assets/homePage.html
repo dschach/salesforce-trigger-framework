@@ -1,4 +1,5 @@
 <link href="assets/styling.css" rel="stylesheet" />
+<script type="text/javascript" src="./assets/apex.min.js"></script>
 <h1>Salesforce Trigger Framework</h1>
 <h2>Credit</h2>
 <p>Based on Kevin O’Hara’s famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a></p>
@@ -24,7 +25,7 @@
   To create a trigger handler, you simply need to create a class that inherits from <strong><a href="./TriggerHandler.html">TriggerHandler</a></strong
   >. Here is an example for creating an Opportunity trigger handler.
 </p>
-<pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {</code></pre>
+<pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {</code></pre>
 <p>
   In your trigger handler, to add logic to any of the trigger contexts, you only need to override them in your trigger handler. Here is how we would add logic to a
   <code>beforeUpdate, afterUpdate</code> trigger.
@@ -41,7 +42,7 @@
   encourage casting Trigger.new and Trigger.old as well.
 </p>
 
-<pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+<pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
   private List&lt;Opportunity&gt; newRecords;<br/>
   private List&lt;Opportunity&gt; oldRecords;<br/>
   private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>
@@ -80,19 +81,19 @@
   deployment problems.
 </p>
 
-<pre><code class="language-java">trigger OpportunityTrigger on Opportunity (before update, after update) {<br/>
+<pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {<br/>
   new OpportunityTriggerHandler().run();<br/>
 }<br/>
 </code></pre>
 There is also a faster way to write the trigger, specifying the handler class name so the handler does not need to describe the class for its name, saving precious execution time:
-<pre><code class="language-java">trigger OpportunityTrigger on Opportunity (before update, after update) {<br/>
+<pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {<br/>
   new OpportunityTriggerHandler('OpportunityTriggerHandler').run();<br/>
 }<br/>
 </code></pre>
 <h2 id="coolstuff">Cool Stuff</h2>
 <h3 id="bypassapi">Bypass API</h3>
 <p>What if you want to tell other trigger handlers to halt execution? That's easy with the bypass api:</p>
-<pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+<pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
   private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>
 <br/>
   /* Optional Constructor - better performance */<br/>
@@ -123,14 +124,14 @@ There is also a faster way to write the trigger, specifying the handler class na
 <h3 id="checkbypassstatus">Check Bypass Status</h3>
 <p>If you need to check if a handler is bypassed, use the <code>isBypassed</code> method:</p>
 
-<pre><code class="language-java">if (TriggerHandler.isBypassed('AccountTriggerHandler')) {<br/>
+<pre><code class="language-apex">if (TriggerHandler.isBypassed('AccountTriggerHandler')) {<br/>
   // ... do something if the Account trigger handler is bypassed!<br/>
 }<br/>
 </code></pre>
 <h3 id="globalbypass">Global Bypass</h3>
 <p>To bypass all handlers, set the global bypass variable:</p>
 
-<pre><code class="language-java">TriggerHandler.setGlobalBypass();<br/>
+<pre><code class="language-apex">TriggerHandler.setGlobalBypass();<br/>
 </code></pre>
 <p>
   This will also add an entry 'bypassAll' to the list of handlers returned in
@@ -142,7 +143,7 @@ There is also a faster way to write the trigger, specifying the handler class na
   method, as in:
 </p>
 
-<pre><code class="language-java">// ... done with bypasses!<br/>
+<pre><code class="language-apex">// ... done with bypasses!<br/>
 <br/>
 TriggerHandler.clearAllBypasses();<br/>
 <br/>
@@ -161,7 +162,7 @@ TriggerHandler.clearAllBypasses();<br/>
   method:
 </p>
 
-<pre><code class="language-java">Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');<br/>
+<pre><code class="language-apex">Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');<br/>
 TriggerHandler.bypass('AccountTriggerHandler');<br/>
 <br/>
 // do something here <br/>
@@ -170,7 +171,7 @@ TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);<br/>
 </code></pre>
 <p>To store all currently bypassed handlers, temporarily bypass all handlers, and then restore the originally bypassed list:</p>
 
-<pre><code class="language-java">List&lt;String&gt; bypassedHandlers = TriggerHandler.bypassList();<br/>
+<pre><code class="language-apex">List&lt;String&gt; bypassedHandlers = TriggerHandler.bypassList();<br/>
 TriggerHandler.bypassAll();<br/>
 <br/>
 // do something here <br/>
@@ -183,7 +184,7 @@ TriggerHandler.bypass(bypassedHandlers);<br/>
   To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, and exception will be thrown. A great use case is when you want to ensure that
   your trigger runs once and only once within a single execution. Example:
 </p>
-<pre><code class="language-java">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+<pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
   private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>
 <br/>
   public OpportunityTriggerHandler(){<br/>
@@ -211,7 +212,7 @@ TriggerHandler.bypass(bypassedHandlers);<br/>
 </p>
 <p>To use one or both of these, amend them to the trigger - you can assign them for every handler or only specific ones:</p>
 
-<pre><code class="language-java">
+<pre><code class="language-apex">
 TriggerHandler.showLimits();<br/>
 AccountTriggerHandler.showDebug();<br/>
 new AccountSampleTriggerHandler().run();<br/>
