@@ -9,7 +9,6 @@
     "esbenp.prettier-vscode",
     "eg2.vscode-npm-script",
     "eamodio.gitlens",
-    "dbaeumer.vscode-eslint",
     "chuckjonas.apex-pmd"
   ]
 }

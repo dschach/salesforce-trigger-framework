@@ -28,6 +28,7 @@ engine:
     - "${workspaceFolder}/doc-assets/styling.css"
     - "${workspaceFolder}/doc-assets/highlight.js"
     - "${workspaceFolder}/doc-assets/index.js"
+    - "${workspaceFolder}/doc-assets/apex.min.js"
   port: 9090
 docblock:
   alignItems: true
