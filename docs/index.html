@@ -124,7 +124,34 @@
             means that you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for
             oldMap and newMap, but for completeness, I encourage casting Trigger.new and Trigger.old as well.
           </p>
-          <pre><code class="language-apex">public without sharing class OpportunityTriggerHandler extends TriggerHandler {<br/>  private List&lt;Opportunity&gt; newRecords;<br/>  private List&lt;Opportunity&gt; oldRecords;<br/>  private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>  private Map&lt;Id, Opportunity&gt; oldRecordsMap;<br/><br/>  public OpportunityTriggerHandler(){<br/>    super('OpportunityTriggerHandler');<br/>    this.newRecords = (List&lt;Opportunity&gt;) Trigger.new;<br/>    this.oldRecords = (List&lt;Opportunity&gt;) Trigger.old;<br/>    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br/>    this.oldRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.oldMap;<br/>  }<br/><br/>  public override void beforeUpdate() {<br/>    for(Opportunity o : newRecords) {<br/>      // do something <br/>    }<br/>  }<br/><br/>  public override void afterUpdate() {<br/>      // do something <br/>  }<br/><br/>  // add overrides for other contexts <br/><br/>}<br/></code></pre>
+          <pre><code class="language-apex">public without sharing class OpportunityTriggerHandler extends TriggerHandler {
+  private List&lt;Opportunity&gt; newRecords;
+  private List&lt;Opportunity&gt; oldRecords;
+  private Map&lt;Id, Opportunity&gt; newRecordsMap;
+  private Map&lt;Id, Opportunity&gt; oldRecordsMap;
+
+  public OpportunityTriggerHandler(){
+    super('OpportunityTriggerHandler');
+    this.newRecords = (List&lt;Opportunity&gt;) Trigger.new;
+    this.oldRecords = (List&lt;Opportunity&gt;) Trigger.old;
+    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;
+    this.oldRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.oldMap;
+  }
+
+  public override void beforeUpdate() {
+    for(Opportunity o : newRecords) {
+      // do something 
+    }
+  }
+
+  public override void afterUpdate() {
+      // do something 
+  }
+
+  // add overrides for other contexts 
+
+}
+</code></pre>
           <h3 id="trigger">Trigger</h3>
           <p>
             To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger handler itself and call the <code>run()</code> method.
@@ -135,44 +162,119 @@
             applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests,
             which could lead to deployment problems.
           </p>
-          <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {<br/>  new OpportunityTriggerHandler().run();<br/>}<br/></code></pre>
+          <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {
+  new OpportunityTriggerHandler().run();
+}
+</code></pre>
           There is also a faster way to write the trigger, specifying the handler class name so the handler does not need to describe the class for its name, saving precious
           execution time:
-          <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {<br/>  new OpportunityTriggerHandler('OpportunityTriggerHandler').run();<br/>}<br/></code></pre>
+          <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {
+  new OpportunityTriggerHandler('OpportunityTriggerHandler').run();
+}
+</code></pre>
           <h2 id="coolstuff">Cool Stuff</h2>
           <h3 id="bypassapi">Bypass API</h3>
           <p>What if you want to tell other trigger handlers to halt execution? That's easy with the bypass api:</p>
-          <pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {<br/>  private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/><br/>  /* Optional Constructor - better performance */<br/>  public OpportunityTriggerHandler(){<br/>    super('OpportunityTriggerHandler');<br/>    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br/>  }<br/><br/>  public override void afterUpdate() {<br/>    List&lt;Opportunity&gt; opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];<br/><br/>    Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId];<br/><br/>    TriggerHandler.bypass('AccountTriggerHandler');<br/><br/>    acc.Name = 'No Trigger';<br/>    update acc; // won't invoke the AccountTriggerHandler<br/><br/>    TriggerHandler.clearBypass('AccountTriggerHandler');<br/><br/>    acc.Name = 'With Trigger';<br/>    update acc; // will invoke the AccountTriggerHandler <br/><br/>  }<br/><br/>}<br/></code></pre>
+          <pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {
+  private Map&lt;Id, Opportunity&gt; newRecordsMap;
+
+  /* Optional Constructor - better performance */
+  public OpportunityTriggerHandler(){
+    super('OpportunityTriggerHandler');
+    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;
+  }
+
+  public override void afterUpdate() {
+    List&lt;Opportunity&gt; opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];
+
+    Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId];
+
+    TriggerHandler.bypass('AccountTriggerHandler');
+
+    acc.Name = 'No Trigger';
+    update acc; // won't invoke the AccountTriggerHandler
+
+    TriggerHandler.clearBypass('AccountTriggerHandler');
+
+    acc.Name = 'With Trigger';
+    update acc; // will invoke the AccountTriggerHandler 
+
+  }
+
+}
+</code></pre>
           <h3 id="checkbypassstatus">Check Bypass Status</h3>
           <p>If you need to check if a handler is bypassed, use the <code>isBypassed</code> method:</p>
-          <pre><code class="language-apex">if (TriggerHandler.isBypassed('AccountTriggerHandler')) {<br/>  // ... do something if the Account trigger handler is bypassed!<br/>}<br/></code></pre>
+          <pre><code class="language-apex">if (TriggerHandler.isBypassed('AccountTriggerHandler')) {
+  // ... do something if the Account trigger handler is bypassed!
+}
+</code></pre>
           <h3 id="globalbypass">Global Bypass</h3>
           <p>To bypass all handlers, set the global bypass variable:</p>
-          <pre><code class="language-apex">TriggerHandler.setGlobalBypass();<br/></code></pre>
+          <pre><code class="language-apex">TriggerHandler.setGlobalBypass();
+</code></pre>
           <p>This will also add an entry 'bypassAll' to the list of handlers returned in <code>bypassList</code>.</p>
           <p>To clear all bypasses for the transaction, simply use the <code>clearAllBypasses</code> method, as in:</p>
-          <pre><code class="language-apex">// ... done with bypasses!<br/><br/>TriggerHandler.clearAllBypasses();<br/><br/>// ... now handlers won't be ignored! <br/></code></pre>
+          <pre><code class="language-apex">// ... done with bypasses!
+
+TriggerHandler.clearAllBypasses();
+
+// ... now handlers won't be ignored! 
+</code></pre>
           <p>This will clear the list of bypassed handlers and set the <code>globalBypass</code> Boolean to false.</p>
           <h3 id="setbypass">Set Bypass</h3>
           <p>
             If you are not sure in a transaction if a handler is bypassed, but want to bypass it (or clear the bypass) and then set it to its original value, use the
             <code>setBybass</code> method:
           </p>
-          <pre><code class="language-apex">Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');<br/>TriggerHandler.bypass('AccountTriggerHandler');<br/><br/>// do something here <br/><br/>TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);<br/></code></pre>
+          <pre><code class="language-apex">Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');
+TriggerHandler.bypass('AccountTriggerHandler');
+
+// do something here 
+
+TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
+</code></pre>
           <p>To store all currently bypassed handlers, temporarily bypass all handlers, and then restore the originally bypassed list:</p>
-          <pre><code class="language-apex">List&lt;String&gt; bypassedHandlers = TriggerHandler.bypassList();<br/>TriggerHandler.bypassAll();<br/><br/>// do something here <br/><br/>TriggerHandler.clearAllBypasses(); // or TriggerHandler.clearGlobalBypass() <br/>TriggerHandler.bypass(bypassedHandlers);<br/></code></pre>
+          <pre><code class="language-apex">List&lt;String&gt; bypassedHandlers = TriggerHandler.bypassList();
+TriggerHandler.bypassAll();
+
+// do something here 
+
+TriggerHandler.clearAllBypasses(); // or TriggerHandler.clearGlobalBypass() 
+TriggerHandler.bypass(bypassedHandlers);
+</code></pre>
           <h3 id="maxloopcount">Max Loop Count</h3>
           <p>
             To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, and exception will be thrown. A great use case is when you want to
             ensure that your trigger runs once and only once within a single execution. Example:
           </p>
-          <pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {<br/>  private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/><br/>  public OpportunityTriggerHandler(){<br/>    /* Optional Constructor overload - better performance */<br/>    super('OpportunityTriggerHandler');<br/>    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;<br/>    this.setMaxLoopCount(1);<br/>  }<br/><br/>  public override void afterUpdate() {<br/>    List&lt;Opportunity&gt; opps = [SELECT Id FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];<br/>    update opps;<br/>  }<br/>}<br/></code></pre>
+          <pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {
+  private Map&lt;Id, Opportunity&gt; newRecordsMap;
+
+  public OpportunityTriggerHandler(){
+    /* Optional Constructor overload - better performance */
+    super('OpportunityTriggerHandler');
+    this.newRecordsMap = (Map&lt;Id, Opportunity&gt;) Trigger.newMap;
+    this.setMaxLoopCount(1);
+  }
+
+  public override void afterUpdate() {
+    List&lt;Opportunity&gt; opps = [SELECT Id FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];
+    update opps;
+  }
+}
+</code></pre>
           <h3 id="debugstatements">Debug Statements</h3>
           <p>There are two methods that will show additional information.</p>
           <p><code>showLimits()</code> will debug Apex query and DML limits when the trigger handler has completed.</p>
           <p><code>showDebug()</code> will debug trigger entry and exit.</p>
           <p>To use one or both of these, amend them to the trigger - you can assign them for every handler or only specific ones:</p>
-          <pre><code class="language-apex">TriggerHandler.showLimits();<br/>AccountTriggerHandler.showDebug();<br/>new AccountSampleTriggerHandler().run();<br/>TriggerHandler.showLimits(false);<br/>AccountTriggerHandler.showDebug(false);<br/></code></pre>
+          <pre><code class="language-apex">TriggerHandler.showLimits();
+AccountTriggerHandler.showDebug();
+new AccountSampleTriggerHandler().run();
+TriggerHandler.showLimits(false);
+AccountTriggerHandler.showDebug(false);
+</code></pre>
           <h2 id="overridablemethods">Overridable Methods</h2>
           <p>Here are all of the methods that you can override. All of the context possibilities are supported.</p>
           <ul>
