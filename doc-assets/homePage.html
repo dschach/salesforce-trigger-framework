@@ -92,7 +92,7 @@ There is also a faster way to write the trigger, specifying the handler class na
 <h2 id="coolstuff">Cool Stuff</h2>
 <h3 id="bypassapi">Bypass API</h3>
 <p>What if you want to tell other trigger handlers to halt execution? That's easy with the bypass api:</p>
-<pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+<pre><code class="language-apex">public without sharing class OpportunityTriggerHandler extends TriggerHandler {<br/>
   private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>
 <br/>
   /* Optional Constructor - better performance */<br/>
