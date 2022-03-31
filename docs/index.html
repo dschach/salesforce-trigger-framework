@@ -85,7 +85,6 @@
         <td class="doc-page">
           <h2 class="section-title">Home</h2>
           <link href="assets/styling.css" rel="stylesheet" />
-          <script type="text/javascript" src="./assets/apex.min.js"></script>
           <h1>Salesforce Trigger Framework</h1>
           <h2>Credit</h2>
           <p>Based on Kevin O’Hara’s famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a></p>
@@ -125,7 +124,7 @@
             means that you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for
             oldMap and newMap, but for completeness, I encourage casting Trigger.new and Trigger.old as well.
           </p>
-          <pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {
+          <pre><code class="language-apex">public without sharing class OpportunityTriggerHandler extends TriggerHandler {
   private List&lt;Opportunity&gt; newRecords;
   private List&lt;Opportunity&gt; oldRecords;
   private Map&lt;Id, Opportunity&gt; newRecordsMap;
@@ -176,7 +175,7 @@
           <h2 id="coolstuff">Cool Stuff</h2>
           <h3 id="bypassapi">Bypass API</h3>
           <p>What if you want to tell other trigger handlers to halt execution? That's easy with the bypass api:</p>
-          <pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {
+          <pre><code class="language-apex">public without sharing class OpportunityTriggerHandler extends TriggerHandler {
   private Map&lt;Id, Opportunity&gt; newRecordsMap;
 
   /* Optional Constructor - better performance */

@@ -2,39 +2,15 @@
 // #region Constants / DOM lifecycle hooks
 // ==================================================================
 
-const SCOPES = [
-    "global",
-    "public",
-    "private",
-    "protected",
-    "testMethod",
-    "webService",
-  ],
+const SCOPES = ["global", "public", "private", "protected", "testMethod", "webService"],
   MENU_STATE_KEY = "APEXDOX_MENU",
   ACTIVE_EL_STATE_KEY = "APEXDOX_ACTIVE_EL",
   SCOPE_STATE_KEY = "APEXDOX_SCOPE",
   SEARCH_STATE_KEY = "APEXDOX_SEARCH_RESULTS";
 
-const highlightJsSelectors = [
-  "pre code",
-  ".method-annotations",
-  ".class-signature",
-  ".attribute-signature",
-  ".method-signature",
-  ".class-annotations",
-  ".prop-annotations",
-];
+const highlightJsSelectors = ["pre code", ".method-annotations", ".class-signature", ".attribute-signature", ".method-signature", ".class-annotations", ".prop-annotations"];
 
-const initializers = [
-  initMenu,
-  initHighlightJs,
-  renderMenuFromState,
-  setActiveElement,
-  renderSearchFromState,
-  readScope,
-  hideAllScopes,
-  showScopes,
-];
+const initializers = [initMenu, initHighlightJs, renderMenuFromState, setActiveElement, renderSearchFromState, readScope, hideAllScopes, showScopes];
 
 const persisters = [persistMenuState, persistActiveElement, persistSearchState];
 
@@ -63,7 +39,6 @@ function initHighlightJs() {
       hljs.highlightElement(block);
       hljs.configure({
         ignoreUnescapedHTML: true,
-        languages: ["java"],
       });
     });
   });
@@ -101,9 +76,7 @@ function updateMenuModel(items, state) {
   }));
 
   // 3) perform diff to get Ids not yet captured in storage
-  let deletedKeys = keys.filter(
-    (key) => groups.findIndex((group) => group.id === key) === -1
-  );
+  let deletedKeys = keys.filter((key) => groups.findIndex((group) => group.id === key) === -1);
 
   let newKeys = groups.filter((item) => keys.indexOf(item.id) === -1);
 
@@ -112,9 +85,7 @@ function updateMenuModel(items, state) {
     deletedKeys.forEach((key) => {
       delete state[key];
     });
-    console.log(
-      "ApexDox: Stale menu keys found, deleting from session storage:"
-    );
+    console.log("ApexDox: Stale menu keys found, deleting from session storage:");
     console.log(deletedKeys);
   }
 
@@ -312,9 +283,7 @@ function toggleScope(scope, isShow) {
 }
 
 function toggleTypeScope(scope, tableSelector, itemSelector, isShow) {
-  const tables = tableSelector
-    ? document.querySelectorAll(tableSelector)
-    : null;
+  const tables = tableSelector ? document.querySelectorAll(tableSelector) : null;
   const items = document.querySelectorAll(`${itemSelector}.${scope}`);
 
   if (isShow === true) {
