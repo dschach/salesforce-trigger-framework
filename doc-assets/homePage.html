@@ -1,5 +1,4 @@
 <link href="assets/styling.css" rel="stylesheet" />
-<script type="text/javascript" src="./assets/apex.min.js"></script>
 <h1>Salesforce Trigger Framework</h1>
 <h2>Credit</h2>
 <p>Based on Kevin O’Hara’s famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a></p>
@@ -42,7 +41,7 @@
   encourage casting Trigger.new and Trigger.old as well.
 </p>
 
-<pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {<br/>
+<pre><code class="language-apex">public without sharing class OpportunityTriggerHandler extends TriggerHandler {<br/>
   private List&lt;Opportunity&gt; newRecords;<br/>
   private List&lt;Opportunity&gt; oldRecords;<br/>
   private Map&lt;Id, Opportunity&gt; newRecordsMap;<br/>

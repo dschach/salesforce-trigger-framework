@@ -3,13 +3,13 @@
 // ==================================================================
 
 const SCOPES = [
-    "global",
-    "public",
-    "private",
-    "protected",
-    "testMethod",
-    "webService",
-  ],
+  "global",
+  "public",
+  "private",
+  "protected",
+  "testMethod",
+  "webService",
+],
   MENU_STATE_KEY = "APEXDOX_MENU",
   ACTIVE_EL_STATE_KEY = "APEXDOX_ACTIVE_EL",
   SCOPE_STATE_KEY = "APEXDOX_SCOPE",
@@ -62,8 +62,7 @@ function initHighlightJs() {
     document.querySelectorAll(selector).forEach((block) => {
       hljs.highlightElement(block);
       hljs.configure({
-        ignoreUnescapedHTML: true,
-        languages: ["java"],
+        ignoreUnescapedHTML: true
       });
     });
   });

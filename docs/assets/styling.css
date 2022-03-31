@@ -9,6 +9,7 @@ pre {
 
 pre code {
   white-space: pre;
+  font-size: 120%;
 }
 
 .hljs {
