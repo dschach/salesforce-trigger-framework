@@ -531,12 +531,12 @@ var hljs = function () {
       return -1 === a ? "" : t.replace(n, (s => e(t, n, a - 1)))
     } return t => {
       const n = t.regex, a = "[\xc0-\u02b8a-zA-Z_$][\xc0-\u02b8a-zA-Z_$0-9]*", s = a + e("(?:<" + a + "~~~(?:\\s*,\\s*" + a + "~~~)*>)?", /~~~/g, 2), r = {
-        keyword: ["abstract", "assert", "break", "case", "catch", "continue", "default", "do", "else", "enum", "exports", "final", "finally", "for", "global|10", "if", "import", "instanceof", "module", "package", "private", "protected", "public", "requires", "static", "switch", "throws", "transient", "try", "var", "virtual", "void", "while"],
+        keyword: ["abstract", "assert", "break", "case", "catch", "continue", "default", "do", "else", "enum", "extends|6", "implements|6", "exports", "final", "finally", "for", "global|4", "if", "import", "instanceof", "module", "override", "package", "private", "protected", "public", "requires", "static", "switch", "throws", "transient", "try", "var", "virtual", "void", "while"],
         literal: ["false", "true", "null"],
-        type: ["string", "boolean", "long", "float", "integer", "byte", "short", "double", "blob", "date", "datetime", "decimal", "id", "object", "sobject", "time", "anytype", "currency", "void", "list", "set", "map"],
-        attribute: ["with sharing|20", "without sharing|20", "inherited sharing|20"],
-        title: ["ApexPages", "AppLauncher", "Approval", "Auth", "Cache", "Canvas", "ChatterAnswers", "CommercePayments", "ConnectApi", "Database", "Datacloud", "DataSource", "Dom", "EventBus", "Flow", "Functions", "KbManagement", "LxScheduler", "Messaging", "Metadata", "Pref_center", "Process", "QuickAction", "Reports", "Schema", "Search", "Sfc", "Sfdc_Checkout", "sfdc_surveys", "Site", "Support", "System", "TerritoryMgmt", "Test", "TxnSecurity", "Type", "UserProvisioning", "VisualEditor", "Wave"],
-        built_in: ["super", "this", "trigger", "class", "insert", "update", "upsert|30", "delete", "undelete", "merge"]
+        type: ["string", "boolean", "long", "float", "integer", "byte", "short", "double", "blob", "date", "datetime", "decimal", "id", "object", "sobject", "time", "anytype", "currency", "void", "list", "set", "map", "selectoption", "pagereference"],
+        attribute: ["with sharing|10", "without sharing|10", "inherited sharing|10"],
+        title: ["ApexPages|10", "AppLauncher|10", "Approval|10", "Auth|10", "Cache|10", "Canvas|10", "ChatterAnswers|10", "CommercePayments|10", "ConnectApi|10", "Database|0", "Datacloud|10", "DataSource|10", "Dom|4", "EventBus|10", "Flow|10", "Functions|10", "KbManagement|10", "LxScheduler|10", "Messaging|0", "Metadata|0", "Pref_center|10", "Process|0", "QuickAction|10", "Reports|10", "Schema|0", "Search|0", "Sfc|10", "Sfdc_Checkout|10", "sfdc_surveys|10", "Site|6", "Support|10", "System|10", "TerritoryMgmt|10", "Test|10", "TxnSecurity|10", "Type", "UserProvisioning|10", "VisualEditor|10", "Wave|10", "Label"],
+        built_in: ["super", "this", "trigger|10", "class", "insert", "update", "upsert|10", "delete", "undelete", "merge"]
       }, i = {
         scope: "meta", begin: "@" + a, contains: [{ begin: /\(/, end: /\)/, contains: ["self"] }]
       }, o = {
@@ -566,9 +566,9 @@ var hljs = function () {
           }, { scope: "doctag", begin: "@[A-Za-z]+" }]
         }), {
           scope: "type",
-          beginKeywords: "list map set", end: "<", excludeEnd: !0
+          beginKeywords: "list map set", end: "<", excludeEnd: !0, relevance: 2
         }, {
-          begin: /import apex\.[a-z]+\./, keywords: "import", relevance: 2
+          begin: /import \.[a-z]+\./, keywords: "import", relevance: -10
         }, t.C_LINE_COMMENT_MODE, t.C_BLOCK_COMMENT_MODE, {
           begin: /"""/, end: /"""/,
           scope: "string", contains: [t.BACKSLASH_ESCAPE]
