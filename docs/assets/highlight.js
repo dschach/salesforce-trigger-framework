@@ -527,26 +527,26 @@ var hljs = function () {
 /*! `apex` grammar compiled for Highlight.js 11.5.0 */
 (() => {
   var e = (() => {
-    "use strict"; function e(t, n, a) {
-      return -1 === a ? "" : t.replace(n, (s => e(t, n, a - 1)))
+    "use strict"; function e(t, a, n) {
+      return -1 === n ? "" : t.replace(a, (s => e(t, a, n - 1)))
     } return t => {
-      const n = t.regex, a = "[\xc0-\u02b8a-zA-Z_$][\xc0-\u02b8a-zA-Z_$0-9]*", s = a + e("(?:<" + a + "~~~(?:\\s*,\\s*" + a + "~~~)*>)?", /~~~/g, 2), r = {
-        keyword: ["abstract", "assert", "break", "case", "catch", "continue", "default", "do", "else", "enum", "extends|6", "implements|6", "exports", "final", "finally", "for", "global|4", "if", "import", "instanceof", "module", "override", "package", "private", "protected", "public", "requires", "static", "switch", "throws", "transient", "try", "var", "virtual", "void", "while"],
+      const a = t.regex, n = "[a-zA-Z][a-zA-Z_0-9]*", s = n + e("(?:<" + n + "~~~(?:\\s*,\\s*" + n + "~~~)*>)?", /~~~/g, 2), r = {
+        keyword: ["abstract", "break", "case", "catch", "continue", "default", "do", "else", "enum", "execute", "exports", "extends|6", "final", "finally", "finish", "for", "global|4", "if", "implements|6", "import", "instanceof", "module", "override", "package", "private", "protected", "public", "requires", "start", "static", "switch", "throws", "testmethod", "transient", "try", "var", "virtual", "void", "webservice", "while"],
         literal: ["false", "true", "null"],
-        type: ["string", "boolean", "long", "float", "integer", "byte", "short", "double", "blob", "date", "datetime", "decimal", "id", "object", "sobject", "time", "anytype", "currency", "void", "list", "set", "map", "selectoption", "pagereference"],
-        attribute: ["with sharing|10", "without sharing|10", "inherited sharing|10"],
-        title: ["ApexPages|10", "AppLauncher|10", "Approval|10", "Auth|10", "Cache|10", "Canvas|10", "ChatterAnswers|10", "CommercePayments|10", "ConnectApi|10", "Database|0", "Datacloud|10", "DataSource|10", "Dom|4", "EventBus|10", "Flow|10", "Functions|10", "KbManagement|10", "LxScheduler|10", "Messaging|0", "Metadata|0", "Pref_center|10", "Process|0", "QuickAction|10", "Reports|10", "Schema|0", "Search|0", "Sfc|10", "Sfdc_Checkout|10", "sfdc_surveys|10", "Site|6", "Support|10", "System|10", "TerritoryMgmt|10", "Test|10", "TxnSecurity|10", "Type", "UserProvisioning|10", "VisualEditor|10", "Wave|10", "Label"],
-        built_in: ["super", "this", "trigger|10", "class", "insert", "update", "upsert|10", "delete", "undelete", "merge"]
+        type: ["anytype", "blob", "boolean", "byte", "currency", "date", "datetime", "decimal", "double", "float", "id", "integer", "list", "long", "map", "object", "pagereference", "selectoption", "set", "short", "sobject", "string", "time", "void", "int|0", "bool|0", "float|0", "int|0", "int32|0", "int64|0"],
+        title: ["ApexPages|10", "AppLauncher|10", "Approval|10", "Auth|10", "Cache|10", "Canvas|10", "ChatterAnswers|10", "CommercePayments|10", "ConnectApi|10", "Database|6", "Datacloud|10", "DataSource|10", "Dom|4", "EventBus|10", "Flow|10", "Functions|10", "KbManagement|10", "Label", "LxScheduler|10", "Messaging|0", "Metadata|0", "Pref_center|10", "Process|0", "QuickAction|10", "Reports|10", "Schema|4", "Search|0", "Sfc|10", "Sfdc_Checkout|10", "sfdc_surveys|10", "Site|6", "Support|10", "System|10", "TerritoryMgmt|10", "Test|10", "TxnSecurity|10", "Type", "UserProvisioning|10", "VisualEditor|10", "Wave|10"],
+        built_in: ["super", "this", "trigger|10", "class", "insert", "update", "upsert|10", "delete", "undelete", "merge", "before", "after"]
       }, i = {
-        scope: "meta", begin: "@" + a, contains: [{ begin: /\(/, end: /\)/, contains: ["self"] }]
-      }, o = {
-        scope: "params", begin: /\(/, end: /\)/, keywords: r, relevance: 0,
+        className: "meta", begin: "@[a-zA-Z_$][a-zA-Z_$0-9]+", end: "[$(]",
+        excludeEnd: !0, contains: [{ begin: /\(/, end: /\)/, contains: ["self"] }]
+      }, c = {
+        className: "params", begin: /\(/, end: /\)/, keywords: r, relevance: 0,
         contains: [t.C_BLOCK_COMMENT_MODE], endsParent: !0
-      }, c = "\\.([0-9](_?[0-9])*)", l = "0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*", b = {
+      }, o = "\\.([0-9](_?[0-9])*)", l = "0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*", b = {
         className: "number", variants: [{
-          begin: `(\\b(${l})((${c})|\\.)?|(${c}))[eE][+-]?([0-9](_?[0-9])*)\\b`
+          begin: `(\\b(${l})((${o})|\\.)?|(${o}))[eE][+-]?([0-9](_?[0-9])*)\\b`
         }, {
-          begin: `\\b(${l})\\b((${c})\\b|\\.)?|(${c})\\b`
+          begin: `\\b(${l})\\b((${o})\\b|\\.)?|(${o})\\b`
         }, {
           begin: "\\b(0|[1-9](_?[0-9])*)n\\b"
         }, {
@@ -558,39 +558,39 @@ var hljs = function () {
         }], relevance: 0
       }; return {
         name: "Apex", aliases: ["apex"],
-        case_insensitive: !0, disableAutodetect: !1, keywords: r, illegal: /<\/|#/,
+        case_insensitive: !0, disableAutodetect: !1, keywords: r,
+        illegal: [/<\/|#/, "<]", /\nimport/, "struct"],
         contains: [t.COMMENT("/\\*\\*", "\\*/", {
           relevance: 0, contains: [{
             begin: /\w+@/,
             relevance: 0
-          }, { scope: "doctag", begin: "@[A-Za-z]+" }]
+          }, { className: "doctag", begin: "@[A-Za-z]+" }]
         }), {
-          scope: "type",
-          beginKeywords: "list map set", end: "<", excludeEnd: !0, relevance: 2
-        }, {
-          begin: /import \.[a-z]+\./, keywords: "import", relevance: -10
+          begin: /import \.[a-z]+\./, keywords: "import", relevance: 0
         }, t.C_LINE_COMMENT_MODE, t.C_BLOCK_COMMENT_MODE, {
-          begin: /"""/, end: /"""/,
-          scope: "string", contains: [t.BACKSLASH_ESCAPE]
+          begin: "'", end: "'",
+          scope: "string", relevance: 8, contains: [t.BACKSLASH_ESCAPE]
         }, t.APOS_STRING_MODE, t.QUOTE_STRING_MODE, {
-          match: [/\b(?:class|trigger|interface|enum|extends|implements|new)/, /\s+/, a],
-          scope: { 1: "keyword", 3: "title.class" }
-        }, { match: /non-sealed/, scope: "keyword" }, {
-          begin: [n.concat(/(?!else)/, a), /\s+/, a, /\s+/, /=/], scope: {
-            1: "type", 3: "variable",
-            5: "operator"
+          match: [/\b(?:class|interface|enum|extends|implements|new)/, /\s+/, n], className: {
+            1: "keyword", 3: "title.class"
+          },
+          contains: [c, t.C_LINE_COMMENT_MODE, t.C_BLOCK_COMMENT_MODE]
+        }, {
+          match: [/\b(?:trigger)/, /\s+/, n, /\s+/, /on/, /\s+/, n], className: {
+            1: "keyword",
+            3: "title.class", 7: "type"
           }
         }, {
-          begin: [/record/, /\s+/, a], scope: { 1: "keyword", 3: "title.class" },
-          contains: [o, t.C_LINE_COMMENT_MODE, t.C_BLOCK_COMMENT_MODE]
+          begin: [a.concat(/(?!else)/, n), /\s+/, n, /\s+/, /=/],
+          className: { 1: "type", 3: "variable", 5: "operator" }, relevance: 10
         }, {
-          beginKeywords: "new throw return else", relevance: 2
+          beginKeywords: "new throw return else", relevance: 0
         }, {
-          begin: ["(?:" + s + "\\s+)", t.UNDERSCORE_IDENT_RE, /\s*(?=\()/], scope: {
+          begin: ["(?:" + s + "\\s+)", t.UNDERSCORE_IDENT_RE, /\s*(?=\()/], className: {
             2: "title.function"
           }, keywords: r, contains: [{
-            scope: "params", begin: /\(/, end: /\)/,
-            keywords: r, relevance: 0,
+            className: "params", begin: /\(/,
+            end: /\)/, keywords: r, relevance: 0,
             contains: [i, t.APOS_STRING_MODE, t.QUOTE_STRING_MODE, b, t.C_BLOCK_COMMENT_MODE]
           }, t.C_LINE_COMMENT_MODE, t.C_BLOCK_COMMENT_MODE]
         }, b, i]
