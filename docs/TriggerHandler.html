@@ -114,7 +114,7 @@
                 <tr>
                   <th>Name</th>
                   <th>Signature</th>
-
+                  <th>Annotations</th>
                   <th>Description</th>
                 </tr>
                 <tr class="property private">
@@ -130,6 +130,9 @@
                   </td>
                   <td>
                     <div class="attribute-signature">private static final String BYPASS_ALL_ALIAS</div>
+                  </td>
+                  <td>
+                    <div class="prop-annotations">@TestVisible</div>
                   </td>
 
                   <td class="attribute-description">This is the value that will be in the returned list or set when global bypass is active</td>
@@ -148,6 +151,9 @@
                   <td>
                     <div class="attribute-signature">private static Set&lt;String&gt; bypassedHandlers</div>
                   </td>
+                  <td>
+                    <div class="prop-annotations">@TestVisible</div>
+                  </td>
 
                   <td class="attribute-description">All bypassed handlers</td>
                 </tr>
@@ -158,12 +164,15 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L734">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L735">
                       ERROR_TRIGGERCONTEXT
                     </a>
                   </td>
                   <td>
                     <div class="attribute-signature">private static final String ERROR_TRIGGERCONTEXT</div>
+                  </td>
+                  <td>
+                    <div class="prop-annotations">@TestVisible</div>
                   </td>
 
                   <td class="attribute-description">Error text - assumes English for debug logs</td>
@@ -181,6 +190,9 @@
                   </td>
                   <td>
                     <div class="attribute-signature">private static Boolean globalBypass</div>
+                  </td>
+                  <td>
+                    <div class="prop-annotations">@TestVisible</div>
                   </td>
 
                   <td class="attribute-description">
@@ -201,6 +213,7 @@
                   <td>
                     <div class="attribute-signature">private String handlerName</div>
                   </td>
+                  <td></td>
 
                   <td class="attribute-description">The name of this handler. Set by <code class="code-inline">getHandlerName()</code></td>
                 </tr>
@@ -217,6 +230,9 @@
                   </td>
                   <td>
                     <div class="attribute-signature">private Boolean isTriggerExecuting</div>
+                  </td>
+                  <td>
+                    <div class="prop-annotations">@TestVisible</div>
                   </td>
 
                   <td class="attribute-description">Is this class executing in trigger context?</td>
@@ -235,6 +251,9 @@
                   <td>
                     <div class="attribute-signature">private static Map&lt;String, LoopCount&gt; loopCountMap</div>
                   </td>
+                  <td>
+                    <div class="prop-annotations">@TestVisible</div>
+                  </td>
 
                   <td class="attribute-description">Map of <code class="code-inline">handlerName</code> =&gt; times <code class="code-inline">run()</code> was invoked</td>
                 </tr>
@@ -251,6 +270,9 @@
                   </td>
                   <td>
                     <div class="attribute-signature">private static Boolean showDebug</div>
+                  </td>
+                  <td>
+                    <div class="prop-annotations">@TestVisible</div>
                   </td>
 
                   <td class="attribute-description"><code class="code-inline">true</code> if we include a debug statement for trigger entry and exit</td>
@@ -269,6 +291,9 @@
                   <td>
                     <div class="attribute-signature">private static Boolean showLimits</div>
                   </td>
+                  <td>
+                    <div class="prop-annotations">@TestVisible</div>
+                  </td>
 
                   <td class="attribute-description"><code class="code-inline">true</code> if we include a debug statement for limits</td>
                 </tr>
@@ -285,6 +310,9 @@
                   </td>
                   <td>
                     <div class="attribute-signature">private System.TriggerOperation triggerEvent</div>
+                  </td>
+                  <td>
+                    <div class="prop-annotations">@TestVisible</div>
                   </td>
 
                   <td class="attribute-description">The current triggerEvent of the trigger, overridable in tests</td>
@@ -576,13 +604,13 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L634">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L635">
                       afterDelete()
                     </a>
                   </h4>
                   <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">protected virtual void afterDelete()</div>
                 </div>
                 <div class="method protected">
@@ -592,13 +620,13 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L620">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L621">
                       afterInsert()
                     </a>
                   </h4>
                   <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">protected virtual void afterInsert()</div>
                 </div>
                 <div class="method protected">
@@ -608,13 +636,13 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L641">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L642">
                       afterUndelete()
                     </a>
                   </h4>
                   <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">protected virtual void afterUndelete()</div>
                 </div>
                 <div class="method protected">
@@ -624,13 +652,13 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L627">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L628">
                       afterUpdate()
                     </a>
                   </h4>
                   <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">protected virtual void afterUpdate()</div>
                 </div>
                 <div class="method protected">
@@ -640,13 +668,13 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L613">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L614">
                       beforeDelete()
                     </a>
                   </h4>
                   <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">protected virtual void beforeDelete()</div>
                 </div>
                 <div class="method protected">
@@ -662,7 +690,7 @@
                   </h4>
                   <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">protected virtual void beforeInsert()</div>
                 </div>
                 <div class="method protected">
@@ -678,7 +706,7 @@
                   </h4>
                   <div class="method-description">Virtual method for the implementing class to override</div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">protected virtual void beforeUpdate()</div>
                 </div>
                 <div class="method public">
@@ -977,7 +1005,7 @@
                     Get the name of the current handler. This can be set by using the constructor with the string parameter to improve performance
                   </div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">private String getHandlerName()</div>
                   <div class="method-subtitle">Returns</div>
                   <div class="method-subtitle-description"><code class="code-inline">String</code> Name of the current handler</div>
@@ -1180,7 +1208,7 @@
                   </h4>
                   <div class="method-description">Base method called by constructor to set the current context</div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">private void setTriggerContext()</div>
                 </div>
                 <div class="method private">
@@ -1198,7 +1226,7 @@
                     Set the current trigger context based on the System.TriggerOperation <br />If we are not in a trigger context, then we set isTriggerExecuting to false
                   </div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">private void setTriggerContext(System.TriggerOperation opType, Boolean testMode)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">opType</div>
@@ -1339,7 +1367,7 @@
                     Make sure this trigger should continue to run <br />Returning <code class="code-inline">false</code> causes trigger handler to exit
                   </div>
                   <div class="method-subtitle">Signature</div>
-
+                  <div class="method-annotations">@TestVisible</div>
                   <div class="method-signature">private Boolean validateRun()</div>
                   <div class="method-subtitle">Returns</div>
                   <div class="method-subtitle-description"><code class="code-inline">Boolean</code> Is the run valid?</div>
@@ -1361,7 +1389,7 @@
                 rel="noopener noreferrer"
                 title="Go to source"
                 class="source-link"
-                href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L650">
+                href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L651">
                 TriggerHandler.LoopCount
               </a>
             </h2>
@@ -1387,7 +1415,7 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L658">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L659">
                       count
                     </a>
                   </td>
@@ -1404,7 +1432,7 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L654">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L655">
                       max
                     </a>
                   </td>
@@ -1438,7 +1466,7 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L665">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L666">
                       LoopCount()
                     </a>
                   </h4>
@@ -1454,7 +1482,7 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L675">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L676">
                       LoopCount(max)
                     </a>
                   </h4>
@@ -1506,7 +1534,7 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L695">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L696">
                       exceeded()
                     </a>
                   </h4>
@@ -1524,7 +1552,7 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L711">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L712">
                       getCount()
                     </a>
                   </h4>
@@ -1542,7 +1570,7 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L703">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L704">
                       getMax()
                     </a>
                   </h4>
@@ -1560,7 +1588,7 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L686">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L687">
                       increment()
                     </a>
                   </h4>
@@ -1578,7 +1606,7 @@
                       rel="noopener noreferrer"
                       title="Go to source"
                       class="source-link"
-                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L719">
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L720">
                       setMax(max)
                     </a>
                   </h4>
@@ -1602,7 +1630,7 @@
                 rel="noopener noreferrer"
                 title="Go to source"
                 class="source-link"
-                href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L727">
+                href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandler.cls#L728">
                 TriggerHandler.TriggerHandlerException
               </a>
             </h2>
