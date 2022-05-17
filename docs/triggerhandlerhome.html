@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <title>Salesforce Trigger Handler code documentation</title>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <script type="module" src="./assets/index.js"></script>
     <script type="module" src="./assets/search-idx.js"></script>
     <script type="module" src="./assets/search.js"></script>
@@ -16,8 +17,11 @@
 
   <body>
     <div id="side-bar">
+
       <div id="logo-container">
-        <div class="title">Salesforce Trigger Handler code documentation</div>
+        <div class="title">
+          Salesforce Trigger Handler code documentation
+        </div>
         <img src="assets/logo.png" />
         <div class="subtitle">
           Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
@@ -25,30 +29,24 @@
       </div>
       <div id="search-wrapper">
         <div class="search-icon"></div>
-        <input id="search-input" type="text" autocomplete="off" placeholder="Search..." />
+        <input id="search-input" type="text" autocomplete="off" placeholder="Search...">
       </div>
       <ul id="search-results" class=""></ul>
       <div class="navbar">
         <nav role="navigation">
-          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');"> Home </a>
+          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');">
+            Home
+          </a>
           <details id="SampleTriggerHandler" class="group-name">
             <summary id="header-SampleTriggerHandler" class="nav-header">
               <a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('triggerhandlerhome.html');">SampleTriggerHandler</a>
             </summary>
             <ul>
               <!-- menu items -->
-              <li
-                title="AccountSampleTriggerHandler"
-                id="item-AccountSampleTriggerHandler"
-                class="nav-item class public"
-                onclick="goToLocation('AccountSampleTriggerHandler.html');">
+              <li title="AccountSampleTriggerHandler" id="item-AccountSampleTriggerHandler" class="nav-item class public" onclick="goToLocation('AccountSampleTriggerHandler.html');">
                 <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandler</a>
               </li>
-              <li
-                title="AccountSampleTriggerHandlerTest"
-                id="item-AccountSampleTriggerHandlerTest"
-                class="nav-item class private"
-                onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
+              <li title="AccountSampleTriggerHandlerTest" id="item-AccountSampleTriggerHandlerTest" class="nav-item class private" onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
                 <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandlerTest</a>
               </li>
             </ul>
@@ -73,37 +71,45 @@
     <table id="content">
       <tr>
         <td class="scoping-panel">
-          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" /> <label for="cbx-all">All</label>&nbsp;&nbsp;
+          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" />
+          <label for="cbx-all">All</label>&nbsp;&nbsp;
           <input type="checkbox" checked="true" id="cbx-public" onclick="toggleScope('public', this.checked);" />
-          <label for="cbx-public"> public </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
-          <label for="cbx-private"> private </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
-          <label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
-          <label for="cbx-testmethod"> testMethod </label>
+          <label for="cbx-public">
+            public
+          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
+          <label for="cbx-private">
+            private
+          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
+          <label for="cbx-protected">
+            protected
+          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
+          <label for="cbx-testmethod">
+            testMethod
+          </label>
         </td>
       </tr>
       <tr>
         <td class="doc-page">
-          <h2 class="section-title">SampleTriggerHandler</h2>
+          <h2 class='section-title'>SampleTriggerHandler</h2>
           <link href="assets/styling.css" rel="stylesheet" />
           <h1>General Theme</h1>
           <p>Each object has a single trigger</p>
           <p>Each trigger has a single handler</p>
           <h1>Bypass Documentation</h1>
           <p>
-            <a
-              href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md"
-              data-mce-href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md">
+            <a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md" data-mce-href="https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md">
               https://github.com/dschach/salesforce-trigger-framework/blob/main/README.md
             </a>
           </p>
           <hr />
           <h1>Sample Trigger</h1>
-          <pre><code class="language-apex">trigger AccountSampleTrigger on Account (before insert, after insert, before update, after update, before delete, after delete, after undelete) {
+          <pre><code class="language-apex">
+trigger AccountSampleTrigger on Account (before insert, after insert, before update, after update, before delete, after delete, after undelete) {
   new AccountSampleTriggerHandler().run();
-}
-</code></pre>
+}</code></pre>
           <h1>Sample Handler</h1>
-          <pre><code class="language-apex">/**
+          <pre><code class="language-apex">
+/**
  * @description A sample Account trigger handler, with some comments
  *
  * @author David Schach
@@ -173,27 +179,29 @@ public without sharing class AccountSampleTriggerHandler extends TriggerHandler 
     update acctContacts;
   }
 }</code></pre>
-          <br /><br />
+          <br />
+          <br />
           <h1>Credits</h1>
           <p>
             This trigger framework is from
-            <a href="https://github.com/dschach/sfdc-trigger-framework" data-mce-href="https://github.com/dschach/sfdc-trigger-framework"
-              >https://github.com/dschach/sfdc-trigger-framework</a
-            >
+            <a href="https://github.com/dschach/sfdc-trigger-framework" data-mce-href="https://github.com/dschach/sfdc-trigger-framework">https://github.com/dschach/sfdc-trigger-framework</a>
             which is based on Kevin O'Hara's framework
-            <a href="https://github.com/kevinohara80/sfdc-trigger-framework" data-mce-href="https://github.com/kevinohara80/sfdc-trigger-framework"
-              >https://github.com/kevinohara80/sfdc-trigger-framework</a
-            >
+            <a href="https://github.com/kevinohara80/sfdc-trigger-framework" data-mce-href="https://github.com/kevinohara80/sfdc-trigger-framework">https://github.com/kevinohara80/sfdc-trigger-framework</a>
           </p>
+
         </td>
       </tr>
       <tr>
         <td class="footer">
+
           <div>
-            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer"> Powered By ApexDox VS Code </a>
+            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer">
+              Powered By ApexDox VS Code
+            </a>
           </div>
         </td>
       </tr>
     </table>
   </body>
+
 </html>
