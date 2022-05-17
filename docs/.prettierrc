@@ -1,6 +1,13 @@
 {
-	"bracketSameLine": true,
-	"useTabs": false,
-	"tabWidth": 2,
-	"printWidth": 180
+  "useTabs": false,
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": { "useTabs": false, "tabWidth": 2 }
+    },
+    {
+      "files": "*.css",
+      "options": { "useTabs": false, "tabWidth": 2 }
+    }
+  ]
 }

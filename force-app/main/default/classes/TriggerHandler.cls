@@ -86,12 +86,12 @@ public virtual class TriggerHandler {
 	 * @param  handlerName The name of the handler
 	 * @example
 	 * new AccountSampleTriggerHandler('AccountSampleTriggerHandler').run();
-	 * (in Trigger Handler)
+	 * // (in Trigger Handler)
 	 * public AccountSampleTriggerHandler(String className) {
-	 *   this.newRecords = (List<Account>)Trigger.new;
-	 *   this.oldRecords = (List<Account>)Trigger.old;
-	 *   this.newRecordsMap = (Map<Id, Account>)Trigger.newMap;
-	 *   this.oldRecordsMap = (Map<Id, Account>)Trigger.oldMap;
+	 *   this.newRecords = (List<Account>) Trigger.new;
+	 *   this.oldRecords = (List<Account>) Trigger.old;
+	 *   this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;
+	 *   this.oldRecordsMap = (Map<Id, Account>) Trigger.oldMap;
 	 * }
 	 */
 	public TriggerHandler(String handlerName) {
@@ -102,7 +102,7 @@ public virtual class TriggerHandler {
 	/**
 	 * @description Main method that will be called during execution
 	 * <br>See the sample trigger for the best way to set up your handler
-	 * @author Kevin O'Hara
+	 * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
