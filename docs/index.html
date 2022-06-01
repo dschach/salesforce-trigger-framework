@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <title>Salesforce Trigger Handler code documentation</title>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <script type="module" src="./assets/index.js"></script>
     <script type="module" src="./assets/search-idx.js"></script>
     <script type="module" src="./assets/search.js"></script>
@@ -17,11 +16,8 @@
 
   <body>
     <div id="side-bar">
-
       <div id="logo-container">
-        <div class="title">
-          Salesforce Trigger Handler code documentation
-        </div>
+        <div class="title">Salesforce Trigger Handler code documentation</div>
         <img src="assets/logo.png" />
         <div class="subtitle">
           Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
@@ -29,24 +25,30 @@
       </div>
       <div id="search-wrapper">
         <div class="search-icon"></div>
-        <input id="search-input" type="text" autocomplete="off" placeholder="Search...">
+        <input id="search-input" type="text" autocomplete="off" placeholder="Search..." />
       </div>
       <ul id="search-results" class=""></ul>
       <div class="navbar">
         <nav role="navigation">
-          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');">
-            Home
-          </a>
+          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');"> Home </a>
           <details id="SampleTriggerHandler" class="group-name">
             <summary id="header-SampleTriggerHandler" class="nav-header">
               <a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('triggerhandlerhome.html');">SampleTriggerHandler</a>
             </summary>
             <ul>
               <!-- menu items -->
-              <li title="AccountSampleTriggerHandler" id="item-AccountSampleTriggerHandler" class="nav-item class public" onclick="goToLocation('AccountSampleTriggerHandler.html');">
+              <li
+                title="AccountSampleTriggerHandler"
+                id="item-AccountSampleTriggerHandler"
+                class="nav-item class public"
+                onclick="goToLocation('AccountSampleTriggerHandler.html');">
                 <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandler</a>
               </li>
-              <li title="AccountSampleTriggerHandlerTest" id="item-AccountSampleTriggerHandlerTest" class="nav-item class private" onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
+              <li
+                title="AccountSampleTriggerHandlerTest"
+                id="item-AccountSampleTriggerHandlerTest"
+                class="nav-item class private"
+                onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
                 <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandlerTest</a>
               </li>
             </ul>
@@ -71,42 +73,33 @@
     <table id="content">
       <tr>
         <td class="scoping-panel">
-          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" />
-          <label for="cbx-all">All</label>&nbsp;&nbsp;
+          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" /> <label for="cbx-all">All</label>&nbsp;&nbsp;
           <input type="checkbox" checked="true" id="cbx-public" onclick="toggleScope('public', this.checked);" />
-          <label for="cbx-public">
-            public
-          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
-          <label for="cbx-private">
-            private
-          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
-          <label for="cbx-protected">
-            protected
-          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
-          <label for="cbx-testmethod">
-            testMethod
-          </label>
+          <label for="cbx-public"> public </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
+          <label for="cbx-private"> private </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
+          <label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
+          <label for="cbx-testmethod"> testMethod </label>
         </td>
       </tr>
       <tr>
         <td class="doc-page">
-          <h2 class='section-title'>Home</h2>
+          <h2 class="section-title">Home</h2>
           <link href="assets/styling.css" rel="stylesheet" />
           <h1>Salesforce Trigger Framework</h1>
           <h2>Credit</h2>
           <p>Based on Kevin O’Hara’s famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a></p>
           <h2>Overview</h2>
           <p>
-            Triggers should be logicless. Putting logic into your triggers creates un-testable, difficult-to-maintain code. It's widely accepted that a best-practice is to move trigger logic
-            into a handler class.
+            Triggers should be logicless. Putting logic into your triggers creates un-testable, difficult-to-maintain code. It's widely accepted that a best-practice is to move
+            trigger logic into a handler class.
           </p>
           <p>
             This trigger framework bundles a single <strong>TriggerHandler</strong> base class that you can inherit from in all of your trigger handlers. The base class includes
             context-specific methods that are automatically called when a trigger is executed.
           </p>
           <p>
-            The base class also provides a secondary role as a supervisor for Trigger execution. It acts like a watchdog, monitoring trigger activity and providing an api for controlling
-            certain aspects of execution and control flow.
+            The base class also provides a secondary role as a supervisor for Trigger execution. It acts like a watchdog, monitoring trigger activity and providing an api for
+            controlling certain aspects of execution and control flow.
           </p>
           <p>But the most important part of this framework is that it's minimal and simple to use.</p>
           <!-- <p>See the sample handler documentation at <a href="triggerhandlerhome.html">TriggerHandler</a>.</p> -->
@@ -114,7 +107,8 @@
           <h2 id="usage">Usage</h2>
           <h3 id="triggerhandler">Trigger Handler</h3>
           <p>
-            To create a trigger handler, you simply need to create a class that inherits from <strong><a href="./TriggerHandler.html">TriggerHandler</a></strong>. Here is an example for creating an Opportunity trigger handler.
+            To create a trigger handler, you simply need to create a class that inherits from <strong><a href="./TriggerHandler.html">TriggerHandler</a></strong
+            >. Here is an example for creating an Opportunity trigger handler.
           </p>
           <pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {</code></pre>
           <p>
@@ -128,9 +122,9 @@
           </p>
           <p>
             <strong>Note:</strong>
-            When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This means that you must cast when you
-            reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for oldMap and newMap, but for completeness, I
-            encourage casting Trigger.new and Trigger.old as well.
+            When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This means that you must cast
+            when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for oldMap and newMap, but for
+            completeness, I encourage casting Trigger.new and Trigger.old as well.
           </p>
 
           <pre><code class="language-apex">public without sharing class OpportunityTriggerHandler extends TriggerHandler {
@@ -163,20 +157,21 @@
 </code></pre>
           <h3 id="trigger">Trigger</h3>
           <p>
-            To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger handler itself and call the <code>run()</code> method. Here is an
-            example of an Opportunity trigger.
+            To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger handler itself and call the <code>run()</code> method.
+            Here is an example of an Opportunity trigger.
           </p>
           <p>
-            This is the way to write a trigger that will run the trigger handlers below. Note that some objects do not work in every context, so ensure that you list only applicable trigger
-            contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead to
-            deployment problems.
+            This is the way to write a trigger that will run the trigger handlers below. Note that some objects do not work in every context, so ensure that you list only
+            applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests,
+            which could lead to deployment problems.
           </p>
 
           <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler().run();
 }
 </code></pre>
-          There is also a faster way to write the trigger, specifying the handler class name so the handler does not need to describe the class for its name, saving precious execution time:
+          There is also a faster way to write the trigger, specifying the handler class name so the handler does not need to describe the class for its name, saving precious
+          execution time:
           <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler('OpportunityTriggerHandler').run();
 }
@@ -272,8 +267,8 @@ TriggerHandler.bypass(bypassedHandlers);
 </code></pre>
           <h3 id="maxloopcount">Max Loop Count</h3>
           <p>
-            To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, and exception will be thrown. A great use case is when you want to ensure that
-            your trigger runs once and only once within a single execution. Example:
+            To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, and exception will be thrown. A great use case is when you want to
+            ensure that your trigger runs once and only once within a single execution. Example:
           </p>
           <pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {
   private Map&lt;Id, Opportunity&gt; newRecordsMap;
@@ -322,20 +317,15 @@ AccountTriggerHandler.showDebug(false);
             <li><code>afterDelete()</code></li>
             <li><code>afterUndelete()</code></li>
           </ul>
-
         </td>
       </tr>
       <tr>
         <td class="footer">
-
           <div>
-            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer">
-              Powered By ApexDox VS Code
-            </a>
+            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer"> Powered By ApexDox VS Code </a>
           </div>
         </td>
       </tr>
     </table>
   </body>
-
 </html>

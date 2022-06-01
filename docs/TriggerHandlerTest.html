@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <title>Salesforce Trigger Handler code documentation</title>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <script type="module" src="./assets/index.js"></script>
     <script type="module" src="./assets/search-idx.js"></script>
     <script type="module" src="./assets/search.js"></script>
@@ -17,11 +16,8 @@
 
   <body>
     <div id="side-bar">
-
       <div id="logo-container">
-        <div class="title">
-          Salesforce Trigger Handler code documentation
-        </div>
+        <div class="title">Salesforce Trigger Handler code documentation</div>
         <img src="assets/logo.png" />
         <div class="subtitle">
           Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
@@ -29,24 +25,30 @@
       </div>
       <div id="search-wrapper">
         <div class="search-icon"></div>
-        <input id="search-input" type="text" autocomplete="off" placeholder="Search...">
+        <input id="search-input" type="text" autocomplete="off" placeholder="Search..." />
       </div>
       <ul id="search-results" class=""></ul>
       <div class="navbar">
         <nav role="navigation">
-          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');">
-            Home
-          </a>
+          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');"> Home </a>
           <details id="SampleTriggerHandler" class="group-name">
             <summary id="header-SampleTriggerHandler" class="nav-header">
               <a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('triggerhandlerhome.html');">SampleTriggerHandler</a>
             </summary>
             <ul>
               <!-- menu items -->
-              <li title="AccountSampleTriggerHandler" id="item-AccountSampleTriggerHandler" class="nav-item class public" onclick="goToLocation('AccountSampleTriggerHandler.html');">
+              <li
+                title="AccountSampleTriggerHandler"
+                id="item-AccountSampleTriggerHandler"
+                class="nav-item class public"
+                onclick="goToLocation('AccountSampleTriggerHandler.html');">
                 <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandler</a>
               </li>
-              <li title="AccountSampleTriggerHandlerTest" id="item-AccountSampleTriggerHandlerTest" class="nav-item class private" onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
+              <li
+                title="AccountSampleTriggerHandlerTest"
+                id="item-AccountSampleTriggerHandlerTest"
+                class="nav-item class private"
+                onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
                 <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandlerTest</a>
               </li>
             </ul>
@@ -71,88 +73,76 @@
     <table id="content">
       <tr>
         <td class="scoping-panel">
-          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" />
-          <label for="cbx-all">All</label>&nbsp;&nbsp;
+          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" /> <label for="cbx-all">All</label>&nbsp;&nbsp;
           <input type="checkbox" checked="true" id="cbx-public" onclick="toggleScope('public', this.checked);" />
-          <label for="cbx-public">
-            public
-          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
-          <label for="cbx-private">
-            private
-          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
-          <label for="cbx-protected">
-            protected
-          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
-          <label for="cbx-testmethod">
-            testMethod
-          </label>
+          <label for="cbx-public"> public </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
+          <label for="cbx-private"> private </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
+          <label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
+          <label for="cbx-testmethod"> testMethod </label>
         </td>
       </tr>
       <tr>
         <td class="doc-page">
-
           <div class="section">
-
             <h2 class="class-title top-level-type" id="TriggerHandlerTest">
-
-              <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L11">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Go to source"
+                class="source-link"
+                href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L11">
                 TriggerHandlerTest
               </a>
             </h2>
             <div class="class-container">
-
-              <div class="class-description">
-                Test class for base TriggerHandler class
-              </div>
-              <div class="class-subtitle">
-                Signature
-              </div>
+              <div class="class-description">Test class for base TriggerHandler class</div>
+              <div class="class-subtitle">Signature</div>
               <div class="class-annotations">@isTest</div>
-              <div class="class-signature">
-                private class TriggerHandlerTest
-              </div>
-              <div class="class-subtitle">
-                See
-              </div>
+              <div class="class-signature">private class TriggerHandlerTest</div>
+              <div class="class-subtitle">See</div>
               <div class="class-subtitle-description">
-                <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-handler">GitHub</a>, <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html')">TriggerHandler</a>
-              </div><br /><a target="_blank" rel="noopener noreferrer" href="https://github.com/kevinohara80">Kevin OHara</a> <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a><br />2013
+                <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-handler">GitHub</a>,
+                <a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html')">TriggerHandler</a>
+              </div>
+              <br /><a target="_blank" rel="noopener noreferrer" href="https://github.com/kevinohara80">Kevin OHara</a>
+              <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach">David Schach</a><br />2013
             </div>
             <div class="subsection properties TriggerHandlerTest">
               <h3 class="subsection-title properties">TriggerHandlerTest Properties</h3>
               <table class="attributes-table properties">
-
                 <tr>
                   <th>Name</th>
                   <th>Signature</th>
-
-
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L13">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L13">
                       handler
-                    </a></td>
-                  <td>
-                    <div class="attribute-signature">
-                      private static TriggerHandlerTest.TestHandler handler
-                    </div>
+                    </a>
                   </td>
-
-
+                  <td>
+                    <div class="attribute-signature">private static TriggerHandlerTest.TestHandler handler</div>
+                  </td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L12">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L12">
                       lastMethodCalled
-                    </a></td>
-                  <td>
-                    <div class="attribute-signature">
-                      private static String lastMethodCalled
-                    </div>
+                    </a>
                   </td>
-
-
+                  <td>
+                    <div class="attribute-signature">private static String lastMethodCalled</div>
+                  </td>
                 </tr>
               </table>
             </div>
@@ -161,682 +151,565 @@
               <div class="methods-container">
                 <ul class="methods-toc">
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.afterDeleteMode">
-                      afterDeleteMode ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.afterDeleteMode"> afterDeleteMode () </a>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.afterInsertMode">
-                      afterInsertMode ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.afterInsertMode"> afterInsertMode () </a>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.afterUndeleteMode">
-                      afterUndeleteMode ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.afterUndeleteMode"> afterUndeleteMode () </a>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.afterUpdateMode">
-                      afterUpdateMode ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.afterUpdateMode"> afterUpdateMode () </a>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.assertTestHandlerName">
-                      assertTestHandlerName ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.assertTestHandlerName"> assertTestHandlerName () </a>
 
-                    <div class="methods-toc__description">
-                      Ensure that the current handler name is as expected
-                    </div>
+                    <div class="methods-toc__description">Ensure that the current handler name is as expected</div>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.beforeDeleteMode">
-                      beforeDeleteMode ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.beforeDeleteMode"> beforeDeleteMode () </a>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.beforeInsertMode">
-                      beforeInsertMode ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.beforeInsertMode"> beforeInsertMode () </a>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.beforeUpdateMode">
-                      beforeUpdateMode ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.beforeUpdateMode"> beforeUpdateMode () </a>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.resetTest">
-                      resetTest ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.resetTest"> resetTest () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testAfterDelete">
-                      testAfterDelete ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testAfterDelete"> testAfterDelete () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testAfterInsert">
-                      testAfterInsert ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testAfterInsert"> testAfterInsert () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testAfterUndelete">
-                      testAfterUndelete ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testAfterUndelete"> testAfterUndelete () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testAfterUpdate">
-                      testAfterUpdate ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testAfterUpdate"> testAfterUpdate () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testBeforeDelete">
-                      testBeforeDelete ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testBeforeDelete"> testBeforeDelete () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testBeforeInsert">
-                      testBeforeInsert ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testBeforeInsert"> testBeforeInsert () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testBeforeInsertWithLimits">
-                      testBeforeInsertWithLimits ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testBeforeInsertWithLimits"> testBeforeInsertWithLimits () </a>
 
-                    <div class="methods-toc__description">
-                      Test and show limits and debug
-                    </div>
+                    <div class="methods-toc__description">Test and show limits and debug</div>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testBeforeUpdate">
-                      testBeforeUpdate ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testBeforeUpdate"> testBeforeUpdate () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testBypassAPI">
-                      testBypassAPI ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testBypassAPI"> testBypassAPI () </a>
 
-                    <div class="methods-toc__description">
-                      test bypass api
-                    </div>
+                    <div class="methods-toc__description">test bypass api</div>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testBypassByType">
-                      testBypassByType ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testBypassByType"> testBypassByType () </a>
 
-                    <div class="methods-toc__description">
-                      Test bypass by Type
-                    </div>
+                    <div class="methods-toc__description">Test bypass by Type</div>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testConstructorWithParameter">
-                      testConstructorWithParameter ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testConstructorWithParameter"> testConstructorWithParameter () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testConstructorWithParametersAndBypass">
-                      testConstructorWithParametersAndBypass ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testConstructorWithParametersAndBypass"> testConstructorWithParametersAndBypass () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testLoopCount">
-                      testLoopCount ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testLoopCount"> testLoopCount () </a>
 
-                    <div class="methods-toc__description">
-                      instance method tests
-                    </div>
+                    <div class="methods-toc__description">instance method tests</div>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testLoopCountClass">
-                      testLoopCountClass ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testLoopCountClass"> testLoopCountClass () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testNonTriggerContext">
-                      testNonTriggerContext ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testNonTriggerContext"> testNonTriggerContext () </a>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testOutsideTrigger">
-                      testOutsideTrigger ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testOutsideTrigger"> testOutsideTrigger () </a>
 
-                    <div class="methods-toc__description">
-                      call from outside trigger
-                    </div>
+                    <div class="methods-toc__description">call from outside trigger</div>
                   </li>
                   <li class="method testmethod">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.testVirtualMethods">
-                      testVirtualMethods ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.testVirtualMethods"> testVirtualMethods () </a>
 
-                    <div class="methods-toc__description">
-                      test virtual methods
-                    </div>
+                    <div class="methods-toc__description">test virtual methods</div>
                   </li>
                 </ul>
                 <div class="method private">
-                  <h4 class="method-title " id="TriggerHandlerTest.afterDeleteMode">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L355">
+                  <h4 class="method-title" id="TriggerHandlerTest.afterDeleteMode">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L355">
                       afterDeleteMode()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private static void afterDeleteMode()
-                  </div>
+                  <div class="method-signature">private static void afterDeleteMode()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="TriggerHandlerTest.afterInsertMode">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L347">
+                  <h4 class="method-title" id="TriggerHandlerTest.afterInsertMode">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L347">
                       afterInsertMode()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private static void afterInsertMode()
-                  </div>
+                  <div class="method-signature">private static void afterInsertMode()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="TriggerHandlerTest.afterUndeleteMode">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L359">
+                  <h4 class="method-title" id="TriggerHandlerTest.afterUndeleteMode">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L359">
                       afterUndeleteMode()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private static void afterUndeleteMode()
-                  </div>
+                  <div class="method-signature">private static void afterUndeleteMode()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="TriggerHandlerTest.afterUpdateMode">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L351">
+                  <h4 class="method-title" id="TriggerHandlerTest.afterUpdateMode">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L351">
                       afterUpdateMode()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private static void afterUpdateMode()
-                  </div>
+                  <div class="method-signature">private static void afterUpdateMode()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="TriggerHandlerTest.assertTestHandlerName">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L296">
+                  <h4 class="method-title" id="TriggerHandlerTest.assertTestHandlerName">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L296">
                       assertTestHandlerName()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Ensure that the current handler name is as expected
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-description">Ensure that the current handler name is as expected</div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private static void assertTestHandlerName()
-                  </div>
+                  <div class="method-signature">private static void assertTestHandlerName()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="TriggerHandlerTest.beforeDeleteMode">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L343">
+                  <h4 class="method-title" id="TriggerHandlerTest.beforeDeleteMode">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L343">
                       beforeDeleteMode()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private static void beforeDeleteMode()
-                  </div>
+                  <div class="method-signature">private static void beforeDeleteMode()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="TriggerHandlerTest.beforeInsertMode">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L335">
+                  <h4 class="method-title" id="TriggerHandlerTest.beforeInsertMode">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L335">
                       beforeInsertMode()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private static void beforeInsertMode()
-                  </div>
+                  <div class="method-signature">private static void beforeInsertMode()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="TriggerHandlerTest.beforeUpdateMode">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L339">
+                  <h4 class="method-title" id="TriggerHandlerTest.beforeUpdateMode">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L339">
                       beforeUpdateMode()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private static void beforeUpdateMode()
-                  </div>
+                  <div class="method-signature">private static void beforeUpdateMode()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="TriggerHandlerTest.resetTest">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L329">
+                  <h4 class="method-title" id="TriggerHandlerTest.resetTest">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L329">
                       resetTest()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private static void resetTest()
-                  </div>
+                  <div class="method-signature">private static void resetTest()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testAfterDelete">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L60">
+                  <h4 class="method-title" id="TriggerHandlerTest.testAfterDelete">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L60">
                       testAfterDelete()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testAfterDelete()
-                  </div>
+                  <div class="method-signature">private static void testAfterDelete()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testAfterInsert">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L46">
+                  <h4 class="method-title" id="TriggerHandlerTest.testAfterInsert">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L46">
                       testAfterInsert()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testAfterInsert()
-                  </div>
+                  <div class="method-signature">private static void testAfterInsert()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testAfterUndelete">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L67">
+                  <h4 class="method-title" id="TriggerHandlerTest.testAfterUndelete">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L67">
                       testAfterUndelete()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testAfterUndelete()
-                  </div>
+                  <div class="method-signature">private static void testAfterUndelete()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testAfterUpdate">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L53">
+                  <h4 class="method-title" id="TriggerHandlerTest.testAfterUpdate">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L53">
                       testAfterUpdate()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testAfterUpdate()
-                  </div>
+                  <div class="method-signature">private static void testAfterUpdate()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testBeforeDelete">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L39">
+                  <h4 class="method-title" id="TriggerHandlerTest.testBeforeDelete">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L39">
                       testBeforeDelete()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testBeforeDelete()
-                  </div>
+                  <div class="method-signature">private static void testBeforeDelete()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testBeforeInsert">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L24">
+                  <h4 class="method-title" id="TriggerHandlerTest.testBeforeInsert">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L24">
                       testBeforeInsert()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testBeforeInsert()
-                  </div>
+                  <div class="method-signature">private static void testBeforeInsert()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testBeforeInsertWithLimits">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L222">
+                  <h4 class="method-title" id="TriggerHandlerTest.testBeforeInsertWithLimits">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L222">
                       testBeforeInsertWithLimits()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Test and show limits and debug
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-description">Test and show limits and debug</div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testBeforeInsertWithLimits()
-                  </div>
+                  <div class="method-signature">private static void testBeforeInsertWithLimits()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testBeforeUpdate">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L32">
+                  <h4 class="method-title" id="TriggerHandlerTest.testBeforeUpdate">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L32">
                       testBeforeUpdate()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testBeforeUpdate()
-                  </div>
+                  <div class="method-signature">private static void testBeforeUpdate()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testBypassAPI">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L115">
+                  <h4 class="method-title" id="TriggerHandlerTest.testBypassAPI">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L115">
                       testBypassAPI()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    test bypass api
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-description">test bypass api</div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testBypassAPI()
-                  </div>
+                  <div class="method-signature">private static void testBypassAPI()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testBypassByType">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L199">
+                  <h4 class="method-title" id="TriggerHandlerTest.testBypassByType">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L199">
                       testBypassByType()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Test bypass by Type
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-description">Test bypass by Type</div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@IsTest</div>
-                  <div class="method-signature">
-                    static void testBypassByType()
-                  </div>
+                  <div class="method-signature">static void testBypassByType()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testConstructorWithParameter">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L86">
+                  <h4 class="method-title" id="TriggerHandlerTest.testConstructorWithParameter">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L86">
                       testConstructorWithParameter()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testConstructorWithParameter()
-                  </div>
+                  <div class="method-signature">private static void testConstructorWithParameter()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testConstructorWithParametersAndBypass">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L97">
+                  <h4 class="method-title" id="TriggerHandlerTest.testConstructorWithParametersAndBypass">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L97">
                       testConstructorWithParametersAndBypass()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testConstructorWithParametersAndBypass()
-                  </div>
+                  <div class="method-signature">private static void testConstructorWithParametersAndBypass()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testLoopCount">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L240">
+                  <h4 class="method-title" id="TriggerHandlerTest.testLoopCount">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L240">
                       testLoopCount()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    instance method tests
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-description">instance method tests</div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testLoopCount()
-                  </div>
+                  <div class="method-signature">private static void testLoopCount()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testLoopCountClass">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L272">
+                  <h4 class="method-title" id="TriggerHandlerTest.testLoopCountClass">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L272">
                       testLoopCountClass()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testLoopCountClass()
-                  </div>
+                  <div class="method-signature">private static void testLoopCountClass()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testNonTriggerContext">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L74">
+                  <h4 class="method-title" id="TriggerHandlerTest.testNonTriggerContext">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L74">
                       testNonTriggerContext()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testNonTriggerContext()
-                  </div>
+                  <div class="method-signature">private static void testNonTriggerContext()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testOutsideTrigger">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L320">
+                  <h4 class="method-title" id="TriggerHandlerTest.testOutsideTrigger">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L320">
                       testOutsideTrigger()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    call from outside trigger
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-description">call from outside trigger</div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testOutsideTrigger()
-                  </div>
+                  <div class="method-signature">private static void testOutsideTrigger()</div>
                 </div>
                 <div class="method testmethod">
-                  <h4 class="method-title " id="TriggerHandlerTest.testVirtualMethods">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L304">
+                  <h4 class="method-title" id="TriggerHandlerTest.testVirtualMethods">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L304">
                       testVirtualMethods()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    test virtual methods
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-description">test virtual methods</div>
+                  <div class="method-subtitle">Signature</div>
                   <div class="method-annotations">@isTest</div>
-                  <div class="method-signature">
-                    private static void testVirtualMethods()
-                  </div>
+                  <div class="method-signature">private static void testVirtualMethods()</div>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="section">
-
-            <h2 class="class-title " id="TriggerHandlerTest.TestHandler">
-
-              <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L366">
+            <h2 class="class-title" id="TriggerHandlerTest.TestHandler">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Go to source"
+                class="source-link"
+                href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L366">
                 TriggerHandlerTest.TestHandler
               </a>
             </h2>
             <div class="class-container">
+              <div class="class-description">test implementation of the TriggerHandler</div>
+              <div class="class-subtitle">Signature</div>
 
-              <div class="class-description">
-                test implementation of the TriggerHandler
-              </div>
-              <div class="class-subtitle">
-                Signature
-              </div>
-
-              <div class="class-signature">
-                private class TestHandler extends TriggerHandler
-              </div>
+              <div class="class-signature">private class TestHandler extends TriggerHandler</div>
             </div>
             <div class="subsection methods">
               <h3 class="subsection-title methods">TriggerHandlerTest.TestHandler Constructors</h3>
               <div class="methods-container">
                 <ul class="methods-toc">
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.TestHandler.TestHandler">
-                      TestHandler ()
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.TestHandler.TestHandler"> TestHandler () </a>
 
-                    <div class="methods-toc__description">
-                      Invoke constructor
-                    </div>
+                    <div class="methods-toc__description">Invoke constructor</div>
                   </li>
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.TestHandler.TestHandler_1">
-                      TestHandler (handlerName)
-                    </a>
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.TestHandler.TestHandler_1"> TestHandler (handlerName) </a>
 
-                    <div class="methods-toc__description">
-                      Override the trigger handler constructor that takes the handler name as a parameter
-                    </div>
+                    <div class="methods-toc__description">Override the trigger handler constructor that takes the handler name as a parameter</div>
                   </li>
                 </ul>
                 <div class="method public">
-                  <h4 class="method-title " id="TriggerHandlerTest.TestHandler.TestHandler">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L370">
+                  <h4 class="method-title" id="TriggerHandlerTest.TestHandler.TestHandler">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L370">
                       TestHandler()
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Invoke constructor
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-description">Invoke constructor</div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public TestHandler()
-                  </div>
+                  <div class="method-signature">public TestHandler()</div>
                 </div>
                 <div class="method public">
-                  <h4 class="method-title " id="TriggerHandlerTest.TestHandler.TestHandler_1">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L380">
+                  <h4 class="method-title" id="TriggerHandlerTest.TestHandler.TestHandler_1">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L380">
                       TestHandler(handlerName)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Override the trigger handler constructor that takes the handler name as a parameter
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-description">Override the trigger handler constructor that takes the handler name as a parameter</div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public TestHandler(String handlerName)
-                  </div>
+                  <div class="method-signature">public TestHandler(String handlerName)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">handlerName</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">String</code>
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">String</code></div>
                   <div class="param-description">The handler name to instantiate</div>
                 </div>
               </div>
@@ -846,170 +719,144 @@
               <div class="methods-container">
                 <ul class="methods-toc">
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.TestHandler.afterDelete">
-                      afterDelete ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.TestHandler.afterDelete"> afterDelete () </a>
                   </li>
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.TestHandler.afterInsert">
-                      afterInsert ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.TestHandler.afterInsert"> afterInsert () </a>
                   </li>
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.TestHandler.afterUndelete">
-                      afterUndelete ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.TestHandler.afterUndelete"> afterUndelete () </a>
                   </li>
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.TestHandler.afterUpdate">
-                      afterUpdate ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.TestHandler.afterUpdate"> afterUpdate () </a>
                   </li>
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.TestHandler.beforeDelete">
-                      beforeDelete ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.TestHandler.beforeDelete"> beforeDelete () </a>
                   </li>
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.TestHandler.beforeInsert">
-                      beforeInsert ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.TestHandler.beforeInsert"> beforeInsert () </a>
                   </li>
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#TriggerHandlerTest.TestHandler.beforeUpdate">
-                      beforeUpdate ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#TriggerHandlerTest.TestHandler.beforeUpdate"> beforeUpdate () </a>
                   </li>
                 </ul>
                 <div class="method public">
-                  <h4 class="method-title " id="TriggerHandlerTest.TestHandler.afterDelete">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L403">
+                  <h4 class="method-title" id="TriggerHandlerTest.TestHandler.afterDelete">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L403">
                       afterDelete()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public override void afterDelete()
-                  </div>
+                  <div class="method-signature">public override void afterDelete()</div>
                 </div>
                 <div class="method public">
-                  <h4 class="method-title " id="TriggerHandlerTest.TestHandler.afterInsert">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L395">
+                  <h4 class="method-title" id="TriggerHandlerTest.TestHandler.afterInsert">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L395">
                       afterInsert()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public override void afterInsert()
-                  </div>
+                  <div class="method-signature">public override void afterInsert()</div>
                 </div>
                 <div class="method public">
-                  <h4 class="method-title " id="TriggerHandlerTest.TestHandler.afterUndelete">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L407">
+                  <h4 class="method-title" id="TriggerHandlerTest.TestHandler.afterUndelete">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L407">
                       afterUndelete()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public override void afterUndelete()
-                  </div>
+                  <div class="method-signature">public override void afterUndelete()</div>
                 </div>
                 <div class="method public">
-                  <h4 class="method-title " id="TriggerHandlerTest.TestHandler.afterUpdate">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L399">
+                  <h4 class="method-title" id="TriggerHandlerTest.TestHandler.afterUpdate">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L399">
                       afterUpdate()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public override void afterUpdate()
-                  </div>
+                  <div class="method-signature">public override void afterUpdate()</div>
                 </div>
                 <div class="method public">
-                  <h4 class="method-title " id="TriggerHandlerTest.TestHandler.beforeDelete">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L391">
+                  <h4 class="method-title" id="TriggerHandlerTest.TestHandler.beforeDelete">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L391">
                       beforeDelete()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public override void beforeDelete()
-                  </div>
+                  <div class="method-signature">public override void beforeDelete()</div>
                 </div>
                 <div class="method public">
-                  <h4 class="method-title " id="TriggerHandlerTest.TestHandler.beforeInsert">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L383">
+                  <h4 class="method-title" id="TriggerHandlerTest.TestHandler.beforeInsert">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L383">
                       beforeInsert()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public override void beforeInsert()
-                  </div>
+                  <div class="method-signature">public override void beforeInsert()</div>
                 </div>
                 <div class="method public">
-                  <h4 class="method-title " id="TriggerHandlerTest.TestHandler.beforeUpdate">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L387">
+                  <h4 class="method-title" id="TriggerHandlerTest.TestHandler.beforeUpdate">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/TriggerHandlerTest.cls#L387">
                       beforeUpdate()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public override void beforeUpdate()
-                  </div>
+                  <div class="method-signature">public override void beforeUpdate()</div>
                 </div>
               </div>
             </div>
           </div>
-
         </td>
       </tr>
       <tr>
         <td class="footer">
-
           <div>
-            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer">
-              Powered By ApexDox VS Code
-            </a>
+            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer"> Powered By ApexDox VS Code </a>
           </div>
         </td>
       </tr>
     </table>
   </body>
-
 </html>

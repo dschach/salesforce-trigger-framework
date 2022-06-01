@@ -527,139 +527,130 @@ var hljs = function () {
 /*! `apex` grammar compiled for Highlight.js 11.5.0 */
 (() => {
   var e = (() => {
-    "use strict"; function e(t, s, a) {
-      return -1 === a ? "" : t.replace(s, (c => e(t, s, a - 1)))
-    } return t => {
-      const s = t.regex, a = "[a-zA-Z][a-zA-Z_0-9]*", c = a + e("(?:<" + a + "~~~(?:\\s*,\\s*" + a + "~~~)*>)?", /~~~/g, 2), n = {
-        scope: "number", match: /\b[0-9]+(?:\.[0-9]+)?/, relevance: 0
-      }, r = ["false", "true", "null"], o = {
-        match: [s.concat(/\b/, s.either(...r), /\b/)],
-        scope: { 1: "literal" }, relevance: 0
-      }, i = ["anytype", "blob|0", "boolean|0", "byte|0", "currency|0", "date|0", "datetime|0", "decimal|0", "double|0", "enum|0", "exception|0", "float|0", "id|8", "integer|0", "long|0", "object", "pagereference|10", "selectoption|10", "short|0", "sobject|10", "string|0", "time|0", "void|0", "float|0"], l = {
-        match: s.concat(/(?<=[^\.])\b/, s.either(...i), /\b/), scope: "type"
-      }, b = {
-        $pattern: "[A-Za-z][0-9A-Za-z$_]*",
-        keyword: ["abstract", "AccessLevel", "USER_MODE", "break", "catch", "continue", "default", "do", "else", "execute", "exports", "extends|6", "final", "finally", "finish", "for", "get", "put", "set", "global", "if", "implements", "new", "newMap|10", "old|10", "oldMap|10", "override", "private", "protected", "public", "return", "seealldata|8", "start", "static", "throws", "throw", "testmethod|10", "transient", "try", "virtual", "webservice", "when", "while"],
-        "variable.language": ["super", "this", "self", "instanceof"],
-        built_in: ["trigger|10", "class", "interface", "insert", "update", "upsert|8", "delete", "undelete", "merge", "schedulable|10", "batchable|10", "queueable|10", "comparable|10", "callable|10"],
-        type: i, literal: r
-      }, p = {
-        match: [s.concat(/\b/, s.either("ApexPages|10", "AppLauncher", "Approval", "Auth", "Cache", "Canvas", "ChatterAnswers|10", "CommercePayments|10", "ConnectApi|10", "Database", "Datacloud|10", "DataSource|10", "Dom", "EventBus|10", "Flow", "Functions", "KbManagement|10", "Label", "LxScheduler|10", "Messaging", "Metadata", "Pref_center|10", "Process", "QuickAction", "Reports", "Schema", "Search", "Sfc|10", "Sfdc_Checkout|10", "sfdc_surveys|10", "Site", "Support", "System", "TerritoryMgmt|10", "Test", "Trigger|10", "TxnSecurity|10", "Type", "UserProvisioning|10", "VisualEditor|10", "Wave|10"), /(?=\.)/)],
-        scope: { 1: "built_in" }, relevance: 10
-      }, E = t.COMMENT("//", /[$\n]/), A = t.COMMENT("/\\*", "\\*/", {
+    "use strict"; return e => {
+      const s = e.regex, t = "[a-zA-Z][a-zA-Z_0-9]*", a = {
+        scope: "number", variants: [{
+          match: /\b[0-9]+(?:\.[0-9]+)?/
+        }, { match: /\s(?:[0-9,]+)?\.[0-9]+/ }], relevance: 0
+      }, c = {
+        match: s.either(/-/, /~/, /\*/, /\*=/, /\/=/, /%/, /\.\.\./, /\.\./, /\+/, /<</, />>/, />=/, /<=/, /\s<\s/, /\s>\s/, /\^/, /\^=/, /!=/, /!/, /==/, /&&/, /&/, /\|\|/, /\|/, /\?:/, /=/, /=>/),
+        scope: "operator", relevance: 0
+      }, n = {
+        match: [/\b/, s.either("ApexPages|10", "AppLauncher", "Approval", "Auth", "Cache", "Canvas", "ChatterAnswers|10", "CommercePayments|10", "ConnectApi|10", "Database", "Datacloud|10", "DataSource|10", "Dom", "EventBus|10", "Flow", "Functions", "KbManagement|10", "Label", "LxScheduler|10", "Messaging", "Metadata", "Pref_center|10", "Process", "QuickAction", "Reports", "Schema", "Search", "Sfc|10", "Sfdc_Checkout|10", "sfdc_surveys|10", "Site", "Support", "System", "TerritoryMgmt|10", "Test", "Trigger|10", "TxnSecurity|10", "Type", "UserProvisioning|10", "VisualEditor|10", "Wave|10"), /(?=\.)/],
+        scope: { 2: "built_in" }, relevance: 10
+      }, r = e.COMMENT("//", /[$\n]/), o = e.COMMENT("/\\*", "\\*/", {
         relevance: 0, contains: [{
           begin: /\w+@/, relevance: 0
         }, { scope: "doctag", begin: "@[A-Za-z_]+" }, {
           begin: "`",
-          end: "`", excludeBegin: !1, excludeEnd: !1, scope: "meta string",
-          contains: [t.BACKSLASH_ESCAPE], relevance: 0
+          end: "`", excludeBegin: !0, excludeEnd: !0, scope: "code",
+          contains: [e.BACKSLASH_ESCAPE], relevance: 0
+        }, e.APOS_STRING_MODE, {
+          match: [/(?<=@param)/, /\s+/, /\w+/], scope: { 3: "variable" }
         }]
-      }), u = {
+      }), i = {
         relevance: 10,
-        begin: s.either("@AuraEnabled", "@Deprecated", "@Future", "@HttpDelete", "@HttpGet", "@HttpPatch", "@HttpPost", "@HttpPut", "@InvocableMethod", "@InvocableVariable", "@IsTest", "@jsonAccess", "@namespaceAccessible,", "@ReadOnly", "@RemoteAction", "@RestResource", "@SuppressWarnings", "@TestSetup", "@TestVisible"),
-        end: "\n", excludeEnd: !0, scope: "meta", keywords: b, contains: [t.APOS_STRING_MODE, {
-          begin: /\(/, end: /\)/, contains: [t.APOS_STRING_MODE, o, n, {
-            match: "=", scope: "operator"
-          }, { match: /\b\w+\s*(?==)/, scope: "type" }]
-        }]
-      }, d = [{
-        match: /\b[a-zA-Z\d]*Exception\b/,
-        scope: "type", relevance: 0
+        scope: { 1: "meta" }, match: ["@" + t, /(?=(\(|\b|\s))/]
+      }, l = [{
+        match: /\b[a-zA-Z\d]*Exception\b/, scope: "title.class", relevance: 0
       }, {
-        match: [/\wthrow\s+new\s+/, a], scope: {
-          1: "keyword",
-          2: "type"
-        }, relevance: 0
-      }], S = [{
-        match: [s.concat(/\b/, a, /\b/), />/], scope: { 1: "type" },
+        match: [/\wthrow\s+new\s+/, t], scope: { 1: "keyword", 2: "title.class" }, relevance: 0
+      }], b = [{ match: [s.concat(/\b/, t, /\b/), />/], scope: { 1: "type" }, relevance: 10 }], p = [{
+        match: [/\b(list|set|map)\s*/, "<", /[\.\w]+/], scope: { 1: "type", 3: "type" },
         relevance: 10
-      }], h = [{
-        match: [/\b(list|set|map)\s*/, /(?=<)/], scope: { 1: "type" },
-        relevance: 10
-      }, { match: [a, /\s*/, "[]"], scope: { 1: "type" } }], T = {
+      }, { match: [t, s.lookahead(/\s*\[\]/)], scope: { 1: "type" } }], E = {
         match: [/[^\.]/, /\b[a-zA-Z][a-zA-Z\d_]*__[cxeb]\b/, /[\(\s;,]+/], scope: { 2: "type" },
         relevance: 10
-      }, m = {
+      }, A = {
         variants: [{
-          begin: [/\./, s.concat("(?:" + c + ")"), /(?=\s*\(\))/],
+          begin: [/\./, s.concat("(?:" + t + ")"), /(?=\s*\(\))/],
           scope: { 2: "title.function.invoke" }
         }, {
-          begin: [/\./, s.concat("(?:" + c + ")"), /(?=\s*\([^\)])/], scope: {
+          begin: [/\./, s.concat("(?:" + t + ")"), /(?=\s*\([^\)])/], scope: {
             2: "title.function.invoke"
           }
-        }], contains: [E, A, t.APOS_STRING_MODE], relevance: 0
-      }, v = {
-        begin: /\[[\s\n]*(?=SELECT)/, end: /\]/, scope: "subst", relevance: 20, contains: [{
+        }, {
+          begin: [/(?<=\s)/, s.concat("(?:" + t + ")"), /(?=\s*\()/], scope: { 2: "title.function" }
+        }], contains: [r, o, e.APOS_STRING_MODE], relevance: 0
+      }, d = {
+        begin: /\[[\s\n]*(?=SELECT)/, end: /\]/, scope: "subst", relevance: 10, contains: [{
           begin: s.concat(/\b/, s.either("ABOVE_OR_BELOW", "ABOVE", "ACTIVE", "ADVANCED", "ALL", /ALL\s+FIELDS/, "AND", "ANY", "ARRAY", "AS", "ASC", "BY", "CATEGORY", "CONTAINS", "COUNT", "COUNT_DISTINCT", "SUM", "MAX", "MIN", "HOUR_IN_DAY", "CONVERTCURRENCY", "CUBE", "DATA", "DESC", "DIVISION", "END", "EXCLUDES", "FIELDS", "FIND", "FIRST", "FOR", "FROM", /GROUP\s+BY/, "HAVING", "INCLUDES", "LAST", "LAST_90_DAYS", "LAST_MONTH", "LAST_N_DAYS", "LAST_WEEK", "LAST", "LIKE", "LIMIT", "NETWORK", "NEXT_90_DAYS", "NEXT_MONTH", "NEXT_N_DAYS", "NEXT_WEEK", "NULLS", "OFFSET", "ON", "OR", /ORDER\s+BY/, "REFERENCE", "RETURNING", "ROLLUP", "ROWS", "SEARCH", "SECURITY_ENFORCED", "SELECT", "SNIPPET", "SORT", "THIS_MONTH", "THIS_WEEK", "TODAY", "TOLABEL", "TOMORROW", "TRACKING", "TYPEOF", "UPDATE", /USING\s+SCOPE/, "VIEW", "VIEWSTAT", "VIEWSTATE", "WHERE", "WITH", "YESTERDAY", "USER_MODE"), /\b/),
-          scope: "literal"
+          scope: "keyword"
         }, {
           match: /(\bIN\b|<|<=|>|>=|\bNOT\s+IN\b|=|!\s*=|:{1})/,
           scope: "literal", relevance: 0
         }, {
           match: /(?<=\bFROM\b\s+)\w+/, scope: "type",
           relevance: 0
-        }, { match: /\b[a-zA-Z][a-zA-Z_0-9]*\b/, scope: "property" }, n, m],
+        }, { match: /\b[a-zA-Z][a-zA-Z_0-9]*\b/, scope: "property" }, a, A],
         illegal: "::"
-      }, _ = [{
-        match: [/\b(?<=enum)/, /\s+/, a, /\s*(?=[{()])/], scope: { 3: "type" },
-        contains: [E, A, T]
-      }, {
-        match: [/(?<=\bnew)/, /\s+/, a, /\s*(?=[{()])/], scope: { 3: "type" },
-        contains: [E, A, T]
-      }, {
-        match: [/\bclass/, /\s+/, a], scope: { 1: "keyword", 3: "title.class" }
-      }, { match: [/(?<=public)(?<=\s+)/, a, /(?=\s*\()/], scope: { 2: "constructor" } }, {
-        match: [/\b(?:extends)/, /\s+/, a], scope: { 3: "title.class.inherited" },
-        contains: [E, A, p], illegal: [/\b_/, /_\b/]
-      }], N = {
-        variants: [{
-          match: [/\bfor\b/, /\s*\(/, /\w+/, /\s+/, /\w+/, /\s+:/, /(?=\s*\[)/], scope: {
-            1: "keyword", 3: "type", 5: "variable"
+      }; return {
+        name: "Apex", aliases: ["apex", "lightning"],
+        case_insensitive: !0, disableAutodetect: !1, ignoreIllegals: !1, keywords: {
+          $pattern: "[A-Za-z][0-9A-Za-z$_]*",
+          keyword: ["abstract", "AccessLevel", "USER_MODE", "break", "catch", "continue", "default", "do", "else", "execute", "exports", "extends|6", "finally", "finish", "for", "get", "put", "set", "global", "if", "implements", "new", "newMap|10", "old|10", "oldMap|10", "override", "private", "protected", "public", "return", "start", "static", "throws", "throw", "testmethod|10", "try", "virtual", "webservice", "when", "while"],
+          "variable.language": ["final", "instanceof", "super", "this", "transient"],
+          built_in: ["trigger|10", "class", "interface", "insert", "update", "upsert|8", "delete", "undelete", "merge", "schedulable|10", "batchable|10", "queueable|10", "comparable|10", "callable|10"],
+          type: ["anytype", "blob|0", "boolean|0", "byte|0", "currency|0", "date|0", "datetime|0", "decimal|0", "double|0", "enum|0", "float|0", "integer|0", "long|0", "object", "pagereference|10", "selectoption|10", "short|0", "sobject|10", "string|0", "time|0", "void|0", "float|0"],
+          literal: ["false", "true", "null"]
+        },
+        illegal: ["</", "<#", "<]", "<div>", "\x3c!--", "!DOCTYPE", /<iframe\b/, /\n#/, /\nimport \.[a-zA-Z]+\./, /\nimport [\w]+/, /\ninclude </, /\nuse\s+</, /\b(const|var)\s+\w+\s*=/, /\bstruct\b/, "System.log", "console.log", /\bfor\s+\w+\s+IN\s+/, /\bif\s+\w+\s+IN\s+/, /\bend\s+if\b/, /\bend\s+select\b/, /\b(int|var)\s+\w+\s+=/, /\b(int[0-9]+|bool)\b/, /\b\$/, "::=", /\s#[a-zA-Z]/, /\s_[a-zA-Z]/, /\s\$[a-zA-Z]/, "#if", "%if", "%endif", "#endif", /\w::\w/, /RETURNING\s+\*/, /\bint\b/, /import\s+\w+\s+=\s+require\("\w+"\)/, "/\binclude\b/", /\buse\s+strict\b/, /\w+\s+=\s+"\S*";/, /\/include\//, /\Anamespace\b/, /\bend\.\n/, '"""'],
+        contains: [i, [{
+          match: [/\b(?<=enum|\bnew)/, /\s+/, t, /\s*(?=[{()])/], scope: {
+            3: "type"
+          }, contains: [r, o, E]
+        }, {
+          match: [/\bclass/, /\s+/, t], scope: {
+            1: "keyword",
+            3: "title.class"
           }
         }, {
-          match: [/\bfor\b/, /\s*\(/, /\w+/, /\s+/, /\w+/, /\s+:/, /\s*/, /\w+/], scope: {
-            1: "keyword", 3: "type", 5: "variable", 8: "variable"
+          match: [/(?<=public)/, /\s+/, t, /(?=\s*\()/], scope: {
+            3: "constructor"
           }
-        }], contains: [E, A, v]
-      }, O = [{
-        match: [s.concat(/(?!else)/, a), /\s+/, a, /\s+/, /=/], scope: {
-          1: "type", 3: "variable",
-          5: "operator"
-        }, relevance: 0
-      }, {
-        match: [/\s+/, a, /\s+/, /=/], scope: {
-          2: "variable",
-          4: "operator"
-        }, relevance: 0
-      }, {
-        match: [/(?<=\w+\s+=\s+\()/, a, /(?=\))/], scope: {
-          2: "type"
-        }, relevance: 0
-      }], g = {
-        begin: [/\btrigger/, /\s+/, a, /\s+/, /on/, /\s+/, a],
-        end: "{", scope: { 1: "keyword", 3: "title.class", 7: "type" }, contains: [E, A, {
-          match: /(?:before|after)\s+(?:insert|update|delete|undelete)/, scope: "built_in",
-          relevance: 10
-        }], relevance: 10
-      }, R = {
-        begin: ["(?:" + c + "\\s+)", s.concat(/\b/, s.either(...i), /\b/), t.UNDERSCORE_IDENT_RE, /(?=\s*\()/],
-        keywords: b, scope: { 2: "type", 3: "title.function" },
-        contains: [E, A, t.APOS_STRING_MODE, l], relevance: 0, illegal: [/\b_/, /_\b/]
-      }, w = {
-        match: s.either(/-/, /~/, /\*/, /\*=/, /\/=/, /%/, /\.\.\./, /\.\./, /\+/, /<</, />>/, />=/, /<=/, /\s<\s/, /\s>\s/, /\^/, /\^=/, /!=/, /!/, /==/, /&&/, /&/, /\|\|/, /\|/, /\?:/, /=/, /=>/),
-        scope: "operator", relevance: 0
-      }; return {
-        name: "Apex", aliases: ["apex"],
-        case_insensitive: !0, disableAutodetect: !1, ignoreIllegals: !1, keywords: b,
-        illegal: ["</", "<#", "<]", "<div>", "\x3c!--", "!DOCTYPE", /<iframe\b/, /\n#/, /\nimport \.[a-zA-Z]+\./, /\nimport [\w]+/, /\ninclude </, /\nuse\s+</, /\b(const|var)\s+\w+\s*=/, /\bstruct\b/, "System.log", "console.log", /\bfor\s+\w+\s+IN\s+/, /\bif\s+\w+\s+IN\s+/, /\bend\s+if\b/, /\bend\s+select\b/, /\b(int|var)\s+\w+\s+=/, /\b(int[0-9]+|bool)\b/, /\b\$/, "::=", /\s#[a-zA-Z]/, /\s_[a-zA-Z]/, /\s\$[a-zA-Z]/, "#if", "%if", "%endif", "#endif", /\w::\w/, /RETURNING\s+\*/, /\bint\b/, /import\s+\w+\s+=\s+require\("\w+"\)/, "/\binclude\b/", /\buse\s+strict\b/, /\w+\s+=\s+"\S*";/, /\/include\//, /\Anamespace\b/, /\bend\.\n/, '"""'],
-        contains: [l, h, S, O, N, v, u, o, d, t.APOS_STRING_MODE, {
-          match: /\b(switch\s+on|as\s+user|as\s+system)\b/, relevance: 8, scope: "keyword"
-        }, T, {
-            relevance: 10, match: [/\b(?:with|without|inherited)\s+sharing/], scope: {
-              1: "keyword"
-            }
-          }, p, A, E, w, R, m, _, g, n]
+        }, {
+          begin: [/\btrigger/, /\s+/, t, /\s+/, "on", /\s+/, t], end: "{",
+          scope: { 1: "keyword", 3: "title.class", 7: "type" }, contains: [r, o, {
+            match: /(?:before|after)\s+(?:insert|update|delete|undelete)/, scope: "built_in",
+            relevance: 10
+          }], relevance: 10
+        }, {
+          match: [/\bextends/, /\s+/, t], scope: {
+            3: "title.class.inherited"
+          }, contains: [r, o, n], illegal: [/\b_/, /_\b/]
+        }], [{
+          match: [t, /\s+/, t, /\s+/, /=/], scope: { 1: "type", 3: "variable", 5: "operator" },
+          relevance: 0
+        }, {
+          match: [t, /\s+/, t, /\s+/, ";"], scope: { 1: "type", 3: "variable" },
+          relevance: 0
+        }, {
+          match: [/\s+/, t, /\s+/, /=/], scope: { 2: "variable", 4: "operator" },
+          relevance: 0
+        }, {
+          match: [/(?<=\w+\s+=\s+\()/, t, /(?=\))/], scope: { 2: "type" },
+          relevance: 0
+        }], {
+          relevance: 10, match: [/\b(?:with|without|inherited)\s+sharing/],
+            scope: { 1: "keyword" }
+          }, p, b, o, r, {
+            match: /\b(switch\s+on|as\s+user|as\s+system)\b/,
+            relevance: 8, scope: "keyword"
+          }, E, l, {
+            variants: [{
+              match: [/\bfor\b/, /\s*\(/, /\w+/, /\s+/, /\w+/, /\s+:/, /(?=\s*\[)/], scope: {
+                1: "keyword", 3: "type"
+              }
+            }, {
+              match: [/\bfor\b/, /\s*\(/, /\w+/, /\s+/, /\w+/, /\s+:/, /\s*/, /\w+/], scope: {
+                1: "keyword", 3: "type"
+              }
+            }], contains: [r, o, d]
+          }, e.APOS_STRING_MODE, A, n, a, c, {
+            match: /(?<!\.)\bId\b/, scope: "type", relevance: 8
+          }, d]
       }
     }
-  })(); hljs.registerLanguage("apex", e)
+  })()
+  ; hljs.registerLanguage("apex", e)
 })();

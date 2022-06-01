@@ -1,5 +1,10 @@
 {
   "useTabs": false,
+  "printWidth": 180,
+  "bracketSameLine": true,
+  "bracketSpacing": true,
+  "tabWidth": 2,
+  "apexInsertFinalNewline": false,
   "overrides": [
     {
       "files": "*.html",

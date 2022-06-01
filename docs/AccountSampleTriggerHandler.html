@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
     <title>Salesforce Trigger Handler code documentation</title>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <script type="module" src="./assets/index.js"></script>
     <script type="module" src="./assets/search-idx.js"></script>
     <script type="module" src="./assets/search.js"></script>
@@ -17,11 +16,8 @@
 
   <body>
     <div id="side-bar">
-
       <div id="logo-container">
-        <div class="title">
-          Salesforce Trigger Handler code documentation
-        </div>
+        <div class="title">Salesforce Trigger Handler code documentation</div>
         <img src="assets/logo.png" />
         <div class="subtitle">
           Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
@@ -29,24 +25,30 @@
       </div>
       <div id="search-wrapper">
         <div class="search-icon"></div>
-        <input id="search-input" type="text" autocomplete="off" placeholder="Search...">
+        <input id="search-input" type="text" autocomplete="off" placeholder="Search..." />
       </div>
       <ul id="search-results" class=""></ul>
       <div class="navbar">
         <nav role="navigation">
-          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');">
-            Home
-          </a>
+          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');"> Home </a>
           <details id="SampleTriggerHandler" class="group-name">
             <summary id="header-SampleTriggerHandler" class="nav-header">
               <a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('triggerhandlerhome.html');">SampleTriggerHandler</a>
             </summary>
             <ul>
               <!-- menu items -->
-              <li title="AccountSampleTriggerHandler" id="item-AccountSampleTriggerHandler" class="nav-item class public" onclick="goToLocation('AccountSampleTriggerHandler.html');">
+              <li
+                title="AccountSampleTriggerHandler"
+                id="item-AccountSampleTriggerHandler"
+                class="nav-item class public"
+                onclick="goToLocation('AccountSampleTriggerHandler.html');">
                 <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandler</a>
               </li>
-              <li title="AccountSampleTriggerHandlerTest" id="item-AccountSampleTriggerHandlerTest" class="nav-item class private" onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
+              <li
+                title="AccountSampleTriggerHandlerTest"
+                id="item-AccountSampleTriggerHandlerTest"
+                class="nav-item class private"
+                onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
                 <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandlerTest</a>
               </li>
             </ul>
@@ -71,108 +73,100 @@
     <table id="content">
       <tr>
         <td class="scoping-panel">
-          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" />
-          <label for="cbx-all">All</label>&nbsp;&nbsp;
+          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" /> <label for="cbx-all">All</label>&nbsp;&nbsp;
           <input type="checkbox" checked="true" id="cbx-public" onclick="toggleScope('public', this.checked);" />
-          <label for="cbx-public">
-            public
-          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
-          <label for="cbx-private">
-            private
-          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
-          <label for="cbx-protected">
-            protected
-          </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
-          <label for="cbx-testmethod">
-            testMethod
-          </label>
+          <label for="cbx-public"> public </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
+          <label for="cbx-private"> private </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
+          <label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
+          <label for="cbx-testmethod"> testMethod </label>
         </td>
       </tr>
       <tr>
         <td class="doc-page">
-
           <div class="section">
-
             <h2 class="class-title top-level-type" id="AccountSampleTriggerHandler">
-
-              <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L8">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Go to source"
+                class="source-link"
+                href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L8">
                 AccountSampleTriggerHandler
               </a>
             </h2>
             <div class="class-container">
+              <div class="class-description">Account Sample handler</div>
+              <div class="class-subtitle">Signature</div>
 
-              <div class="class-description">
-                Account Sample handler
-              </div>
-              <div class="class-subtitle">
-                Signature
-              </div>
-
-              <div class="class-signature">
-                public without sharing class AccountSampleTriggerHandler extends TriggerHandler
-              </div><br />David Schach<br />2021
+              <div class="class-signature">public without sharing class AccountSampleTriggerHandler extends TriggerHandler</div>
+              <br />David Schach<br />2021
             </div>
             <div class="subsection properties AccountSampleTriggerHandler">
               <h3 class="subsection-title properties">AccountSampleTriggerHandler Properties</h3>
               <table class="attributes-table properties">
-
                 <tr>
                   <th>Name</th>
                   <th>Signature</th>
-
-
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L9">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L9">
                       newRecords
-                    </a></td>
-                  <td>
-                    <div class="attribute-signature">
-                      private List&lt;Account&gt; newRecords
-                    </div>
+                    </a>
                   </td>
-
-
+                  <td>
+                    <div class="attribute-signature">private List&lt;Account&gt; newRecords</div>
+                  </td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L11">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L11">
                       newRecordsMap
-                    </a></td>
-                  <td>
-                    <div class="attribute-signature">
-                      private Map&lt;Id, Account&gt; newRecordsMap
-                    </div>
+                    </a>
                   </td>
-
-
+                  <td>
+                    <div class="attribute-signature">private Map&lt;Id, Account&gt; newRecordsMap</div>
+                  </td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L10">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L10">
                       oldRecords
-                    </a></td>
-                  <td>
-                    <div class="attribute-signature">
-                      private List&lt;Account&gt; oldRecords
-                    </div>
+                    </a>
                   </td>
-
-
+                  <td>
+                    <div class="attribute-signature">private List&lt;Account&gt; oldRecords</div>
+                  </td>
                 </tr>
                 <tr class="property private">
                   <td class="attribute-name">
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L12">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L12">
                       oldRecordsMap
-                    </a></td>
-                  <td>
-                    <div class="attribute-signature">
-                      private Map&lt;Id, Account&gt; oldRecordsMap
-                    </div>
+                    </a>
                   </td>
-
-
+                  <td>
+                    <div class="attribute-signature">private Map&lt;Id, Account&gt; oldRecordsMap</div>
+                  </td>
                 </tr>
               </table>
             </div>
@@ -181,37 +175,29 @@
               <div class="methods-container">
                 <ul class="methods-toc">
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#AccountSampleTriggerHandler.AccountSampleTriggerHandler">
-                      AccountSampleTriggerHandler (className)
-                    </a>
+                    <a class="methods-toc__entry" href="#AccountSampleTriggerHandler.AccountSampleTriggerHandler"> AccountSampleTriggerHandler (className) </a>
 
-                    <div class="methods-toc__description">
-                      Constructor using passed-in class name constructor for faster performance <br>We cast all four trigger collections
-                    </div>
+                    <div class="methods-toc__description">Constructor using passed-in class name constructor for faster performance <br />We cast all four trigger collections</div>
                   </li>
                 </ul>
                 <div class="method public">
-                  <h4 class="method-title " id="AccountSampleTriggerHandler.AccountSampleTriggerHandler">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L19">
+                  <h4 class="method-title" id="AccountSampleTriggerHandler.AccountSampleTriggerHandler">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L19">
                       AccountSampleTriggerHandler(className)
                     </a>
                   </h4>
-                  <div class="method-description">
-                    Constructor using passed-in class name constructor for faster performance <br>We cast all four trigger collections
-                  </div>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-description">Constructor using passed-in class name constructor for faster performance <br />We cast all four trigger collections</div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public AccountSampleTriggerHandler(String className)
-                  </div>
+                  <div class="method-signature">public AccountSampleTriggerHandler(String className)</div>
                   <div class="method-subtitle">Parameters</div>
                   <div class="param-name">className</div>
-                  <div class="param-type">
-                    Type: <code class="code-inline">String</code>
-                  </div>
+                  <div class="param-type">Type: <code class="code-inline">String</code></div>
                   <div class="param-description">The name of this class. Pass in the string to make the handler run faster</div>
                 </div>
               </div>
@@ -221,149 +207,126 @@
               <div class="methods-container">
                 <ul class="methods-toc">
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#AccountSampleTriggerHandler.afterInsert">
-                      afterInsert ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#AccountSampleTriggerHandler.afterInsert"> afterInsert () </a>
                   </li>
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#AccountSampleTriggerHandler.beforeInsert">
-                      beforeInsert ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#AccountSampleTriggerHandler.beforeInsert"> beforeInsert () </a>
                   </li>
                   <li class="method public">
-                    <a class="methods-toc__entry " href="#AccountSampleTriggerHandler.beforeUpdate">
-                      beforeUpdate ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#AccountSampleTriggerHandler.beforeUpdate"> beforeUpdate () </a>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#AccountSampleTriggerHandler.method1">
-                      method1 ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#AccountSampleTriggerHandler.method1"> method1 () </a>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#AccountSampleTriggerHandler.method2">
-                      method2 ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#AccountSampleTriggerHandler.method2"> method2 () </a>
                   </li>
                   <li class="method private">
-                    <a class="methods-toc__entry " href="#AccountSampleTriggerHandler.method3">
-                      method3 ()
-                    </a>
-
+                    <a class="methods-toc__entry" href="#AccountSampleTriggerHandler.method3"> method3 () </a>
                   </li>
                 </ul>
                 <div class="method public">
-                  <h4 class="method-title " id="AccountSampleTriggerHandler.afterInsert">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L36">
+                  <h4 class="method-title" id="AccountSampleTriggerHandler.afterInsert">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L36">
                       afterInsert()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public override void afterInsert()
-                  </div>
+                  <div class="method-signature">public override void afterInsert()</div>
                 </div>
                 <div class="method public">
-                  <h4 class="method-title " id="AccountSampleTriggerHandler.beforeInsert">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L26">
+                  <h4 class="method-title" id="AccountSampleTriggerHandler.beforeInsert">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L26">
                       beforeInsert()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public override void beforeInsert()
-                  </div>
+                  <div class="method-signature">public override void beforeInsert()</div>
                 </div>
                 <div class="method public">
-                  <h4 class="method-title " id="AccountSampleTriggerHandler.beforeUpdate">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L30">
+                  <h4 class="method-title" id="AccountSampleTriggerHandler.beforeUpdate">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L30">
                       beforeUpdate()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    public override void beforeUpdate()
-                  </div>
+                  <div class="method-signature">public override void beforeUpdate()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="AccountSampleTriggerHandler.method1">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L46">
+                  <h4 class="method-title" id="AccountSampleTriggerHandler.method1">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L46">
                       method1()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private void method1()
-                  </div>
+                  <div class="method-signature">private void method1()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="AccountSampleTriggerHandler.method2">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L52">
+                  <h4 class="method-title" id="AccountSampleTriggerHandler.method2">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L52">
                       method2()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private void method2()
-                  </div>
+                  <div class="method-signature">private void method2()</div>
                 </div>
                 <div class="method private">
-                  <h4 class="method-title " id="AccountSampleTriggerHandler.method3">
-
-                    <a target="_blank" rel="noopener noreferrer" title="Go to source" class="source-link" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L58">
+                  <h4 class="method-title" id="AccountSampleTriggerHandler.method3">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L58">
                       method3()
                     </a>
                   </h4>
-                  <div class="method-subtitle">
-                    Signature
-                  </div>
+                  <div class="method-subtitle">Signature</div>
 
-                  <div class="method-signature">
-                    private void method3()
-                  </div>
+                  <div class="method-signature">private void method3()</div>
                 </div>
               </div>
             </div>
           </div>
-
         </td>
       </tr>
       <tr>
         <td class="footer">
-
           <div>
-            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer">
-              Powered By ApexDox VS Code
-            </a>
+            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer"> Powered By ApexDox VS Code </a>
           </div>
         </td>
       </tr>
     </table>
   </body>
-
 </html>
