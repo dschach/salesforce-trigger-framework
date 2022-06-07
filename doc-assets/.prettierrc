@@ -4,6 +4,7 @@
   "bracketSameLine": true,
   "bracketSpacing": true,
   "tabWidth": 2,
+  "singleQuote": true,
   "apexInsertFinalNewline": false,
   "overrides": [
     {
@@ -12,7 +13,7 @@
     },
     {
       "files": "*.css",
-      "options": { "useTabs": false, "tabWidth": 2 }
+      "options": { "useTabs": false, "tabWidth": 4 }
     }
   ]
 }

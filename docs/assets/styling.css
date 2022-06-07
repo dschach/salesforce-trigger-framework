@@ -1,17 +1,17 @@
 code {
-  background-color: #f6f8fa;
+    background-color: #f6f8fa;
 }
 
 pre {
-  background-color: #f6f8fa;
-  white-space: pre;
+    background-color: #f6f8fa;
+    white-space: pre;
 }
 
 pre code {
-  white-space: pre-wrap;
-  font-size: 120%;
+    white-space: pre-wrap;
+    font-size: 120%;
 }
 
 .hljs {
-  background: #f6f8fa;
+    background: #f6f8fa;
 }

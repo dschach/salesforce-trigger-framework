@@ -2,13 +2,13 @@
 // #region Constants / DOM lifecycle hooks
 // ==================================================================
 
-const SCOPES = ["global", "public", "private", "protected", "testMethod", "webService"],
-  MENU_STATE_KEY = "APEXDOX_MENU",
-  ACTIVE_EL_STATE_KEY = "APEXDOX_ACTIVE_EL",
-  SCOPE_STATE_KEY = "APEXDOX_SCOPE",
-  SEARCH_STATE_KEY = "APEXDOX_SEARCH_RESULTS";
+const SCOPES = ['global', 'public', 'private', 'protected', 'testMethod', 'webService'],
+  MENU_STATE_KEY = 'APEXDOX_MENU',
+  ACTIVE_EL_STATE_KEY = 'APEXDOX_ACTIVE_EL',
+  SCOPE_STATE_KEY = 'APEXDOX_SCOPE',
+  SEARCH_STATE_KEY = 'APEXDOX_SEARCH_RESULTS';
 
-const highlightJsSelectors = ["pre code", ".method-annotations", ".class-signature", ".attribute-signature", ".method-signature", ".class-annotations", ".prop-annotations"];
+const highlightJsSelectors = ['pre code', '.method-annotations', '.class-signature', '.attribute-signature', '.method-signature', '.class-annotations', '.prop-annotations'];
 
 const initializers = [initMenu, initHighlightJs, renderMenuFromState, setActiveElement, renderSearchFromState, readScope, hideAllScopes, showScopes];
 
@@ -16,7 +16,7 @@ const persisters = [persistMenuState, persistActiveElement, persistSearchState];
 
 const executeAll = (funcs) => funcs.forEach((func) => func());
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   executeAll(initializers);
 });
 
@@ -34,12 +34,12 @@ window.onbeforeunload = () => {
 function initHighlightJs() {
   // initialize highlighting for code examples and
   // signatures for methods, classes, props and enums
+  hljs.configure({
+    ignoreUnescapedHTML: true,
+  });
   highlightJsSelectors.forEach((selector) => {
     document.querySelectorAll(selector).forEach((block) => {
       hljs.highlightElement(block);
-      hljs.configure({
-        ignoreUnescapedHTML: true,
-      });
     });
   });
 }
@@ -48,12 +48,12 @@ function initHighlightJs() {
 // and/or update state with any new menu items
 function initMenu() {
   const hasState = sessionStorage.getItem(MENU_STATE_KEY);
-  let items = document.querySelectorAll(".group-name");
+  let items = document.querySelectorAll('.group-name');
   let state = !hasState ? {} : JSON.parse(hasState);
 
   if (!hasState) {
     // initialize menu state
-    console.log("ApexDox: initializing menu state");
+    console.log('ApexDox: initializing menu state');
     items.forEach((item) => (state[item.id] = false));
   } else {
     // If already init, add any new class groups since last load.
@@ -72,7 +72,7 @@ function updateMenuModel(items, state) {
   // 2) get ids from each .group-name <details> element
   let groups = Array.prototype.map.call(items, (item) => ({
     id: item.id,
-    isOpen: item.getAttribute("open"),
+    isOpen: item.getAttribute('open'),
   }));
 
   // 3) perform diff to get Ids not yet captured in storage
@@ -85,13 +85,13 @@ function updateMenuModel(items, state) {
     deletedKeys.forEach((key) => {
       delete state[key];
     });
-    console.log("ApexDox: Stale menu keys found, deleting from session storage:");
+    console.log('ApexDox: Stale menu keys found, deleting from session storage:');
     console.log(deletedKeys);
   }
 
   if (newKeys.length > 0) {
-    newKeys.forEach((item) => (state[item.id] = item.isOpen === "" && true));
-    console.log("ApexDox: New menu keys found, adding to session storage:");
+    newKeys.forEach((item) => (state[item.id] = item.isOpen === '' && true));
+    console.log('ApexDox: New menu keys found, adding to session storage:');
     console.log(
       newKeys.map(function (g) {
         return g.id;
@@ -106,8 +106,8 @@ function renderMenuFromState() {
     for (let group in state) {
       let item = document.getElementById(group);
       if (state[group]) {
-        console.log("ApexDox: Opening " + group + " section");
-        item.setAttribute("open", "");
+        console.log('ApexDox: Opening ' + group + ' section');
+        item.setAttribute('open', '');
       }
     }
   }
@@ -116,13 +116,13 @@ function renderMenuFromState() {
 // save menu state before each unload so that state is
 // preserved when changing files or when reloading the page.
 function persistMenuState() {
-  let items = document.querySelectorAll(".group-name");
+  let items = document.querySelectorAll('.group-name');
   let state = JSON.parse(sessionStorage.getItem(MENU_STATE_KEY));
 
   items.forEach((item) => {
-    let isOpen = item.getAttribute("open");
+    let isOpen = item.getAttribute('open');
     console.log(isOpen);
-    state[item.id] = isOpen === "" && true;
+    state[item.id] = isOpen === '' && true;
   });
 
   sessionStorage.setItem(MENU_STATE_KEY, JSON.stringify(state));
@@ -130,7 +130,7 @@ function persistMenuState() {
 
 // preserve active menu item across loads
 function persistActiveElement() {
-  let active = document.querySelector(".active");
+  let active = document.querySelector('.active');
   if (active) {
     sessionStorage.setItem(ACTIVE_EL_STATE_KEY, active.id);
   } else {
@@ -143,10 +143,10 @@ function setActiveElement() {
   const id = sessionStorage.getItem(ACTIVE_EL_STATE_KEY);
   if (id) {
     var item = document.getElementById(id);
-    item.classList.add("active");
+    item.classList.add('active');
     // focus element as well so tab
     // navigation can pick up where it left off
-    if (item.firstElementChild && item.firstElementChild.tagName === "A") {
+    if (item.firstElementChild && item.firstElementChild.tagName === 'A') {
       item.firstElementChild.focus();
     } else {
       item.focus();
@@ -156,8 +156,8 @@ function setActiveElement() {
 
 // persist any search results across loads
 function persistSearchState() {
-  const searchTerm = document.querySelector("#search-input").value;
-  const resultsMarkup = document.querySelector("#search-results").innerHTML;
+  const searchTerm = document.querySelector('#search-input').value;
+  const resultsMarkup = document.querySelector('#search-results').innerHTML;
 
   if (searchTerm.length > 1) {
     const searchState = JSON.stringify({
@@ -176,16 +176,16 @@ function renderSearchFromState() {
   const state = JSON.parse(sessionStorage.getItem(SEARCH_STATE_KEY));
 
   if (state) {
-    const searchResults = document.querySelector("#search-results");
-    const searchInput = document.querySelector("#search-input");
+    const searchResults = document.querySelector('#search-results');
+    const searchInput = document.querySelector('#search-input');
 
     searchInput.value = state.searchTerm;
-    searchResults.classList.add("visible");
-    searchResults.classList.add("no-transition");
+    searchResults.classList.add('visible');
+    searchResults.classList.add('no-transition');
     searchResults.innerHTML = state.resultsMarkup;
 
     // remove class which prevents transition on page move
-    setTimeout(() => searchResults.classList.remove("no-transition"), 100);
+    setTimeout(() => searchResults.classList.remove('no-transition'), 100);
   }
 }
 
@@ -198,11 +198,11 @@ function renderSearchFromState() {
 
 function getListScope() {
   let list = [];
-  let checkboxes = document.querySelectorAll("input[type=checkbox]");
+  let checkboxes = document.querySelectorAll('input[type=checkbox]');
   checkboxes.forEach((checkbox) => {
-    if (checkbox.checked && checkbox.id !== "cbx-all") {
+    if (checkbox.checked && checkbox.id !== 'cbx-all') {
       let str = checkbox.id;
-      str = str.replace("cbx-", "");
+      str = str.replace('cbx-', '');
       list.push(str);
     }
   });
@@ -230,24 +230,24 @@ function hideAllScopes() {
 
 function setScope() {
   const list = getListScope();
-  const scopes = list.join(",");
+  const scopes = list.join(',');
   sessionStorage.setItem(SCOPE_STATE_KEY, scopes);
   shouldCheckAll(list);
 }
 
 function readScope() {
   const strScope = getScope();
-  if (strScope != null && strScope != "") {
+  if (strScope != null && strScope != '') {
     // first clear all the scope checkboxes
-    let checkboxes = document.querySelectorAll("input[type=checkbox]");
-    checkboxes.forEach((checkbox) => checkbox.removeAttribute("checked"));
+    let checkboxes = document.querySelectorAll('input[type=checkbox]');
+    checkboxes.forEach((checkbox) => checkbox.removeAttribute('checked'));
 
     // now check the appropriate scope checkboxes
-    let list = strScope.split(",");
+    let list = strScope.split(',');
     for (let i = 0; i < list.length; i++) {
-      let id = "cbx-" + list[i];
+      let id = 'cbx-' + list[i];
       let checkbox = document.getElementById(id);
-      checkbox.setAttribute("checked", true);
+      checkbox.setAttribute('checked', true);
     }
 
     // check the all box if all scopes have are active
@@ -259,27 +259,27 @@ function readScope() {
 
 function getScope() {
   const scope = sessionStorage.getItem(SCOPE_STATE_KEY);
-  return scope ? scope : "";
+  return scope ? scope : '';
 }
 
 function shouldCheckAll(list) {
-  const checkboxes = document.querySelectorAll("input[type=checkbox]");
+  const checkboxes = document.querySelectorAll('input[type=checkbox]');
 
-  let allBox = document.getElementById("cbx-all");
+  let allBox = document.getElementById('cbx-all');
 
   if (checkboxes.length - 1 === list.length) {
-    allBox.setAttribute("checked", true);
+    allBox.setAttribute('checked', true);
   } else {
-    allBox.removeAttribute("checked");
+    allBox.removeAttribute('checked');
   }
 }
 
 function toggleScope(scope, isShow) {
   setScope();
-  toggleTypeScope(scope, ".properties", ".property", isShow);
-  toggleTypeScope(scope, ".enums", ".enum", isShow);
-  toggleTypeScope(scope, ".methods", ".method", isShow);
-  toggleTypeScope(scope, null, ".class", isShow);
+  toggleTypeScope(scope, '.properties', '.property', isShow);
+  toggleTypeScope(scope, '.enums', '.enum', isShow);
+  toggleTypeScope(scope, '.methods', '.method', isShow);
+  toggleTypeScope(scope, null, '.class', isShow);
 }
 
 function toggleTypeScope(scope, tableSelector, itemSelector, isShow) {
@@ -301,9 +301,9 @@ function toggleTypeScope(scope, tableSelector, itemSelector, isShow) {
 function toggleVisibility(elements, isShow) {
   for (let elem of elements) {
     if (isShow) {
-      elem.classList.remove("hide");
+      elem.classList.remove('hide');
     } else {
-      elem.classList.add("hide");
+      elem.classList.add('hide');
     }
   }
 }
@@ -313,7 +313,7 @@ function maybeHideElement(toHide, itemSelector) {
     container = document.querySelectorAll(toHide);
   if ((elements = document.querySelectorAll(itemSelector))) {
     for (let element of elements) {
-      if (!element.classList.contains("hide")) {
+      if (!element.classList.contains('hide')) {
         return;
       }
     }
@@ -323,11 +323,11 @@ function maybeHideElement(toHide, itemSelector) {
 
 function toggleActiveClass(elem) {
   // remove isActive from current active element
-  let item = document.querySelector(".active");
-  item && item.classList.remove("active");
+  let item = document.querySelector('.active');
+  item && item.classList.remove('active');
 
   // add to new active element
-  elem && elem.classList.add("active");
+  elem && elem.classList.add('active');
 }
 
 // #endregion
@@ -343,22 +343,22 @@ window.goToLocation = (url) => {
   event.preventDefault();
 
   // handle menu navigation
-  if (event.currentTarget.classList.contains("nav-item")) {
+  if (event.currentTarget.classList.contains('nav-item')) {
     toggleActiveClass(event.currentTarget);
   } else {
-    const target = document.querySelector(`#item-${url.replace(".html", "")}`);
+    const target = document.querySelector(`#item-${url.replace('.html', '')}`);
     if (target) {
       toggleActiveClass(target);
-      const details = document.querySelectorAll("details");
+      const details = document.querySelectorAll('details');
       const parentDetail = target.parentNode.previousElementSibling.parentNode;
 
       // when navigating from search, open target
       // details element and close all the others.
       for (let detail of details) {
         if (detail !== parentDetail) {
-          detail.removeAttribute("open");
+          detail.removeAttribute('open');
         } else {
-          parentDetail.setAttribute("open", ""); // same as true
+          parentDetail.setAttribute('open', ''); // same as true
         }
       }
     } else {
@@ -370,12 +370,12 @@ window.goToLocation = (url) => {
 };
 
 window.toggleAllScopes = (isShow) => {
-  const checkboxes = document.querySelectorAll("input[type=checkbox]");
+  const checkboxes = document.querySelectorAll('input[type=checkbox]');
   // NOTE: for some reason, just checking or un-checking the checkboxes
   // via attribute and then using hideAllScopes or showAllScopes wasn't
   // working as expected, use click() to trigger the onclick funcs instead.
   checkboxes.forEach((checkbox) => {
-    if (checkbox.id !== "cbx-all") {
+    if (checkbox.id !== 'cbx-all') {
       if (isShow && !checkbox.checked) {
         checkbox.click();
       } else if (!isShow && checkbox.checked) {
