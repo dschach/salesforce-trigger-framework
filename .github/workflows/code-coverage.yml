@@ -2,14 +2,20 @@ name: code-coverage
 on:
   workflow_dispatch:
   push:
+    paths:
+      - "force-app/**"
+      - "sample-handler/**"
   pull_request:
     types: [edited, opened, synchronize, reopened, review_requested]
+    paths:
+      - "force-app/**"
+      - "sample-handler/**"
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout source code"
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: "Install Salesforce CLI"
         run: |
           wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
@@ -28,7 +34,7 @@ jobs:
       - name: Run Apex tests
         run: sfdx force:apex:test:run --codecoverage --resultformat human -d ./
       - name: "Upload code coverage for Apex to Codecov.io"
-        uses: codecov/codecov-action@v3.1.0
+        uses: codecov/codecov-action@v3
         with:
           flags: Apex
       - name: Delete Scratch Org
