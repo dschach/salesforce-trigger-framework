@@ -2,41 +2,19 @@
 // #region Constants / DOM lifecycle hooks
 // ==================================================================
 
-const
-  SCOPES = ['global', 'public', 'private', 'protected', 'testMethod', 'webService'],
+const SCOPES = ['global', 'public', 'private', 'protected', 'testMethod', 'webService'],
   MENU_STATE_KEY = 'APEXDOX_MENU',
   ACTIVE_EL_STATE_KEY = 'APEXDOX_ACTIVE_EL',
   SCOPE_STATE_KEY = 'APEXDOX_SCOPE',
   SEARCH_STATE_KEY = 'APEXDOX_SEARCH_RESULTS';
 
-const highlightJsSelectors = [
-  'pre code',
-  '.method-annotations',
-  '.class-signature',
-  '.attribute-signature',
-  '.method-signature',
-  '.class-annotations',
-  '.prop-annotations'
-];
+const highlightJsSelectors = ['pre code', '.method-annotations', '.class-signature', '.attribute-signature', '.method-signature', '.class-annotations', '.prop-annotations'];
 
-const initializers = [
-  initMenu,
-  initHighlightJs,
-  renderMenuFromState,
-  setActiveElement,
-  renderSearchFromState,
-  readScope,
-  hideAllScopes,
-  showScopes
-];
+const initializers = [initMenu, initHighlightJs, renderMenuFromState, setActiveElement, renderSearchFromState, readScope, hideAllScopes, showScopes];
 
-const persisters = [
-  persistMenuState,
-  persistActiveElement,
-  persistSearchState
-];
+const persisters = [persistMenuState, persistActiveElement, persistSearchState];
 
-const executeAll = funcs => funcs.forEach(func => func());
+const executeAll = (funcs) => funcs.forEach((func) => func());
 
 document.addEventListener('DOMContentLoaded', () => {
   executeAll(initializers);
@@ -44,11 +22,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.onbeforeunload = () => {
   executeAll(persisters);
-}
+};
 
 // #endregion
 // ==================================================================
-
 
 // ==================================================================
 // #region Initialization & Menu Utils, local state
@@ -59,11 +36,11 @@ function initHighlightJs() {
   // signatures for methods, classes, props and enums
   hljs.configure({
     ignoreUnescapedHTML: true,
+    languages: ['xml', 'apex'],
   });
-  highlightJsSelectors.forEach(selector => {
-    document.querySelectorAll(selector).forEach(block => {
+  highlightJsSelectors.forEach((selector) => {
+    document.querySelectorAll(selector).forEach((block) => {
       hljs.highlightElement(block);
-
     });
   });
 }
@@ -78,7 +55,7 @@ function initMenu() {
   if (!hasState) {
     // initialize menu state
     console.log('ApexDox: initializing menu state');
-    items.forEach(item => state[item.id] = false);
+    items.forEach((item) => (state[item.id] = false));
   } else {
     // If already init, add any new class groups since last load.
     // should really only happen when docs are under development
@@ -94,20 +71,19 @@ function updateMenuModel(items, state) {
   let keys = Object.keys(state);
 
   // 2) get ids from each .group-name <details> element
-  let groups = Array.prototype.map.call(items, item => ({
+  let groups = Array.prototype.map.call(items, (item) => ({
     id: item.id,
-    isOpen: item.getAttribute('open')
+    isOpen: item.getAttribute('open'),
   }));
 
   // 3) perform diff to get Ids not yet captured in storage
-  let deletedKeys = keys.filter(key =>
-    groups.findIndex(group => group.id === key) === -1);
+  let deletedKeys = keys.filter((key) => groups.findIndex((group) => group.id === key) === -1);
 
-  let newKeys = groups.filter(item => keys.indexOf(item.id) === -1);
+  let newKeys = groups.filter((item) => keys.indexOf(item.id) === -1);
 
   // 4) add/delete keys to/from state
   if (deletedKeys.length > 0) {
-    deletedKeys.forEach(key => {
+    deletedKeys.forEach((key) => {
       delete state[key];
     });
     console.log('ApexDox: Stale menu keys found, deleting from session storage:');
@@ -115,9 +91,13 @@ function updateMenuModel(items, state) {
   }
 
   if (newKeys.length > 0) {
-    newKeys.forEach(item => state[item.id] = item.isOpen === '' && true);
+    newKeys.forEach((item) => (state[item.id] = item.isOpen === '' && true));
     console.log('ApexDox: New menu keys found, adding to session storage:');
-    console.log(newKeys.map(function (g) { return g.id }));
+    console.log(
+      newKeys.map(function (g) {
+        return g.id;
+      })
+    );
   }
 }
 
@@ -140,7 +120,7 @@ function persistMenuState() {
   let items = document.querySelectorAll('.group-name');
   let state = JSON.parse(sessionStorage.getItem(MENU_STATE_KEY));
 
-  items.forEach(item => {
+  items.forEach((item) => {
     let isOpen = item.getAttribute('open');
     console.log(isOpen);
     state[item.id] = isOpen === '' && true;
@@ -178,12 +158,12 @@ function setActiveElement() {
 // persist any search results across loads
 function persistSearchState() {
   const searchTerm = document.querySelector('#search-input').value;
-  const resultsMarkup = document.querySelector('#search-results').innerHTML
+  const resultsMarkup = document.querySelector('#search-results').innerHTML;
 
   if (searchTerm.length > 1) {
     const searchState = JSON.stringify({
       searchTerm,
-      resultsMarkup
+      resultsMarkup,
     });
 
     sessionStorage.setItem(SEARCH_STATE_KEY, searchState);
@@ -213,7 +193,6 @@ function renderSearchFromState() {
 // #endregion
 // ==================================================================
 
-
 // ==================================================================
 // #region Scope Utils
 // ==================================================================
@@ -221,7 +200,7 @@ function renderSearchFromState() {
 function getListScope() {
   let list = [];
   let checkboxes = document.querySelectorAll('input[type=checkbox]');
-  checkboxes.forEach(checkbox => {
+  checkboxes.forEach((checkbox) => {
     if (checkbox.checked && checkbox.id !== 'cbx-all') {
       let str = checkbox.id;
       str = str.replace('cbx-', '');
@@ -260,10 +239,9 @@ function setScope() {
 function readScope() {
   const strScope = getScope();
   if (strScope != null && strScope != '') {
-
     // first clear all the scope checkboxes
     let checkboxes = document.querySelectorAll('input[type=checkbox]');
-    checkboxes.forEach(checkbox => checkbox.removeAttribute('checked'));
+    checkboxes.forEach((checkbox) => checkbox.removeAttribute('checked'));
 
     // now check the appropriate scope checkboxes
     let list = strScope.split(',');
@@ -310,7 +288,8 @@ function toggleTypeScope(scope, tableSelector, itemSelector, isShow) {
   const items = document.querySelectorAll(`${itemSelector}.${scope}`);
 
   if (isShow === true) {
-    if (tables && items.length) { // show tables if they've been hidden
+    if (tables && items.length) {
+      // show tables if they've been hidden
       toggleVisibility(tables, true);
     }
     toggleVisibility(items, true);
@@ -331,8 +310,9 @@ function toggleVisibility(elements, isShow) {
 }
 
 function maybeHideElement(toHide, itemSelector) {
-  let elements, container = document.querySelectorAll(toHide);
-  if (elements = document.querySelectorAll(itemSelector)) {
+  let elements,
+    container = document.querySelectorAll(toHide);
+  if ((elements = document.querySelectorAll(itemSelector))) {
     for (let element of elements) {
       if (!element.classList.contains('hide')) {
         return;
@@ -353,7 +333,6 @@ function toggleActiveClass(elem) {
 
 // #endregion
 // ==================================================================
-
 
 // ==================================================================
 // #region Global Functions
@@ -389,14 +368,14 @@ window.goToLocation = (url) => {
   }
 
   document.location.href = url;
-}
+};
 
 window.toggleAllScopes = (isShow) => {
   const checkboxes = document.querySelectorAll('input[type=checkbox]');
   // NOTE: for some reason, just checking or un-checking the checkboxes
   // via attribute and then using hideAllScopes or showAllScopes wasn't
   // working as expected, use click() to trigger the onclick funcs instead.
-  checkboxes.forEach(checkbox => {
+  checkboxes.forEach((checkbox) => {
     if (checkbox.id !== 'cbx-all') {
       if (isShow && !checkbox.checked) {
         checkbox.click();
@@ -405,11 +384,11 @@ window.toggleAllScopes = (isShow) => {
       }
     }
   });
-}
+};
 
 window.toggleScope = (scope, isShow) => {
   toggleScope(scope, isShow);
-}
+};
 
 // #endregion
 // ==================================================================
