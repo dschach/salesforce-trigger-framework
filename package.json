@@ -14,7 +14,8 @@
 		"initialize": ". scripts/initialize.sh",
 		"orginit": ". scripts/orginit.sh",
 		"postinstall": "husky install",
-		"precommit": "lint-staged"
+		"precommit": "lint-staged",
+		"updateHighlight": ". scripts/updateHighlight.sh"
 	},
 	"devDependencies": {
 		"@prettier/plugin-xml": "^2.2.0",
