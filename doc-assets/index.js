@@ -36,6 +36,7 @@ function initHighlightJs() {
   // signatures for methods, classes, props and enums
   hljs.configure({
     ignoreUnescapedHTML: true,
+    languages: ['xml', 'apex'],
   });
   highlightJsSelectors.forEach((selector) => {
     document.querySelectorAll(selector).forEach((block) => {
