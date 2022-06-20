@@ -4,7 +4,10 @@ curl -L "https://cdn.jsdelivr.net/gh/highlightjs/cdn-release/build/highlight.min
 echo >> "assets/highlight.js"
 curl -L "https://cdn.jsdelivr.net/npm/highlightjs-apex/dist/apex.min.js" >> "doc-assets/highlight.js"
 
-npx marked -i README.md -o doc-assets/homePage.html smartypants=true
+printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/homePage.html"
 echo >> "doc-assets/homePage.html"
-printf '<link href="assets/styling.css" rel="stylesheet" />' >> "doc-assets/homePage.html"
+npx marked -i README.md --gfm >> "doc-assets/homePage.html"
+
+sed -i '' 's|href="./|target="_blank" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/|g' doc-assets/homePage.html
+
 npx prettier --write "doc-assets/homePage.html"
