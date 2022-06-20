@@ -26,7 +26,7 @@
 		},
 		{
 			"files": "*.{yml,yaml}",
-			"options": { "singleQuote": false}
+			"options": { "singleQuote": false }
 		}
 	]
 }

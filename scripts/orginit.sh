@@ -4,7 +4,7 @@ echo "Cleaning previous scratch org..."
 sfdx force:org:delete -p -u TriggerFramework
 
 echo "Creating new scratch org"
-sfdx force:org:create -f config/project-scratch-def.json --durationdays 10 -a TriggerFramework -s
+sfdx force:org:create --definitionfile config/project-scratch-def.json --durationdays 10 --setalias TriggerFramework --setdefaultusername
 
 echo "Pushing metadata"
 sfdx force:source:push
