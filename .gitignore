@@ -41,3 +41,5 @@ $RECYCLE.BIN/
 
 # PMD
 .pmdCache
+filelist.txt
+pmd/pmd.csv
