@@ -26,6 +26,7 @@ engine:
     - "${workspaceFolder}/doc-assets/icon.png"
     - "${workspaceFolder}/doc-assets/highlight.css"
     - "${workspaceFolder}/doc-assets/styling.css"
+    - "${workspaceFolder}/doc-assets/index.css"
     - "${workspaceFolder}/doc-assets/highlight.js"
     - "${workspaceFolder}/doc-assets/index.js"
   port: 9090
