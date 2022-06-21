@@ -78,9 +78,4 @@ jobs:
           ~/pmd/bin/run.sh pmd --version
       # Run PMD scan
       - name: "Run PMD scan"
-        run: |
-          find force-app/main/default sample-handler/main/default > filelist.txt
-          echo "Files to be analyzed"
-          cat filelist.txt
-          echo "End of file list"
-          ~/pmd/bin/run.sh pmd --file-list filelist.txt --rulesets pmd/ruleset.xml --format csv --no-cache -min 2 --verbose -r pmd/pmd.csv
+        run: ~/pmd/bin/run.sh pmd -d force-app -d sample-handler --rulesets pmd/ruleset.xml --format csv --no-cache -min 2 --verbose -r pmd/pmd.csv
