@@ -94,6 +94,7 @@ jobs:
         with:
           sourcePath: "force-app"
           rulesets: "pmd/ruleset.xml"
+          analyzeModifiedFilesOnly: "false"
 
       # Check for PMD violations
       - name: "Check for PMD violations"
