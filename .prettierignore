@@ -13,7 +13,7 @@ coverage/
 
 # ApexDox website
 docs/assets/*.js
-doc-assets/highlight.js
+doc-assets/highlight*.js
 
 # markdown
 *.md

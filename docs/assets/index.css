@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Barlow:400,400i|Nanum+Gothic&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Barlow:400,400i|Nanum+Gothic&display=swap");
 
 :root {
     --grey-blue-tx: #51638a;
@@ -7,12 +7,12 @@
     --dark-grey: #c6c6c6;
     --white: #fff;
     --dark-red: #a31515;
-    --title-font: 'Nanum Gothic';
+    --title-font: "Nanum Gothic";
     --code-font: monospace;
 }
 
 body {
-    font-family: 'Barlow', sans-serif;
+    font-family: "Barlow", sans-serif;
     margin: 0px;
     padding: 0px;
 }
@@ -190,7 +190,7 @@ most signatures will fit on a single lin */
 }
 
 .method-title:target:before {
-    content: ' ';
+    content: " ";
     background-clip: padding-box;
     position: absolute;
     top: 24px;

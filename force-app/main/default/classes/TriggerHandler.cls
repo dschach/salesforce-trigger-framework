@@ -659,7 +659,7 @@ public virtual class TriggerHandler {
 		private Integer count;
 
 		/**
-		 * Standard constructor
+		 * @description Standard constructor
 		 * <br>Default max to 5
 		 * <br>Default count to 0
 		 */
