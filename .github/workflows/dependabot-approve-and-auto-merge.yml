@@ -11,9 +11,6 @@ jobs:
     # Only run for Dependabot PRs
     if: ${{ github.actor == 'dependabot[bot]' }}
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
-      contents: write
     steps:
       - name: "Fetch Dependabot metadata"
         id: dependabot
