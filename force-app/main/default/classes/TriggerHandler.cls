@@ -586,7 +586,8 @@ public virtual class TriggerHandler {
 	@TestVisible
 	private String getHandlerName() {
 		if (String.isBlank(this.handlerName)) {
-			this.handlerName = String.valueOf(this).substring(0, String.valueOf(this).indexOf(':'));
+			//this.handlerName = String.valueOf(this).substring(0, String.valueOf(this).indexOf(':'));
+			this.handlerName = this.toString().substringBefore(':');
 		}
 		return this.handlerName;
 	}
