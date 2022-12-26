@@ -21,7 +21,7 @@
 		"@prettier/plugin-xml": "^2.2.0",
 		"husky": "^8.0.2",
 		"lint-staged": "^13.1.0",
-		"marked": "^4.2.4",
+		"marked": "^4.2.5",
 		"prettier": "^2.8.1",
 		"prettier-plugin-apex": "^1.12.0"
 	},
