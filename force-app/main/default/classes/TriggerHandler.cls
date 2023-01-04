@@ -2,10 +2,11 @@
 /**
  * @description Trigger Handler virtual class as base for all trigger handlers
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
- * @author {@link [David Schach](https://github.com/dschach)}
  * @since 2013
- * @group TriggerHandler
- * @group-content doc-assets/triggerhandlerhome.html
+ * @author {@link [David Schach](https://github.com/dschach)}
+ * @since 2021
+ * @group Trigger Handler
+ * @group-content doc-assets/files/triggerhandlerhome.html
  * @see [License](https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE)
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
  * @see TriggerHandlerTest
@@ -43,7 +44,7 @@ public virtual class TriggerHandler {
 
 	/**
 	 * The current triggerEvent of the trigger, overridable in tests
-	 * */
+	 */
 	@TestVisible
 	private System.TriggerOperation triggerEvent;
 
@@ -74,6 +75,14 @@ public virtual class TriggerHandler {
 	 * @see TriggerHandler.TriggerHandler[1]
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
+	 *  // (in Trigger Handler)
+	 * public AccountSampleTriggerHandler) {
+	 *   super('AccountSampleTriggerHandler');
+	 *   this.newRecords = (List<Account>) Trigger.new;
+	 *   this.oldRecords = (List<Account>) Trigger.old;
+	 *   this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;
+	 *   this.oldRecordsMap = (Map<Id, Account>) Trigger.oldMap;
+	 * }
 	 */
 	public TriggerHandler() {
 		this.setTriggerContext();
@@ -87,7 +96,7 @@ public virtual class TriggerHandler {
 	 * @example
 	 * new AccountSampleTriggerHandler('AccountSampleTriggerHandler').run();
 	 * // (in Trigger Handler)
-	 * public AccountSampleTriggerHandler(String className) {
+	 * public AccountSampleTriggerHandler('AccountSampleTriggerHandler') {
 	 *   this.newRecords = (List<Account>) Trigger.new;
 	 *   this.oldRecords = (List<Account>) Trigger.old;
 	 *   this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;
@@ -194,7 +203,7 @@ public virtual class TriggerHandler {
 	 * @description       Bypass by string
 	 *
 	 * @param handlerName Name of the handler to be bypassed
-	 * @example TriggerHandler.bypass('AccountSampleTriggerHandler')
+	 * @example TriggerHandler.bypass('AccountSampleTriggerHandler');
 	 */
 	public static void bypass(String handlerName) {
 		TriggerHandler.bypassedHandlers.add(handlerName);
@@ -205,7 +214,8 @@ public virtual class TriggerHandler {
 	 *
 	 * @param handlerType The Class to be bypassed. Must end with ".class"
 	 * @author {@link [vr8hub](https://github.com/vr8hub)}
-	 * @example TriggerHandler.bypass(AccountTriggerHandler.class);
+	 * @example
+	 * TriggerHandler.bypass(AccountTriggerHandler.class);
 	 */
 	public static void bypass(Type handlerType) {
 		TriggerHandler.bypass(handlerType.getName());
@@ -236,7 +246,7 @@ public virtual class TriggerHandler {
 	 * @param handlerName The class name to be bypassed
 	 * @author {@link [vr8hub](https://github.com/vr8hub)}
 	 * @example
-	 * TriggerHandler.clearBypass('AccountSampleTriggerHandler')
+	 * TriggerHandler.clearBypass('AccountSampleTriggerHandler');
 	 */
 	public static void clearBypass(String handlerName) {
 		if (TriggerHandler.bypassedHandlers.contains(handlerName)) {
@@ -249,7 +259,7 @@ public virtual class TriggerHandler {
 	 *
 	 * @param handlerType The class to be bypassed. Must end with ".class"
 	 * @example
-	 * TriggerHandler.clearBypass(AccountSampleTriggerHandler.class)
+	 * TriggerHandler.clearBypass(AccountSampleTriggerHandler.class);
 	 */
 	public static void clearBypass(Type handlerType) {
 		TriggerHandler.clearBypass(handlerType.getName());
@@ -317,6 +327,7 @@ public virtual class TriggerHandler {
 	 * @description Return a Set of the bypassed handlers
 	 * <br>Though both Set and List allow contains(value), we include both methods for convenience
 	 *
+	 * @author David Schach
 	 * @since 2022
 	 * @return      `Set<String>` Set of bypassed handlers
 	 * @example
@@ -586,8 +597,7 @@ public virtual class TriggerHandler {
 	@TestVisible
 	private String getHandlerName() {
 		if (String.isBlank(this.handlerName)) {
-			//this.handlerName = String.valueOf(this).substring(0, String.valueOf(this).indexOf(':'));
-			this.handlerName = this.toString().substringBefore(':');
+			this.handlerName = String.valueOf(this).substring(0, String.valueOf(this).indexOf(':'));
 		}
 		return this.handlerName;
 	}
@@ -660,7 +670,7 @@ public virtual class TriggerHandler {
 		private Integer count;
 
 		/**
-		 * @description Standard constructor
+		 * Standard constructor
 		 * <br>Default max to 5
 		 * <br>Default count to 0
 		 */
