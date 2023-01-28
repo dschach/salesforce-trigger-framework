@@ -3,7 +3,7 @@
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @author {@link [David Schach](https://github.com/dschach)}
  * @since 2013
- * @group TriggerHandler
+ * @group Trigger Handler
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
  * @see TriggerHandler
  */
