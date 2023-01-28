@@ -1,14 +1,42 @@
 {
-  "recommendations": [
-    "salesforce.salesforcedx-vscode",
-    "redhat.vscode-xml",
-    "peterweinberg.apexdox-vs-code",
-    "matteopieroni.refresh-npm-packages",
-    "github.vscode-pull-request-github",
-    "financialforce.lana",
-    "esbenp.prettier-vscode",
-    "eg2.vscode-npm-script",
-    "eamodio.gitlens",
-    "chuckjonas.apex-pmd"
-  ]
+	"recommendations": [
+		// Salesforce
+		"salesforce.salesforcedx-vscode",
+		"financialforce.lana",
+		"chuckjonas.apex-pmd",
+		"salesforce.salesforce-vscode-slds",
+		"redhat.vscode-xml",
+		// Markdown
+		"salesforce.sfdocs-markdown-assistant",
+		"salesforce.salesforce-docs-markdown-preview",
+		"yzhang.markdown-all-in-one",
+		// Git
+		"eamodio.gitlens",
+		"github.vscode-pull-request-github",
+		"michelemelluso.gitignore",
+		// Inline helpers
+		"usernamehw.errorlens",
+		// Linter
+		"dbaeumer.vscode-eslint",
+		// Formatting
+		"esbenp.prettier-vscode",
+		// Alignment
+		"aaron-bond.better-comments",
+		"cpmcgrath.codealignment-vscode",
+		"sirtori.indenticator",
+		"chouzz.vscode-better-align",
+		"oderwat.indent-rainbow",
+		// Documentation
+		"peterweinberg.apexdox-vs-code",
+		"stkb.rewrap",
+		// Testing
+		"modicatech.apex-code-coverage-visualizer",
+		// Scripts
+		"ionutvmi.path-autocomplete",
+		// npm
+		"matteopieroni.refresh-npm-packages",
+		// Themes
+		"pkief.material-icon-theme",
+		"subc4i.sublime-mavensmate-monokai-apex"
+	]
 }
