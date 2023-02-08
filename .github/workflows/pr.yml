@@ -6,7 +6,9 @@ on:
   workflow_dispatch:
   pull_request:
     types: [opened, edited, synchronize, reopened]
-
+    paths:
+      - "force-app/**"
+      - "sample-handler/**"
 # Jobs to be executed
 jobs:
   # Formatting and linting only runs on human-submitted PRs
