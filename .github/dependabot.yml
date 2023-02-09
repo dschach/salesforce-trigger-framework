@@ -7,9 +7,15 @@ version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
+    commit-message:
+      prefix: "fix"
+    rebase-strategy: "auto"
     schedule:
-      interval: "weekly"
+      interval: "daily"
   - package-ecosystem: "github-actions" # See documentation for possible values
     directory: "/" # Location of package manifests
+    commit-message:
+      prefix: "fix"
+    rebase-strategy: "auto"
     schedule:
-      interval: "weekly"
+      interval: "daily"
