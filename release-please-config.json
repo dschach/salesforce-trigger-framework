@@ -6,7 +6,7 @@
 	},
 	"bump-minor-pre-major": true,
 	"bump-patch-for-minor-pre-major": true,
-	"prerelease": true,
+	"prerelease": false,
 	"draft": false,
 	"changelog-path": "CHANGELOG.md",
 	"include-v-in-tag": true,
