@@ -8,14 +8,16 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
     commit-message:
-      prefix: "build(npm)"
+      prefix: "build"
+      include: "scope"
     rebase-strategy: "auto"
     schedule:
       interval: "daily"
   - package-ecosystem: "github-actions" # See documentation for possible values
     directory: "/" # Location of package manifests
     commit-message:
-      prefix: "build(actions)"
+      prefix: "build"
+      include: "scope"
     rebase-strategy: "auto"
     schedule:
       interval: "daily"
