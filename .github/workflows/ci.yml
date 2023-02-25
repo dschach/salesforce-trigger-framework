@@ -41,7 +41,7 @@ jobs:
 
       # Prettier format check
       - name: "Code formatting verification with Prettier"
-        run: npm run prettier:verify:apex
+        run: npm run prettier:verify
 
   pmd-analysis:
     runs-on: ubuntu-latest
