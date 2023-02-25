@@ -2,7 +2,8 @@
 	"packageDirectories": [
 		{
 			"path": "force-app",
-			"default": true
+			"default": true,
+			"versionNumber": "1.1.0.NEXT"
 		},
 		{
 			"path": "sample-handler",
