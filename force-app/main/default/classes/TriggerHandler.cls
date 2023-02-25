@@ -154,6 +154,7 @@ public virtual class TriggerHandler {
 				this.afterUndelete();
 			}
 		}
+		this.andFinally();
 
 		if (showLimits) {
 			System.debug(
@@ -651,6 +652,15 @@ public virtual class TriggerHandler {
 	 */
 	@TestVisible
 	protected virtual void afterUndelete() {
+	}
+
+	/**
+	 * `andFinally` is called on every inovcation, regardless of Trigger context
+	 * @author James Simone
+	 * @since 2022
+	 * */
+	@TestVisible
+	protected virtual void andFinally() {
 	}
 
 	// inner classes
