@@ -6,8 +6,10 @@
 node_modules
 .localdevserver
 .sfdx
+.sf
 .vscode
 ./*.json
+!release-please-config.json
 
 coverage/
 
