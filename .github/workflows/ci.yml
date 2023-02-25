@@ -46,7 +46,6 @@ jobs:
 
   pmd-analysis:
     runs-on: ubuntu-latest
-    needs: format-lint
     if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       # Checkout the source code
