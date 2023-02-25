@@ -11,4 +11,3 @@ jobs:
       - uses: google-github-actions/release-please-action@v3
         with:
           command: manifest
-          signoff: "{$GITHUB_ACTOR}<${GITHUB_ACTOR}@users.noreply.github.com>"
