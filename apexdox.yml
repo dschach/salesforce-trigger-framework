@@ -10,7 +10,7 @@ engine:
   title: Salesforce Trigger Handler code documentation
   subtitle: Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
   sortOrder: alpha
-  cleanDir: true # keep prettier config file
+  cleanDir: false # keep prettier config file
   showTOCSnippets: true
   scope:
     - public
@@ -18,20 +18,19 @@ engine:
     - protected
     - testMethod
   homePagePath: "${workspaceFolder}/doc-assets/homePage.html"
-  pages:
-    - "${workspaceFolder}/doc-assets/files/deploy.html"
+  #pages:
+  #  - "${workspaceFolder}/documentation/Funny.html"
   assets:
-    - "${workspaceFolder}/doc-assets/favicon.png"
-    - "${workspaceFolder}/doc-assets/highlight.css"
-    - "${workspaceFolder}/doc-assets/highlight.js"
-    - "${workspaceFolder}/doc-assets/icon.png"
-    - "${workspaceFolder}/doc-assets/index.css"
-    - "${workspaceFolder}/doc-assets/index.js"
     - "${workspaceFolder}/doc-assets/logo.png"
+    - "${workspaceFolder}/doc-assets/favicon.png"
+    - "${workspaceFolder}/doc-assets/icon.png"
+    - "${workspaceFolder}/doc-assets/highlight.css"
     - "${workspaceFolder}/doc-assets/styling.css"
-    #- "${workspaceFolder}/doc-assets/files/sampletriggerhandlerhome.html"
+    - "${workspaceFolder}/doc-assets/index.css"
+    - "${workspaceFolder}/doc-assets/highlight.js"
+    - "${workspaceFolder}/doc-assets/index.js"
   port: 9090
 docblock:
   alignItems: true
   spacious: true
-  omitDescriptionTag: false
+  omitDescriptionTag: true
