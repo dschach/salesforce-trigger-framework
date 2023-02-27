@@ -33,7 +33,7 @@
      1. Create a scratch org and provide it with an alias (**triggerHandler** in the command below):
 
         ```
-        sfdx force:org:create -s -f config/project-scratch-def.json -a triggerHandler
+        sf org create scratch --set-default --definition-file config/project-scratch-def.json --alias triggerHandler
         ```
 
         This will create a new scratch org and install all metadata in this repository
@@ -41,11 +41,11 @@
      2. Push the app to your scratch org:
 
         ```
-        sfdx force:source:push
+        sf deploy metadata
         ```
 
      3. Open the scratch org:
 
         ```
-        sfdx force:org:open
+        sf org open
         ```

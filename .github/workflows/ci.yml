@@ -55,7 +55,7 @@ jobs:
       # Install PMD
       - name: "Install PMD"
         run: |
-          PMD_VERSION=`cat pmd/pmd-version.txt`
+          PMD_VERSION=$(curl -s https://api.github.com/repos/pmd/pmd/releases/latest | grep '.tag_name' | sed 's:.*/::' | sed 's:",::')
           wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$PMD_VERSION/pmd-bin-$PMD_VERSION.zip
           unzip pmd-bin-$PMD_VERSION.zip -d ~
           mv ~/pmd-bin-$PMD_VERSION ~/pmd
