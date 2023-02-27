@@ -5,8 +5,8 @@
  * @since 2013
  * @author {@link [David Schach](https://github.com/dschach)}
  * @since 2021
+ * @since 2023-02-24 add andFinally method
  * @group Trigger Handler
- * @group-content doc-assets/files/triggerhandlerhome.html
  * @see [License](https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE)
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
  * @see TriggerHandlerTest
@@ -154,6 +154,7 @@ public virtual class TriggerHandler {
 				this.afterUndelete();
 			}
 		}
+		this.andFinally();
 
 		if (showLimits) {
 			System.debug(
@@ -651,6 +652,17 @@ public virtual class TriggerHandler {
 	 */
 	@TestVisible
 	protected virtual void afterUndelete() {
+	}
+
+	/**
+	 * @description `andFinally` is called in every context, regardless of Trigger context
+	 * <br>Credit to James Simone for this idea
+	 * @see {@link [The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/)}
+	 * @author James Simone
+	 * @since 2022
+	 * */
+	@TestVisible
+	protected virtual void andFinally() {
 	}
 
 	// inner classes

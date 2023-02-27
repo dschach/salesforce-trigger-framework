@@ -1,0 +1,65 @@
+<link href="assets/styling.css" rel="stylesheet" />
+<h1 id="installing-the-app-using-a-scratch-org">Installing the app using a Scratch Org</h1>
+<ol>
+  <li>
+    Set up your environment. Follow the steps in the
+    <a href="https://trailhead.salesforce.com/content/learn/projects/quick-start-lightning-web-components/">Quick Start: Lightning Web Components</a> Trailhead project. The steps
+    include:
+  </li>
+</ol>
+<ul>
+  <li>Enable Dev Hub in your org or Trailhead Playground</li>
+  <li>Install <a target="_blank" href="https://developer.salesforce.com/tools/vscode/en/getting-started/install/#visual-studio-code">Visual Studio Code</a></li>
+  <li>Install <a target="_blank" href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm">Salesforce CLI</a></li>
+  <li>
+    Install the
+    <a target="_blank" href="https://developer.salesforce.com/tools/vscode/en/getting-started/install/#salesforce-extensions-for-visual-studio-code"
+      >Visual Studio Code Salesforce extensions</a
+    >
+  </li>
+</ul>
+
+<ol>
+  <li>
+    <p>If you haven&#39;t already done so, authorize your hub org and provide it with an alias (<strong>myhuborg</strong> in the command below):</p>
+    <pre><code class="language-plaintext">sfdx auth:web:login --setdefaultdevhubusername --setalias myhuborg
+</code></pre>
+  </li>
+  <li>
+    <p>Clone the duplicatehandling repository:</p>
+    <pre><code class="language-plaintext">git clone https://github.com/dschach/salesforce-trigger-framework
+cd salesforce-trigger-framework
+</code></pre>
+  </li>
+  <li>
+    <p>Create your scratch org</p>
+    <ul>
+      <li>
+        <p>Using the included script From the VSCode command line, run <a href="scripts/orginit.sh">orginit script</a></p>
+        <pre><code class="language-plaintext">. scripts/orginit.sh
+</code></pre>
+      </li>
+      <li>
+        <p>Using CLI manually</p>
+        <ol>
+          <li>
+            <p>Create a scratch org and provide it with an alias (<strong>triggerHandler</strong> in the command below):</p>
+            <pre><code class="language-plaintext">sf org create scratch --set-default --definition-file config/project-scratch-def.json --alias triggerHandler
+</code></pre>
+            <p>This will create a new scratch org and install all metadata in this repository</p>
+          </li>
+          <li>
+            <p>Push the app to your scratch org:</p>
+            <pre><code class="language-plaintext">sf deploy metadata
+</code></pre>
+          </li>
+          <li>
+            <p>Open the scratch org:</p>
+            <pre><code class="language-plaintext">sf org open
+</code></pre>
+          </li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+</ol>
