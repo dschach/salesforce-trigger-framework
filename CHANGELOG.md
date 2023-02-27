@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.1.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.0.0...v1.1.0) (2023-02-27)
+
+
+### Features
+
+* Add universal andFinally method ([#55](https://github.com/dschach/salesforce-trigger-framework/issues/55)) ([0988732](https://github.com/dschach/salesforce-trigger-framework/commit/098873264371d811ebd6183ee9991e63b1064e9c))
+* AndFinally handler method ([#53](https://github.com/dschach/salesforce-trigger-framework/issues/53)) ([a888ced](https://github.com/dschach/salesforce-trigger-framework/commit/a888ced9a19a5a8bc9f503cad0a1dd7947b5fc28))
+* Include andfinally method ([e6caed1](https://github.com/dschach/salesforce-trigger-framework/commit/e6caed1e282f5ab0488a92c049258f7eaa342c27))
+
+
+### Reverts
+
+* "feat: andFinally handler method" ([#54](https://github.com/dschach/salesforce-trigger-framework/issues/54)) ([a286275](https://github.com/dschach/salesforce-trigger-framework/commit/a2862753d6a239d62012553c8620a19fc135add4))
+
+
+### Miscellaneous Chores
+
+* Issue templates ([#50](https://github.com/dschach/salesforce-trigger-framework/issues/50)) ([90d3cdb](https://github.com/dschach/salesforce-trigger-framework/commit/90d3cdbeec35c513991eca61de198697615ded85))
+
+
+### Continuous Integration
+
+* **sfdx:** Upgrade sfdx to sf commands ([d026a91](https://github.com/dschach/salesforce-trigger-framework/commit/d026a9189accc95ef03f32c3defd6ebd2e27582f))
+
+
+### Documentation
+
+* **ApexDox:** AndFinally documentation ([b4ce9d8](https://github.com/dschach/salesforce-trigger-framework/commit/b4ce9d89af91a7724e9e971af1a1a40b85b6b85a))
+
 ## [1.0.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.0.0...v1.0.0) (2023-02-25)
 
 
