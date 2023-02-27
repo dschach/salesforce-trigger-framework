@@ -4,13 +4,30 @@
 
 # Salesforce Trigger Framework
 
+- [Salesforce Trigger Framework](#salesforce-trigger-framework)
+  - [Credit](#credit)
+  - [Documentation](#documentation)
+  - [Overview](#overview)
+  - [Usage](#usage)
+    - [Trigger Handler](#trigger-handler)
+    - [Trigger](#trigger)
+  - [Cool Stuff](#cool-stuff)
+    - [Bypass API](#bypass-api)
+    - [Check Bypass Status](#check-bypass-status)
+    - [Global Bypass](#global-bypass)
+    - [Set Bypass](#set-bypass)
+    - [Max Loop Count](#max-loop-count)
+    - [Debug Statements](#debug-statements)
+    - [Universal Action](#universal-action)
+  - [Overridable Methods](#overridable-methods)
+
 ## Credit
 
 Based on Kevin O'Hara's famous framework [sfdc-trigger-framework](https://github.com/kevinohara80/sfdc-trigger-framework)
 
 ## Documentation
 
-[Class Documentation](https://dschach.github.io/salesforce-trigger-framework/index.html)
+[Class Documentation](https://dschach.github.io/salesforce-trigger-framework/TriggerHandler.html)
 
 ## Overview
 
@@ -123,7 +140,6 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 
     acc.Name = 'With Trigger';
     update acc; /* will invoke the AccountTriggerHandler */
-
   }
 
 }
@@ -212,7 +228,7 @@ There are two methods that will show additional information.
 
 `TriggerHandler.showLimits()` will debug Apex query and DML limits when the trigger handler has completed.
 
-`TriggerHandler.showDebug()` will show trigger entry and exit, but only during Apex testing. This is to ensure org performance.
+`TriggerHandler.showDebug()` will show trigger entry and exit in debug logs. Use sparingly, as it will decrease org performance.
 
 To use one or both of these, add them to the trigger:
 ```apex
@@ -223,6 +239,10 @@ TriggerHandler.showLimits(false);
 AccountTriggerHandler.showDebug(false);
 ```
 or just put them in your Apex code before and after DML statements.
+
+### Universal Action
+
+Version 1.1 adds a new method: `andFinally()` which can contain actions that should happen in every trigger context, after all other actions. Credit to James Simone for this idea. As he writes, "runs after every context - can be used to easily implement something like apex-rollup!" ([The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/))
 
 ## Overridable Methods
 
@@ -235,3 +255,4 @@ Here are all of the methods that you can override. All of the context possibilit
 - `afterUpdate()`
 - `afterDelete()`
 - `afterUndelete()`
+- `andFinally()`
