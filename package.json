@@ -31,6 +31,9 @@
 		],
 		"docs/**/*.html": [
 			"prettier --write --tab-width 2"
+		],
+		"doc-assets/**/*.html": [
+			"prettier --write --tab-width 2"
 		]
 	}
 }
