@@ -1,0 +1,41 @@
+name: code-coverage
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "force-app/**"
+      - "sample-handler/**"
+  pull_request:
+    types: [edited, opened, synchronize, reopened, review_requested]
+    paths:
+      - "force-app/**"
+      - "sample-handler/**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v3
+      - name: "Install Salesforce CLI"
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx/channels/stable/sfdx-linux-x64.tar.xz
+          mkdir ~/sfdx
+          tar xJf sfdx-linux-x64.tar.xz -C ~/sfdx --strip-components 1
+          echo "$HOME/sfdx/bin" >> $GITHUB_PATH
+          ~/sfdx/bin/sfdx version
+      - name: Populate auth file
+        run: 'echo "${{ secrets.SALESFORCE_AUTH_URL }}" > ./SALESFORCE_AUTH_URL.txt'
+      - name: Authenticate Dev Hub
+        run: "sfdx force:auth:sfdxurl:store -f ./SALESFORCE_AUTH_URL.txt -a DevHub -d"
+      - name: Create Scratch Org
+        run: sfdx force:org:create --setdefaultusername --definitionfile config/project-scratch-def.json --setalias ciorg --durationdays 1
+      - name: Deploy source
+        run: sfdx force:source:push
+      - name: Run Apex tests
+        run: sfdx force:apex:test:run --codecoverage --resultformat human -d ./
+      - name: "Upload code coverage for Apex to Codecov.io"
+        uses: codecov/codecov-action@v3
+        with:
+          flags: Apex
+      - name: Delete Scratch Org
+        run: sfdx force:org:delete --noprompt

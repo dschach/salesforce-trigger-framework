@@ -1,15 +1,15 @@
 #!/bin/bash
 
 echo "Cleaning previous scratch org..."
-sf org delete scratch --no-prompt --target-org TriggerFramework
+sfdx force:org:delete -p -u TriggerFramework
 
 echo "Creating new scratch org"
-sf org create scratch --definition-file config/project-scratch-def.json --duration-days 10 --alias TriggerFramework --set-default
+sfdx force:org:create --definitionfile config/project-scratch-def.json --durationdays 10 --setalias TriggerFramework --setdefaultusername
 
 echo "Pushing metadata"
-sf deploy metadata
+sfdx force:source:push
 
 echo "Opening org"
-sf org open
+sfdx force:org:open
 
 echo "Org is set up"
