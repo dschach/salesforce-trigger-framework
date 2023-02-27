@@ -3,7 +3,7 @@
  * @author David Schach
  * @since 2021
  * @group SampleTriggerHandler
- * @group-content doc-assets/triggerhandlerhome.html
+ * @group-content doc-assets/files/sampletriggerhandlerhome.html
  */
 public without sharing class AccountSampleTriggerHandler extends TriggerHandler {
 	private List<Account> newRecords;

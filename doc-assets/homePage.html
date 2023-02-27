@@ -9,10 +9,40 @@
   <a href="https://img.shields.io/twitter/follow/dschach.svg?style=social"><img src="https://img.shields.io/twitter/follow/dschach.svg?style=social" alt="Twitter" /></a>
 </p>
 <h1 id="salesforce-trigger-framework">Salesforce Trigger Framework</h1>
+<ul>
+  <li>
+    <a href="#salesforce-trigger-framework">Salesforce Trigger Framework</a>
+    <ul>
+      <li><a href="#credit">Credit</a></li>
+      <li><a href="#documentation">Documentation</a></li>
+      <li><a href="#overview">Overview</a></li>
+      <li>
+        <a href="#usage">Usage</a>
+        <ul>
+          <li><a href="#trigger-handler">Trigger Handler</a></li>
+          <li><a href="#trigger">Trigger</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#cool-stuff">Cool Stuff</a>
+        <ul>
+          <li><a href="#bypass-api">Bypass API</a></li>
+          <li><a href="#check-bypass-status">Check Bypass Status</a></li>
+          <li><a href="#global-bypass">Global Bypass</a></li>
+          <li><a href="#set-bypass">Set Bypass</a></li>
+          <li><a href="#max-loop-count">Max Loop Count</a></li>
+          <li><a href="#debug-statements">Debug Statements</a></li>
+          <li><a href="#universal-action">Universal Action</a></li>
+        </ul>
+      </li>
+      <li><a href="#overridable-methods">Overridable Methods</a></li>
+    </ul>
+  </li>
+</ul>
 <h2 id="credit">Credit</h2>
 <p>Based on Kevin O&#39;Hara&#39;s famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a></p>
 <h2 id="documentation">Documentation</h2>
-<p><a href="https://dschach.github.io/salesforce-trigger-framework/index.html">Class Documentation</a></p>
+<p><a href="https://dschach.github.io/salesforce-trigger-framework/TriggerHandler.html">Class Documentation</a></p>
 <h2 id="overview">Overview</h2>
 <p>(from Kevin O&#39;Hara)</p>
 <p>
@@ -28,7 +58,7 @@
   certain aspects of execution and control flow.
 </p>
 <p>But the most important part of this framework is that it&#39;s minimal and simple to use.</p>
-<p><strong>Deploy to SFDX Scratch Org:</strong> <a target="_blank" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/DEPLOY.md">Deploy instructions</a></p>
+<p><strong>Deploy to SFDX Scratch Org:</strong> <a href="./deploy.html">Deploy instructions</a></p>
 <p>
   <strong>Deploy to Salesforce Org:</strong>
   <a href="https://githubsfdeploy.herokuapp.com/?owner=dschach&repo=salesforce-trigger-framework"
@@ -134,7 +164,6 @@
 
     acc.Name = &#39;With Trigger&#39;;
     update acc; /* will invoke the AccountTriggerHandler */
-
   }
 
 }
@@ -204,7 +233,7 @@ TriggerHandler.bypass(bypassedHandlers);
 <h3 id="debug-statements">Debug Statements</h3>
 <p>There are two methods that will show additional information.</p>
 <p><code>TriggerHandler.showLimits()</code> will debug Apex query and DML limits when the trigger handler has completed.</p>
-<p><code>TriggerHandler.showDebug()</code> will show trigger entry and exit, but only during Apex testing. This is to ensure org performance.</p>
+<p><code>TriggerHandler.showDebug()</code> will show trigger entry and exit in debug logs. Use sparingly, as it will decrease org performance.</p>
 <p>To use one or both of these, add them to the trigger:</p>
 <pre><code class="language-apex">TriggerHandler.showLimits();
 AccountTriggerHandler.showDebug();
@@ -213,6 +242,14 @@ TriggerHandler.showLimits(false);
 AccountTriggerHandler.showDebug(false);
 </code></pre>
 <p>or just put them in your Apex code before and after DML statements.</p>
+<h3 id="universal-action">Universal Action</h3>
+<p>
+  Version 1.1 adds a new method: <code>andFinally()</code> which can contain actions that should happen in every trigger context, after all other actions. Credit to James Simone
+  for this idea. As he writes, &quot;runs after every context - can be used to easily implement something like apex-rollup!&quot; (<a
+    href="https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/"
+    >The Joys of Apex</a
+  >)
+</p>
 <h2 id="overridable-methods">Overridable Methods</h2>
 <p>Here are all of the methods that you can override. All of the context possibilities are supported.</p>
 <ul>
@@ -223,4 +260,5 @@ AccountTriggerHandler.showDebug(false);
   <li><code>afterUpdate()</code></li>
   <li><code>afterDelete()</code></li>
   <li><code>afterUndelete()</code></li>
+  <li><code>andFinally()</code></li>
 </ul>

@@ -18,7 +18,7 @@
 		},
 		{
 			"files": "*.html",
-			"options": { "useTabs": false, "tabWidth": 2 }
+			"options": { "parser": "html", "useTabs": false, "tabWidth": 2 }
 		},
 		{
 			"files": "*.css",
