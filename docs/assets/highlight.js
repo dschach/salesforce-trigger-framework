@@ -1199,66 +1199,72 @@ begin:"\\b[0-9]{4}(-[0-9][0-9]){0,2}([Tt \\t][0-9][0-9]?(:[0-9][0-9]){2})?(\\.[0
 aliases:["yml"],contains:l}}});const je=ne;for(const e of Object.keys(Ue)){
 const n=e.replace("grmr_","").replace("_","-");je.registerLanguage(n,Ue[e])}
 return je}()
-;"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=hljs);/*! `apex` grammar compiled for Highlight.js 11.5.0 */
+;"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=hljs);/*! `apex` grammar compiled for Highlight.js 11.8.0 */
 (()=>{var e=(()=>{"use strict";return e=>{
-const s=e.regex,t="[a-zA-Z][a-zA-Z_0-9]*",a={scope:"number",variants:[{
-match:/\b[0-9]+(?:\.[0-9]+)?/},{match:/\s(?:[0-9,]+)?\.[0-9]+/}],relevance:0
-},c={
-match:s.either(/-/,/~/,/\*/,/\*=/,/\/=/,/%/,/\+/,/<</,/>>/,/>=/,/<=/,/\s<\s/,/\s>\s/,/\^/,/\^=/,/!=/,/!/,/==/,/&&/,/&/,/\|\|/,/\|/,/(?<=\s)\?|:(?=\s)/,/=/,/=>/,/\?\./),
-scope:"operator",relevance:0},n={
-match:[/\b/,s.either("ApexPages|10","AppLauncher","Approval","Auth","Cache","Canvas","ChatterAnswers|10","CommercePayments|10","ConnectApi|10","Database","Datacloud|10","DataSource|10","Dom","EventBus|10","Flow","Functions","KbManagement|10","Label","LxScheduler|10","Messaging","Metadata","Pref_center|10","Process","QuickAction","Reports","Schema","Search","Sfc|10","Sfdc_Checkout|10","sfdc_surveys|10","Site","Support","System","TerritoryMgmt|10","Test","Trigger|10","TxnSecurity|10","Type","UserProvisioning|10","VisualEditor|10","Wave|10"),/(?=\.)/],
+const t=e.regex,s="[a-zA-Z][a-zA-Z_0-9]*",a={scope:"number",variants:[{
+match:/\b[0-9]+(?:\.[0-9]+)?/},{match:/\s(?:[0-9,]+)?\.[0-9]+/},{
+match:/\b0(x|X)[0-9a-fA-F_]+(U|u|L|l|UL|Ul|uL|ul|LU|Lu|lU|lu)?\b/},{
+match:/\b0(b|B)[01_]+(U|u|L|l|UL|Ul|uL|ul|LU|Lu|lU|lu)?\b/},{
+match:/\b([0-9_]+)?\.[0-9_]+((e|E)[0-9]+)?(F|f|D|d|M|m)?\b/},{
+match:/\b[0-9_]+(e|E)[0-9_]+(F|f|D|d|M|m)?\b/},{match:/\b[0-9_]+(F|f|D|d|M|m)\b/
+},{match:/\b[0-9_]+(U|u|L|l|UL|Ul|uL|ul|LU|Lu|lU|lu)?\b/}],relevance:0},c={
+$pattern:"[A-Za-z][0-9A-Za-z$_]*",
+keyword:["trigger|10","class","interface","abstract","AccessLevel","USER_MODE","SYSTEM_MODE","AccessType","break","cast","catch","continue","default","do","else","exports","extends|6","finally","for","get","put","set","global","if","implements","new","newMap|10","old|10","oldMap|10","operationType","override","private","protected","public","return","size","static","throws","throw","testmethod|10","try","virtual","webservice","when","while"],
+"variable.language":["final","instanceof","super","this","transient"],
+built_in:["finish","start","execute"].concat(["insert","update","upsert|8","delete","undelete","merge","convertLead|10"]),
+type:["anytype","blob|0","boolean|0","byte|0","currency|0","date|0","datetime|0","decimal|0","double|0","enum|0","float|0","integer|0","long|0","object","pagereference|10","selectoption|10","short|0","sobject|10","string|0","time|0","void|0","float|0"],
+literal:["false","true","null"]},n={
+match:t.either(/-/,/--/,/~/,/\*/,/\*=/,/\/=/,/%/,/\+/,/\+\+/,/<</,/>>/,/>=/,/<=/,/\s<\s/,/\s>\s/,/\^/,/\^=/,/!=/,/!/,/==/,/&&/,/&/,/\|\|/,/\|/,/(?<=\s)\?|:(?=\s)/,/=/,/=>/,/\?\./),
+scope:"operator",relevance:0},r={
+match:[/\b/,t.either("ApexPages|10","AppLauncher","Approval","Assert","Auth","Cache","Canvas","ChatterAnswers|10","CommercePayments|10","ConnectApi|10","Database","Datacloud|10","Dataweave|10","DataSource|10","Dom","EventBus|10","ExternalService","Flow","Functions","Invocable","KbManagement|10","Label","LxScheduler|10","Messaging","Metadata","Pref_center|10","Process","QuickAction","Reports","RichMessageing","Savepoint","SchedulableContext","Schema","Search","Sfc|10","Sfdc_Checkout|10","sfdc_surveys|10","Site","Support","System","TerritoryMgmt|10","Test","Trigger|10","TxnSecurity|10","Type","UserProvisioning|10","VisualEditor|10","Wave|10"),/(?=\.)/],
 scope:{2:"built_in"},relevance:10
-},r=e.COMMENT("//",/[$\n]/),o=e.COMMENT("/\\*","\\*/",{relevance:0,contains:[{
+},o=e.COMMENT("//",/[$\n]/),i=e.COMMENT("/\\*","\\*/",{relevance:0,contains:[{
 begin:/\w+@/,relevance:0},{scope:"doctag",begin:"@[A-Za-z_]+"},{begin:"`",
 end:"`",excludeBegin:!0,excludeEnd:!0,scope:"code",
 contains:[e.BACKSLASH_ESCAPE],relevance:0},e.APOS_STRING_MODE,{
-match:[/(?<=@param)/,/\s+/,/\w+/],scope:{3:"variable"}}]}),i={relevance:10,
-scope:{1:"meta"},match:["@"+t,/(?=(\(|\b|\s))/]},l=[{
+match:[/(?<=@param)/,/\s+/,/\w+/],scope:{3:"variable"}}]})
+;t.either("label","description","callout","required","category","configurationEditor","iconName","SeeAllData")
+;const l={relevance:10,scope:{1:"meta"},match:["@"+s]},b=[{
 match:/\b[a-zA-Z\d]*Exception\b/,scope:"title.class",relevance:0},{
-match:[/\wthrow\s+new\s+/,t],scope:{1:"keyword",2:"title.class"},relevance:0
-}],b=[{match:[s.concat(/\b/,t,/\b/),/>/],scope:{1:"type"},relevance:10}],p=[{
+match:[/\wthrow\s+new\s+/,s],scope:{1:"keyword",2:"title.class"},relevance:0
+}],p=[{match:[t.concat(/\b/,s,/\b/),/>/],scope:{1:"type"},relevance:10}],u=[{
 match:[/\b(list|set|map)\s*/,"<",/[\.\w]+/],scope:{1:"type",3:"type"},
-relevance:10},{match:[t,s.lookahead(/\s*\[\]/)],scope:{1:"type"}}],E={
-match:[/[^\.]/,/\b[a-zA-Z][a-zA-Z\d_]*__[cxeb]\b/,/[\(\s;,]+/],scope:{2:"type"},
-relevance:10},A={variants:[{begin:[/\./,s.concat("(?:"+t+")"),/(?=\s*\(\))/],
-scope:{2:"title.function.invoke"}},{
-begin:[/\./,s.concat("(?:"+t+")"),/(?=\s*\([^\)])/],scope:{
+relevance:10},{match:[s,t.lookahead(/\s*\[\]/)],scope:{1:"type"}}],E={
+variants:[{match:[/\./,t.concat("(?:"+s+")"),/(?=\s*\(\))/],scope:{
 2:"title.function.invoke"}},{
-begin:[/(?<=\s)/,s.concat("(?:"+t+")"),/(?=\s*\()/],scope:{2:"title.function"}
-}],contains:[r,o,e.APOS_STRING_MODE],relevance:0},u={
-begin:/\[[\s\n]*(?=SELECT)/,end:/\]/,scope:"subst",relevance:10,contains:[{
-begin:s.concat(/\b/,s.either("ABOVE_OR_BELOW","ABOVE","ACTIVE","ADVANCED","ALL",/ALL\s+FIELDS/,"AND","ANY","ARRAY","AS","ASC","BY","CATEGORY","CONTAINS","COUNT","COUNT_DISTINCT","SUM","MAX","MIN","HOUR_IN_DAY","CONVERTCURRENCY","CUBE","DATA","DESC","DIVISION","END","EXCLUDES","FIELDS","FIND","FIRST","FOR","FROM",/GROUP\s+BY/,"HAVING","INCLUDES","LAST","LAST_90_DAYS","LAST_MONTH","LAST_N_DAYS","LAST_WEEK","LAST","LIKE","LIMIT","NETWORK","NEXT_90_DAYS","NEXT_MONTH","NEXT_N_DAYS","NEXT_WEEK","NULLS","OFFSET","ON","OR",/ORDER\s+BY/,"REFERENCE","RETURNING","ROLLUP","ROWS","SEARCH","SECURITY_ENFORCED","SELECT","SNIPPET","SORT","THIS_MONTH","THIS_WEEK","TODAY","TOLABEL","TOMORROW","TRACKING","TYPEOF","UPDATE",/USING\s+SCOPE/,"VIEW","VIEWSTAT","VIEWSTATE","WHERE","WITH","YESTERDAY","USER_MODE"),/\b/),
-scope:"keyword"},{match:/(\bIN\b|<|<=|>|>=|\bNOT\s+IN\b|=|!\s*=|:{1})/,
-scope:"literal",relevance:0},{match:/(?<=\bFROM\b\s+)\w+/,scope:"type",
-relevance:0},{match:/\b[a-zA-Z][a-zA-Z_0-9]*\b/,scope:"property"},a,A],
-illegal:"::"};return{name:"Apex",aliases:["apex","lightning"],
-case_insensitive:!0,disableAutodetect:!1,ignoreIllegals:!1,keywords:{
-$pattern:"[A-Za-z][0-9A-Za-z$_]*",
-keyword:["trigger|10","class","interface","abstract","AccessLevel","USER_MODE","break","catch","continue","default","do","else","execute","exports","extends|6","finally","finish","for","get","put","set","global","if","implements","new","newMap|10","old|10","oldMap|10","override","private","protected","public","return","start","static","throws","throw","testmethod|10","try","virtual","webservice","when","while"],
-"variable.language":["final","instanceof","super","this","transient"],
-built_in:["insert","update","upsert|8","delete","undelete","merge","schedulable|10","batchable|10","queueable|10","comparable|10","callable|10"],
-type:["anytype","blob|0","boolean|0","byte|0","currency|0","date|0","datetime|0","decimal|0","double|0","enum|0","float|0","integer|0","long|0","object","pagereference|10","selectoption|10","short|0","sobject|10","string|0","time|0","void|0","float|0"],
-literal:["false","true","null"]},
-illegal:["</","<#","<]","<div>","\x3c!--","!DOCTYPE",/<iframe\b/,/^#/,/^import \.[a-zA-Z]+\./,/^import [\w]+/,/^import$/,/^include </,/^use\s+</,/\b(const|var)\s+\w+\s*=/,/\bstruct\b/,"System.log","console.log",/\bfor\s+\w+\s+IN\s+/,/\bif\s+\w+\s+IN\s+/,/\bend\s+if\b/,/\bend\s+select\b/,/\b(int|var)\s+\w+\s+=/,/\b(int[0-9]+|bool)\b/,/\b\$/,"::=",/\s#[a-zA-Z]/,/\s_[a-zA-Z]/,/\s\$[a-zA-Z]/,"#if","%if",/\bif(?!\s+\()/,"%endif","#endif",/\w::\w/,/RETURNING\s+\*/,/\bint\b/,/import\s+\w+\s+=\s+require\("\w+"\)/,"/^include\b/",/\buse\s+strict\b/,/\w+\s+=\s+"\S*";/,/\/include\//,/\Anamespace\b/,/\bend\.\n/,/\bend\n/,'"""',/@\w+\[\w+\]/],
-contains:[i,[{match:[/\b(?<=enum|\bnew)/,/\s+/,t,/\s*(?=[{()])/],scope:{3:"type"
-},contains:[r,o,E]},{match:[/(?<=\bclass\b)/,/\s+/,t],scope:{3:"title.class"}},{
-match:[/(?<=public)/,/\s+/,t,/(?=\s*\()/],scope:{3:"constructor"}},{
-begin:[/(?<=\btrigger\b)/,/\s+/,t,/\s+/,"on",/\s+/,t],end:"{",scope:{
-3:"title.class",7:"type"},contains:[r,o,{
+match:[/\./,t.concat("(?:"+s+")"),/(?=\s*\([^\)])/],scope:{
+2:"title.function.invoke"}},{
+match:[/(?<=\s)/,t.concat("(?:"+s+")"),/(?=\s*\()/],scope:{2:"title.function"}
+}],contains:[o,i,e.APOS_STRING_MODE],relevance:0},m={
+begin:/\[[\s\n]*(?=(SELECT|FIND))/,end:/\]/,scope:"subst",relevance:10,
+contains:[{
+begin:t.concat(/\b/,t.either("ABOVE_OR_BELOW","ABOVE","ACTIVE","ADVANCED","ALL",/ALL\s+FIELDS/,"AND","ANY","ARRAY","AS","ASC","BY","CATEGORY","CONTAINS","COUNT","COUNT_DISTINCT","SUM","MAX","MIN","HOUR_IN_DAY","CONVERTCURRENCY","CUBE","DATA","DESC","DIVISION","END","EXCLUDES","FIELDS","FIND|10","FIRST","FOR","FROM",/GROUP\s+BY/,"HAVING","INCLUDES","LAST","LAST_90_DAYS","LAST_MONTH","LAST_N_DAYS","LAST_WEEK","LAST","LIKE","LIMIT","NETWORK","NEXT_90_DAYS","NEXT_MONTH","NEXT_N_DAYS","NEXT_WEEK","NULLS","OFFSET","ON","OR",/ORDER\s+BY/,"REFERENCE","RETURNING","ROLLUP","ROWS","SEARCH","SECURITY_ENFORCED","SELECT","SNIPPET","SORT","THIS_MONTH","THIS_WEEK","TODAY","TOLABEL","TOMORROW","TRACKING","TYPEOF","UPDATE",/USING\s+SCOPE/,"VIEW","VIEWSTAT","VIEWSTATE","WHERE","WITH","YESTERDAY","USER_MODE"),/\b/),
+scope:"keyword"},{match:/(\bIN\b|<|<=|>|>=|\bNOT\s+IN\b|=|!\s*=|\s:{1}|:{1}\s)/,
+scope:"literal"},{match:/(?<=\bFROM\b\s+)\w+/,scope:"type",relevance:0},{
+match:[t.concat(/\b/,"[a-zA-Z][a-zA-Z_]*"),":",/[0-9]+\b/],scope:{1:"keyword",
+3:"number"},relevance:10},a,E,e.APOS_STRING_MODE],illegal:"::"};return{
+name:"Apex",aliases:["apex","lightning"],case_insensitive:!0,
+disableAutodetect:!1,ignoreIllegals:!1,keywords:c,
+illegal:["</","<#","<]","<div>","\x3c!--","!DOCTYPE",/<iframe\b/,/^#/,/^import \.[a-zA-Z]+\./,/^import [\w]+/,/^import$/,/^include </,/^use\s+</,/\b(const|var)\s+\w+\s*=/,/\bstruct\b/,"System.log","console.log",/\bfor\s+\w+\s+IN\s+/,/\bif\s+\w+\s+IN\s+/,/\bend\s+if\b/,/\bend\s+select\b/,/\b(int|var)\s+\w+\s+=/,/\b(int[0-9]+|bool)\b/,/\b\$/,"::=",/\s#[a-zA-Z]/,/\s_[a-zA-Z]/,/\s\$[a-zA-Z]/,"#if","%if",/\bif(?!\s+\()/,"%endif","#endif",/\w::\w/,/RETURNING\s+\*/,/\bint\b/,/import\s+\w+\s+=\s+require\("\w+"\)/,"/^include\b/",/\buse\s+strict\b/,/\w+\s+=\s+"\S*";/,/\/include\//,/\Anamespace\b/,/\bend\.\n/,/\bend\n/,'"""'],
+contains:[l,[{match:[/\b(?<=enum|\bnew)/,/\s+/,s,/\s*(?=[{()])/],scope:{3:"type"
+},contains:[o,i]},{match:[/(?<=\bclass\b)/,/\s+/,s],scope:{3:"title.class"}},{
+match:[/(?<=(public|private))/,/\s+/,s,/(?=\s*\(.*\)\s*{)/],scope:{
+3:"constructor"}},{begin:[/(?<=\btrigger\b)/,/\s+/,s,/\s+/,"on",/\s+/,s],
+end:"{",scope:{3:"title.class",7:"type"},contains:[o,i,{
 match:/(?:before|after)\s+(?:insert|update|delete|undelete)/,scope:"built_in",
-relevance:10}],relevance:10},{match:[/\bextends/,/\s+/,t],scope:{
-3:"title.class.inherited"},contains:[r,o,n],illegal:[/\b_/,/_\b/]}],[{
-match:[t,/\s+/,t,/\s+/,/=/],scope:{1:"type",3:"variable",5:"operator"},
-relevance:0},{match:[t,/\s+/,t,/\s+/,";"],scope:{1:"type",3:"variable"},
-relevance:0},{match:[/\s+/,t,/\s+/,/=/],scope:{2:"variable",4:"operator"},
-relevance:0},{match:[/(?<=\w+\s+=\s+\()/,t,/(?=\))/],scope:{2:"type"},
-relevance:0}],{relevance:10,match:[/\b(?:with|without|inherited)\s+sharing/],
-scope:{1:"keyword"}},p,b,o,r,{match:/\b(switch\s+on|as\s+user|as\s+system)\b/,
-relevance:8,scope:"keyword"},E,l,{variants:[{
-match:[/\bfor\b/,/\s*\(/,/\w+/,/\s+/,/\w+/,/\s+:/,/(?=\s*\[)/],scope:{
-1:"keyword",3:"type"}},{
-match:[/\bfor\b/,/\s*\(/,/\w+/,/\s+/,/\w+/,/\s+:/,/\s*/,/\w+/],scope:{
-1:"keyword",3:"type"}}],contains:[r,o,u]},e.APOS_STRING_MODE,A,{
+relevance:10}],relevance:10},{match:[/(?:extends)/,/\s+/,s],scope:{
+3:"title.class.inherited"},illegal:[/\b_/,/_\b/]}],[{
+match:[s,/\s+/,s,/\s+/,/=/],scope:{1:"type",3:"variable",5:"operator"},
+relevance:0},{match:[s,/\s+/,s,/\s+/,";"],scope:{1:"type",3:"variable"},
+relevance:0},{match:[/\s+/,s,/\s+/,/=/],scope:{2:"variable",4:"operator"},
+relevance:0},{match:[/(?<=\w+\s+=\s+\()/,s,/(?=\))/],scope:{2:"type"},
+relevance:0}],{relevance:10,match:[/\b(with|without|inherited)\s+sharing\b/],
+scope:{1:"keyword"}},u,p,i,o,{match:/\b(switch\s+on|as\s+user|as\s+system)\b/,
+relevance:8,scope:"keyword"},b,{variants:[{
+match:[/\bfor\b/,/\s*\(/,s,/\s+/,s,/\s+:/,/(?=\s*\[)/],scope:{1:"keyword",
+3:"type"}},{match:[/\bfor\b/,/\s*\(/,s,/\s+/,s,/\s+:/,/\s*/,s],scope:{
+1:"keyword",3:"type",8:"variable"}}],contains:[o,i,m]},e.APOS_STRING_MODE,E,{
 begin:["{",/\$[a-zA-Z]+]/,".",/\w+/],end:"}",scope:{2:"built_in",4:"property"}
-},n,a,c,{match:/(?<!\.)\bId\b/,scope:"type",relevance:8},u]}}})()
-;hljs.registerLanguage("apex",e)})();
+},r,a,n,{match:/(?<!\.)\bId\b/,scope:"type",relevance:8},m,{
+beginKeywords:"schedulable batchable queueable comparable callable",relevance:10
+}]}}})();hljs.registerLanguage("apex",e)})();

@@ -657,7 +657,7 @@ public virtual class TriggerHandler {
 	/**
 	 * @description `andFinally` is called in every context, regardless of Trigger context
 	 * <br>Credit to James Simone for this idea
-	 * @see {@link [The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/)}
+	 * @see [The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/)
 	 * @author James Simone
 	 * @since 2022
 	 * */
