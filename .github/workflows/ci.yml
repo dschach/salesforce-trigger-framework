@@ -62,4 +62,4 @@ jobs:
           ~/pmd/bin/pmd --version
       # Run PMD scan
       - name: "Run PMD scan"
-        run: ~/pmd/bin/pmd check -d force-app -d sample-handler --rulesets pmd/ruleset.xml --format csv --no-cache -min 2 --verbose -r pmd/pmd.csv
+        run: ~/pmd/bin/pmd check --dir force-app --dir sample-handler --rulesets pmd/ruleset.xml --format csv --no-cache --verbose --report-file pmd/pmd.csv
