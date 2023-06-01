@@ -58,7 +58,7 @@ jobs:
           PMD_VERSION=$(curl -s https://api.github.com/repos/pmd/pmd/releases/latest | grep '.tag_name' | sed 's:.*/::' | sed 's:",::')
           wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$PMD_VERSION/pmd-dist-$PMD_VERSION-bin.zip
           unzip pmd-dist-$PMD_VERSION-bin.zip -d ~
-          mv ~/pmd-dist-$PMD_VERSION ~/pmd
+          mv ~/pmd-bin-$PMD_VERSION ~/pmd
           ~/pmd/bin/pmd --version
       # Run PMD scan
       - name: "Run PMD scan"
