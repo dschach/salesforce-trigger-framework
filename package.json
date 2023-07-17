@@ -18,7 +18,7 @@
 		"updateHighlight": ". scripts/updateHighlight.sh"
 	},
 	"devDependencies": {
-		"@prettier/plugin-xml": "^3.1.0",
+		"@prettier/plugin-xml": "^3.1.1",
 		"husky": "^8.0.3",
 		"lint-staged": "^13.2.3",
 		"marked": "^5.1.1",
