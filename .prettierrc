@@ -28,5 +28,6 @@
 			"files": "*.{yml,yaml}",
 			"options": { "singleQuote": false }
 		}
-	]
+	],
+	"plugins": ["prettier-plugin-apex"]
 }

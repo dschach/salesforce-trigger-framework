@@ -10,6 +10,7 @@ node_modules
 .vscode
 ./*.json
 !release-please-config.json
+**/*-meta.xml
 
 coverage/
 
