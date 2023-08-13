@@ -41,6 +41,6 @@
 			"options": { "parser": "json", "printWidth": 80 }
 		}
 	],
-	"plugins": ["prettier-plugin-apex"],
+	"plugins": ["prettier-plugin-apex", "@prettier/plugin-xml"],
 	"$schema": "https://json.schemastore.org/prettierrc"
 }
