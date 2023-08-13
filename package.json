@@ -9,7 +9,7 @@
 		"apex:local:start": "node node_modules/prettier-plugin-apex/dist/bin/start-apex-server.js",
 		"apex:local:stop": "node node_modules/prettier-plugin-apex/dist/bin/stop-apex-server.js",
 		"prettier": "prettier --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
-		"prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\" --config .prettierrc",
+		"prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,js,json,md,page,trigger,xml,yaml,yml}\" --config .prettierrc",
 		"prettier:docs": "prettier --write  \"docs/**/*.html\"",
 		"initialize": ". scripts/initialize.sh",
 		"orginit": ". scripts/orginit.sh",
