@@ -25,8 +25,22 @@
 			"options": { "useTabs": false, "tabWidth": 4, "singleQuote": false }
 		},
 		{
+			"files": "*.cls",
+			"options": { "parser": "apex", "tabWidth": 4, "singleQuote": true }
+		},
+		{
 			"files": "*.{yml,yaml}",
-			"options": { "singleQuote": false }
+			"options": { "parser": "yaml", "singleQuote": false }
+		},
+		{
+			"files": "*.json",
+			"options": { "parser": "json", "printWidth": 80, "singleQuote": false }
+		},
+		{
+			"files": ".prettierrc",
+			"options": { "parser": "json", "printWidth": 80 }
 		}
-	]
+	],
+	"plugins": ["prettier-plugin-apex", "@prettier/plugin-xml"],
+	"$schema": "https://json.schemastore.org/prettierrc"
 }
