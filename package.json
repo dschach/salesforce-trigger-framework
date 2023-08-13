@@ -29,11 +29,7 @@
 		"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
 			"prettier --write"
 		],
-		"docs/**/*.html": [
-			"prettier --write --tab-width 2"
-		],
-		"doc-assets/**/*.html": [
-			"prettier --write --tab-width 2"
-		]
+		"docs/**/*.html": ["prettier --write --tab-width 2"],
+		"doc-assets/**/*.html": ["prettier --write --tab-width 2"]
 	}
 }
