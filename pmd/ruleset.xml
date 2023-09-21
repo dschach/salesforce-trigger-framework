@@ -6,6 +6,7 @@
 	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 	<description>Quickstart configuration of PMD for Salesforce Apex, customized.</description>
 	<exclude-pattern>.*/.sfdx/.*</exclude-pattern>
+	<exclude-pattern>.*/.sf/.*</exclude-pattern>
 
 	<!-- BEST PRACTICES -->
 	<rule ref="category/apex/bestpractices.xml/UnusedLocalVariable" message="Variable ''{0}'' defined but not used">

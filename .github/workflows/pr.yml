@@ -54,11 +54,10 @@ jobs:
       # Install Salesforce CLI
       - name: "Install Salesforce CLI"
         run: |
-          npm install sfdx-cli --global
+          npm install @salesforce/cli --global
           nodeInstallPath=$(npm config get prefix)
           echo "$nodeInstallPath/bin" >> $GITHUB_PATH
-          sfdx --version
-          npm install @salesforce/cli --global
+          sf --version
 
       # Store secret for dev hub
       - name: "Populate auth file with SALESFORCE_AUTH_URL secret"
@@ -73,7 +72,7 @@ jobs:
 
       # Authenticate dev hub
       - name: "Authenticate Dev Hub"
-        run: sfdx auth:sfdxurl:store --sfdxurlfile ./SALESFORCE_AUTH_URL.txt --setalias devhub --setdefaultdevhubusername
+        run: sf org login sfdx-url --sfdx-url-file ./DEVHUB_SFDX_URL.txt --alias devhub --set-default-dev-hub
 
       # Create scratch org
       - name: "Create scratch org"

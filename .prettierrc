@@ -26,7 +26,7 @@
 		},
 		{
 			"files": "*.cls",
-			"options": { "parser": "apex", "tabWidth": 4, "singleQuote": true }
+			"options": { "parser": "apex", "tabWidth": 2, "singleQuote": true }
 		},
 		{
 			"files": "*.{yml,yaml}",
