@@ -15,6 +15,7 @@ jobs:
   # Formatting and linting only runs on human-submitted PRs
   format-lint-lwc-tests:
     runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       # Checkout the source code
       - name: "Checkout source code"
@@ -73,7 +74,7 @@ jobs:
 
       # Authenticate dev hub
       - name: "Authenticate Dev Hub"
-        run: sf org login sfdx-url --sfdx-url-file ./DEVHUB_SFDX_URL.txt --alias devhub --set-default-dev-hub
+        run: sf org login sfdx-url --sfdx-url-file ./SALESFORCE_AUTH_URL.txt --alias devhub --set-default-dev-hub
 
       # Create scratch org
       - name: "Create scratch org"
