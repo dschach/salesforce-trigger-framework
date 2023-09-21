@@ -5,15 +5,17 @@ name: CI on PR
 on:
   workflow_dispatch:
   pull_request:
-    types: [opened, edited, synchronize, reopened]
+    types: [edited, opened, synchronize, reopened, review_requested]
     paths:
       - "force-app/**"
       - "sample-handler/**"
+      - ".github/workflows/pr.yml"
 # Jobs to be executed
 jobs:
   # Formatting and linting only runs on human-submitted PRs
   format-lint-lwc-tests:
     runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
     steps:
       # Checkout the source code
       - name: "Checkout source code"
@@ -54,11 +56,10 @@ jobs:
       # Install Salesforce CLI
       - name: "Install Salesforce CLI"
         run: |
-          npm install sfdx-cli --global
+          npm install @salesforce/cli --global
           nodeInstallPath=$(npm config get prefix)
           echo "$nodeInstallPath/bin" >> $GITHUB_PATH
-          sfdx --version
-          npm install @salesforce/cli --global
+          sf --version
 
       # Store secret for dev hub
       - name: "Populate auth file with SALESFORCE_AUTH_URL secret"
@@ -73,7 +74,7 @@ jobs:
 
       # Authenticate dev hub
       - name: "Authenticate Dev Hub"
-        run: sfdx auth:sfdxurl:store --sfdxurlfile ./SALESFORCE_AUTH_URL.txt --setalias devhub --setdefaultdevhubusername
+        run: sf org login sfdx-url --sfdx-url-file ./SALESFORCE_AUTH_URL.txt --alias devhub --set-default-dev-hub
 
       # Create scratch org
       - name: "Create scratch org"

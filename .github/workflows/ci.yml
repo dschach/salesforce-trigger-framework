@@ -14,6 +14,7 @@ on:
       - "sample-handler/**"
       - "sfdx-project.json"
       - "package-lock.json"
+      - "pmd/**"
 
 # Jobs to be executed
 jobs:
