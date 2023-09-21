@@ -5,10 +5,11 @@ name: CI on PR
 on:
   workflow_dispatch:
   pull_request:
-    types: [opened, edited, synchronize, reopened]
+    types: [edited, opened, synchronize, reopened, review_requested]
     paths:
       - "force-app/**"
       - "sample-handler/**"
+      - ".github/workflows/pr.yml"
 # Jobs to be executed
 jobs:
   # Formatting and linting only runs on human-submitted PRs
