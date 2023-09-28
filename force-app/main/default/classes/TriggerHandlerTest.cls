@@ -236,6 +236,18 @@ private class TriggerHandlerTest {
 	}
 
 	/**
+	 * @description Test and show limits and debug using chaining
+	 */
+	@isTest
+	private static void testBeforeInsertWithLimitsChaining() {
+		beforeInsertMode();
+		handler.limits().debug().run();
+		Assert.isTrue(TriggerHandler.showLimits, 'We should be showing limits'); //NOPMD
+		Assert.isTrue(TriggerHandler.showDebug, 'We should be showing debugs'); //NOPMD
+		Assert.areEqual('beforeInsert', lastMethodCalled, 'last method should be beforeInsert');
+	}
+
+	/**
 	 * @description instance method tests
 	 */
 	@isTest
@@ -243,10 +255,8 @@ private class TriggerHandlerTest {
 		beforeInsertMode();
 
 		// set the max loops to 2
-		handler.setMaxLoopCount(2);
-
 		// run the handler twice
-		handler.run();
+		handler.setMaxLoopCount(2).run();
 		handler.run();
 
 		Assert.areEqual(2, TriggerHandler.getLoopCount('TestHandler'), 'We should have run the handler only twice.');
@@ -312,7 +322,7 @@ private class TriggerHandlerTest {
 		h.afterUpdate();
 		h.afterDelete();
 		h.afterUndelete();
-		Assert.isTrue(true, 'Method is for code coverage only');
+		Assert.isTrue(true, 'Method is for code coverage only - debug to avoid PMD error');
 	}
 
 	/**
@@ -321,9 +331,9 @@ private class TriggerHandlerTest {
 	@isTest
 	private static void testOutsideTrigger() {
 		TriggerHandler th = new TriggerHandler();
-		Assert.isTrue(!th.isTriggerExecuting, 'Should be outside trigger context');
+		Assert.isFalse(th.isTriggerExecuting, 'Should be outside trigger context');
 		th.setTriggerContext(null, true);
-		Assert.isTrue(!th.isTriggerExecuting, 'Should be outside trigger context');
+		Assert.isFalse(th.isTriggerExecuting, 'Should be outside trigger context');
 	}
 
 	// testing utilities
