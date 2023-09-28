@@ -218,7 +218,7 @@ private class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description Test and show limits and debug
+	 * @description Test and show/hide limits and debug
 	 */
 	@isTest
 	private static void testBeforeInsertWithLimits() {
@@ -228,6 +228,8 @@ private class TriggerHandlerTest {
 		TriggerHandler.showDebug(null);
 		TriggerHandler.showDebug(true);
 		TriggerHandler.showDebug(false);
+		handler.run();
+		Assert.isFalse(TriggerHandler.showDebug, 'We should not be showing debug'); //NOPMD
 		TriggerHandler.showDebug();
 		handler.run();
 		Assert.isTrue(TriggerHandler.showLimits, 'We should be showing limits'); //NOPMD
@@ -236,7 +238,7 @@ private class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description Test and show limits and debug using chaining
+	 * @description Test and show/hide limits and debug using chaining
 	 */
 	@isTest
 	private static void testBeforeInsertWithLimitsChaining() {
@@ -245,6 +247,14 @@ private class TriggerHandlerTest {
 		Assert.isTrue(TriggerHandler.showLimits, 'We should be showing limits'); //NOPMD
 		Assert.isTrue(TriggerHandler.showDebug, 'We should be showing debugs'); //NOPMD
 		Assert.areEqual('beforeInsert', lastMethodCalled, 'last method should be beforeInsert');
+
+		handler.limits(null).debug(null).run();
+		Assert.isFalse(TriggerHandler.showLimits, 'We should not be showing limits'); //NOPMD
+		Assert.isFalse(TriggerHandler.showDebug, 'We should not be showing debugs'); //NOPMD
+
+		handler.limits(false).debug(false).run();
+		Assert.isFalse(TriggerHandler.showLimits, 'We should not be showing limits'); //NOPMD
+		Assert.isFalse(TriggerHandler.showDebug, 'We should not be showing debugs'); //NOPMD
 	}
 
 	/**

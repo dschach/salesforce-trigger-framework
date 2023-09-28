@@ -432,6 +432,21 @@ public virtual class TriggerHandler {
 	}
 
 	/**
+	 * @description Instance method to show/hide limits for just this trigger handler, allowing method chaining.
+	 * @since 2023
+	 * @see TriggerHandler.showLimits[1]
+	 * @example
+	 * new AccountSampleTriggerHandler.limits(false).run();
+	 *
+	 * @param enabled true to enable; false to disable
+	 * @return        `TriggerHandler` returning this class enables method chaining
+	 */
+	public TriggerHandler limits(Boolean enabled) {
+		showLimits(enabled);
+		return this;
+	}
+
+	/**
 	 * @description Called before the trigger to force the class to debug query limits when it runs
 	 * @see TriggerHandler.showLimits[1]
 	 * @example
@@ -452,7 +467,13 @@ public virtual class TriggerHandler {
 	 * @see TriggerHandler.showLimits[0]
 	 */
 	public static void showLimits(Boolean enabled) {
-		showLimits = enabled;
+		if (enabled == null) {
+			showLimits = false;
+		} else if (enabled) {
+			showLimits = true;
+		} else {
+			showLimits = false;
+		}
 	}
 
 	// handle debugs
@@ -472,10 +493,24 @@ public virtual class TriggerHandler {
 	}
 
 	/**
+	 * @description Instance method to show debug logs for just this trigger handler, allowing method chaining.
+	 * @since 2023
+	 * @param enabled true to enable; false to disable
+	 * @return      `TriggerHandler` returning this class enables method chaining
+	 * @see TriggerHandler.showDebug[0]
+	 * @example
+	 * new AccountSampleTriggerHandler.debug().run();
+	 */
+	public TriggerHandler debug(Boolean enabled) {
+		showDebug(enabled);
+		return this;
+	}
+
+	/**
 	 * @description Called in the trigger to force the class to debug trigger entry and exit with context.
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2021
-	 * @see TriggerHandler.showLimits[1]
+	 * @see TriggerHandler.showDebug[1]
 	 * @example
 	 * TriggerHandler.showDebug();
 	 * new AccountSampleTriggerHandler.run();
@@ -507,7 +542,6 @@ public virtual class TriggerHandler {
 
 	/**
 	 * @description       return the current loop count
-	 *
 	 * @param handlerName The handler class to check for the current loop count
 	 * @return            `Integer` How many times has this handler run?
 	 */
