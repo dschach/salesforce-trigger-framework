@@ -246,23 +246,23 @@ TriggerHandler.bypass(bypassedHandlers);
 <p>There are two methods that will show additional information.</p>
 <p><code>TriggerHandler.showLimits()</code> will debug Apex query and DML limits when the trigger handler has completed.</p>
 <p><code>TriggerHandler.showDebug()</code> will show trigger entry and exit in debug logs. Use sparingly, as it will decrease org performance.</p>
-<p>To use one or both of these, add them to the trigger:</p>
+<p>To use one or both of these, either add them to the <em>trigger</em> (note that you can specify for ALL handlers or for a specific handler)</p>
 <pre><code class="language-apex">TriggerHandler.showLimits();
 AccountTriggerHandler.showDebug();
 new AccountSampleTriggerHandler().run();
 TriggerHandler.showLimits(false);
 AccountTriggerHandler.showDebug(false);
 </code></pre>
-<p>or just put them in your Apex code before and after DML statements.</p>
-<pre><code class="language-apex">showLimits();
-showDebug();
+<p>or put them in your Apex <em>trigger handler</em> code before and after DML statements.</p>
+<pre><code class="language-apex">LeadTriggerHandler.showLimits();
+TriggerHandler.showDebug();
 
 update leadsList;
 
-showLimits(false);
-showDebug(false);
+LeadTriggerHandler.showLimits(false);
+TriggerHandler.showDebug(false);
 </code></pre>
-<p>In version 1.2, the ability to chain methods was added. Now, you can specify showing debug messages and limits in a single line in your trigger:</p>
+<p>In version 1.2, the ability to chain methods <em>in triggers</em> was added. Now, you can specify showing debug messages and limits in a single line in your trigger:</p>
 <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler().debug().limits().run(); // debug() is the same as debug(true)
 }

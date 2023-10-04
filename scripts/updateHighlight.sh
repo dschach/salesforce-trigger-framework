@@ -12,8 +12,8 @@ npx marked -i README.md --gfm >> "doc-assets/homePage.html"
 sed -i '' 's|DEPLOY.md|deploy.html|g' doc-assets/homePage.html
 
 # Changelog to web page
-printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/changelog.html"
-echo >> "doc-assets/changelog.html"
+printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/files/changelog.html"
+echo >> "doc-assets/files/changelog.html"
 npx marked -i CHANGELOG.md --gfm >> "doc-assets/files/changelog.html"
 sed -i '' 's|CHANGELOG.md|changelog.html|g' doc-assets/homePage.html
 

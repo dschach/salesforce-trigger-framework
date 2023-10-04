@@ -180,14 +180,16 @@ public virtual class TriggerHandler {
 
 	/**
 	 * @description Limit the number of times this handler can be run before it fails silently
-	 * <br>Returning `TriggerHandler` enables method chaining
+	 * <br>Returning `TriggerHandler` enables method chaining when used in a trigger
+	 * <br>Use this in the trigger or handler
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @param  max Naximum number of times
 	 * @return      `TriggerHandler` enables method chaining
 	 * @example
-	 * this.setMaxLoopCount(5);
+	 * this.setMaxLoopCount(5); // in handler
+	 * AccountTriggerHandler.setMaxLoopCount(5); // in handler
 	 * or
-	 * new TriggerHandler().setMaxLoopCount(5).run();
+	 * new TriggerHandler().setMaxLoopCount(5).run(); // in trigger
 	 */
 	public TriggerHandler setMaxLoopCount(Integer max) {
 		String handlerName = getHandlerName();
@@ -419,7 +421,7 @@ public virtual class TriggerHandler {
 	// handle limits
 
 	/**
-	 * @description Instance method to show limits for just this trigger handler, allowing method chaining.
+	 * @description Instance method to show limits for just this trigger handler, allowing method chaining in the trigger.
 	 * @since 2023
 	 * @see TriggerHandler.showLimits[0]
 	 * @example
@@ -433,7 +435,7 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Instance method to show/hide limits for just this trigger handler, allowing method chaining.
+	 * @description Instance method to show/hide limits for just this trigger handler, allowing method chaining  in the trigger.
 	 * @since 2023
 	 * @see TriggerHandler.showLimits[1]
 	 * @example
@@ -448,7 +450,8 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Called before the trigger to force the class to debug query limits when it runs
+	 * @description Called before the trigger to force the class to debug query limits when it runs.
+	 * <br>Use this in the trigger or handler
 	 * @see TriggerHandler.showLimits[1]
 	 * @example
 	 * TriggerHandler.showLimits();
@@ -463,6 +466,7 @@ public virtual class TriggerHandler {
 	/**
 	 * @description   Called before the trigger to enable the class to debug (or not) query limits when it runs.
 	 * <br>Set to true to show limits.
+	 * <br>Use this in the trigger or handler
 	 *
 	 * @param enabled true to enable; false to disable
 	 * @see TriggerHandler.showLimits[0]
@@ -480,7 +484,7 @@ public virtual class TriggerHandler {
 	// handle debugs
 
 	/**
-	 * @description Instance method to show debug logs for just this trigger handler, allowing method chaining.
+	 * @description Instance method to show debug logs for just this trigger handler, allowing method chaining in the trigger.
 	 * @since 2023
 	 * @see TriggerHandler.showDebug[0]
 	 * @example
@@ -494,7 +498,7 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Instance method to show debug logs for just this trigger handler, allowing method chaining.
+	 * @description Instance method to show debug logs for just this trigger handler, allowing method chaining in the trigger.
 	 * @since 2023
 	 * @param enabled true to enable; false to disable
 	 * @return      `TriggerHandler` returning this class enables method chaining
@@ -509,14 +513,15 @@ public virtual class TriggerHandler {
 
 	/**
 	 * @description Called in the trigger to force the class to debug trigger entry and exit with context.
+	 * <br>Use this in the trigger or handler
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2021
 	 * @see TriggerHandler.showDebug[1]
 	 * @example
 	 * TriggerHandler.showDebug();
-	 * new AccountSampleTriggerHandler.run();
+	 * new AccountSampleTriggerHandler.run(); // in trigger
 	 * -or-
-	 * AccountSampleTriggerHandler.showDebug();
+	 * AccountSampleTriggerHandler.showDebug(); // in handler
 	 */
 	public static void showDebug() {
 		showDebug(true);
