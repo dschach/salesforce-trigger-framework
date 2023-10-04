@@ -78,7 +78,7 @@ jobs:
 
       # Create scratch org
       - name: "Create scratch org"
-        run: sf org create scratch --definition-file config/project-scratch-def.json --alias ScratchOrg --set-default --duration-days 1 --wait 20
+        run: sf org create scratch --definition-file config/project-scratch-def.json --alias ScratchOrg --set-default --duration-days 1 --wait 20 --no-track-source
 
       # Deploy source to scratch org
       - name: "Push source to scratch org"
