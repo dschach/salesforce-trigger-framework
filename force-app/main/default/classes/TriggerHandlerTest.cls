@@ -103,8 +103,8 @@ private class TriggerHandlerTest {
 		beforeUpdateMode();
 		TriggerHandler.bypass('TestHandler');
 		handler.run();
-		Assert.areEqual(null, lastMethodCalled, 'last method should be null when bypassed');
-		Assert.areEqual(true, TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
+		Assert.isNull(lastMethodCalled, 'last method should be null when bypassed');
+		Assert.isTrue(TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
 		Assert.isTrue(!TriggerHandler.bypassList().isEmpty(), 'Should have bypassed sample handler');
 		Assert.isTrue(TriggerHandler.bypassSet().contains('TestHandler'), 'The set of bypassed handlers should contain the test handler');
 	}
@@ -120,8 +120,8 @@ private class TriggerHandlerTest {
 		// test a bypass by string and run handler
 		TriggerHandler.bypass('TestHandler');
 		handler.run();
-		Assert.areEqual(null, lastMethodCalled, 'last method should be null when bypassed');
-		Assert.areEqual(true, TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
+		Assert.isNull(lastMethodCalled, 'last method should be null when bypassed');
+		Assert.isTrue(TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
 		Assert.isTrue(!TriggerHandler.bypassList().isEmpty(), 'Should have no bypassed handlers');
 		resetTest();
 
@@ -129,35 +129,35 @@ private class TriggerHandlerTest {
 		TriggerHandler.clearBypass('TestHandler');
 		handler.run();
 		Assert.areEqual('afterUpdate', lastMethodCalled, 'last method called should be afterUpdate');
-		Assert.areEqual(false, TriggerHandler.isBypassed('TestHandler'), 'test handler should not be bypassed');
+		Assert.isFalse(TriggerHandler.isBypassed('TestHandler'), 'test handler should not be bypassed');
 		resetTest();
 
 		// test a re-bypass by list and run handler
 		TriggerHandler.bypass(new List<String>{ 'TestHandler' });
 		handler.run();
-		Assert.areEqual(null, lastMethodCalled, 'last method should be null when bypassed');
-		Assert.areEqual(true, TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
+		Assert.isNull(lastMethodCalled, 'last method should be null when bypassed');
+		Assert.isTrue(TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
 		resetTest();
 
 		// clear that bypass and run handler
 		TriggerHandler.clearBypass(new List<String>{ 'TestHandler' });
 		handler.run();
 		Assert.areEqual('afterUpdate', lastMethodCalled, 'last method called should be afterUpdate');
-		Assert.areEqual(false, TriggerHandler.isBypassed('TestHandler'), 'test handler should not be bypassed');
+		Assert.isFalse(TriggerHandler.isBypassed('TestHandler'), 'test handler should not be bypassed');
 		resetTest();
 
 		// test a bypass and run handler
 		TriggerHandler.bypass('TestHandler');
 		handler.run();
-		Assert.areEqual(null, lastMethodCalled, 'last method should be null when bypassed');
-		Assert.areEqual(true, TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
+		Assert.isNull(lastMethodCalled, 'last method should be null when bypassed');
+		Assert.isTrue(TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
 		resetTest();
 
 		// clear all bypasses and run handler
 		TriggerHandler.clearAllBypasses();
 		handler.run();
 		Assert.areEqual('afterUpdate', lastMethodCalled, 'last method called should be afterUpdate');
-		Assert.areEqual(false, TriggerHandler.isBypassed('TestHandler'), 'test handler should not be bypassed');
+		Assert.isFalse(TriggerHandler.isBypassed('TestHandler'), 'test handler should not be bypassed');
 		resetTest();
 
 		// bypass everything
@@ -170,14 +170,14 @@ private class TriggerHandlerTest {
 
 		TriggerHandler.bypassAll();
 		handler.run();
-		Assert.areEqual(true, TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
+		Assert.isTrue(TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
 		Assert.isTrue(TriggerHandler.bypassList().contains(TriggerHandler.BYPASS_ALL_ALIAS), 'When global bypass is true, put an item in the bypassed list');
 		TriggerHandler.clearAllBypasses();
 		Assert.isTrue(TriggerHandler.bypassList().isEmpty(), 'all bypassed handlers should be cleared');
 
 		TriggerHandler.setBypass('TestHandler', true);
 		handler.run();
-		Assert.areEqual(true, TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
+		Assert.isTrue(TriggerHandler.isBypassed('TestHandler'), 'test handler should be bypassed');
 		TriggerHandler.bypassAll();
 		TriggerHandler.setBypass('TestHandler', false);
 		Assert.isTrue(!TriggerHandler.globalBypass, 'When one handler is set to run, global bypass should clear as well');
@@ -206,19 +206,19 @@ private class TriggerHandlerTest {
 		Assert.isTrue(TriggerHandler.isBypassed('TriggerHandlerTest.TestHandler'), 'test handler should be bypassed');
 		Assert.isTrue(TriggerHandler.isBypassed(Testhandler.class), 'test handler class should be bypassed');
 		handler.run();
-		//Assert.areEqual(null, lastMethodCalled, 'last method should be null when bypassed');
+		//Assert.isNull(lastMethodCalled, 'last method should be null when bypassed');
 		resetTest();
 
 		// clear that bypass and run handler
 		TriggerHandler.clearBypass(TestHandler.class);
 		handler.run();
 		Assert.areEqual('afterUpdate', lastMethodCalled, 'last method called should be afterUpdate');
-		Assert.areEqual(false, TriggerHandler.isBypassed('TriggerHandlerTest.TestHandler'), 'test handler should not be bypassed');
+		Assert.isFalse(TriggerHandler.isBypassed('TriggerHandlerTest.TestHandler'), 'test handler should not be bypassed');
 		resetTest();
 	}
 
 	/**
-	 * @description Test and show limits and debug
+	 * @description Test and show/hide limits and debug
 	 */
 	@isTest
 	private static void testBeforeInsertWithLimits() {
@@ -228,11 +228,33 @@ private class TriggerHandlerTest {
 		TriggerHandler.showDebug(null);
 		TriggerHandler.showDebug(true);
 		TriggerHandler.showDebug(false);
+		handler.run();
+		Assert.isFalse(TriggerHandler.showDebug, 'We should not be showing debug'); //NOPMD
 		TriggerHandler.showDebug();
 		handler.run();
 		Assert.isTrue(TriggerHandler.showLimits, 'We should be showing limits'); //NOPMD
 		TriggerHandler.getLoopCount('TestHandler');
 		Assert.areEqual('beforeInsert', lastMethodCalled, 'last method should be beforeInsert');
+	}
+
+	/**
+	 * @description Test and show/hide limits and debug using chaining
+	 */
+	@isTest
+	private static void testBeforeInsertWithLimitsChaining() {
+		beforeInsertMode();
+		handler.limits().debug().run();
+		Assert.isTrue(TriggerHandler.showLimits, 'We should be showing limits'); //NOPMD
+		Assert.isTrue(TriggerHandler.showDebug, 'We should be showing debugs'); //NOPMD
+		Assert.areEqual('beforeInsert', lastMethodCalled, 'last method should be beforeInsert');
+
+		handler.limits(null).debug(null).run();
+		Assert.isFalse(TriggerHandler.showLimits, 'We should not be showing limits'); //NOPMD
+		Assert.isFalse(TriggerHandler.showDebug, 'We should not be showing debugs'); //NOPMD
+
+		handler.limits(false).debug(false).run();
+		Assert.isFalse(TriggerHandler.showLimits, 'We should not be showing limits'); //NOPMD
+		Assert.isFalse(TriggerHandler.showDebug, 'We should not be showing debugs'); //NOPMD
 	}
 
 	/**
@@ -243,10 +265,8 @@ private class TriggerHandlerTest {
 		beforeInsertMode();
 
 		// set the max loops to 2
-		handler.setMaxLoopCount(2);
-
 		// run the handler twice
-		handler.run();
+		handler.setMaxLoopCount(2).run();
 		handler.run();
 
 		Assert.areEqual(2, TriggerHandler.getLoopCount('TestHandler'), 'We should have run the handler only twice.');
@@ -278,18 +298,18 @@ private class TriggerHandlerTest {
 
 		lc.increment();
 		Assert.areEqual(1, lc.getCount(), 'count should be 1');
-		Assert.areEqual(false, lc.exceeded(), 'should not be exceeded with count of 1');
+		Assert.isFalse(lc.exceeded(), 'should not be exceeded with count of 1');
 
 		lc.increment();
 		lc.increment();
 		lc.increment();
 		lc.increment();
 		Assert.areEqual(5, lc.getCount(), 'count should be 5');
-		Assert.areEqual(false, lc.exceeded(), 'should not be exceeded with count of 5');
+		Assert.isFalse(lc.exceeded(), 'should not be exceeded with count of 5');
 
 		lc.increment();
 		Assert.areEqual(6, lc.getCount(), 'count should be 6');
-		Assert.areEqual(true, lc.exceeded(), 'should not be exceeded with count of 6');
+		Assert.isTrue(lc.exceeded(), 'should not be exceeded with count of 6');
 	}
 
 	/**
@@ -312,7 +332,7 @@ private class TriggerHandlerTest {
 		h.afterUpdate();
 		h.afterDelete();
 		h.afterUndelete();
-		Assert.isTrue(true, 'Method is for code coverage only');
+		Assert.isTrue(true, 'Method is for code coverage only - debug to avoid PMD error');
 	}
 
 	/**
@@ -321,9 +341,9 @@ private class TriggerHandlerTest {
 	@isTest
 	private static void testOutsideTrigger() {
 		TriggerHandler th = new TriggerHandler();
-		Assert.isTrue(!th.isTriggerExecuting, 'Should be outside trigger context');
+		Assert.isFalse(th.isTriggerExecuting, 'Should be outside trigger context');
 		th.setTriggerContext(null, true);
-		Assert.isTrue(!th.isTriggerExecuting, 'Should be outside trigger context');
+		Assert.isFalse(th.isTriggerExecuting, 'Should be outside trigger context');
 	}
 
 	// testing utilities

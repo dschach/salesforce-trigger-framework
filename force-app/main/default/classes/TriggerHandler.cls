@@ -6,6 +6,7 @@
  * @author {@link [David Schach](https://github.com/dschach)}
  * @since 2021
  * @since 2023-02-24 add andFinally method
+ * @since 2023-09 method chaining
  * @group Trigger Handler
  * @see [License](https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE)
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
@@ -179,18 +180,23 @@ public virtual class TriggerHandler {
 
 	/**
 	 * @description Limit the number of times this handler can be run before it fails silently
+	 * <br>Returning `TriggerHandler` enables method chaining
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @param  max Naximum number of times
+	 * @return      `TriggerHandler` enables method chaining
 	 * @example
-	 * TriggerHandler.setMaxLoopCount(5);
+	 * this.setMaxLoopCount(5);
+	 * or
+	 * new TriggerHandler().setMaxLoopCount(5).run();
 	 */
-	public void setMaxLoopCount(Integer max) {
+	public TriggerHandler setMaxLoopCount(Integer max) {
 		String handlerName = getHandlerName();
 		if (!TriggerHandler.loopCountMap.containsKey(handlerName)) {
 			TriggerHandler.loopCountMap.put(handlerName, new LoopCount(max));
 		} else {
 			TriggerHandler.loopCountMap.get(handlerName).setMax(max);
 		}
+		return this;
 	}
 
 	/**
@@ -410,6 +416,37 @@ public virtual class TriggerHandler {
 		}
 	}
 
+	// handle limits
+
+	/**
+	 * @description Instance method to show limits for just this trigger handler, allowing method chaining.
+	 * @since 2023
+	 * @see TriggerHandler.showLimits[0]
+	 * @example
+	 * new AccountSampleTriggerHandler.limits().run();
+	 *
+	 * @return      `TriggerHandler` returning this class enables method chaining
+	 */
+	public TriggerHandler limits() {
+		showLimits();
+		return this;
+	}
+
+	/**
+	 * @description Instance method to show/hide limits for just this trigger handler, allowing method chaining.
+	 * @since 2023
+	 * @see TriggerHandler.showLimits[1]
+	 * @example
+	 * new AccountSampleTriggerHandler.limits(false).run();
+	 *
+	 * @param enabled true to enable; false to disable
+	 * @return        `TriggerHandler` returning this class enables method chaining
+	 */
+	public TriggerHandler limits(Boolean enabled) {
+		showLimits(enabled);
+		return this;
+	}
+
 	/**
 	 * @description Called before the trigger to force the class to debug query limits when it runs
 	 * @see TriggerHandler.showLimits[1]
@@ -431,15 +468,50 @@ public virtual class TriggerHandler {
 	 * @see TriggerHandler.showLimits[0]
 	 */
 	public static void showLimits(Boolean enabled) {
-		showLimits = enabled;
+		if (enabled == null) {
+			showLimits = false;
+		} else if (enabled) {
+			showLimits = true;
+		} else {
+			showLimits = false;
+		}
 	}
 
 	// handle debugs
+
+	/**
+	 * @description Instance method to show debug logs for just this trigger handler, allowing method chaining.
+	 * @since 2023
+	 * @see TriggerHandler.showDebug[0]
+	 * @example
+	 * new AccountSampleTriggerHandler.debug().run();
+	 *
+	 * @return      `TriggerHandler` returning this class enables method chaining
+	 */
+	public TriggerHandler debug() {
+		showDebug();
+		return this;
+	}
+
+	/**
+	 * @description Instance method to show debug logs for just this trigger handler, allowing method chaining.
+	 * @since 2023
+	 * @param enabled true to enable; false to disable
+	 * @return      `TriggerHandler` returning this class enables method chaining
+	 * @see TriggerHandler.showDebug[0]
+	 * @example
+	 * new AccountSampleTriggerHandler.debug().run();
+	 */
+	public TriggerHandler debug(Boolean enabled) {
+		showDebug(enabled);
+		return this;
+	}
+
 	/**
 	 * @description Called in the trigger to force the class to debug trigger entry and exit with context.
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2021
-	 * @see TriggerHandler.showLimits[1]
+	 * @see TriggerHandler.showDebug[1]
 	 * @example
 	 * TriggerHandler.showDebug();
 	 * new AccountSampleTriggerHandler.run();
@@ -471,7 +543,6 @@ public virtual class TriggerHandler {
 
 	/**
 	 * @description       return the current loop count
-	 *
 	 * @param handlerName The handler class to check for the current loop count
 	 * @return            `Integer` How many times has this handler run?
 	 */
@@ -493,6 +564,10 @@ public virtual class TriggerHandler {
 	/**
 	 * @description    Set the current trigger context based on the System.TriggerOperation
 	 * <br>If we are not in a trigger context, then we set isTriggerExecuting to false
+	 * <r>A single line is not covered by tests because we do not "fool" the handler into
+	 * thinking that `Trigger.isExecuting` is true when we are running our tests. This line
+	 * would be covered by any trigger handler in the org (and is the reason we include a
+	 * sample handler for assistance when creating a package for this project)
 	 *
 	 * @param opType   The operation type - set automatically by the system
 	 * @param testMode Only used in test methods to force certain contexts
@@ -508,6 +583,7 @@ public virtual class TriggerHandler {
 		}
 
 		if (Trigger.isExecuting && !testMode) {
+			// line not covered by TriggerHandlerTest
 			this.triggerEvent = Trigger.operationType;
 		}
 

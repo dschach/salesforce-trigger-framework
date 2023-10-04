@@ -20,6 +20,7 @@ engine:
   homePagePath: "${workspaceFolder}/doc-assets/homePage.html"
   pages:
     - "${workspaceFolder}/doc-assets/files/deploy.html"
+    - "${workspaceFolder}/doc-assets/files/changelog.html"
   assets:
     - "${workspaceFolder}/doc-assets/favicon.png"
     - "${workspaceFolder}/doc-assets/highlight.css"
