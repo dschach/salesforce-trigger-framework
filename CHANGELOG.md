@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.2.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.1.1...v1.2.0) (2023-10-04)
+
+
+### Features
+
+* Allow chaining for limits, debug, max loop ([#106](https://github.com/dschach/salesforce-trigger-framework/issues/106)) ([094412a](https://github.com/dschach/salesforce-trigger-framework/commit/094412afd63fec18d56d882b196a7412b326d1a5))
+
+
+### Performance Improvements
+
+* Disable CI scratch org source tracking ([fcb33bc](https://github.com/dschach/salesforce-trigger-framework/commit/fcb33bce6c53a2786197290db5ae0a74147ee956))
+
+
+### Miscellaneous Chores
+
+* API to 58.0 ([#110](https://github.com/dschach/salesforce-trigger-framework/issues/110)) ([fcb33bc](https://github.com/dschach/salesforce-trigger-framework/commit/fcb33bce6c53a2786197290db5ae0a74147ee956))
+
+
+### Documentation
+
+* Update ApexDocs, method documentation ([#109](https://github.com/dschach/salesforce-trigger-framework/issues/109)) ([6a29eb9](https://github.com/dschach/salesforce-trigger-framework/commit/6a29eb9d5f8efe16a94137c67bbf29db8d0e6fc8))
+
+
+### Continuous Integration
+
+* **release-please:** Add release type ([#108](https://github.com/dschach/salesforce-trigger-framework/issues/108)) ([55549bd](https://github.com/dschach/salesforce-trigger-framework/commit/55549bd8e18f0e0dcc3f84b318a7a846ffc5ad95))
+
 ## [1.1.1](https://github.com/dschach/salesforce-trigger-framework/compare/v1.1.0...v1.1.1) (2023-09-21)
 
 
