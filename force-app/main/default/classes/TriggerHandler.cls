@@ -6,6 +6,7 @@
  * @author {@link [David Schach](https://github.com/dschach)}
  * @since 2021
  * @since 2023-02-24 add andFinally method
+ * @since 2023-09 method chaining
  * @group Trigger Handler
  * @see [License](https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE)
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)

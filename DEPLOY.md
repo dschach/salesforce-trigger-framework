@@ -11,13 +11,13 @@
 
 1. If you haven't already done so, authorize your hub org and provide it with an alias (**myhuborg** in the command below):
 
-   ```plaintext
-   sfdx auth:web:login --setdefaultdevhubusername --setalias myhuborg
+   ```bash
+   sf org login web --set-default-dev-hub --alias myhuborg
    ```
 
 1. Clone the duplicatehandling repository:
 
-   ```plaintext
+   ```bash
    git clone https://github.com/dschach/salesforce-trigger-framework
    cd salesforce-trigger-framework
    ```
@@ -25,8 +25,8 @@
 1. Create your scratch org
 
    - Using the included script
-      From the VSCode command line, run [orginit script](scripts/orginit.sh)
-      ```plaintext
+      From the VSCode command line/terminal, run [orginit script](scripts/orginit.sh)
+      ```bash
       . scripts/orginit.sh
       ```
 
@@ -34,7 +34,7 @@
 
      1. Create a scratch org and provide it with an alias (**triggerHandler** in the command below):
 
-        ```plaintext
+        ```bash
         sf org create scratch --set-default --definition-file config/project-scratch-def.json --alias triggerHandler
         ```
 
@@ -42,12 +42,12 @@
 
      2. Push the app to your scratch org:
 
-        ```plaintext
-        sf deploy metadata
+        ```bash
+        sf project deploy start
         ```
 
      3. Open the scratch org:
 
-        ```plaintext
+        ```bash
         sf org open
         ```

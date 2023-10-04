@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>Salesforce Trigger Handler code documentation</title>
@@ -84,7 +84,7 @@
       <tr>
         <td class="doc-page">
           <link href="assets/styling.css" rel="stylesheet" />
-          <h1 id="installing-the-app-using-a-scratch-org">Installing the app using a Scratch Org</h1>
+          <h1>Installing the app using a Scratch Org</h1>
           <ol>
             <li>
               Set up your environment. Follow the steps in the
@@ -107,12 +107,12 @@
           <ol>
             <li>
               <p>If you haven&#39;t already done so, authorize your hub org and provide it with an alias (<strong>myhuborg</strong> in the command below):</p>
-              <pre><code class="language-plaintext">sfdx auth:web:login --setdefaultdevhubusername --setalias myhuborg
+              <pre><code class="language-bash">sf org login web --set-default-dev-hub --alias myhuborg
 </code></pre>
             </li>
             <li>
               <p>Clone the duplicatehandling repository:</p>
-              <pre><code class="language-plaintext">git clone https://github.com/dschach/salesforce-trigger-framework
+              <pre><code class="language-bash">git clone https://github.com/dschach/salesforce-trigger-framework
 cd salesforce-trigger-framework
 </code></pre>
             </li>
@@ -120,8 +120,8 @@ cd salesforce-trigger-framework
               <p>Create your scratch org</p>
               <ul>
                 <li>
-                  <p>Using the included script From the VSCode command line, run <a href="scripts/orginit.sh">orginit script</a></p>
-                  <pre><code class="language-plaintext">. scripts/orginit.sh
+                  <p>Using the included script From the VSCode command line/terminal, run <a href="scripts/orginit.sh">orginit script</a></p>
+                  <pre><code class="language-bash">. scripts/orginit.sh
 </code></pre>
                 </li>
                 <li>
@@ -129,18 +129,18 @@ cd salesforce-trigger-framework
                   <ol>
                     <li>
                       <p>Create a scratch org and provide it with an alias (<strong>triggerHandler</strong> in the command below):</p>
-                      <pre><code class="language-plaintext">sf org create scratch --set-default --definition-file config/project-scratch-def.json --alias triggerHandler
+                      <pre><code class="language-bash">sf org create scratch --set-default --definition-file config/project-scratch-def.json --alias triggerHandler
 </code></pre>
                       <p>This will create a new scratch org and install all metadata in this repository</p>
                     </li>
                     <li>
                       <p>Push the app to your scratch org:</p>
-                      <pre><code class="language-plaintext">sf deploy metadata
+                      <pre><code class="language-bash">sf project deploy start
 </code></pre>
                     </li>
                     <li>
                       <p>Open the scratch org:</p>
-                      <pre><code class="language-plaintext">sf org open
+                      <pre><code class="language-bash">sf org open
 </code></pre>
                     </li>
                   </ol>

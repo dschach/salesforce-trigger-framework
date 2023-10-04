@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>Salesforce Trigger Handler code documentation</title>
@@ -95,7 +95,7 @@
           <h1>Sample Trigger</h1>
           <pre><code class="language-apex">
 trigger AccountSampleTrigger on Account (before insert, after insert, before update, after update, before delete, after delete, after undelete) {
-  new AccountSampleTriggerHandler().run();
+  new AccountSampleTriggerHandler().debug(false).run();
 }</code></pre>
           <h1>Sample Handler</h1>
           <pre><code class="language-apex">
@@ -147,7 +147,6 @@ public without sharing class AccountSampleTriggerHandler extends TriggerHandler 
   //public override void afterDelete(){}
   //public override void afterUndelete(){}
   //public override void andFinally(){}
-
 
   private void method1(){
     for(Account a : newRecords){

@@ -7,6 +7,7 @@
 - [Salesforce Trigger Framework](#salesforce-trigger-framework)
   - [Credit](#credit)
   - [Documentation](#documentation)
+    - [Changelog](#changelog)
   - [Overview](#overview)
   - [Usage](#usage)
     - [Trigger Handler](#trigger-handler)
@@ -28,6 +29,10 @@ Based on Kevin O'Hara's famous framework [sfdc-trigger-framework](https://github
 ## Documentation
 
 [Class Documentation](https://dschach.github.io/salesforce-trigger-framework/TriggerHandler.html)
+
+### Changelog
+
+[Complete Changelog](CHANGELOG.md)
 
 ## Overview
 
@@ -196,7 +201,7 @@ TriggerHandler.bypassAll();
 
 /* do something here */
 
-TriggerHandler.clearAllBypasses(); /* or TriggerHandler.clearGlobalBypass() */
+TriggerHandler.clearAllBypasses();
 TriggerHandler.bypass(bypassedHandlers);
 ```
 
@@ -222,6 +227,14 @@ public class OpportunityTriggerHandler extends TriggerHandler {
 }
 ```
 
+In version 1.2, the ability to chain methods was added. Now, you can set the max loop count in a single line in your trigger:
+
+```apex
+trigger OpportunityTrigger on Opportunity (before update, after update) {
+  new OpportunityTriggerHandler().setMaxLoopCount(5).run();
+}
+```
+
 ### Debug Statements
 
 There are two methods that will show additional information.
@@ -240,9 +253,33 @@ AccountTriggerHandler.showDebug(false);
 ```
 or just put them in your Apex code before and after DML statements.
 
+```apex
+showLimits();
+showDebug();
+
+update leadsList;
+
+showLimits(false);
+showDebug(false);
+```
+
+In version 1.2, the ability to chain methods was added. Now, you can specify showing debug messages and limits in a single line in your trigger:
+
+```apex
+trigger OpportunityTrigger on Opportunity (before update, after update) {
+  new OpportunityTriggerHandler().debug().limits().run(); // debug() is the same as debug(true)
+}
+```
+Or stop showing them.
+```apex
+trigger OpportunityTrigger on Opportunity (before update, after update) {
+  new OpportunityTriggerHandler().debug(false).limits(false).run();
+}
+```
+
 ### Universal Action
 
-Version 1.1 adds a new method: `andFinally()` which can contain actions that should happen in every trigger context, after all other actions. Credit to James Simone for this idea. As he writes, "runs after every context - can be used to easily implement something like apex-rollup!" ([The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/))
+Version 1.1 added a new method/context: `andFinally()` can contain actions that should happen in every trigger context, after all other actions. Credit to James Simone for this idea. As he writes, "runs after every context - can be used to easily implement something like apex-rollup!" ([The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/))
 
 ## Overridable Methods
 

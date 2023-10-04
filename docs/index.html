@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>Salesforce Trigger Handler code documentation</title>
@@ -94,13 +94,18 @@
             /></a>
             <a href="https://img.shields.io/twitter/follow/dschach.svg?style=social"><img src="https://img.shields.io/twitter/follow/dschach.svg?style=social" alt="Twitter" /></a>
           </p>
-          <h1 id="salesforce-trigger-framework">Salesforce Trigger Framework</h1>
+          <h1>Salesforce Trigger Framework</h1>
           <ul>
             <li>
               <a href="#salesforce-trigger-framework">Salesforce Trigger Framework</a>
               <ul>
                 <li><a href="#credit">Credit</a></li>
-                <li><a href="#documentation">Documentation</a></li>
+                <li>
+                  <a href="#documentation">Documentation</a>
+                  <ul>
+                    <li><a href="#changelog">Changelog</a></li>
+                  </ul>
+                </li>
                 <li><a href="#overview">Overview</a></li>
                 <li>
                   <a href="#usage">Usage</a>
@@ -125,11 +130,13 @@
               </ul>
             </li>
           </ul>
-          <h2 id="credit">Credit</h2>
+          <h2>Credit</h2>
           <p>Based on Kevin O&#39;Hara&#39;s famous framework <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a></p>
-          <h2 id="documentation">Documentation</h2>
+          <h2>Documentation</h2>
           <p><a href="https://dschach.github.io/salesforce-trigger-framework/TriggerHandler.html">Class Documentation</a></p>
-          <h2 id="overview">Overview</h2>
+          <h3>Changelog</h3>
+          <p><a href="changelog.html">Complete Changelog</a></p>
+          <h2>Overview</h2>
           <p>(from Kevin O&#39;Hara)</p>
           <p>
             Triggers should (IMO) be logicless. Putting logic into your triggers creates un-testable, difficult-to-maintain code. It&#39;s widely accepted that a best-practice is
@@ -151,8 +158,8 @@
               ><img src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png" alt="Deploy"
             /></a>
           </p>
-          <h2 id="usage">Usage</h2>
-          <h3 id="trigger-handler">Trigger Handler</h3>
+          <h2>Usage</h2>
+          <h3>Trigger Handler</h3>
           <p>
             To create a trigger handler, you simply need to create a class that inherits from
             <a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/force-app/main/default/classes/TriggerHandler.cls">TriggerHandler.cls</a>. Here is an example
@@ -202,7 +209,7 @@
 
 }
 </code></pre>
-          <h3 id="trigger">Trigger</h3>
+          <h3>Trigger</h3>
           <p>
             To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger handler itself and call the <code>run()</code> method.
             Here is an example of an Opportunity trigger.
@@ -224,8 +231,8 @@
   new OpportunityTriggerHandler(&#39;OpportunityTriggerHandler&#39;).run();
 }
 </code></pre>
-          <h2 id="cool-stuff">Cool Stuff</h2>
-          <h3 id="bypass-api">Bypass API</h3>
+          <h2>Cool Stuff</h2>
+          <h3>Bypass API</h3>
           <p>What if you want to tell other trigger handlers to halt execution? That&#39;s easy with the bypass api:</p>
           <pre><code class="language-apex">public class OpportunityTriggerHandler extends TriggerHandler {
   private Map&lt;Id, Opportunity&gt; newRecordsMap;
@@ -254,13 +261,13 @@
 
 }
 </code></pre>
-          <h3 id="check-bypass-status">Check Bypass Status</h3>
+          <h3>Check Bypass Status</h3>
           <p>If you need to check if a handler is bypassed, use the <code>isBypassed</code> method:</p>
           <pre><code class="language-apex">if (TriggerHandler.isBypassed(&#39;AccountTriggerHandler&#39;)) {
   /* ... do something if the Account trigger handler is bypassed! */
 }
 </code></pre>
-          <h3 id="global-bypass">Global Bypass</h3>
+          <h3>Global Bypass</h3>
           <p>To bypass all handlers, set the global bypass variable:</p>
           <pre><code class="language-apex">TriggerHandler.setGlobalBypass();
 </code></pre>
@@ -273,7 +280,7 @@ TriggerHandler.clearAllBypasses();
 /* ... now handlers won&#39;t be ignored! */
 </code></pre>
           <p>This will clear the list of bypassed handlers and set the <code>globalBypass</code> Boolean to false.</p>
-          <h3 id="set-bypass">Set Bypass</h3>
+          <h3>Set Bypass</h3>
           <p>
             If you are not sure in a transaction if a handler is bypassed, but want to bypass it (or clear the bypass) and then set it to its original value, use the
             <code>setBybass</code> method:
@@ -291,10 +298,10 @@ TriggerHandler.bypassAll();
 
 /* do something here */
 
-TriggerHandler.clearAllBypasses(); /* or TriggerHandler.clearGlobalBypass() */
+TriggerHandler.clearAllBypasses();
 TriggerHandler.bypass(bypassedHandlers);
 </code></pre>
-          <h3 id="max-loop-count">Max Loop Count</h3>
+          <h3>Max Loop Count</h3>
           <p>
             To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, the trigger will silently stop running. If <code>showDebug()</code> has
             been included, a statement that the max loop count has been reached will be sent to the debug log. A great use case is when you want to ensure that your trigger runs
@@ -316,7 +323,12 @@ TriggerHandler.bypass(bypassedHandlers);
   }
 }
 </code></pre>
-          <h3 id="debug-statements">Debug Statements</h3>
+          <p>In version 1.2, the ability to chain methods was added. Now, you can set the max loop count in a single line in your trigger:</p>
+          <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {
+  new OpportunityTriggerHandler().setMaxLoopCount(5).run();
+}
+</code></pre>
+          <h3>Debug Statements</h3>
           <p>There are two methods that will show additional information.</p>
           <p><code>TriggerHandler.showLimits()</code> will debug Apex query and DML limits when the trigger handler has completed.</p>
           <p><code>TriggerHandler.showDebug()</code> will show trigger entry and exit in debug logs. Use sparingly, as it will decrease org performance.</p>
@@ -328,15 +340,33 @@ TriggerHandler.showLimits(false);
 AccountTriggerHandler.showDebug(false);
 </code></pre>
           <p>or just put them in your Apex code before and after DML statements.</p>
-          <h3 id="universal-action">Universal Action</h3>
+          <pre><code class="language-apex">showLimits();
+showDebug();
+
+update leadsList;
+
+showLimits(false);
+showDebug(false);
+</code></pre>
+          <p>In version 1.2, the ability to chain methods was added. Now, you can specify showing debug messages and limits in a single line in your trigger:</p>
+          <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {
+  new OpportunityTriggerHandler().debug().limits().run(); // debug() is the same as debug(true)
+}
+</code></pre>
+          <p>Or stop showing them.</p>
+          <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before update, after update) {
+  new OpportunityTriggerHandler().debug(false).limits(false).run();
+}
+</code></pre>
+          <h3>Universal Action</h3>
           <p>
-            Version 1.1 adds a new method: <code>andFinally()</code> which can contain actions that should happen in every trigger context, after all other actions. Credit to James
-            Simone for this idea. As he writes, &quot;runs after every context - can be used to easily implement something like apex-rollup!&quot; (<a
+            Version 1.1 added a new method/context: <code>andFinally()</code> can contain actions that should happen in every trigger context, after all other actions. Credit to
+            James Simone for this idea. As he writes, &quot;runs after every context - can be used to easily implement something like apex-rollup!&quot; (<a
               href="https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/"
               >The Joys of Apex</a
             >)
           </p>
-          <h2 id="overridable-methods">Overridable Methods</h2>
+          <h2>Overridable Methods</h2>
           <p>Here are all of the methods that you can override. All of the context possibilities are supported.</p>
           <ul>
             <li><code>beforeInsert()</code></li>

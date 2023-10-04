@@ -9,7 +9,13 @@ curl -L "https://cdn.jsdelivr.net/npm/highlightjs-apex/dist/apex.min.js" >> "doc
 printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/homePage.html"
 echo >> "doc-assets/homePage.html"
 npx marked -i README.md --gfm >> "doc-assets/homePage.html"
-sed -i '' 's|./DEPLOY.md|./deploy.html|g' doc-assets/homePage.html
+sed -i '' 's|DEPLOY.md|deploy.html|g' doc-assets/homePage.html
+
+# Changelog to web page
+printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/changelog.html"
+echo >> "doc-assets/changelog.html"
+npx marked -i CHANGELOG.md --gfm >> "doc-assets/files/changelog.html"
+sed -i '' 's|CHANGELOG.md|changelog.html|g' doc-assets/homePage.html
 
 # Deploy instructions to docs page
 printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/files/deploy.html"
