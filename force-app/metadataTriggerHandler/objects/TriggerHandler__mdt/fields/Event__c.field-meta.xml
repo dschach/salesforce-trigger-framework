@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Event__c</fullName>
+    <description>Trigger event to run this handler</description>
+    <externalId>false</externalId>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>Trigger event to run this handler</inlineHelpText>
+    <label>Event</label>
+    <required>true</required>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Before Insert</fullName>
+                <default>true</default>
+                <label>Before Insert</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
