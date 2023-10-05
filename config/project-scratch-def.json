@@ -1,5 +1,5 @@
 {
-	"orgName": "dschach company",
+	"orgName": "dschach Trigger Handler",
 	"edition": "Developer",
 	"features": ["EnableSetPasswordInApi"],
 	"settings": {
@@ -8,6 +8,9 @@
 		},
 		"mobileSettings": {
 			"enableS1EncryptedStoragePref2": false
+		},
+		"userManagementSettings": {
+			"permsetsInFieldCreation": true
 		}
 	}
 }

@@ -6,6 +6,11 @@
 			"versionNumber": "1.2.0.NEXT"
 		},
 		{
+			"path": "force-app/metadataTriggerHandler",
+			"default": false,
+			"versionNumber": "0.0.0"
+		},
+		{
 			"path": "sample-handler",
 			"default": false
 		}
