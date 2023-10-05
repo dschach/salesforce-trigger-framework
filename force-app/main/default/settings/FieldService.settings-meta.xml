@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FieldServiceSettings xmlns="http://soap.sforce.com/2006/04/metadata">
+    <canPopulateGoogleAddress>false</canPopulateGoogleAddress>
+    <canSendAppCenterCrashReports>false</canSendAppCenterCrashReports>
+    <canStoreMobileAnalytics>false</canStoreMobileAnalytics>
+    <doesAllowEditSaForCrew>false</doesAllowEditSaForCrew>
+    <doesShareSaParentWoWithAr>false</doesShareSaParentWoWithAr>
+    <doesShareSaWithAr>false</doesShareSaWithAr>
+    <enableBatchWindow>false</enableBatchWindow>
+    <enableFloatingWorkOrder>false</enableFloatingWorkOrder>
+    <enablePopulateWorkOrderAddress>false</enablePopulateWorkOrderAddress>
+    <enableWorkOrders>false</enableWorkOrders>
+    <enableWorkPlansAutoGeneration>false</enableWorkPlansAutoGeneration>
+    <enableWorkStepManualStatusUpdate>false</enableWorkStepManualStatusUpdate>
+    <fieldServiceNotificationsOrgPref>false</fieldServiceNotificationsOrgPref>
+    <fieldServiceOrgPref>true</fieldServiceOrgPref>
+    <isGeoCodeSyncEnabled>false</isGeoCodeSyncEnabled>
+    <isLocationHistoryEnabled>false</isLocationHistoryEnabled>
+    <o2EngineEnabled>false</o2EngineEnabled>
+    <optimizationServiceAccess>false</optimizationServiceAccess>
+    <serviceAppointmentsDueDateOffsetOrgValue>7</serviceAppointmentsDueDateOffsetOrgValue>
+    <workOrderLineItemSearchFields>Subject</workOrderLineItemSearchFields>
+    <workOrderSearchFields>Subject</workOrderSearchFields>
+</FieldServiceSettings>
