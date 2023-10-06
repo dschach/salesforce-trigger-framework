@@ -7,4 +7,5 @@
 trigger AccountSampleTrigger on Account(before insert, after insert, before update, after update, before delete, after delete, after undelete) {
 	TriggerHandler.showLimits();
 	new AccountSampleTriggerHandler('AccountSampleTriggerHandler').debug(true).run();
+	new AccountSampleMetadataTriggerHandler('AccountSampleMetadataTriggerHandler').run();
 }

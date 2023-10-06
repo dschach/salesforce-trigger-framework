@@ -1,7 +1,7 @@
 {
 	"packageDirectories": [
 		{
-			"path": "sfdx-source",
+			"path": "sfdx-source/main",
 			"package": "TriggerHandler",
 			"default": true,
 			"versionNumber": "1.2.0.NEXT",
@@ -10,6 +10,7 @@
 				"permissionSets": ["Trigger_Handler_Admin"]
 			}
 		},
+		{ "path": "sfdx-source/metadataTriggerHandler", "default": false },
 		{ "path": "unpackaged/sampleHandler", "default": false },
 		{ "path": "unpackaged/testingPermissions", "default": false }
 	],
