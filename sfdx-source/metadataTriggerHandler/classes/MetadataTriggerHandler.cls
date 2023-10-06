@@ -5,4 +5,9 @@
  * @since       2023
  */
 public with sharing virtual class MetadataTriggerHandler extends TriggerHandler {
+	/**
+	 * @description Exception class
+	 */
+	public class MetadataTriggerHandlerException extends Exception {
+	}
 }

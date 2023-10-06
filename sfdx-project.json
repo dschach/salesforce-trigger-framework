@@ -1,19 +1,17 @@
 {
 	"packageDirectories": [
 		{
-			"path": "force-app",
+			"path": "sfdx-source",
+			"package": "TriggerHandler",
 			"default": true,
-			"versionNumber": "1.2.0.NEXT"
+			"versionNumber": "1.2.0.NEXT",
+			"unpackagedMetadata": { "path": "unpackaged/sample-handler" },
+			"apexTestAccess": {
+				"permissionSets": ["Trigger_Handler_Admin"]
+			}
 		},
-		{
-			"path": "force-app/metadataTriggerHandler",
-			"default": false,
-			"versionNumber": "0.0.0"
-		},
-		{
-			"path": "sample-handler",
-			"default": false
-		}
+		{ "path": "unpackaged/sampleHandler", "default": false },
+		{ "path": "unpackaged/testingPermissions", "default": false }
 	],
 	"name": "Trigger Framework",
 	"namespace": "",

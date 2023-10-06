@@ -56,7 +56,7 @@ But the most important part of this framework is that it's minimal and simple to
 
 ### Trigger Handler
 
-To create a trigger handler, you simply need to create a class that inherits from [TriggerHandler.cls](https://github.com/dschach/salesforce-trigger-framework/blob/main/force-app/main/default/classes/TriggerHandler.cls). Here is an example for creating an Opportunity trigger handler.
+To create a trigger handler, you simply need to create a class that inherits from [TriggerHandler.cls](https://github.com/dschach/salesforce-trigger-framework/blob/main/sfdx-source/main/default/classes/TriggerHandler.cls). Here is an example for creating an Opportunity trigger handler.
 
 ```apex
 public class OpportunityTriggerHandler extends TriggerHandler {

@@ -1,11 +1,11 @@
 engine:
   source:
-    - path: "${workspaceFolder}/force-app/main/default/classes"
-      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes
-    - path: "${workspaceFolder}/force-app/metadataTriggerHandler/classes"
-      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/metadataTriggerHandler/classes
-    - path: "${workspaceFolder}/sample-handler/main/default/classes"
-      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes
+    - path: "${workspaceFolder}/sfdx-source/main/default/classes"
+      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sfdx-source/main/default/classes
+    - path: "${workspaceFolder}/sfdx-source/metadataTriggerHandler/classes"
+      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sfdx-source/metadataTriggerHandler/classes
+    - path: "${workspaceFolder}/sfdx-source/unpackaged/sample-handler/classes"
+      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/classes
   targetDirectory: "${workspaceFolder}/docs"
   #excludes:
   #  - "*Test.cls"

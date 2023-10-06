@@ -7,8 +7,8 @@ on:
   pull_request:
     types: [edited, opened, synchronize, reopened, review_requested]
     paths:
-      - "force-app/**"
-      - "sample-handler/**"
+      - "sfdx-source/**"
+      - "unpackaged/**"
       - ".github/workflows/pr.yml"
 # Jobs to be executed
 jobs:
