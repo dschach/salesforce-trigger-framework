@@ -392,7 +392,7 @@ public virtual class TriggerHandler {
 	 * @param  desiredValue `true` to bypass, and `false` to run the handler/clear the bypass
 	 * @example
 	 * TriggerHandler.setBypass('AccountTriggerHandler', false);
-	 * -or-
+	 * or
 	 * Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');
 	 * TriggerHandler.bypass('AccountTriggerHandler');
 	 * // do something here
@@ -456,7 +456,7 @@ public virtual class TriggerHandler {
 	 * @example
 	 * TriggerHandler.showLimits();
 	 * new AccountSampleTriggerHandler.run();
-	 * -or-
+	 * or
 	 * AccountSampleTriggerHandler.showLimits();
 	 */
 	public static void showLimits() {
@@ -520,7 +520,7 @@ public virtual class TriggerHandler {
 	 * @example
 	 * TriggerHandler.showDebug();
 	 * new AccountSampleTriggerHandler.run(); // in trigger
-	 * -or-
+	 * or
 	 * AccountSampleTriggerHandler.showDebug(); // in handler
 	 */
 	public static void showDebug() {
