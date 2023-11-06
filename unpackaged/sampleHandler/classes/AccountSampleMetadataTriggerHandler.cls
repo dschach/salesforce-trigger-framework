@@ -1,3 +1,10 @@
+/**
+ * @description
+ *
+ * @author      David Schach
+ * @since       2023
+ * @group       SampleTriggerHandler
+ */
 @SuppressWarnings('PMD')
 public with sharing class AccountSampleMetadataTriggerHandler extends MetadataTriggerHandler {
 	private List<Account> newRecords;

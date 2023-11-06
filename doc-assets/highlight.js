@@ -1,5 +1,5 @@
 /*!
-  Highlight.js v11.8.0 (git: 65687a907b)
+  Highlight.js v11.9.0 (git: f47103d4f1)
   (c) 2006-2023 undefined and other contributors
   License: BSD-3-Clause
  */
@@ -64,24 +64,24 @@ end:/(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):/,excludeBegin:!0,relevance:0})
 ;const r=m("I","a","is","so","us","to","at","if","in","it","on",/[A-Za-z]+['](d|ve|re|ll|t|s|n)/,/[A-Za-z]+[-][a-z]+/,/[A-Za-z][a-z]{2,}/)
 ;return i.contains.push({begin:b(/[ ]+/,"(",r,/[.]?[:]?([.][ ]|[ ])/,"){3}")}),i
 },M=x("//","$"),S=x("/\\*","\\*/"),A=x("#","$");var C=Object.freeze({
-__proto__:null,MATCH_NOTHING_RE:/\b\B/,IDENT_RE:f,UNDERSCORE_IDENT_RE:E,
-NUMBER_RE:y,C_NUMBER_RE:N,BINARY_NUMBER_RE:w,
+__proto__:null,APOS_STRING_MODE:O,BACKSLASH_ESCAPE:v,BINARY_NUMBER_MODE:{
+scope:"number",begin:w,relevance:0},BINARY_NUMBER_RE:w,COMMENT:x,
+C_BLOCK_COMMENT_MODE:S,C_LINE_COMMENT_MODE:M,C_NUMBER_MODE:{scope:"number",
+begin:N,relevance:0},C_NUMBER_RE:N,END_SAME_AS_BEGIN:e=>Object.assign(e,{
+"on:begin":(e,n)=>{n.data._beginMatch=e[1]},"on:end":(e,n)=>{
+n.data._beginMatch!==e[1]&&n.ignoreMatch()}}),HASH_COMMENT_MODE:A,IDENT_RE:f,
+MATCH_NOTHING_RE:/\b\B/,METHOD_GUARD:{begin:"\\.\\s*"+E,relevance:0},
+NUMBER_MODE:{scope:"number",begin:y,relevance:0},NUMBER_RE:y,
+PHRASAL_WORDS_MODE:{
+begin:/\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
+},QUOTE_STRING_MODE:k,REGEXP_MODE:{scope:"regexp",begin:/\/(?=[^/\n]*\/)/,
+end:/\/[gimuy]*/,contains:[v,{begin:/\[/,end:/\]/,relevance:0,contains:[v]}]},
 RE_STARTERS_RE:"!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|-|-=|/=|/|:|;|<<|<<=|<=|<|===|==|=|>>>=|>>=|>=|>>>|>>|>|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~",
 SHEBANG:(e={})=>{const n=/^#![ ]*\//
 ;return e.binary&&(e.begin=b(n,/.*\b/,e.binary,/\b.*/)),a({scope:"meta",begin:n,
 end:/$/,relevance:0,"on:begin":(e,n)=>{0!==e.index&&n.ignoreMatch()}},e)},
-BACKSLASH_ESCAPE:v,APOS_STRING_MODE:O,QUOTE_STRING_MODE:k,PHRASAL_WORDS_MODE:{
-begin:/\b(a|an|the|are|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such|will|you|your|they|like|more)\b/
-},COMMENT:x,C_LINE_COMMENT_MODE:M,C_BLOCK_COMMENT_MODE:S,HASH_COMMENT_MODE:A,
-NUMBER_MODE:{scope:"number",begin:y,relevance:0},C_NUMBER_MODE:{scope:"number",
-begin:N,relevance:0},BINARY_NUMBER_MODE:{scope:"number",begin:w,relevance:0},
-REGEXP_MODE:{begin:/(?=\/[^/\n]*\/)/,contains:[{scope:"regexp",begin:/\//,
-end:/\/[gimuy]*/,illegal:/\n/,contains:[v,{begin:/\[/,end:/\]/,relevance:0,
-contains:[v]}]}]},TITLE_MODE:{scope:"title",begin:f,relevance:0},
-UNDERSCORE_TITLE_MODE:{scope:"title",begin:E,relevance:0},METHOD_GUARD:{
-begin:"\\.\\s*"+E,relevance:0},END_SAME_AS_BEGIN:e=>Object.assign(e,{
-"on:begin":(e,n)=>{n.data._beginMatch=e[1]},"on:end":(e,n)=>{
-n.data._beginMatch!==e[1]&&n.ignoreMatch()}})});function T(e,n){
+TITLE_MODE:{scope:"title",begin:f,relevance:0},UNDERSCORE_IDENT_RE:E,
+UNDERSCORE_TITLE_MODE:{scope:"title",begin:E,relevance:0}});function T(e,n){
 "."===e.input[e.index-1]&&n.ignoreMatch()}function R(e,n){
 void 0!==e.className&&(e.scope=e.className,delete e.className)}function D(e,n){
 n&&e.beginKeywords&&(e.begin="\\b("+e.beginKeywords.split(" ").join("|")+")(?!\\.)(?=\\b|\\s)",
@@ -104,7 +104,7 @@ Object.assign(a,U(e[t],n,t))})),a;function i(e,t){
 n&&(t=t.map((e=>e.toLowerCase()))),t.forEach((n=>{const t=n.split("|")
 ;a[t[0]]=[e,j(t[0],t[1])]}))}}function j(e,n){
 return n?Number(n):(e=>z.includes(e.toLowerCase()))(e)?0:1}const P={},K=e=>{
-console.error(e)},q=(e,...n)=>{console.log("WARN: "+e,...n)},H=(e,n)=>{
+console.error(e)},H=(e,...n)=>{console.log("WARN: "+e,...n)},q=(e,n)=>{
 P[`${e}/${n}`]||(console.log(`Deprecated as of ${e}. ${n}`),P[`${e}/${n}`]=!0)
 },G=Error();function Z(e,n,{key:t}){let a=0;const i=e[t],r={},s={}
 ;for(let e=1;e<=n.length;e++)s[e+a]=i[e],r[e+a]=!0,a+=p(n[e-1])
@@ -180,8 +180,8 @@ languageDetectRe:/\blang(?:uage)?-([\w-]+)\b/i,classPrefix:"hljs-",
 cssSelector:"pre code",languages:null,__emitter:l};function _(e){
 return p.noHighlightRe.test(e)}function h(e,n,t){let a="",i=""
 ;"object"==typeof n?(a=e,
-t=n.ignoreIllegals,i=n.language):(H("10.7.0","highlight(lang, code, ...args) has been deprecated."),
-H("10.7.0","Please use highlight(code, options) instead.\nhttps://github.com/highlightjs/highlight.js/issues/2277"),
+t=n.ignoreIllegals,i=n.language):(q("10.7.0","highlight(lang, code, ...args) has been deprecated."),
+q("10.7.0","Please use highlight(code, options) instead.\nhttps://github.com/highlightjs/highlight.js/issues/2277"),
 i=e,a=n),void 0===t&&(t=!0);const r={code:a,language:i};x("before:highlight",r)
 ;const s=r.result?r.result:f(r.language,r.code,t)
 ;return s.code=r.code,x("after:highlight",s),s}function f(e,t,i,r){
@@ -258,16 +258,17 @@ if(e.relevance!==n.relevance)return n.relevance-e.relevance
 ;return l.secondBest=o,l}function y(e){let n=null;const t=(e=>{
 let n=e.className+" ";n+=e.parentNode?e.parentNode.className:""
 ;const t=p.languageDetectRe.exec(n);if(t){const n=v(t[1])
-;return n||(q(o.replace("{}",t[1])),
-q("Falling back to no-highlight mode for this block.",e)),n?t[1]:"no-highlight"}
+;return n||(H(o.replace("{}",t[1])),
+H("Falling back to no-highlight mode for this block.",e)),n?t[1]:"no-highlight"}
 return n.split(/\s+/).find((e=>_(e)||v(e)))})(e);if(_(t))return
 ;if(x("before:highlightElement",{el:e,language:t
-}),e.children.length>0&&(p.ignoreUnescapedHTML||(console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk."),
+}),e.dataset.highlighted)return void console.log("Element previously highlighted. To highlight again, first unset `dataset.highlighted`.",e)
+;if(e.children.length>0&&(p.ignoreUnescapedHTML||(console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk."),
 console.warn("https://github.com/highlightjs/highlight.js/wiki/security"),
 console.warn("The element with unescaped HTML:"),
 console.warn(e)),p.throwUnescapedHTML))throw new V("One of your code blocks includes unescaped HTML.",e.innerHTML)
 ;n=e;const a=n.textContent,r=t?h(a,{language:t,ignoreIllegals:!0}):E(a)
-;e.innerHTML=r.value,((e,n,t)=>{const a=n&&i[n]||t
+;e.innerHTML=r.value,e.dataset.highlighted="yes",((e,n,t)=>{const a=n&&i[n]||t
 ;e.classList.add("hljs"),e.classList.add("language-"+a)
 })(e,t,r.language),e.result={language:r.language,re:r.relevance,
 relevance:r.relevance},r.secondBest&&(e.secondBest={
@@ -282,12 +283,12 @@ e[t]&&e[t](n)}))}
 "undefined"!=typeof window&&window.addEventListener&&window.addEventListener("DOMContentLoaded",(()=>{
 N&&w()}),!1),Object.assign(t,{highlight:h,highlightAuto:E,highlightAll:w,
 highlightElement:y,
-highlightBlock:e=>(H("10.7.0","highlightBlock will be removed entirely in v12.0"),
-H("10.7.0","Please use highlightElement now."),y(e)),configure:e=>{p=Y(p,e)},
+highlightBlock:e=>(q("10.7.0","highlightBlock will be removed entirely in v12.0"),
+q("10.7.0","Please use highlightElement now."),y(e)),configure:e=>{p=Y(p,e)},
 initHighlighting:()=>{
-w(),H("10.6.0","initHighlighting() deprecated.  Use highlightAll() now.")},
+w(),q("10.6.0","initHighlighting() deprecated.  Use highlightAll() now.")},
 initHighlightingOnLoad:()=>{
-w(),H("10.6.0","initHighlightingOnLoad() deprecated.  Use highlightAll() now.")
+w(),q("10.6.0","initHighlightingOnLoad() deprecated.  Use highlightAll() now.")
 },registerLanguage:(e,n)=>{let i=null;try{i=n(t)}catch(n){
 if(K("Language definition for '{}' could not be registered.".replace("{}",e)),
 !s)throw n;K(n),i=c}
@@ -301,7 +302,7 @@ e["before:highlightBlock"](Object.assign({block:n.el},n))
 }),e["after:highlightBlock"]&&!e["after:highlightElement"]&&(e["after:highlightElement"]=n=>{
 e["after:highlightBlock"](Object.assign({block:n.el},n))})})(e),r.push(e)},
 removePlugin:e=>{const n=r.indexOf(e);-1!==n&&r.splice(n,1)}}),t.debugMode=()=>{
-s=!1},t.safeMode=()=>{s=!0},t.versionString="11.8.0",t.regex={concat:b,
+s=!1},t.safeMode=()=>{s=!0},t.versionString="11.9.0",t.regex={concat:b,
 lookahead:d,either:m,optional:u,anyNumberOfTimes:g}
 ;for(const n in C)"object"==typeof C[n]&&e(C[n]);return Object.assign(t,C),t
 },te=ne({});te.newInstance=()=>ne({});var ae=te;const ie=e=>({IMPORTANT:{
@@ -312,7 +313,7 @@ ATTRIBUTE_SELECTOR_MODE:{scope:"selector-attr",begin:/\[/,end:/\]/,illegal:"$",
 contains:[e.APOS_STRING_MODE,e.QUOTE_STRING_MODE]},CSS_NUMBER_MODE:{
 scope:"number",
 begin:e.NUMBER_RE+"(%|em|ex|ch|rem|vw|vh|vmin|vmax|cm|mm|in|pt|pc|px|deg|grad|rad|turn|s|ms|Hz|kHz|dpi|dpcm|dppx)?",
-relevance:0},CSS_VARIABLE:{className:"attr",begin:/--[A-Za-z][A-Za-z0-9_-]*/}
+relevance:0},CSS_VARIABLE:{className:"attr",begin:/--[A-Za-z_][A-Za-z0-9_-]*/}
 }),re=["a","abbr","address","article","aside","audio","b","blockquote","body","button","canvas","caption","cite","code","dd","del","details","dfn","div","dl","dt","em","fieldset","figcaption","figure","footer","form","h1","h2","h3","h4","h5","h6","header","hgroup","html","i","iframe","img","input","ins","kbd","label","legend","li","main","mark","menu","nav","object","ol","p","q","quote","samp","section","span","strong","summary","sup","table","tbody","td","textarea","tfoot","th","thead","time","tr","ul","var","video"],se=["any-hover","any-pointer","aspect-ratio","color","color-gamut","color-index","device-aspect-ratio","device-height","device-width","display-mode","forced-colors","grid","height","hover","inverted-colors","monochrome","orientation","overflow-block","overflow-inline","pointer","prefers-color-scheme","prefers-contrast","prefers-reduced-motion","prefers-reduced-transparency","resolution","scan","scripting","update","width","min-width","max-width","min-height","max-height"],oe=["active","any-link","blank","checked","current","default","defined","dir","disabled","drop","empty","enabled","first","first-child","first-of-type","fullscreen","future","focus","focus-visible","focus-within","has","host","host-context","hover","indeterminate","in-range","invalid","is","lang","last-child","last-of-type","left","link","local-link","not","nth-child","nth-col","nth-last-child","nth-last-col","nth-last-of-type","nth-of-type","only-child","only-of-type","optional","out-of-range","past","placeholder-shown","read-only","read-write","required","right","root","scope","target","target-within","user-invalid","valid","visited","where"],le=["after","backdrop","before","cue","cue-region","first-letter","first-line","grammar-error","marker","part","placeholder","selection","slotted","spelling-error"],ce=["align-content","align-items","align-self","all","animation","animation-delay","animation-direction","animation-duration","animation-fill-mode","animation-iteration-count","animation-name","animation-play-state","animation-timing-function","backface-visibility","background","background-attachment","background-blend-mode","background-clip","background-color","background-image","background-origin","background-position","background-repeat","background-size","block-size","border","border-block","border-block-color","border-block-end","border-block-end-color","border-block-end-style","border-block-end-width","border-block-start","border-block-start-color","border-block-start-style","border-block-start-width","border-block-style","border-block-width","border-bottom","border-bottom-color","border-bottom-left-radius","border-bottom-right-radius","border-bottom-style","border-bottom-width","border-collapse","border-color","border-image","border-image-outset","border-image-repeat","border-image-slice","border-image-source","border-image-width","border-inline","border-inline-color","border-inline-end","border-inline-end-color","border-inline-end-style","border-inline-end-width","border-inline-start","border-inline-start-color","border-inline-start-style","border-inline-start-width","border-inline-style","border-inline-width","border-left","border-left-color","border-left-style","border-left-width","border-radius","border-right","border-right-color","border-right-style","border-right-width","border-spacing","border-style","border-top","border-top-color","border-top-left-radius","border-top-right-radius","border-top-style","border-top-width","border-width","bottom","box-decoration-break","box-shadow","box-sizing","break-after","break-before","break-inside","caption-side","caret-color","clear","clip","clip-path","clip-rule","color","column-count","column-fill","column-gap","column-rule","column-rule-color","column-rule-style","column-rule-width","column-span","column-width","columns","contain","content","content-visibility","counter-increment","counter-reset","cue","cue-after","cue-before","cursor","direction","display","empty-cells","filter","flex","flex-basis","flex-direction","flex-flow","flex-grow","flex-shrink","flex-wrap","float","flow","font","font-display","font-family","font-feature-settings","font-kerning","font-language-override","font-size","font-size-adjust","font-smoothing","font-stretch","font-style","font-synthesis","font-variant","font-variant-caps","font-variant-east-asian","font-variant-ligatures","font-variant-numeric","font-variant-position","font-variation-settings","font-weight","gap","glyph-orientation-vertical","grid","grid-area","grid-auto-columns","grid-auto-flow","grid-auto-rows","grid-column","grid-column-end","grid-column-start","grid-gap","grid-row","grid-row-end","grid-row-start","grid-template","grid-template-areas","grid-template-columns","grid-template-rows","hanging-punctuation","height","hyphens","icon","image-orientation","image-rendering","image-resolution","ime-mode","inline-size","isolation","justify-content","left","letter-spacing","line-break","line-height","list-style","list-style-image","list-style-position","list-style-type","margin","margin-block","margin-block-end","margin-block-start","margin-bottom","margin-inline","margin-inline-end","margin-inline-start","margin-left","margin-right","margin-top","marks","mask","mask-border","mask-border-mode","mask-border-outset","mask-border-repeat","mask-border-slice","mask-border-source","mask-border-width","mask-clip","mask-composite","mask-image","mask-mode","mask-origin","mask-position","mask-repeat","mask-size","mask-type","max-block-size","max-height","max-inline-size","max-width","min-block-size","min-height","min-inline-size","min-width","mix-blend-mode","nav-down","nav-index","nav-left","nav-right","nav-up","none","normal","object-fit","object-position","opacity","order","orphans","outline","outline-color","outline-offset","outline-style","outline-width","overflow","overflow-wrap","overflow-x","overflow-y","padding","padding-block","padding-block-end","padding-block-start","padding-bottom","padding-inline","padding-inline-end","padding-inline-start","padding-left","padding-right","padding-top","page-break-after","page-break-before","page-break-inside","pause","pause-after","pause-before","perspective","perspective-origin","pointer-events","position","quotes","resize","rest","rest-after","rest-before","right","row-gap","scroll-margin","scroll-margin-block","scroll-margin-block-end","scroll-margin-block-start","scroll-margin-bottom","scroll-margin-inline","scroll-margin-inline-end","scroll-margin-inline-start","scroll-margin-left","scroll-margin-right","scroll-margin-top","scroll-padding","scroll-padding-block","scroll-padding-block-end","scroll-padding-block-start","scroll-padding-bottom","scroll-padding-inline","scroll-padding-inline-end","scroll-padding-inline-start","scroll-padding-left","scroll-padding-right","scroll-padding-top","scroll-snap-align","scroll-snap-stop","scroll-snap-type","scrollbar-color","scrollbar-gutter","scrollbar-width","shape-image-threshold","shape-margin","shape-outside","speak","speak-as","src","tab-size","table-layout","text-align","text-align-all","text-align-last","text-combine-upright","text-decoration","text-decoration-color","text-decoration-line","text-decoration-style","text-emphasis","text-emphasis-color","text-emphasis-position","text-emphasis-style","text-indent","text-justify","text-orientation","text-overflow","text-rendering","text-shadow","text-transform","text-underline-position","top","transform","transform-box","transform-origin","transform-style","transition","transition-delay","transition-duration","transition-property","transition-timing-function","unicode-bidi","vertical-align","visibility","voice-balance","voice-duration","voice-family","voice-pitch","voice-range","voice-rate","voice-stress","voice-volume","white-space","widows","width","will-change","word-break","word-spacing","word-wrap","writing-mode","z-index"].reverse(),de=oe.concat(le)
 ;var ge="[0-9](_*[0-9])*",ue=`\\.(${ge})`,be="[0-9a-fA-F](_*[0-9a-fA-F])*",me={
 className:"number",variants:[{
@@ -400,7 +401,7 @@ className:"title.function"})]},{match:/\.\.\./,relevance:0},O,{match:"\\$"+t,
 relevance:0},{match:[/\bconstructor(?=\s*\()/],className:{1:"title.function"},
 contains:[f]},w,{relevance:0,match:/\b[A-Z][A-Z_0-9]+\b/,
 className:"variable.constant"},E,k,{match:/\$[(.]/}]}}
-const ke=e=>b(/\b/,e,/\w$/.test(e)?/\b/:/\B/),xe=["Protocol","Type"].map(ke),Me=["init","self"].map(ke),Se=["Any","Self"],Ae=["actor","any","associatedtype","async","await",/as\?/,/as!/,"as","break","case","catch","class","continue","convenience","default","defer","deinit","didSet","distributed","do","dynamic","else","enum","extension","fallthrough",/fileprivate\(set\)/,"fileprivate","final","for","func","get","guard","if","import","indirect","infix",/init\?/,/init!/,"inout",/internal\(set\)/,"internal","in","is","isolated","nonisolated","lazy","let","mutating","nonmutating",/open\(set\)/,"open","operator","optional","override","postfix","precedencegroup","prefix",/private\(set\)/,"private","protocol",/public\(set\)/,"public","repeat","required","rethrows","return","set","some","static","struct","subscript","super","switch","throws","throw",/try\?/,/try!/,"try","typealias",/unowned\(safe\)/,/unowned\(unsafe\)/,"unowned","var","weak","where","while","willSet"],Ce=["false","nil","true"],Te=["assignment","associativity","higherThan","left","lowerThan","none","right"],Re=["#colorLiteral","#column","#dsohandle","#else","#elseif","#endif","#error","#file","#fileID","#fileLiteral","#filePath","#function","#if","#imageLiteral","#keyPath","#line","#selector","#sourceLocation","#warn_unqualified_access","#warning"],De=["abs","all","any","assert","assertionFailure","debugPrint","dump","fatalError","getVaList","isKnownUniquelyReferenced","max","min","numericCast","pointwiseMax","pointwiseMin","precondition","preconditionFailure","print","readLine","repeatElement","sequence","stride","swap","swift_unboxFromSwiftValueWithType","transcode","type","unsafeBitCast","unsafeDowncast","withExtendedLifetime","withUnsafeMutablePointer","withUnsafePointer","withVaList","withoutActuallyEscaping","zip"],Ie=m(/[/=\-+!*%<>&|^~?]/,/[\u00A1-\u00A7]/,/[\u00A9\u00AB]/,/[\u00AC\u00AE]/,/[\u00B0\u00B1]/,/[\u00B6\u00BB\u00BF\u00D7\u00F7]/,/[\u2016-\u2017]/,/[\u2020-\u2027]/,/[\u2030-\u203E]/,/[\u2041-\u2053]/,/[\u2055-\u205E]/,/[\u2190-\u23FF]/,/[\u2500-\u2775]/,/[\u2794-\u2BFF]/,/[\u2E00-\u2E7F]/,/[\u3001-\u3003]/,/[\u3008-\u3020]/,/[\u3030]/),Le=m(Ie,/[\u0300-\u036F]/,/[\u1DC0-\u1DFF]/,/[\u20D0-\u20FF]/,/[\uFE00-\uFE0F]/,/[\uFE20-\uFE2F]/),Be=b(Ie,Le,"*"),$e=m(/[a-zA-Z_]/,/[\u00A8\u00AA\u00AD\u00AF\u00B2-\u00B5\u00B7-\u00BA]/,/[\u00BC-\u00BE\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]/,/[\u0100-\u02FF\u0370-\u167F\u1681-\u180D\u180F-\u1DBF]/,/[\u1E00-\u1FFF]/,/[\u200B-\u200D\u202A-\u202E\u203F-\u2040\u2054\u2060-\u206F]/,/[\u2070-\u20CF\u2100-\u218F\u2460-\u24FF\u2776-\u2793]/,/[\u2C00-\u2DFF\u2E80-\u2FFF]/,/[\u3004-\u3007\u3021-\u302F\u3031-\u303F\u3040-\uD7FF]/,/[\uF900-\uFD3D\uFD40-\uFDCF\uFDF0-\uFE1F\uFE30-\uFE44]/,/[\uFE47-\uFEFE\uFF00-\uFFFD]/),ze=m($e,/\d/,/[\u0300-\u036F\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]/),Fe=b($e,ze,"*"),Ue=b(/[A-Z]/,ze,"*"),je=["autoclosure",b(/convention\(/,m("swift","block","c"),/\)/),"discardableResult","dynamicCallable","dynamicMemberLookup","escaping","frozen","GKInspectable","IBAction","IBDesignable","IBInspectable","IBOutlet","IBSegueAction","inlinable","main","nonobjc","NSApplicationMain","NSCopying","NSManaged",b(/objc\(/,Fe,/\)/),"objc","objcMembers","propertyWrapper","requires_stored_property_inits","resultBuilder","testable","UIApplicationMain","unknown","usableFromInline"],Pe=["iOS","iOSApplicationExtension","macOS","macOSApplicationExtension","macCatalyst","macCatalystApplicationExtension","watchOS","watchOSApplicationExtension","tvOS","tvOSApplicationExtension","swift"]
+const ke=e=>b(/\b/,e,/\w$/.test(e)?/\b/:/\B/),xe=["Protocol","Type"].map(ke),Me=["init","self"].map(ke),Se=["Any","Self"],Ae=["actor","any","associatedtype","async","await",/as\?/,/as!/,"as","borrowing","break","case","catch","class","consume","consuming","continue","convenience","copy","default","defer","deinit","didSet","distributed","do","dynamic","each","else","enum","extension","fallthrough",/fileprivate\(set\)/,"fileprivate","final","for","func","get","guard","if","import","indirect","infix",/init\?/,/init!/,"inout",/internal\(set\)/,"internal","in","is","isolated","nonisolated","lazy","let","macro","mutating","nonmutating",/open\(set\)/,"open","operator","optional","override","postfix","precedencegroup","prefix",/private\(set\)/,"private","protocol",/public\(set\)/,"public","repeat","required","rethrows","return","set","some","static","struct","subscript","super","switch","throws","throw",/try\?/,/try!/,"try","typealias",/unowned\(safe\)/,/unowned\(unsafe\)/,"unowned","var","weak","where","while","willSet"],Ce=["false","nil","true"],Te=["assignment","associativity","higherThan","left","lowerThan","none","right"],Re=["#colorLiteral","#column","#dsohandle","#else","#elseif","#endif","#error","#file","#fileID","#fileLiteral","#filePath","#function","#if","#imageLiteral","#keyPath","#line","#selector","#sourceLocation","#warning"],De=["abs","all","any","assert","assertionFailure","debugPrint","dump","fatalError","getVaList","isKnownUniquelyReferenced","max","min","numericCast","pointwiseMax","pointwiseMin","precondition","preconditionFailure","print","readLine","repeatElement","sequence","stride","swap","swift_unboxFromSwiftValueWithType","transcode","type","unsafeBitCast","unsafeDowncast","withExtendedLifetime","withUnsafeMutablePointer","withUnsafePointer","withVaList","withoutActuallyEscaping","zip"],Ie=m(/[/=\-+!*%<>&|^~?]/,/[\u00A1-\u00A7]/,/[\u00A9\u00AB]/,/[\u00AC\u00AE]/,/[\u00B0\u00B1]/,/[\u00B6\u00BB\u00BF\u00D7\u00F7]/,/[\u2016-\u2017]/,/[\u2020-\u2027]/,/[\u2030-\u203E]/,/[\u2041-\u2053]/,/[\u2055-\u205E]/,/[\u2190-\u23FF]/,/[\u2500-\u2775]/,/[\u2794-\u2BFF]/,/[\u2E00-\u2E7F]/,/[\u3001-\u3003]/,/[\u3008-\u3020]/,/[\u3030]/),Le=m(Ie,/[\u0300-\u036F]/,/[\u1DC0-\u1DFF]/,/[\u20D0-\u20FF]/,/[\uFE00-\uFE0F]/,/[\uFE20-\uFE2F]/),Be=b(Ie,Le,"*"),$e=m(/[a-zA-Z_]/,/[\u00A8\u00AA\u00AD\u00AF\u00B2-\u00B5\u00B7-\u00BA]/,/[\u00BC-\u00BE\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u00FF]/,/[\u0100-\u02FF\u0370-\u167F\u1681-\u180D\u180F-\u1DBF]/,/[\u1E00-\u1FFF]/,/[\u200B-\u200D\u202A-\u202E\u203F-\u2040\u2054\u2060-\u206F]/,/[\u2070-\u20CF\u2100-\u218F\u2460-\u24FF\u2776-\u2793]/,/[\u2C00-\u2DFF\u2E80-\u2FFF]/,/[\u3004-\u3007\u3021-\u302F\u3031-\u303F\u3040-\uD7FF]/,/[\uF900-\uFD3D\uFD40-\uFDCF\uFDF0-\uFE1F\uFE30-\uFE44]/,/[\uFE47-\uFEFE\uFF00-\uFFFD]/),ze=m($e,/\d/,/[\u0300-\u036F\u1DC0-\u1DFF\u20D0-\u20FF\uFE20-\uFE2F]/),Fe=b($e,ze,"*"),Ue=b(/[A-Z]/,ze,"*"),je=["attached","autoclosure",b(/convention\(/,m("swift","block","c"),/\)/),"discardableResult","dynamicCallable","dynamicMemberLookup","escaping","freestanding","frozen","GKInspectable","IBAction","IBDesignable","IBInspectable","IBOutlet","IBSegueAction","inlinable","main","nonobjc","NSApplicationMain","NSCopying","NSManaged",b(/objc\(/,Fe,/\)/),"objc","objcMembers","propertyWrapper","requires_stored_property_inits","resultBuilder","Sendable","testable","UIApplicationMain","unchecked","unknown","usableFromInline","warn_unqualified_access"],Pe=["iOS","iOSApplicationExtension","macOS","macOSApplicationExtension","macCatalyst","macCatalystApplicationExtension","watchOS","watchOSApplicationExtension","tvOS","tvOSApplicationExtension","swift"]
 ;var Ke=Object.freeze({__proto__:null,grmr_bash:e=>{const n=e.regex,t={},a={
 begin:/\$\{/,end:/\}/,contains:["self",{begin:/:-/,contains:[t]}]}
 ;Object.assign(t,{className:"variable",variants:[{
@@ -418,7 +419,7 @@ keyword:["if","then","else","elif","fi","for","while","until","in","do","done","
 literal:["true","false"],
 built_in:["break","cd","continue","eval","exec","exit","export","getopts","hash","pwd","readonly","return","shift","test","times","trap","umask","unset","alias","bind","builtin","caller","command","declare","echo","enable","help","let","local","logout","mapfile","printf","read","readarray","source","type","typeset","ulimit","unalias","set","shopt","autoload","bg","bindkey","bye","cap","chdir","clone","comparguments","compcall","compctl","compdescribe","compfiles","compgroups","compquote","comptags","comptry","compvalues","dirs","disable","disown","echotc","echoti","emulate","fc","fg","float","functions","getcap","getln","history","integer","jobs","kill","limit","log","noglob","popd","print","pushd","pushln","rehash","sched","setcap","setopt","stat","suspend","ttyctl","unfunction","unhash","unlimit","unsetopt","vared","wait","whence","where","which","zcompile","zformat","zftp","zle","zmodload","zparseopts","zprof","zpty","zregexparse","zsocket","zstyle","ztcp","chcon","chgrp","chown","chmod","cp","dd","df","dir","dircolors","ln","ls","mkdir","mkfifo","mknod","mktemp","mv","realpath","rm","rmdir","shred","sync","touch","truncate","vdir","b2sum","base32","base64","cat","cksum","comm","csplit","cut","expand","fmt","fold","head","join","md5sum","nl","numfmt","od","paste","ptx","pr","sha1sum","sha224sum","sha256sum","sha384sum","sha512sum","shuf","sort","split","sum","tac","tail","tr","tsort","unexpand","uniq","wc","arch","basename","chroot","date","dirname","du","echo","env","expr","factor","groups","hostid","id","link","logname","nice","nohup","nproc","pathchk","pinky","printenv","printf","pwd","readlink","runcon","seq","sleep","stat","stdbuf","stty","tee","test","timeout","tty","uname","unlink","uptime","users","who","whoami","yes"]
 },contains:[l,e.SHEBANG(),c,o,e.HASH_COMMENT_MODE,r,{match:/(\/[a-z._-]+)+/},s,{
-className:"",begin:/\\"/},{className:"string",begin:/'/,end:/'/},t]}},
+match:/\\"/},{className:"string",begin:/'/,end:/'/},{match:/\\'/},t]}},
 grmr_c:e=>{const n=e.regex,t=e.COMMENT("//","$",{contains:[{begin:/\\\n/}]
 }),a="decltype\\(auto\\)",i="[a-zA-Z_]\\w*::",r="("+a+"|"+n.optional(i)+"[a-zA-Z_]\\w*"+n.optional("<[^<>]+>")+")",s={
 className:"type",variants:[{begin:"\\b[a-z\\d_]*_t\\b"},{
@@ -726,35 +727,9 @@ className:"section",begin:/^[^\s]+:/,end:/$/,contains:[n]};return{
 name:"Makefile",aliases:["mk","mak","make"],keywords:{$pattern:/[\w-]+/,
 keyword:"define endef undefine ifdef ifndef ifeq ifneq else endif include -include sinclude override export unexport private vpath"
 },contains:[e.HASH_COMMENT_MODE,n,t,a,i,{className:"meta",begin:/^\.PHONY:/,
-end:/$/,keywords:{$pattern:/[\.\w]+/,keyword:".PHONY"}},r]}},grmr_xml:e=>{
-const n=e.regex,t=n.concat(/[\p{L}_]/u,n.optional(/[\p{L}0-9_.-]*:/u),/[\p{L}0-9_.-]*/u),a={
-className:"symbol",begin:/&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/},i={begin:/\s/,
-contains:[{className:"keyword",begin:/#?[a-z_][a-z1-9_-]+/,illegal:/\n/}]
-},r=e.inherit(i,{begin:/\(/,end:/\)/}),s=e.inherit(e.APOS_STRING_MODE,{
-className:"string"}),o=e.inherit(e.QUOTE_STRING_MODE,{className:"string"}),l={
-endsWithParent:!0,illegal:/</,relevance:0,contains:[{className:"attr",
-begin:/[\p{L}0-9._:-]+/u,relevance:0},{begin:/=\s*/,relevance:0,contains:[{
-className:"string",endsParent:!0,variants:[{begin:/"/,end:/"/,contains:[a]},{
-begin:/'/,end:/'/,contains:[a]},{begin:/[^\s"'=<>`]+/}]}]}]};return{
-name:"HTML, XML",
-aliases:["html","xhtml","rss","atom","xjb","xsd","xsl","plist","wsf","svg"],
-case_insensitive:!0,unicodeRegex:!0,contains:[{className:"meta",begin:/<![a-z]/,
-end:/>/,relevance:10,contains:[i,o,s,r,{begin:/\[/,end:/\]/,contains:[{
-className:"meta",begin:/<![a-z]/,end:/>/,contains:[i,r,o,s]}]}]
-},e.COMMENT(/<!--/,/-->/,{relevance:10}),{begin:/<!\[CDATA\[/,end:/\]\]>/,
-relevance:10},a,{className:"meta",end:/\?>/,variants:[{begin:/<\?xml/,
-relevance:10,contains:[o]},{begin:/<\?[a-z][a-z0-9]+/}]},{className:"tag",
-begin:/<style(?=\s|>)/,end:/>/,keywords:{name:"style"},contains:[l],starts:{
-end:/<\/style>/,returnEnd:!0,subLanguage:["css","xml"]}},{className:"tag",
-begin:/<script(?=\s|>)/,end:/>/,keywords:{name:"script"},contains:[l],starts:{
-end:/<\/script>/,returnEnd:!0,subLanguage:["javascript","handlebars","xml"]}},{
-className:"tag",begin:/<>|<\/>/},{className:"tag",
-begin:n.concat(/</,n.lookahead(n.concat(t,n.either(/\/>/,/>/,/\s/)))),
-end:/\/?>/,contains:[{className:"name",begin:t,relevance:0,starts:l}]},{
-className:"tag",begin:n.concat(/<\//,n.lookahead(n.concat(t,/>/))),contains:[{
-className:"name",begin:t,relevance:0},{begin:/>/,relevance:0,endsParent:!0}]}]}
-},grmr_markdown:e=>{const n={begin:/<\/?[A-Za-z_]/,end:">",subLanguage:"xml",
-relevance:0},t={variants:[{begin:/\[.+?\]\[.*?\]/,relevance:0},{
+end:/$/,keywords:{$pattern:/[\.\w]+/,keyword:".PHONY"}},r]}},grmr_markdown:e=>{
+const n={begin:/<\/?[A-Za-z_]/,end:">",subLanguage:"xml",relevance:0},t={
+variants:[{begin:/\[.+?\]\[.*?\]/,relevance:0},{
 begin:/\[.+?\]\(((data|javascript|mailto):|(?:http|ftp)s?:\/\/).*?\)/,
 relevance:2},{
 begin:e.regex.concat(/\[.+?\]\(/,/[A-Za-z][A-Za-z0-9+.-]*/,/:\/\/.*?\)/),
@@ -1015,8 +990,8 @@ starts:{end:"$",keywords:r,contains:m}}];return l.unshift(o),{name:"Ruby",
 aliases:["rb","gemspec","podspec","thor","irb"],keywords:r,illegal:/\/\*/,
 contains:[e.SHEBANG({binary:"ruby"})].concat(p).concat(l).concat(m)}},
 grmr_rust:e=>{const n=e.regex,t={className:"title.function.invoke",relevance:0,
-begin:n.concat(/\b/,/(?!let\b)/,e.IDENT_RE,n.lookahead(/\s*\(/))
-},a="([ui](8|16|32|64|128|size)|f(32|64))?",i=["drop ","Copy","Send","Sized","Sync","Drop","Fn","FnMut","FnOnce","ToOwned","Clone","Debug","PartialEq","PartialOrd","Eq","Ord","AsRef","AsMut","Into","From","Default","Iterator","Extend","IntoIterator","DoubleEndedIterator","ExactSizeIterator","SliceConcatExt","ToString","assert!","assert_eq!","bitflags!","bytes!","cfg!","col!","concat!","concat_idents!","debug_assert!","debug_assert_eq!","env!","panic!","file!","format!","format_args!","include_bytes!","include_str!","line!","local_data_key!","module_path!","option_env!","print!","println!","select!","stringify!","try!","unimplemented!","unreachable!","vec!","write!","writeln!","macro_rules!","assert_ne!","debug_assert_ne!"],r=["i8","i16","i32","i64","i128","isize","u8","u16","u32","u64","u128","usize","f32","f64","str","char","bool","Box","Option","Result","String","Vec"]
+begin:n.concat(/\b/,/(?!let|for|while|if|else|match\b)/,e.IDENT_RE,n.lookahead(/\s*\(/))
+},a="([ui](8|16|32|64|128|size)|f(32|64))?",i=["drop ","Copy","Send","Sized","Sync","Drop","Fn","FnMut","FnOnce","ToOwned","Clone","Debug","PartialEq","PartialOrd","Eq","Ord","AsRef","AsMut","Into","From","Default","Iterator","Extend","IntoIterator","DoubleEndedIterator","ExactSizeIterator","SliceConcatExt","ToString","assert!","assert_eq!","bitflags!","bytes!","cfg!","col!","concat!","concat_idents!","debug_assert!","debug_assert_eq!","env!","eprintln!","panic!","file!","format!","format_args!","include_bytes!","include_str!","line!","local_data_key!","module_path!","option_env!","print!","println!","select!","stringify!","try!","unimplemented!","unreachable!","vec!","write!","writeln!","macro_rules!","assert_ne!","debug_assert_ne!"],r=["i8","i16","i32","i64","i128","isize","u8","u16","u32","u64","u128","usize","f32","f64","str","char","bool","Box","Option","Result","String","Vec"]
 ;return{name:"Rust",aliases:["rs"],keywords:{$pattern:e.IDENT_RE+"!?",type:r,
 keyword:["abstract","as","async","await","become","box","break","const","continue","crate","do","dyn","else","enum","extern","false","final","fn","for","if","impl","in","let","loop","macro","match","mod","move","mut","override","priv","pub","ref","return","self","Self","static","struct","super","trait","true","try","type","typeof","unsafe","unsized","use","virtual","where","while","yield"],
 literal:["true","false","Some","None","Ok","Err"],built_in:i},illegal:"</",
@@ -1097,38 +1072,42 @@ match:b(/\\/,e,/[0\\tnr"']/)},{match:b(/\\/,e,/u\{[0-9a-fA-F]{1,8}\}/)}]
 }),w=(e="")=>({begin:b(e,/"""/),end:b(/"""/,e),contains:[E(e),y(e),N(e)]
 }),v=(e="")=>({begin:b(e,/"/),end:b(/"/,e),contains:[E(e),N(e)]}),O={
 className:"string",
-variants:[w(),w("#"),w("##"),w("###"),v(),v("#"),v("##"),v("###")]},k={
-match:b(/`/,Fe,/`/)},x=[k,{className:"variable",match:/\$\d+/},{
-className:"variable",match:`\\$${ze}+`}],M=[{match:/(@|#(un)?)available/,
-className:"keyword",starts:{contains:[{begin:/\(/,end:/\)/,keywords:Pe,
-contains:[...p,f,O]}]}},{className:"keyword",match:b(/@/,m(...je))},{
-className:"meta",match:b(/@/,Fe)}],S={match:d(/\b[A-Z]/),relevance:0,contains:[{
-className:"type",
+variants:[w(),w("#"),w("##"),w("###"),v(),v("#"),v("##"),v("###")]
+},k=[e.BACKSLASH_ESCAPE,{begin:/\[/,end:/\]/,relevance:0,
+contains:[e.BACKSLASH_ESCAPE]}],x={begin:/\/[^\s](?=[^/\n]*\/)/,end:/\//,
+contains:k},M=e=>{const n=b(e,/\//),t=b(/\//,e);return{begin:n,end:t,
+contains:[...k,{scope:"comment",begin:`#(?!.*${t})`,end:/$/}]}},S={
+scope:"regexp",variants:[M("###"),M("##"),M("#"),x]},A={match:b(/`/,Fe,/`/)
+},C=[A,{className:"variable",match:/\$\d+/},{className:"variable",
+match:`\\$${ze}+`}],T=[{match:/(@|#(un)?)available/,scope:"keyword",starts:{
+contains:[{begin:/\(/,end:/\)/,keywords:Pe,contains:[...p,f,O]}]}},{
+scope:"keyword",match:b(/@/,m(...je))},{scope:"meta",match:b(/@/,Fe)}],R={
+match:d(/\b[A-Z]/),relevance:0,contains:[{className:"type",
 match:b(/(AV|CA|CF|CG|CI|CL|CM|CN|CT|MK|MP|MTK|MTL|NS|SCN|SK|UI|WK|XC)/,ze,"+")
 },{className:"type",match:Ue,relevance:0},{match:/[?!]+/,relevance:0},{
-match:/\.\.\./,relevance:0},{match:b(/\s+&\s+/,d(Ue)),relevance:0}]},A={
-begin:/</,end:/>/,keywords:l,contains:[...a,...c,...M,u,S]};S.contains.push(A)
-;const C={begin:/\(/,end:/\)/,relevance:0,keywords:l,contains:["self",{
+match:/\.\.\./,relevance:0},{match:b(/\s+&\s+/,d(Ue)),relevance:0}]},D={
+begin:/</,end:/>/,keywords:l,contains:[...a,...c,...T,u,R]};R.contains.push(D)
+;const I={begin:/\(/,end:/\)/,relevance:0,keywords:l,contains:["self",{
 match:b(Fe,/\s*:/),keywords:"_|0",relevance:0
-},...a,...c,...g,...p,f,O,...x,...M,S]},T={begin:/</,end:/>/,contains:[...a,S]
-},R={begin:/\(/,end:/\)/,keywords:l,contains:[{
-begin:m(d(b(Fe,/\s*:/)),d(b(Fe,/\s+/,Fe,/\s*:/))),end:/:/,relevance:0,
-contains:[{className:"keyword",match:/\b_\b/},{className:"params",match:Fe}]
-},...a,...c,...p,f,O,...M,S,C],endsParent:!0,illegal:/["']/},D={
-match:[/func/,/\s+/,m(k.match,Fe,Be)],className:{1:"keyword",3:"title.function"
-},contains:[T,R,n],illegal:[/\[/,/%/]},I={
+},...a,S,...c,...g,...p,f,O,...C,...T,R]},L={begin:/</,end:/>/,
+keywords:"repeat each",contains:[...a,R]},B={begin:/\(/,end:/\)/,keywords:l,
+contains:[{begin:m(d(b(Fe,/\s*:/)),d(b(Fe,/\s+/,Fe,/\s*:/))),end:/:/,
+relevance:0,contains:[{className:"keyword",match:/\b_\b/},{className:"params",
+match:Fe}]},...a,...c,...p,f,O,...T,R,I],endsParent:!0,illegal:/["']/},$={
+match:[/(func|macro)/,/\s+/,m(A.match,Fe,Be)],className:{1:"keyword",
+3:"title.function"},contains:[L,B,n],illegal:[/\[/,/%/]},z={
 match:[/\b(?:subscript|init[?!]?)/,/\s*(?=[<(])/],className:{1:"keyword"},
-contains:[T,R,n],illegal:/\[|%/},L={match:[/operator/,/\s+/,Be],className:{
-1:"keyword",3:"title"}},B={begin:[/precedencegroup/,/\s+/,Ue],className:{
-1:"keyword",3:"title"},contains:[S],keywords:[...Te,...Ce],end:/}/}
+contains:[L,B,n],illegal:/\[|%/},F={match:[/operator/,/\s+/,Be],className:{
+1:"keyword",3:"title"}},U={begin:[/precedencegroup/,/\s+/,Ue],className:{
+1:"keyword",3:"title"},contains:[R],keywords:[...Te,...Ce],end:/}/}
 ;for(const e of O.variants){const n=e.contains.find((e=>"interpol"===e.label))
-;n.keywords=l;const t=[...c,...g,...p,f,O,...x];n.contains=[...t,{begin:/\(/,
+;n.keywords=l;const t=[...c,...g,...p,f,O,...C];n.contains=[...t,{begin:/\(/,
 end:/\)/,contains:["self",...t]}]}return{name:"Swift",keywords:l,
-contains:[...a,D,I,{beginKeywords:"struct protocol class extension enum actor",
+contains:[...a,$,z,{beginKeywords:"struct protocol class extension enum actor",
 end:"\\{",excludeEnd:!0,keywords:l,contains:[e.inherit(e.TITLE_MODE,{
 className:"title.class",begin:/[A-Za-z$_][\u00C0-\u02B80-9A-Za-z$_]*/}),...c]
-},L,B,{beginKeywords:"import",end:/$/,contains:[...a],relevance:0
-},...c,...g,...p,f,O,...x,...M,S,C]}},grmr_typescript:e=>{
+},F,U,{beginKeywords:"import",end:/$/,contains:[...a],relevance:0
+},S,...c,...g,...p,f,O,...C,...T,R,I]}},grmr_typescript:e=>{
 const n=Oe(e),t=_e,a=["any","void","number","boolean","string","object","never","symbol","bigint","unknown"],i={
 beginKeywords:"namespace",end:/\{/,excludeEnd:!0,
 contains:[n.exports.CLASS_REFERENCE]},r={beginKeywords:"interface",end:/\{/,
@@ -1178,7 +1157,34 @@ className:"type"},{className:"keyword",
 match:/\b(f32|f64|i32|i64)(?:\.(?:abs|add|and|ceil|clz|const|convert_[su]\/i(?:32|64)|copysign|ctz|demote\/f64|div(?:_[su])?|eqz?|extend_[su]\/i32|floor|ge(?:_[su])?|gt(?:_[su])?|le(?:_[su])?|load(?:(?:8|16|32)_[su])?|lt(?:_[su])?|max|min|mul|nearest|neg?|or|popcnt|promote\/f32|reinterpret\/[fi](?:32|64)|rem_[su]|rot[lr]|shl|shr_[su]|store(?:8|16|32)?|sqrt|sub|trunc(?:_[su]\/f(?:32|64))?|wrap\/i64|xor))\b/
 },{className:"number",relevance:0,
 match:/[+-]?\b(?:\d(?:_?\d)*(?:\.\d(?:_?\d)*)?(?:[eE][+-]?\d(?:_?\d)*)?|0x[\da-fA-F](?:_?[\da-fA-F])*(?:\.[\da-fA-F](?:_?[\da-fA-D])*)?(?:[pP][+-]?\d(?:_?\d)*)?)\b|\binf\b|\bnan(?::0x[\da-fA-F](?:_?[\da-fA-D])*)?\b/
-}]}},grmr_yaml:e=>{
+}]}},grmr_xml:e=>{
+const n=e.regex,t=n.concat(/[\p{L}_]/u,n.optional(/[\p{L}0-9_.-]*:/u),/[\p{L}0-9_.-]*/u),a={
+className:"symbol",begin:/&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/},i={begin:/\s/,
+contains:[{className:"keyword",begin:/#?[a-z_][a-z1-9_-]+/,illegal:/\n/}]
+},r=e.inherit(i,{begin:/\(/,end:/\)/}),s=e.inherit(e.APOS_STRING_MODE,{
+className:"string"}),o=e.inherit(e.QUOTE_STRING_MODE,{className:"string"}),l={
+endsWithParent:!0,illegal:/</,relevance:0,contains:[{className:"attr",
+begin:/[\p{L}0-9._:-]+/u,relevance:0},{begin:/=\s*/,relevance:0,contains:[{
+className:"string",endsParent:!0,variants:[{begin:/"/,end:/"/,contains:[a]},{
+begin:/'/,end:/'/,contains:[a]},{begin:/[^\s"'=<>`]+/}]}]}]};return{
+name:"HTML, XML",
+aliases:["html","xhtml","rss","atom","xjb","xsd","xsl","plist","wsf","svg"],
+case_insensitive:!0,unicodeRegex:!0,contains:[{className:"meta",begin:/<![a-z]/,
+end:/>/,relevance:10,contains:[i,o,s,r,{begin:/\[/,end:/\]/,contains:[{
+className:"meta",begin:/<![a-z]/,end:/>/,contains:[i,r,o,s]}]}]
+},e.COMMENT(/<!--/,/-->/,{relevance:10}),{begin:/<!\[CDATA\[/,end:/\]\]>/,
+relevance:10},a,{className:"meta",end:/\?>/,variants:[{begin:/<\?xml/,
+relevance:10,contains:[o]},{begin:/<\?[a-z][a-z0-9]+/}]},{className:"tag",
+begin:/<style(?=\s|>)/,end:/>/,keywords:{name:"style"},contains:[l],starts:{
+end:/<\/style>/,returnEnd:!0,subLanguage:["css","xml"]}},{className:"tag",
+begin:/<script(?=\s|>)/,end:/>/,keywords:{name:"script"},contains:[l],starts:{
+end:/<\/script>/,returnEnd:!0,subLanguage:["javascript","handlebars","xml"]}},{
+className:"tag",begin:/<>|<\/>/},{className:"tag",
+begin:n.concat(/</,n.lookahead(n.concat(t,n.either(/\/>/,/>/,/\s/)))),
+end:/\/?>/,contains:[{className:"name",begin:t,relevance:0,starts:l}]},{
+className:"tag",begin:n.concat(/<\//,n.lookahead(n.concat(t,/>/))),contains:[{
+className:"name",begin:t,relevance:0},{begin:/>/,relevance:0,endsParent:!0}]}]}
+},grmr_yaml:e=>{
 const n="true false yes no null",t="[\\w#;/?:@&=+$,.~*'()[\\]]+",a={
 className:"string",relevance:0,variants:[{begin:/'/,end:/'/},{begin:/"/,end:/"/
 },{begin:/\S+/}],contains:[e.BACKSLASH_ESCAPE,{className:"template-variable",
@@ -1201,75 +1207,131 @@ className:"number",
 begin:"\\b[0-9]{4}(-[0-9][0-9]){0,2}([Tt \\t][0-9][0-9]?(:[0-9][0-9]){2})?(\\.[0-9]*)?([ \\t])*(Z|[-+][0-9][0-9]?(:[0-9][0-9])?)?\\b"
 },{className:"number",begin:e.C_NUMBER_RE+"\\b",relevance:0},s,o,a],c=[...l]
 ;return c.pop(),c.push(i),r.contains=c,{name:"YAML",case_insensitive:!0,
-aliases:["yml"],contains:l}}});const qe=ae;for(const e of Object.keys(Ke)){
-const n=e.replace("grmr_","").replace("_","-");qe.registerLanguage(n,Ke[e])}
-return qe}()
-;"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=hljs);/*! `apex` grammar compiled for Highlight.js 11.8.0 */
+aliases:["yml"],contains:l}}});const He=ae;for(const e of Object.keys(Ke)){
+const n=e.replace("grmr_","").replace("_","-");He.registerLanguage(n,Ke[e])}
+return He}()
+;"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=hljs);
+
+
+
+/*! `apex` grammar compiled for Highlight.js 11.9.0 */
 (()=>{var e=(()=>{"use strict";return e=>{
-const t=e.regex,s="[a-zA-Z][a-zA-Z_0-9]*",a={scope:"number",variants:[{
-match:/\b[0-9]+(?:\.[0-9]+)?/},{match:/\s(?:[0-9,]+)?\.[0-9]+/},{
-match:/\b0(x|X)[0-9a-fA-F_]+(U|u|L|l|UL|Ul|uL|ul|LU|Lu|lU|lu)?\b/},{
-match:/\b0(b|B)[01_]+(U|u|L|l|UL|Ul|uL|ul|LU|Lu|lU|lu)?\b/},{
-match:/\b([0-9_]+)?\.[0-9_]+((e|E)[0-9]+)?(F|f|D|d|M|m)?\b/},{
-match:/\b[0-9_]+(e|E)[0-9_]+(F|f|D|d|M|m)?\b/},{match:/\b[0-9_]+(F|f|D|d|M|m)\b/
-},{match:/\b[0-9_]+(U|u|L|l|UL|Ul|uL|ul|LU|Lu|lU|lu)?\b/}],relevance:0},c={
-$pattern:"[A-Za-z][0-9A-Za-z$_]*",
-keyword:["trigger|10","class","interface","abstract","AccessLevel","USER_MODE","SYSTEM_MODE","AccessType","break","cast","catch","continue","default","do","else","exports","extends|6","finally","for","get","put","set","global","if","implements","new","newMap|10","old|10","oldMap|10","operationType","override","private","protected","public","return","size","static","throws","throw","testmethod|10","try","virtual","webservice","when","while"],
-"variable.language":["final","instanceof","super","this","transient"],
-built_in:["finish","start","execute"].concat(["insert","update","upsert|8","delete","undelete","merge","convertLead|10"]),
-type:["anytype","blob|0","boolean|0","byte|0","currency|0","date|0","datetime|0","decimal|0","double|0","enum|0","float|0","integer|0","long|0","object","pagereference|10","selectoption|10","short|0","sobject|10","string|0","time|0","void|0","float|0"],
-literal:["false","true","null"]},n={
-match:t.either(/-/,/--/,/~/,/\*/,/\*=/,/\/=/,/%/,/\+/,/\+\+/,/<</,/>>/,/>=/,/<=/,/\s<\s/,/\s>\s/,/\^/,/\^=/,/!=/,/!/,/==/,/&&/,/&/,/\|\|/,/\|/,/(?<=\s)\?|:(?=\s)/,/=/,/=>/,/\?\./),
-scope:"operator",relevance:0},r={
-match:[/\b/,t.either("ApexPages|10","AppLauncher","Approval","Assert","Auth","Cache","Canvas","ChatterAnswers|10","CommercePayments|10","ConnectApi|10","Database","Datacloud|10","Dataweave|10","DataSource|10","Dom","EventBus|10","ExternalService","Flow","Functions","Invocable","KbManagement|10","Label","LxScheduler|10","Messaging","Metadata","Pref_center|10","Process","QuickAction","Reports","RichMessageing","Savepoint","SchedulableContext","Schema","Search","Sfc|10","Sfdc_Checkout|10","sfdc_surveys|10","Site","Support","System","TerritoryMgmt|10","Test","Trigger|10","TxnSecurity|10","Type","UserProvisioning|10","VisualEditor|10","Wave|10"),/(?=\.)/],
-scope:{2:"built_in"},relevance:10
-},o=e.COMMENT("//",/[$\n]/),i=e.COMMENT("/\\*","\\*/",{relevance:0,contains:[{
-begin:/\w+@/,relevance:0},{scope:"doctag",begin:"@[A-Za-z_]+"},{begin:"`",
-end:"`",excludeBegin:!0,excludeEnd:!0,scope:"code",
-contains:[e.BACKSLASH_ESCAPE],relevance:0},e.APOS_STRING_MODE,{
-match:[/(?<=@param)/,/\s+/,/\w+/],scope:{3:"variable"}}]})
-;t.either("label","description","callout","required","category","configurationEditor","iconName","SeeAllData")
-;const l={relevance:10,scope:{1:"meta"},match:["@"+s]},b=[{
-match:/\b[a-zA-Z\d]*Exception\b/,scope:"title.class",relevance:0},{
-match:[/\wthrow\s+new\s+/,s],scope:{1:"keyword",2:"title.class"},relevance:0
-}],p=[{match:[t.concat(/\b/,s,/\b/),/>/],scope:{1:"type"},relevance:10}],u=[{
-match:[/\b(list|set|map)\s*/,"<",/[\.\w]+/],scope:{1:"type",3:"type"},
-relevance:10},{match:[s,t.lookahead(/\s*\[\]/)],scope:{1:"type"}}],E={
-variants:[{match:[/\./,t.concat("(?:"+s+")"),/(?=\s*\(\))/],scope:{
-2:"title.function.invoke"}},{
-match:[/\./,t.concat("(?:"+s+")"),/(?=\s*\([^\)])/],scope:{
-2:"title.function.invoke"}},{
-match:[/(?<=\s)/,t.concat("(?:"+s+")"),/(?=\s*\()/],scope:{2:"title.function"}
-}],contains:[o,i,e.APOS_STRING_MODE],relevance:0},m={
-begin:/\[[\s\n]*(?=(SELECT|FIND))/,end:/\]/,scope:"subst",relevance:10,
-contains:[{
-begin:t.concat(/\b/,t.either("ABOVE_OR_BELOW","ABOVE","ACTIVE","ADVANCED","ALL",/ALL\s+FIELDS/,"AND","ANY","ARRAY","AS","ASC","BY","CATEGORY","CONTAINS","COUNT","COUNT_DISTINCT","SUM","MAX","MIN","HOUR_IN_DAY","CONVERTCURRENCY","CUBE","DATA","DESC","DIVISION","END","EXCLUDES","FIELDS","FIND|10","FIRST","FOR","FROM",/GROUP\s+BY/,"HAVING","INCLUDES","LAST","LAST_90_DAYS","LAST_MONTH","LAST_N_DAYS","LAST_WEEK","LAST","LIKE","LIMIT","NETWORK","NEXT_90_DAYS","NEXT_MONTH","NEXT_N_DAYS","NEXT_WEEK","NULLS","OFFSET","ON","OR",/ORDER\s+BY/,"REFERENCE","RETURNING","ROLLUP","ROWS","SEARCH","SECURITY_ENFORCED","SELECT","SNIPPET","SORT","THIS_MONTH","THIS_WEEK","TODAY","TOLABEL","TOMORROW","TRACKING","TYPEOF","UPDATE",/USING\s+SCOPE/,"VIEW","VIEWSTAT","VIEWSTATE","WHERE","WITH","YESTERDAY","USER_MODE"),/\b/),
-scope:"keyword"},{match:/(\bIN\b|<|<=|>|>=|\bNOT\s+IN\b|=|!\s*=|\s:{1}|:{1}\s)/,
-scope:"literal"},{match:/(?<=\bFROM\b\s+)\w+/,scope:"type",relevance:0},{
-match:[t.concat(/\b/,"[a-zA-Z][a-zA-Z_]*"),":",/[0-9]+\b/],scope:{1:"keyword",
-3:"number"},relevance:10},a,E,e.APOS_STRING_MODE],illegal:"::"};return{
-name:"Apex",aliases:["apex","lightning"],case_insensitive:!0,
-disableAutodetect:!1,ignoreIllegals:!1,keywords:c,
-illegal:["</","<#","<]","<div>","\x3c!--","!DOCTYPE",/<iframe\b/,/^#/,/^import \.[a-zA-Z]+\./,/^import [\w]+/,/^import$/,/^include </,/^use\s+</,/\b(const|var)\s+\w+\s*=/,/\bstruct\b/,"System.log","console.log",/\bfor\s+\w+\s+IN\s+/,/\bif\s+\w+\s+IN\s+/,/\bend\s+if\b/,/\bend\s+select\b/,/\b(int|var)\s+\w+\s+=/,/\b(int[0-9]+|bool)\b/,/\b\$/,"::=",/\s#[a-zA-Z]/,/\s_[a-zA-Z]/,/\s\$[a-zA-Z]/,"#if","%if",/\bif(?!\s+\()/,"%endif","#endif",/\w::\w/,/RETURNING\s+\*/,/\bint\b/,/import\s+\w+\s+=\s+require\("\w+"\)/,"/^include\b/",/\buse\s+strict\b/,/\w+\s+=\s+"\S*";/,/\/include\//,/\Anamespace\b/,/\bend\.\n/,/\bend\n/,'"""'],
-contains:[l,[{match:[/\b(?<=enum|\bnew)/,/\s+/,s,/\s*(?=[{()])/],scope:{3:"type"
-},contains:[o,i]},{match:[/(?<=\bclass\b)/,/\s+/,s],scope:{3:"title.class"}},{
-match:[/(?<=(public|private))/,/\s+/,s,/(?=\s*\(.*\)\s*{)/],scope:{
-3:"constructor"}},{begin:[/(?<=\btrigger\b)/,/\s+/,s,/\s+/,"on",/\s+/,s],
-end:"{",scope:{3:"title.class",7:"type"},contains:[o,i,{
-match:/(?:before|after)\s+(?:insert|update|delete|undelete)/,scope:"built_in",
-relevance:10}],relevance:10},{match:[/(?:extends)/,/\s+/,s],scope:{
-3:"title.class.inherited"},illegal:[/\b_/,/_\b/]}],[{
-match:[s,/\s+/,s,/\s+/,/=/],scope:{1:"type",3:"variable",5:"operator"},
-relevance:0},{match:[s,/\s+/,s,/\s+/,";"],scope:{1:"type",3:"variable"},
-relevance:0},{match:[/\s+/,s,/\s+/,/=/],scope:{2:"variable",4:"operator"},
-relevance:0},{match:[/(?<=\w+\s+=\s+\()/,s,/(?=\))/],scope:{2:"type"},
-relevance:0}],{relevance:10,match:[/\b(with|without|inherited)\s+sharing\b/],
-scope:{1:"keyword"}},u,p,i,o,{match:/\b(switch\s+on|as\s+user|as\s+system)\b/,
-relevance:8,scope:"keyword"},b,{variants:[{
-match:[/\bfor\b/,/\s*\(/,s,/\s+/,s,/\s+:/,/(?=\s*\[)/],scope:{1:"keyword",
-3:"type"}},{match:[/\bfor\b/,/\s*\(/,s,/\s+/,s,/\s+:/,/\s*/,s],scope:{
-1:"keyword",3:"type",8:"variable"}}],contains:[o,i,m]},e.APOS_STRING_MODE,E,{
-begin:["{",/\$[a-zA-Z]+]/,".",/\w+/],end:"}",scope:{2:"built_in",4:"property"}
-},r,a,n,{match:/(?<!\.)\bId\b/,scope:"type",relevance:8},m,{
-beginKeywords:"schedulable batchable queueable comparable callable",relevance:10
-}]}}})();hljs.registerLanguage("apex",e)})();
+  const t=e.regex,c="[a-zA-Z][a-zA-Z_0-9]*",a="\\b"+c+"\\b",n="@"+c,o="(?=\\s*\\()",s=/\s+/
+  ;function i(...e){return t.concat("(?!(\\b",e.join("\\b|\\b"),"\\b))")}const r={
+  scope:"number",
+  match:t.either(/\b(\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}\:\d{2}(\.\d{1,3})?(\-|\+)\d{2}\:\d{2})\b/,/\b(\d{4}\-\d{2}\-\d{2}T\d{2}\:\d{2}\:\d{2}(\.\d{1,3})?(Z)?)\b/,/\b(\d{4}\-\d{2}\-\d{2})\b/,/\b0(x|X)[0-9a-fA-F_]+(U|u|L|l|UL|Ul|uL|ul|LU|Lu|lU|lu)?\b/,/\b0(b|B)[01_]+(U|u|L|l|UL|Ul|uL|ul|LU|Lu|lU|lu)?\b/,/\b([0-9]+)?\.[0-9]+((e|E)[0-9]+)?(F|f|D|d|M|m)?\b/,/(-?)\b[0-9]+(e|E)[0-9]+(F|f|D|d|M|m)?\b/,/(-?)\b[0-9]+(F|f|D|d|M|m)\b/,/(-?)\b[0-9]+(U|u|L|l|UL|Ul|uL|ul|LU|Lu|lU|lu)?\b/,/(-?)(\b0[0-9]+|(\b\d+(\.\d*)?|\.\d+)([eE][-+]?\d+)?)/),
+  relevance:0
+  },l=["try","catch","finally","get","set","put","if","for","else","do","while","continue","break","implements","extends","return","throw","when","new"],b=[/try\b/,/catch\b/,/finally\b/,/get\b/,/set\b/,/put\b/,/if\b/,/for\b/,/else\b/,/do\b/,/while\b/,/continue\b/,/break\b/,/implements\b/,/extends\b/,/return\b/,/throw\b/,/when\b/,/new\b/],p=["instanceof","super","this"],u={
+  match:t.concat(/\b/,t.either(...p),/\b/),scope:"variable.language",relevance:0
+  },d=["abstract","final","global","interface","override","private","protected","public","static","testMethod","transient","virtual","webservice"],m=["anytype","blob","boolean","byte","currency","date","datetime","decimal","double","enum","float","integer","long","object","pagereference","selectoption","short","sobject","string","time","void","float"],h=["insert","update","upsert","delete","undelete","merge","convertLead"],E=["AppLauncher","Approval","Auth","Cache","Canvas","ChatterAnswers","CommercePayments","ConnectApi","Database","Datacloud","Dataweave","DataSource","Dom","EventBus","ExternalService","Flow","Functions","Invocable","KbManagement","LxScheduler","Messaging","Metadata","Pref_center","Process","QuickAction","Reports","RichMessageing","Search","Sfc","Sfdc_Checkout","sfdc_surveys","Site","Support","System","TerritoryMgmt","TxnSecurity","UserProvisioning","VisualEditor","Wave"],A=["AccessLevel","Address","Answers","ApexPages","Approval","Assert","AsyncInfo","AsyncOptions","BusinessHours","Cases","Collator","Continuation","Cookie","Crypto","Database","Date","Datetime","Decimal","Domain","DomainCreator","DomainParser","EmailMessages","EncodingUtil","EventBus","Exception","FeatureManagement","FlexQueue","Formula","FormulaRecalcFieldError","FormulaRecalcResult","Http","HttpRequest","HttpResponse","Ideas","JSON","JSONGenerator","JSONParser","Label","Limits","Location","Matcher","Math","Messaging","MultiStaticResourceCalloutMock","Network","OrgLimit","OrgLimits","Packaging","PageReference","Pattern","QueueableDuplicateSignature","QueueableDuplicateSignature.Builder","QuickAction","Request","ResetPasswordResult","RestContext","RestRequest","RestResponse","Schema","Search","Security","SelectOption","Site","SObject","SObjectAccessDecision","StaticResourceCalloutMock","Test","TimeZone","Type","URL","UserInfo","UserManagement","Version","WebServiceCallout","XmlStreamReader","XmlStreamWriter"],S=["AccessType","AccessLevel","DomainType","JSONToken","LoggingLevel","Quiddity","TriggerOperation","operationType"],g="\\b"+l.concat(...d).concat(...h).concat(...p).join("\\b|\\b")+"\\b",v=E.concat(...A),T={
+  scope:"clause: params call",begin:/\((?!(\s*\[))/,beginScope:"punctuation",
+  end:/\)/,endScope:"punctuation",relevance:0,keywords:{},contains:[]},R=[{
+  match:[t.concat("(?<=\\b"+t.either(...S)+")"),/\./,c,/(?![\.\(])/],scope:{
+  2:"punctuation",3:"variable.constant"},relevance:0},{
+  match:t.concat(/\b/,t.either(...S),/\b/),scope:"built_in"},{
+  match:t.concat(/\b/,t.either(...E),t.concat("\b(?!\\.",t.either(...A),")")),
+  scope:"built_in",relevance:0},{
+  match:[/\b/,"System",/\./,t.either(...A),/(?=\.)/],scope:{2:"built_in",
+  3:"punctuation",4:"built_in"},relevance:5},{
+  match:[t.concat("(?<=\\b",t.either(...v),")"),/\./,c,o],scope:{2:"punctuation",
+  3:"keyword builtin"},relevance:0,starts:T},{
+  match:[t.concat(/\b/,"Trigger",/\b/),/\./,/(isExecuting|isInsert|isUpdate|isDelete|isBefore|isAfter|isUndelete|new|newMap|old|oldMap|size|operationType)\b(?!\.)/],
+  scope:{1:"built_in",3:"keyword"},relevance:10},{
+  match:[t.concat(/\b/,"Trigger",/\b/),/\./,"operationtype",/\./,a],scope:{
+  1:"built_in",3:"keyword"},relevance:10}],y=["false","true","null"],O={
+  match:/(?<!\.)\bId\b/,scope:"type",relevance:8},L={
+  $pattern:t.concat(/(?<!\.)/,a),keyword:l.concat(...d).concat(...h),
+  "variable.language":p,built_in:v,type:m,literal:y},N=[{
+  match:t.either(",",/(?<!=\?)(\.)/,";",/(?<=\w)(\>)/,/(\<)(?=\w)/,/\{|\}/,/\(|\)/,/\{|\}/),
+  scope:"punctuation",relevance:0}],_=e.inherit(e.APOS_STRING_MODE,{contains:[{
+  match:/\\'/,scope:"literal"}],scope:"string",relevance:0
+  }),w=e.COMMENT("//",/[$\n]/,{relevance:0}),D=[e.COMMENT("/\\*","\\*/",{
+  relevance:0,contains:[{begin:/\w+@/,relevance:0},{
+  match:[/@(?:exception|throws)/,s,c],scope:{1:"doctag",3:"title.class"},
+  relevance:0},{begin:"@[A-Za-z_-]+",scope:"doctag",relevance:0},{
+  match:[/(?<=@param)\s+/,c],scope:{2:"variable"},relevance:0},{begin:"`",end:"`",
+  beginScope:"hidden",endScope:"hidden",scope:"string",
+  contains:[e.BACKSLASH_ESCAPE],relevance:0}]}),w],C={
+  match:t.concat(/(?<=\W|\b|\s)/,t.either(/--/,/\+\+/,/\&\&|\|\|/,/\*\=|\/\=|\%\=|\+\=|-\=/,/\&\=|\^\=|<<\=|>>\=|>>>\=|\|\=/,/\&|~|\^|\|/,/<<|>>/,/<\=|>\=|\s(<|>)\s/,/\=\=|!\=/,/\=>/,/!(?=\w)/,/(?<=\s)(\?|:)(?=\s)/,/\?\./,/(?<!\?)\?(?!\?|\.|\[)/,/%[^%]|\*[^\/]|\/[^\/\*]|(?<!\-)\-(?!\-)|(?<!\+)\+(?!\+)/,/(?<!\=|!)\=(?!\=|>)/),/(?=\W|\b|\s)/),
+  scope:"operator",relevance:0},I=[{match:t.concat(n,/\b(?!\s*\()/),scope:"meta"
+  },{begin:[t.concat(n,/\b/),/\s*/,/\(/],beginScope:{1:"meta",3:"punctuation"},
+  end:/(?=\))/,scope:"clause: annotation",contains:[{match:[a,/\s*=/],scope:{
+  2:"operator"},contains:[C]},_,r],keywords:{literal:y}}],U=[{
+  match:[/\b[a-zA-Z0-9\.]*Exception/,s,c],scope:{1:"title.class",3:"variable"},
+  relevance:0}],f=[{scope:"clause: collection",begin:/\b(list|set|map)(?=\s*<)/,
+  beginScope:"type collection",end:/\>+/,endScope:"punctuation",contains:[{
+  match:/\<|,/,scope:"punctuation"},{match:a,scope:"type"}],relevance:8},{
+  match:[t.optional(a),/\[/,t.optional(/\d+/),/\]/],scope:{1:"variable",
+  2:"punctuation",3:"number",4:"punctuation"}},{match:[c,/\[\]/],scope:{1:"type",
+  2:"punctuation"},relevance:0}],k=[{match:[/(?<!\.)\b/,c,/\s*(?=\=[^\>])/],
+  scope:{2:"variable"},relevance:0},{match:[/(?<=\=\s*\()/,c,"(?=\\)\\s*"+c+")"],
+  scope:{2:"type"},relevance:0}],M={
+  match:[/(?<=[^\w\.])/,t.concat(/\b/,c,/__(c|pc|r|b|e|mdt|x|share|kav|ka|history|del|s)/,/\b/),/(?=[\(\s;,])/],
+  scope:{2:"type"},relevance:10},F=[{match:[/\bnew\s+/,c,o],scope:{2:"type"},
+  relevance:0}],Y={scope:"params declare",end:/\)/,endScope:"punctuation",
+  relevance:0,keywords:{KEYWORDS:L},contains:[r,_,D,f,R,{match:/\,|\(/,
+  scope:"punctuation"},O,{match:[/(?<=\(|\,)\s*/,c,/(?=\s)/],scope:{2:"type"}},{
+  match:[s,c,/\s*(?=[,)])/],scope:{2:"variable"}}]},P=[{
+  begin:[/\btrigger/,s,c,s,"on",s,c],beginScope:{1:"keyword",3:"title.class",
+  5:"operator",7:"type"},end:/(?=\{)/,returnEnd:!0,
+  scope:"clause: trigger_declaration",contains:[D,{begin:/\(/,end:/\)/,contains:[{
+  match:/\b(before|after)\s+(insert|update|delete|merge|undelete)\b/,
+  scope:"keyword",relevance:5}]}]},{relevance:5,
+  match:/\b(with|without|inherited)\s+sharing\b/,scope:"keyword"},{
+  begin:[/[^\.]/,/\bclass\b/],beginScope:{2:"keyword"},end:/(?=\{)/,relevance:0,
+  scope:"clause: class_declaration",keywords:{type:m,keyword:l},contains:[{
+  match:[/(?<=\bclass)\s+/,c],scope:{2:"title.class"}},{returnEnd:!0,
+  endsWithParent:!0,variants:[{scope:"clause: implements block",
+  beginKeywords:"implements",end:/\bextends\b|\{/},{scope:"clause: extends block",
+  beginKeywords:"extends",end:/\bimplements\b|\{/}],contains:[R,{
+  match:[a,/\./,c,/(?=[,\s<])/],scope:{1:"built_in",3:"title.class.inherited"}},{
+  match:t.concat(a,/(?=>)/),scope:"type"},{match:t.concat(a,/(?!<)/),
+  scope:"title.class.inherited"},{
+  match:t.concat(/\b/,t.either("schedulable","batchable","queueable","comparable","callable"),/\b\s*(?!>)/),
+  scope:"title.class.inherited",relevance:8}],relevance:0}]},{
+  match:[t.concat("(?:\\b",t.either(...d,{capture:!1
+  }),"\\s*)+"),/(?:.*)\s/,t.concat("(?!"+g+")"),c,o],scope:{4:"title.function"},
+  relevance:1,contains:[f],starts:Y},{begin:[/\benum\s+/,c,s,/\{/],beginScope:{
+  2:"variable",4:"punctuation"},end:"}",scope:"clause: enum_declaration",
+  endScope:"punctuation",relevance:0,contains:[D,{match:/\,/,scope:"punctuation"
+  },{match:t.concat(a),scope:"variable.constant"}]}],W=[{
+  match:[t.concat("abcd",((...e)=>t.concat("(?!",e.join("|"),")"))(...d),/\b(?:.*\b)/,i(...b),/\b/),c,o],
+  scope:{2:"title.function.invoke method_call"},starts:T,illegal:[b],relevance:1
+  },{match:[t.concat("(?<!\\b",t.either(...v),")"),/\./,c,o],scope:{
+  2:"punctuation",3:"title.function.invoke dot"},starts:T,relevance:1}],x={
+  match:[/\bswitch\s+on\s+/,c],scope:{1:"keyword",2:"variable"}}
+  ;T.contains=[W,_,F,D,C,f,R,r,O,{match:[a,/\./,"class"],scope:{1:"type",
+  2:"punctuation",3:"type"},relevance:2},{keywords:{KEYWORDS:L},
+  match:t.concat(/(?<=\s|\(|\,)/,i(...y),c,/\b/,/(?!\.)/),scope:"variable"},{
+  match:/\,|\./,scope:"punctuation"}],T.keywords=L;const H={
+  keyword:[].concat(...L.keyword).concat("ABOVE_OR_BELOW","ACTIVE","ADVANCED","ALL","ANY","ARRAY","AS","ASC","BY","CATEGORY","CONTAINS","CUSTOM","DATA","DESC","DIVISION","END","FIELDS","FIND","FROM","LAST","METADATA","NETWORK","ON","ORDER","RETURNING","ROLLUP","ROWS","SEARCH","SELECT","SNIPPET","SORT","SPELL_CORRECTION","STANDARD","USER_MODE","WHERE","PricebookId","WITH","SECURITY_ENFORCED","USING","SCOPE","Delegated","Everything","Mine","My_Territory","My_Team_Territory","Team","TYPEOF","ELSE","END","THEN","WHEN").concat("ABOVE","AND","AT","BY","CATEGORY","DATA","FIRST","FOR","GROUP","HAVING","IN","LAST","LIKE","LIMIT","LISTVIEW","NOT","NULLS","OFFSET","OR","REFERENCE","TRACKING","TYPEOF","UPDATE","UPDATE","VIEW","VIEWSTAT"),
+  literal:L.literal,built_in:v},G={begin:[/\[/,/\s*/,/(?=(SELECT|FIND)\b)/],
+  beginScope:{1:"punctuation"},end:/\]/,endScope:"punctuation",scope:"soql",
+  relevance:10,endsWithParent:!0,keywords:H,contains:[{begin:/\bSELECT\b/,
+  beginScope:"keyword",end:/\bFROM\b/,returnEnd:!0,scope:"clause: select",
+  keywords:H,contains:["self",{
+  match:t.concat(/\b/,t.either("AVG","convertCurrency","convertTimezone","COUNT_DISTINCT","COUNT","DISTANCE","EXCLUDES","FORMAT","GEOLOCATION","GROUP BY CUBE","GROUP BY ROLLUP","GROUPING","INCLUDES","MAX","MIN","SUM","toLabel"),/(?=\()/),
+  scope:"type"},{
+  match:t.concat(/\b/,t.either("DAY_IN_MONTH","HOUR_IN_DAY","DAY_IN_WEEK","DAY_IN_YEAR","DAY_ONLY","CALENDAR_MONTH","CALENDAR_QUARTER","CALENDAR_YEAR","FISCAL_MONTH","FISCAL_QUARTER","FISCAL_YEAR","TODAY","TOMORROW","YESTERDAY","WEEK_IN_MONTH","WEEK_IN_YEAR"),/(?=\()/),
+  scope:"title.function"},N,{match:[/(?=[\s\,])/,c,/(?=[\s\,])/],scope:{2:"subst"}
+  }]},{begin:[/\bFROM/,s,a],beginScope:{1:"keyword",3:"type"},
+  scope:"clause: from_clause",end:/(?=\]|\s|\))/,contains:[{match:[/(?<=\.)/,a],
+  scope:{2:"type"}}]},{match:/:/,scope:"operator"},{
+  match:/(NEXT|LAST|THIS)_(90_DAY|DAY|FISCAL_QUARTER|FISCAL_YEAR|MONTH|QUARTER|WEEK|YEAR)S?\b/,
+  scope:"keyword",relevance:10},{
+  match:[/(NEXT|LAST)_N_(DAY|FISCAL_QUARTER|FISCAL_YEAR|MONTH|QUARTER|WEEK|YEAR)S/,/\s*:\s*/,/\d+/],
+  scope:{1:"keyword",2:"operator",3:"number"},relevance:10},{
+  match:[/(?<=:)/,/\s*/,c],scope:{3:"variable"}},r,W,C,_,N],
+  illegal:["::",/(SELECT|RETURNING)\s+\*/,/END\s+LOOP/,/CREATE\s+FUNCTION/]},B={
+  begin:[/\bfor\b\s*/,/\(/,c,s,c,/\s*/,/:/],beginScope:{3:"type",5:"variable",
+  7:"operator"},end:/(?=\{)/,scope:"clause: for_loop",contains:[D,G,W,{
+  match:t.concat(c,/\b(?!\()/),scope:"variable"},{match:t.concat(a,o),
+  scope:"title.function.invoke for_loop"},{match:/\{/,endsParent:!0},C,r,N]}
+  ;return{name:"Apex",aliases:["apex","lightning","soql"],case_insensitive:!0,
+  disableAutodetect:!1,ignoreIllegals:!1,keywords:L,
+  illegal:["</","<#","<]","<div>","\x3c!--","!DOCTYPE",/<iframe\b/,/^#/,/^import \.[a-zA-Z]+\./,/^import [\w]+/,/^import$/,/^include </,/^use\s+</,/\b(const|var)\s+\w+\s*=/,/\bstruct\b/,"System.log","console.log",/\bfor\s+\w+\s+IN\s+/,/\bif\s+\w+\s+IN\s+/,/\bend\s+if\b/,/\bend\s+select\b/,/\b(int|var)\s+\w+\s+=/,/\b(int[0-9]+|bool)\b/,/\b\$/,"::=",/\s#[a-zA-Z]/,/\s_[a-zA-Z]/,/\s\$[a-zA-Z]/,"#if","%if",/\bif(?!\s+\()/,"%endif","#endif",/\w::\w/,/\bint\b/,/import\s+\w+\s+=\s+require\("\w+"\)/,"/^include\b/",/\buse\s+strict\b/,/\w+\s+=\s+"\S*";/,/\/include\//,/\Anamespace\b/,/\bend(\.)?\n/,'"""',/\+\+\+/,/<%/,"<%#","%%>","<%%",":-",/\bmergesort\(/,/\bvar\s+env\b/,/\bdef\b\s\W:/,/"[^"]+"/,/^default/,/\/ ;$/,/\/\n/],
+  contains:[I,k,f,D,M,P,[{
+  match:[t.concat(/\b/,t.either(...h)),/\s+(?!\()/,t.optional(/as\s+(user|system)\b/)],
+  scope:{3:"keyword"}},{begin:[/\bDatabase\b/,/\./,t.either(...h),/(?=\()/],
+  beginScope:{1:"built_in",2:"punctuation",3:"keyword invoke_database"},starts:T
+  }],U,B,_,F,u,W,R,r,C,N,O,G,x]}}})();hljs.registerLanguage("apex",e)})();

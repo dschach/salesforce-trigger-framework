@@ -1,3 +1,10 @@
+/**
+ * @description
+ *
+ * @author      David Schach
+ * @since       2023
+ * @group       SampleTriggerHandler
+ */
 @IsTest
 public with sharing class AccountSampleMetadataTriggerHandlerTest {
 	@IsTest

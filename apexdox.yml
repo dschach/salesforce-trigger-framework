@@ -4,8 +4,8 @@ engine:
       sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sfdx-source/main/default/classes
     - path: "${workspaceFolder}/sfdx-source/metadataTriggerHandler/classes"
       sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sfdx-source/metadataTriggerHandler/classes
-    - path: "${workspaceFolder}/sfdx-source/unpackaged/sample-handler/classes"
-      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/classes
+    - path: "${workspaceFolder}/unpackaged/sampleHandler/classes"
+      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/unpackaged/sampleHandler/classes
   targetDirectory: "${workspaceFolder}/docs"
   #excludes:
   #  - "*Test.cls"

@@ -38,6 +38,20 @@
             <ul>
               <!-- menu items -->
               <li
+                title="AccountSampleMetadataTriggerHandler"
+                id="item-AccountSampleMetadataTriggerHandler"
+                class="nav-item class public"
+                onclick="goToLocation('AccountSampleMetadataTriggerHandler.html');">
+                <a tabindex="1" href="javascript:void(0)">AccountSampleMetadataTriggerHandler</a>
+              </li>
+              <li
+                title="AccountSampleMetadataTriggerHandlerTest"
+                id="item-AccountSampleMetadataTriggerHandlerTest"
+                class="nav-item class public"
+                onclick="goToLocation('AccountSampleMetadataTriggerHandlerTest.html');">
+                <a tabindex="1" href="javascript:void(0)">AccountSampleMetadataTriggerHandlerTest</a>
+              </li>
+              <li
                 title="AccountSampleTriggerHandler"
                 id="item-AccountSampleTriggerHandler"
                 class="nav-item class public"
@@ -65,6 +79,9 @@
               <li title="TriggerHandlerTest" id="item-TriggerHandlerTest" class="nav-item class private" onclick="goToLocation('TriggerHandlerTest.html');">
                 <a tabindex="1" href="javascript:void(0)">TriggerHandlerTest</a>
               </li>
+              <li title="MetadataTriggerHandler" id="item-MetadataTriggerHandler" class="nav-item class public" onclick="goToLocation('MetadataTriggerHandler.html');">
+                <a tabindex="1" href="javascript:void(0)">MetadataTriggerHandler</a>
+              </li>
             </ul>
           </details>
         </nav>
@@ -85,6 +102,49 @@
         <td class="doc-page">
           <link href="assets/styling.css" rel="stylesheet" />
           <h1>Changelog</h1>
+          <h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.1.1...v1.2.0">1.2.0</a> (2023-10-04)</h2>
+          <h3>Features</h3>
+          <ul>
+            <li>
+              Allow chaining for limits, debug, max loop (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/106">#106</a>) (<a
+                href="https://github.com/dschach/salesforce-trigger-framework/commit/094412afd63fec18d56d882b196a7412b326d1a5"
+                >094412a</a
+              >)
+            </li>
+          </ul>
+          <h3>Performance Improvements</h3>
+          <ul>
+            <li>
+              Disable CI scratch org source tracking (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/fcb33bce6c53a2786197290db5ae0a74147ee956">fcb33bc</a>)
+            </li>
+          </ul>
+          <h3>Miscellaneous Chores</h3>
+          <ul>
+            <li>
+              API to 58.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/110">#110</a>) (<a
+                href="https://github.com/dschach/salesforce-trigger-framework/commit/fcb33bce6c53a2786197290db5ae0a74147ee956"
+                >fcb33bc</a
+              >)
+            </li>
+          </ul>
+          <h3>Documentation</h3>
+          <ul>
+            <li>
+              Update ApexDocs, method documentation (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/109">#109</a>) (<a
+                href="https://github.com/dschach/salesforce-trigger-framework/commit/6a29eb9d5f8efe16a94137c67bbf29db8d0e6fc8"
+                >6a29eb9</a
+              >)
+            </li>
+          </ul>
+          <h3>Continuous Integration</h3>
+          <ul>
+            <li>
+              <strong>release-please:</strong> Add release type (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/108">#108</a>) (<a
+                href="https://github.com/dschach/salesforce-trigger-framework/commit/55549bd8e18f0e0dcc3f84b318a7a846ffc5ad95"
+                >55549bd</a
+              >)
+            </li>
+          </ul>
           <h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.1.0...v1.1.1">1.1.1</a> (2023-09-21)</h2>
           <h3>Bug Fixes</h3>
           <ul>

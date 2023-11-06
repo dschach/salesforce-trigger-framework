@@ -8,82 +8,168 @@ pre code.hljs {
     overflow-x: auto;
     padding: 1em;
 }
+.code-example,
 code.hljs {
     padding: 3px 5px;
 }
+
+/* monokai-sublime-apex.css */
+
+pre code.hljs {
+    display: block;
+    overflow-x: auto;
+    padding: 1em;
+}
+code.hljs {
+    padding: 3px 5px;
+}
+/*
+
+Monokai Sublime Apex style derived from Sublime MavensMate Monokai theme by David Schach https://github.com/dschach
+Sublime MavensMate Monokai theme by SubC4i https://github.com/SubC4i/Sublime-MavensMate-Monokai
+Monokai-Sublime style derived from Monokai by noformnocontent http://nn.mit-license.org/
+Monokai color scheme by Wimer Hazenberg 2006 https://monokai.nl/
+*/
+
 .hljs {
-    background: #fff;
-    color: #000;
-}
-.xml .hljs-meta {
-    color: silver;
-}
-.hljs-comment,
-.hljs-quote {
-    color: #007400;
-}
-.hljs-attribute,
-.hljs-keyword,
-.hljs-literal,
-.hljs-name,
-.hljs-selector-tag,
-.hljs-tag {
-    color: #aa0d91;
-}
-.hljs-template-variable,
-.hljs-variable {
-    color: #3f6e74;
-}
-.hljs-code,
-.hljs-meta .hljs-string,
-.hljs-string {
-    color: #c41a16;
-}
-.hljs-link,
-.hljs-regexp {
-    color: #0e0eff;
-}
-.hljs-bullet,
-.hljs-number,
-.hljs-symbol,
-.hljs-title {
-    color: #1c00cf;
-}
-.hljs-meta,
-.hljs-section {
-    color: #643820;
-}
-.hljs-built_in,
-.hljs-class .hljs-title,
-.hljs-params,
-.hljs-title.class_,
-.hljs-type {
-    color: #5c2699;
-}
-.hljs-attr {
-    color: #836c28;
-}
-.hljs-subst {
-    color: #000;
-}
-.hljs-formula {
-    background-color: #eee;
-    font-style: italic;
+    background-color: #272822 !important;
+    background: #272822;
+    color: #f8f8f2;
 }
 .hljs-addition {
-    background-color: #baeeba;
+    color: #a6e22e;
+    background: #66852880;
+}
+.hljs-attr,
+.hljs-keyword,
+.hljs-name,
+.hljs-operator,
+.hljs-selector-tag,
+.hljs-variable.language_ {
+    color: #f92672;
+}
+.hljs-attribute,
+.hljs-meta,
+.hljs-selector-attr,
+.hljs-symbol {
+    color: #66d9ef;
+}
+.hljs-built_in,
+.hljs-emphasis,
+.hljs-type {
+    color: #66d9ef;
+    font-style: italic;
+}
+.hljs-bullet,
+.hljs-meta .hljs-string,
+.hljs-selector-id,
+.hljs-template-variable {
+    color: #e6db74;
+}
+.hljs-char.escape_,
+.hljs-literal,
+.hljs-regexp,
+.hljs-variable.constant_ {
+    color: #ae81ff;
+}
+.hljs-code {
+    color: #fd971f;
+}
+.hljs-comment {
+    color: #75715e;
 }
 .hljs-deletion {
-    background-color: #ffc8bd;
+    color: #f92672;
+    background: #90274a80;
 }
-.hljs-selector-class,
-.hljs-selector-id {
-    color: #9b703f;
+.hljs-doctag {
+    color: #f92672;
+    font-style: bold;
 }
-.hljs-doctag,
+.hljs-formula {
+    color: #fd971f;
+    font-style: italic;
+}
+.hljs-link {
+    color: #ae81ff;
+    text-decoration: underline;
+}
+.hljs-meta .hljs-keyword,
+.hljs-params .hljs-variable {
+    color: #fd971f;
+}
+.hljs-comment .hljs-variable {
+    color: #fd971f;
+    font-style: italic;
+}
+.hljs-meta .hljs-string,
+.hljs-quote {
+    color: #cfcfc2;
+}
+.hljs-number {
+    color: #ae81ff;
+    font-style: normal;
+}
+.hljs-params,
+.hljs-property,
+.hljs-punctuation,
+.hljs-selector-pseudo,
+.hljs-subst,
+.hljs-tag,
+.hljs-variable {
+    color: #f8f8f2;
+}
+.hljs-string {
+    color: #e6db74;
+    font-style: normal;
+}
 .hljs-strong {
-    font-weight: 700;
+    color: #66d9ef;
+    font-style: bold;
 }
-.hljs-emphasis {
+.hljs-template-tag,
+.hljs-section,
+.hljs-selector-class,
+.hljs-title.class_,
+.hljs-title.function_,
+.hljs-title.function_.invoke__,
+.hljs-title {
+    color: #a6e22e;
+}
+.hljs-title.class_.inherited__ {
+    color: #a6e22eff;
+    font-style: italic;
+}
+.hljs-comment .hljs-code {
+    font-family: monospace, monospace;
+}
+.hljs-hidden,
+.hljs-string .hljs-hidden {
+    display: none;
+}
+
+.hljs-soql {
+    color: #66d9ef;
+    font-style: italic;
+}
+.hljs-soql .hljs-variable {
+    color: #f8f8f2;
+    font-style: normal;
+}
+.hljs-soql .hljs-keyword {
+    color: #fd971f;
+}
+.hljs-soql .hljs-punctuation {
+    font-style: normal;
+}
+.hljs-soql .hljs-title.function_.invoke__ {
+    color: #a6e22e;
+    font-style: normal;
+}
+.hljs-soql .hljs-operator {
+    font-style: normal;
+}
+.hljs-soql .hljs-title.function_ {
+    color: #66d9ef;
     font-style: italic;
 }

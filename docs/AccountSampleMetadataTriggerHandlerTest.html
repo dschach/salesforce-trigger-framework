@@ -100,101 +100,59 @@
       </tr>
       <tr>
         <td class="doc-page">
-          <h2 class="section-title">SampleTriggerHandler</h2>
-          <link href="assets/styling.css" rel="stylesheet" />
-          <h1>General Theme</h1>
-          <p>Each object has a single trigger</p>
-          <p>Each trigger has a single handler</p>
-          <a href="./index.html#usage">
-            <h1>Handler Documentation</h1>
-          </a>
-          <hr />
-          <h1>Sample Trigger</h1>
-          <pre><code class="language-apex">
-trigger AccountSampleTrigger on Account (before insert, after insert, before update, after update, before delete, after delete, after undelete) {
-  new AccountSampleTriggerHandler().debug(false).run();
-}</code></pre>
-          <h1>Sample Handler</h1>
-          <pre><code class="language-apex">
-/**
- * @description A sample Account trigger handler, with some comments
- *
- * @author David Schach
- * @since 2021
- * @see AccountSampleTriggerHandlerTest
- */
-public without sharing class AccountSampleTriggerHandler extends TriggerHandler {
+          <div class="section">
+            <h2 class="class-title top-level-type" id="AccountSampleMetadataTriggerHandlerTest">
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Go to source"
+                class="source-link"
+                href="https://github.com/dschach/salesforce-trigger-framework/tree/main/unpackaged/sampleHandler/classes/unpackaged/sampleHandler/classes/AccountSampleMetadataTriggerHandlerTest.cls#L9">
+                AccountSampleMetadataTriggerHandlerTest
+              </a>
+            </h2>
+            <div class="class-container">
+              <div class="class-subtitle">Signature</div>
+              <div class="class-annotations">@IsTest</div>
+              <div class="class-signature">public with sharing class AccountSampleMetadataTriggerHandlerTest</div>
+              <div class="class-subtitle">Author</div>
+              <div class="class-subtitle-description">David Schach</div>
+              <div class="class-subtitle">Since</div>
+              <div class="class-subtitle-description">
+                <li>2023</li>
+              </div>
+            </div>
+            <div class="subsection methods">
+              <h3 class="subsection-title methods">AccountSampleMetadataTriggerHandlerTest Methods</h3>
+              <div class="methods-container">
+                <ul class="methods-toc">
+                  <li class="method private">
+                    <a class="methods-toc__entry" href="#AccountSampleMetadataTriggerHandlerTest.insertUpdateAccount"> insertUpdateAccount () </a>
 
-  private List&lt;Account&gt; newRecords;
-  private List&lt;Account&gt; oldRecords;
-  private Map&lt;Id, Account&gt; newRecordsMap;
-  private Map&lt;Id, Account&gt; oldRecordsMap;
+                    <div class="methods-toc__description">Test method to demonstrate using our sample handler and showing limits and debug</div>
+                  </li>
+                </ul>
+                <div class="method private">
+                  <h4 class="method-title" id="AccountSampleMetadataTriggerHandlerTest.insertUpdateAccount">
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      title="Go to source"
+                      class="source-link"
+                      href="https://github.com/dschach/salesforce-trigger-framework/tree/main/unpackaged/sampleHandler/classes/unpackaged/sampleHandler/classes/AccountSampleMetadataTriggerHandlerTest.cls#L15">
+                      insertUpdateAccount()
+                    </a>
+                  </h4>
+                  <div class="method-description">Test method to demonstrate using our sample handler and showing limits and debug</div>
+                  <div class="method-subtitle">Signature</div>
 
-  public AccountSampleTriggerHandler() {
-    super('AccountSampleTriggerHandler');
-    this.newRecords = (List&lt;Account&gt;)Trigger.new;
-    this.oldRecords = (List&lt;Account&gt;)Trigger.old;
-    this.newRecordsMap = (Map&lt;Id, Account&gt;)Trigger.newMap;
-    this.oldRecordsMap = (Map&lt;Id, Account&gt;)Trigger.oldMap;
-  }
-
-  public override void beforeInsert(){
-    method1();
-    method2();
-    TriggerHandler.clearAllBypass();
-  }
-
-  public override void beforeUpdate(){
-    method2();
-  }
-
-  public override void afterInsert(){
-    TriggerHandler.bypass('ContactTriggerHandler');
-    updateContacts();
-    TriggerHandler.clearBypass('ContactTriggerHandler');
-  }
-
-  public override void afterUpdate(){
-    TriggerHandler.bypass('CaseSampleTriggerHandler');
-    /* do something */
-    TriggerHandler.clearAllBypasses();
-  }
-
-  //public override void beforeDelete(){}
-  //public override void afterDelete(){}
-  //public override void afterUndelete(){}
-  //public override void andFinally(){}
-
-  private void method1(){
-    for(Account a : newRecords){
-      a.Name = a.Name.toUpperCase();
-    }
-  }
-
-  private void method2(){
-    for(Account a : newRecords){
-      a.Name = a.Name.toLowerCase();
-    }
-  }
-
-  /**
-  * Try to keep all updates on other objects in a single DML statement
-  * @author Author Name
-  */
-  private void updateContacts(){
-    List&lt;Contact&gt; acctContacts = [SELECT Id FROM Contact WHERE AccountId IN :newRecordsMap.keyset()];
-    update acctContacts;
-  }
-}</code></pre>
-          <br />
-          <br />
-          <h1>Credits</h1>
-          <p>
-            This trigger framework is from
-            <a href="https://github.com/dschach/sfdc-trigger-framework">https://github.com/dschach/sfdc-trigger-framework</a>
-            which is based on Kevin O'Hara's framework
-            <a href="https://github.com/kevinohara80/sfdc-trigger-framework">https://github.com/kevinohara80/sfdc-trigger-framework</a>
-          </p>
+                  <div class="method-signature">static void insertUpdateAccount()</div>
+                  <div class="method-subtitle">Author</div>
+                  <div class="method-subtitle-description">David Schach</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </td>
       </tr>
       <tr>

@@ -3,6 +3,7 @@
  *
  * @author      David Schach
  * @since       2023
+ * @group Trigger Handler
  */
 public without sharing virtual class MetadataTriggerHandler extends TriggerHandler {
 	@TestVisible
@@ -14,13 +15,15 @@ public without sharing virtual class MetadataTriggerHandler extends TriggerHandl
 	@TestVisible
 	private TriggerHandler activeHandler;
 
-	protected virtual void execute(List<SObject> newRecords, List<SObject> oldRecords, Map<Id, SObject> newRecordsMap, Map<Id, SObject> oldRecordsMap) {
-	}
-
 	/**
-	 * @description Exception class
+	 * @description         Run this method to execure this handler code
+	 *
+	 * @param newRecords    `Trigger.new`
+	 * @param oldRecords    `Trigger.old`
+	 * @param newRecordsMap `Trigger.newMap`
+	 * @param oldRecordsMap `Trigger.oldMap`
 	 */
-	public class MetadataTriggerHandlerException extends Exception {
+	protected virtual void execute(List<SObject> newRecords, List<SObject> oldRecords, Map<Id, SObject> newRecordsMap, Map<Id, SObject> oldRecordsMap) {
 	}
 
 	private without sharing class TriggerHandlerQueryService {
@@ -64,8 +67,8 @@ public without sharing virtual class MetadataTriggerHandler extends TriggerHandl
 		 * @description This determines the active sObject type by describing the first
 		 * record in the trigger New / Old list
 		 *
-		 * @param triggerNew List<sObject> The trigger.new list
-		 * @param triggerOld List<sObject> The trigger.old list
+		 * @param triggerNew The trigger.new list
+		 * @param triggerOld The trigger.old list
 		 *
 		 * @return `String` the ObjectType name
 		 *
@@ -77,9 +80,7 @@ public without sharing virtual class MetadataTriggerHandler extends TriggerHandl
 			} else if (triggerOld != null) {
 				return getSObjectTypeFromListsFirstObject(triggerOld);
 			} else {
-				throw new MetadataTriggerHandler.MetadataTriggerHandlerException(
-					'Passed values for triggerNew and triggerOld are both null. Are you exercising this method outside of a trigger context?'
-				);
+				throw new MetadataTriggerHandlerException('Passed values for triggerNew and triggerOld are both null. Are you exercising this method outside of a trigger context?');
 			}
 		}
 		/**
@@ -96,5 +97,11 @@ public without sharing virtual class MetadataTriggerHandler extends TriggerHandl
 		public String getSObjectTypeFromListsFirstObject(List<SObject> sObjects) {
 			return (!sObjects.isEmpty()) ? sObjects.get(0).getSObjectType().getDescribe().getName() : 'sObject';
 		}
+	}
+
+	/**
+	 * @description Exception class
+	 */
+	public class MetadataTriggerHandlerException extends Exception {
 	}
 }
