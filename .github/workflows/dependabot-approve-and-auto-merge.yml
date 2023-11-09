@@ -6,6 +6,7 @@ permissions:
 jobs:
   pull-request-title-change:
     runs-on: ubuntu-latest
+    if: ${{ github.actor == 'dependabot[bot]' }}
     steps:
       # Checkout the source code
       - name: "Checkout source code"
