@@ -1,13 +1,47 @@
 name: Dependabot Pull Request Approve and Merge
-on: pull_request_target
+on: pull_request #_target
 permissions:
   pull-requests: write
   contents: write
 jobs:
+  pull-request-title-change:
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the source code
+      - name: "Checkout source code"
+        uses: actions/checkout@v4
+
+      - name: "Fetch Dependabot metadata"
+        id: dependabot-fetch
+        uses: dependabot/fetch-metadata@v1
+
+      - name: "Split title and update"
+        id: split-title
+        if: ${{ ! contains(github.event.pull_request.title, '):' ) && contains(github.event.pull_request.title, ':')  && steps.dependabot-fetch.outcome == 'success' }}
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{github.event.pull_request.html_url}}
+        run: |
+          echo $TITLE  
+          title_pt2="${TITLE##*:}"
+          title_pt1="${TITLE%%:*}"
+          gh pr checkout "$PR_URL" # sets the upstream metadata for `gh pr status`
+          packagename="${{ steps.dependabot-fetch.outputs.dependency-names }}"
+          #echo "packagename is $packagename"
+          #echo "$title_pt1"
+          #echo "$title_pt2"
+          parensOpen="("
+          parensClose="):"
+          pr_title=$title_pt1$parensOpen$packagename$parensClose$title_pt2
+          echo "FINAL TITLE: $pr_title"
+          gh pr edit "$PR_URL" --title "$pr_title"
+
   # Auto merge Dependabot PRs for:
   # - patch updates on prod dependencies
   # - minor updates on dev dependencies
   dependabot-auto-merge:
+    needs: pull-request-title-change
     # Only run for Dependabot PRs
     if: ${{ github.actor == 'dependabot[bot]' }}
     runs-on: ubuntu-latest

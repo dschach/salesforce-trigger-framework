@@ -8,8 +8,9 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
     commit-message:
-      prefix: "build"
-      include: "scope"
+      prefix: "deps" # packaged dependencies
+      prefix-development: "build" # dev-dependencies
+      #include: 'scope'
     rebase-strategy: "auto"
     schedule:
       interval: "daily"
@@ -17,7 +18,8 @@ updates:
     directory: "/" # Location of package manifests
     commit-message:
       prefix: "ci"
-      include: "scope"
+      #prefix: 'ci(github-actions)'
+      #include: 'scope'
     rebase-strategy: "auto"
     schedule:
       interval: "daily"
