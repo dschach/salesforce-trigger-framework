@@ -20,7 +20,7 @@
 	"devDependencies": {
 		"@prettier/plugin-xml": "^3.2.2",
 		"husky": "^8.0.3",
-		"lint-staged": "^15.0.2",
+		"lint-staged": "^15.1.0",
 		"marked": "^9.1.6",
 		"prettier": "^3.0.3",
 		"prettier-plugin-apex": "^2.0.1"
