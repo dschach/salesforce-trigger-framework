@@ -15,6 +15,7 @@
 		"orginit": ". scripts/orginit.sh",
 		"postinstall": "husky install",
 		"precommit": "lint-staged",
+		"prune": "git branch | grep -v \"main\" | xargs git branch -D",
 		"updateHighlight": ". scripts/updateHighlight.sh"
 	},
 	"devDependencies": {
