@@ -1,5 +1,7 @@
 # Auto detect text files and perform LF normalization
 * text=auto
 
-docs/assets/* linguist-vendored
-doc-assets/* linguist-vendored
+docs/** linguist-documentation
+doc-assets/** linguist-documentation
+config/** linguist-vendored
+*.apex linguist-language=Apex
