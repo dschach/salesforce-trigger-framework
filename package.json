@@ -16,7 +16,8 @@
 		"postinstall": "husky install",
 		"precommit": "lint-staged",
 		"prune": "git branch | grep -v \"main\" | xargs git branch -D",
-		"updateHighlight": ". scripts/updateHighlight.sh"
+		"updateHighlight": ". scripts/updateHighlight.sh",
+		"prepare": "husky"
 	},
 	"devDependencies": {
 		"@prettier/plugin-xml": "^3.4.1",
