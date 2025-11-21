@@ -24,7 +24,7 @@ jobs:
     steps:
       # Checkout the source code
       - name: "Checkout source code"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Cache node_modules to speed up the process
       - name: "Restore node_modules cache"
@@ -51,7 +51,7 @@ jobs:
     steps:
       # Checkout the source code
       - name: "Checkout source code"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Install PMD
       - name: "Install PMD"

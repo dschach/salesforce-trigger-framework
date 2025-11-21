@@ -19,7 +19,7 @@ jobs:
     steps:
       # Checkout the source code
       - name: "Checkout source code"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Install Volta to enforce proper node and package manager versions
       - name: "Install Volta"
@@ -51,7 +51,7 @@ jobs:
     steps:
       # Checkout the source code
       - name: "Checkout source code"
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       # Install Salesforce CLI
       - name: "Install Salesforce CLI"
