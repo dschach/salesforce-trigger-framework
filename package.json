@@ -24,7 +24,7 @@
 		"husky": "^9.1.7",
 		"lint-staged": "^16.2.7",
 		"marked": "^15.0.12",
-		"prettier": "^3.7.0",
+		"prettier": "^3.7.1",
 		"prettier-plugin-apex": "^2.2.6"
 	},
 	"lint-staged": {
