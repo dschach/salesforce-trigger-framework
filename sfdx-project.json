@@ -3,7 +3,7 @@
 		{
 			"path": "force-app",
 			"default": true,
-			"versionNumber": "1.2.0.NEXT"
+			"versionNumber": "1.2.1.NEXT"
 		},
 		{
 			"path": "sample-handler",
