@@ -1,25 +1,28 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+# Dependabot configuration. All options:
+# https://docs.github.com/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+#
+# Dependabot opens version update PRs on the schedule below. It also opens security
+# update PRs (when "Dependabot security updates" is on in the repository settings).
+#
+# The commit-message prefixes give Conventional Commits PR titles without a scope,
+# for example "build: bump x from 1.0.0 to 1.0.1". The dependabot-update.yml workflow
+# then puts the package name in the scope: "build(x): bump x from 1.0.0 to 1.0.1".
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "npm"
+    directory: "/" # Location of package.json
     commit-message:
-      prefix: "deps" # packaged dependencies
-      prefix-development: "build" # dev-dependencies
-      #include: 'scope'
+      prefix: "deps" # production dependencies
+      prefix-development: "build" # development dependencies
     rebase-strategy: "auto"
     schedule:
       interval: "daily"
-  - package-ecosystem: "github-actions" # See documentation for possible values
-    directory: "/" # Location of package manifests
+
+  - package-ecosystem: "github-actions"
+    directory: "/" # Dependabot reads the workflows in .github/workflows
     commit-message:
       prefix: "ci"
-      #prefix: 'ci(github-actions)'
-      #include: 'scope'
     rebase-strategy: "auto"
     schedule:
       interval: "daily"
