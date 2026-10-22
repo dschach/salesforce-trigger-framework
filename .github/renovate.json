@@ -1,0 +1,4 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": ["github>x2od/.github:renovate.jsonc"]
+}
