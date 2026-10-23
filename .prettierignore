@@ -20,3 +20,5 @@ doc-assets/highlight*.js
 
 # markdown
 *.md
+
+package-lock.json
