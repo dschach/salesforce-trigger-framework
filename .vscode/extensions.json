@@ -11,7 +11,6 @@
 		"salesforce.salesforce-docs-markdown-preview",
 		"yzhang.markdown-all-in-one",
 		// Git
-		"eamodio.gitlens",
 		"github.vscode-pull-request-github",
 		"michelemelluso.gitignore",
 		// Inline helpers
@@ -22,9 +21,7 @@
 		"esbenp.prettier-vscode",
 		// Alignment
 		"aaron-bond.better-comments",
-		"cpmcgrath.codealignment-vscode",
 		"sirtori.indenticator",
-		"chouzz.vscode-better-align",
 		"oderwat.indent-rainbow",
 		// Documentation
 		"peterweinberg.apexdox-vs-code",
