@@ -12,15 +12,18 @@
 # and automerge-<type> input is a comma-separated list of major, minor, patch, and
 # security (or "none"). To give a dependency type different rules, change its 2
 # lists.
-#
-# This repository is private on a free plan, so it cannot use GitHub auto-merge. The
-# workflow waits for the other checks to pass, and then merges (merge-mode: auto).
 
-name: Dependabot update
+name: Dependabot on Pull Request
 
 on:
   # pull_request_target gives Dependabot PRs a writable GITHUB_TOKEN. The reusable
   # workflow never checks out code from the PR.
+  #
+  # From 2026-11-02, GitHub blocks pull_request_target in public repositories unless an
+  # Actions event policy allows it. This repository has the policy "Allow
+  # pull_request_target for the Dependabot workflow" (Settings > Actions > Policies).
+  # The policy allows the event for this file only, so keep the file name
+  # dependabot-update.yml.
   # Keep all 5 types. "closed" adds the labels after the merge.
   pull_request_target:
     types: [opened, reopened, synchronize, edited, closed]
