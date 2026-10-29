@@ -113,6 +113,12 @@ trigger OpportunityTrigger on Opportunity (before update, after update) {
 }
 ```
 
+### Data access
+
+A trigger runs without sharing, so a handler declared `inherited sharing` runs without sharing too. A handler often must read or change records that the running user cannot see or edit, such as related records. So the examples here name `SYSTEM_MODE` on every query and DML statement: `WITH SYSTEM_MODE` in SOQL, and `AccessLevel.SYSTEM_MODE` in `Database` methods. System mode ignores the user's object and field permissions, and the sharing of the class decides record access.
+
+If a handler must respect the running user's object, field, and record permissions, use `WITH USER_MODE` and `AccessLevel.USER_MODE` instead.
+
 ## Cool Stuff
 
 ### Bypass API
@@ -129,19 +135,19 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
   }
 
   public override void afterUpdate() {
-    List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet() WITH USER_MODE];
+    List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet() WITH SYSTEM_MODE];
 
-    Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId WITH USER_MODE];
+    Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId WITH SYSTEM_MODE];
 
     TriggerHandler.bypass('AccountTriggerHandler');
 
     acc.Name = 'No Trigger';
-    Database.update(acc, AccessLevel.USER_MODE); /* won't invoke the AccountTriggerHandler */
+    Database.update(acc, AccessLevel.SYSTEM_MODE); /* won't invoke the AccountTriggerHandler */
 
     TriggerHandler.clearBypass('AccountTriggerHandler');
 
     acc.Name = 'With Trigger';
-    Database.update(acc, AccessLevel.USER_MODE); /* will invoke the AccountTriggerHandler */
+    Database.update(acc, AccessLevel.SYSTEM_MODE); /* will invoke the AccountTriggerHandler */
   }
 }
 ```
@@ -226,8 +232,8 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
   }
 
   public override void afterUpdate() {
-    List<Opportunity> opps = [SELECT Id FROM Opportunity WHERE Id IN :newRecordsMap.keySet() WITH USER_MODE];
-    Database.update(opps, AccessLevel.USER_MODE);
+    List<Opportunity> opps = [SELECT Id FROM Opportunity WHERE Id IN :newRecordsMap.keySet() WITH SYSTEM_MODE];
+    Database.update(opps, AccessLevel.SYSTEM_MODE);
   }
 }
 ```
@@ -266,7 +272,7 @@ or put them in your Apex *trigger handler* code before and after DML statements.
 TriggerHandler.showLimits();
 TriggerHandler.showDebug();
 
-Database.update(leadsList, AccessLevel.USER_MODE);
+Database.update(leadsList, AccessLevel.SYSTEM_MODE);
 
 TriggerHandler.showLimits(false);
 TriggerHandler.showDebug(false);
