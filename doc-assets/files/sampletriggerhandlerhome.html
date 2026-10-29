@@ -8,7 +8,7 @@
 <hr />
 <h1>Sample Trigger</h1>
 <pre><code class="language-apex">
-trigger AccountSampleTrigger on Account(before insert, before update, after update) {
+trigger AccountSampleTrigger on Account(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
 	new AccountSampleTriggerHandler().run();
 }</code></pre>
 <h1>Sample Handler</h1>

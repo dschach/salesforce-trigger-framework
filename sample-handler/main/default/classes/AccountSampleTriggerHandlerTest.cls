@@ -108,15 +108,15 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description `andFinally()` runs after each context that the trigger fires.
+	 * @description `andFinally()` runs after all 7 contexts, also the contexts that the handler does not override.
 	 */
 	@IsTest
 	private static void andFinallyRunsAfterEveryContext() {
 		Account sampleAccount = insertAccount('Sample Account');
 		Assert.areEqual(
-			new List<System.TriggerOperation>{ System.TriggerOperation.BEFORE_INSERT },
+			new List<System.TriggerOperation>{ System.TriggerOperation.BEFORE_INSERT, System.TriggerOperation.AFTER_INSERT },
 			AccountSampleTriggerHandler.finishedOperations,
-			'an insert should finish before insert'
+			'an insert should finish before insert and then after insert'
 		);
 
 		AccountSampleTriggerHandler.finishedOperations.clear();
@@ -126,6 +126,22 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 			new List<System.TriggerOperation>{ System.TriggerOperation.BEFORE_UPDATE, System.TriggerOperation.AFTER_UPDATE },
 			AccountSampleTriggerHandler.finishedOperations,
 			'an update should finish before update and then after update'
+		);
+
+		AccountSampleTriggerHandler.finishedOperations.clear();
+		delete as system sampleAccount;
+		Assert.areEqual(
+			new List<System.TriggerOperation>{ System.TriggerOperation.BEFORE_DELETE, System.TriggerOperation.AFTER_DELETE },
+			AccountSampleTriggerHandler.finishedOperations,
+			'a delete should finish before delete and then after delete'
+		);
+
+		AccountSampleTriggerHandler.finishedOperations.clear();
+		undelete as system sampleAccount;
+		Assert.areEqual(
+			new List<System.TriggerOperation>{ System.TriggerOperation.AFTER_UNDELETE },
+			AccountSampleTriggerHandler.finishedOperations,
+			'an undelete should finish after undelete'
 		);
 	}
 
@@ -139,7 +155,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 			accounts.add(new Account(Name = '  Bulk   Account ' + index));
 		}
 		insert as system accounts;
-		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME), 'the 2 chunks of the insert should each use 1 run');
+		Assert.areEqual(4, TriggerHandler.getLoopCount(HANDLER_NAME), 'the 2 chunks of the insert should each use 1 run before insert and 1 after insert');
 		Assert.areEqual(250, [SELECT COUNT() FROM Account WHERE Name LIKE 'Bulk Account %' WITH SYSTEM_MODE], 'every chunk should remove the extra spaces');
 	}
 

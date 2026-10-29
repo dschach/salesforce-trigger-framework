@@ -105,10 +105,10 @@ A sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-tri
 
 To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger itself and call the `run()` method. Here is an example of an Opportunity trigger.
 
-This is the way to write a trigger that will run the trigger handler above. Note that some objects do not work in every context, so ensure that you list only applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead to deployment problems.
+This is the way to write a trigger that will run the trigger handler above. List all 7 contexts, even the ones the handler does not override yet. Then you write the trigger once and never edit it again: a new override in the handler runs without a change to the trigger. A context that the handler does not override costs little, because `run()` calls the empty base method and then `andFinally()`. Some objects do not support every context, for example an object that cannot be undeleted. For such an object, leave out the contexts that it does not support.
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before update, after update) {
+trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().run();
 }
 ```
@@ -243,7 +243,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
 In version 1.2, the ability to chain methods was added. Now, you can set the max loop count in a single line in your trigger:
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before update, after update) {
+trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().setMaxLoopCount(5).run();
 }
 ```
@@ -281,7 +281,7 @@ TriggerHandler.showDebug(false);
 In version 1.2, the ability to chain methods *in triggers* was added. Now, you can specify showing debug messages and limits in a single line in your trigger:
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before update, after update) {
+trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().debug().limits().run(); // debug() is the same as debug(true)
 }
 ```
@@ -289,7 +289,7 @@ trigger OpportunityTrigger on Opportunity (before update, after update) {
 Or stop showing them.
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before update, after update) {
+trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().debug(false).limits(false).run();
 }
 ```
