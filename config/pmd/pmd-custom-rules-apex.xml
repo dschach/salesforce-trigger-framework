@@ -36,7 +36,11 @@
 		While the default behavior is conservative, explicit modifiers improve
 		readability and make intent unambiguous.
 	-->
-	<rule name="DeclareAccessOnMethods" message="Explicitly use public/private/protected/global on Apex methods" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" language="apex">
+	<rule
+		name="DeclareAccessOnMethods"
+		message="Explicitly use public/private/protected/global on Apex methods"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule"
+		language="apex">
 		<description>Every method that is not a test method must declare an explicit access modifier: instance and static methods, constructors, and the helper and setup methods of a test class. Apex treats a method without a modifier as private, so this rule changes no behaviour; it exists for readability and auditability, so that a reader or reviewer never has to know the default.</description>
 		<priority>2</priority>
 		<properties>
@@ -91,7 +95,11 @@
 					]
 				]]></value>
 			</property>
-			<property name="reportInTestClasses" type="Boolean" value="true" description="Whether a test class without a sharing declaration is reported" />
+			<property
+				name="reportInTestClasses"
+				type="Boolean"
+				value="true"
+				description="Whether a test class without a sharing declaration is reported" />
 		</properties>
 	</rule>
 
@@ -121,7 +129,11 @@
 		</properties>
 	</rule>
 
-	<rule name="RequireOuterClassAccess" message="Specify public, private, or global on outer Apex classes" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" language="apex">
+	<rule
+		name="RequireOuterClassAccess"
+		message="Specify public, private, or global on outer Apex classes"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule"
+		language="apex">
 		<description>All outer Apex classes must have an explicit access modifier.</description>
 		<priority>1</priority>
 		<properties>
@@ -163,7 +175,11 @@
 		XPath (pmd/pmd#7108). The one access mode rule that XPath can
 		express in full is here: WITH SECURITY_ENFORCED is rejected.
 	-->
-	<rule name="NoSecurityEnforced" message="Replace WITH SECURITY_ENFORCED with WITH USER_MODE" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" language="apex">
+	<rule
+		name="NoSecurityEnforced"
+		message="Replace WITH SECURITY_ENFORCED with WITH USER_MODE"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule"
+		language="apex">
 		<description>WITH SECURITY_ENFORCED is not accepted in a query. WITH USER_MODE replaces it, and is stricter.</description>
 		<priority>2</priority>
 		<properties>
@@ -279,7 +295,11 @@
 					]
 				]]></value>
 			</property>
-			<property name="minConditions" type="Integer" value="3" description="The number of comparisons of one variable that make an if statement a switch statement" />
+			<property
+				name="minConditions"
+				type="Integer"
+				value="3"
+				description="The number of comparisons of one variable that make an if statement a switch statement" />
 		</properties>
 	</rule>
 
@@ -469,7 +489,11 @@
 		constructor is not a method here; and an inner class is compared with
 		its own methods and its own name.
 	-->
-	<rule name="FieldNameMatchesMethodName" language="apex" message="Rename this field or the method that has the same name" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+	<rule
+		name="FieldNameMatchesMethodName"
+		language="apex"
+		message="Rename this field or the method that has the same name"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>A field or property with the same name as a method of its class makes each harder to tell from the other where it is used. Apex names are case-insensitive, so two names that differ only in case are the same name.</description>
 		<priority>4</priority>
 		<properties>
@@ -481,7 +505,11 @@
 		</properties>
 	</rule>
 
-	<rule name="FieldNameMatchesClassName" language="apex" message="Rename this variable - it has the same name as a class" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+	<rule
+		name="FieldNameMatchesClassName"
+		language="apex"
+		message="Rename this variable - it has the same name as a class"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>A field or property with the same name as the class that declares it reads as a reference to the class, and so does a local variable with the name of any class declared in the same file. Apex names are case-insensitive, so two names that differ only in case are the same name.</description>
 		<priority>4</priority>
 		<properties>
@@ -515,11 +543,19 @@
 					//UserClass[@Nested = false()][not(matches(@SimpleName, concat('^(', $controllerPattern, ')$')))][Method/ModifierNode/Annotation[lower-case(@Name) = 'auraenabled']]
 				]]></value>
 			</property>
-			<property name="controllerPattern" type="String" value=".*Controller" description="A regular expression that the name of a class with @AuraEnabled methods must match" />
+			<property
+				name="controllerPattern"
+				type="String"
+				value=".*Controller"
+				description="A regular expression that the name of a class with @AuraEnabled methods must match" />
 		</properties>
 	</rule>
 
-	<rule name="TriggerNameSuffix" language="apex" message="End the trigger name with the suffix ${suffixes}" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+	<rule
+		name="TriggerNameSuffix"
+		language="apex"
+		message="End the trigger name with the suffix ${suffixes}"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>A trigger's name ends with one of the suffixes in the suffixes property, compared without regard to case, so that every trigger in the org is named the same way. Each organisation sets the list to its own convention.</description>
 		<priority>3</priority>
 		<properties>
@@ -528,7 +564,11 @@
 					//UserTrigger[not(matches(@Image, concat('(', string-join($suffixes, '|'), ')$'), 'i'))]
 				]]></value>
 			</property>
-			<property name="suffixes" type="List[String]" value="Trigger" description="The suffixes a trigger name may end with; a name that ends with any of them passes" />
+			<property
+				name="suffixes"
+				type="List[String]"
+				value="Trigger"
+				description="The suffixes a trigger name may end with; a name that ends with any of them passes" />
 		</properties>
 	</rule>
 
@@ -541,7 +581,11 @@
 		reported only when the reportInTestClasses property is true, and it is
 		false by default.
 	-->
-	<rule name="NoSingleLetterVariableName" language="apex" message="Give this variable a name of two or more letters" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+	<rule
+		name="NoSingleLetterVariableName"
+		language="apex"
+		message="Give this variable a name of two or more letters"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>A variable with a one-letter name says nothing about what it holds, so a reader has to read the code around it to find out. A local variable, a loop variable, a parameter, a field, a property, and the variable of a catch block each have a name of two or more letters that says what the variable holds. Three names are allowed in their place: i and j as the counter of a for loop, and e as the variable of a catch block. The allowedNames property lists other one-letter names that are allowed for every kind of variable, and it is empty by default. An enum value is not a variable and is not reported. The reportInTestClasses property decides whether a test class is reported, and it is false by default.</description>
 		<priority>3</priority>
 		<properties>
@@ -558,8 +602,16 @@
 					)[$reportInTestClasses or not(ancestor::UserClass/ModifierNode[@Test = true()])]
 				]]></value>
 			</property>
-			<property name="allowedNames" type="List[String]" value="" description="Other one-letter names that are allowed for every kind of variable, compared without regard to case" />
-			<property name="reportInTestClasses" type="Boolean" value="false" description="Whether a variable in a test class is reported" />
+			<property
+				name="allowedNames"
+				type="List[String]"
+				value=""
+				description="Other one-letter names that are allowed for every kind of variable, compared without regard to case" />
+			<property
+				name="reportInTestClasses"
+				type="Boolean"
+				value="false"
+				description="Whether a variable in a test class is reported" />
 		</properties>
 	</rule>
 
@@ -932,7 +984,11 @@
 		isSecure, with or without the sixth argument, SameSite. A value passed
 		in a variable is not followed.
 	-->
-	<rule name="AvoidInsecureCookies" language="apex" message="Create this cookie with isSecure set to true" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+	<rule
+		name="AvoidInsecureCookies"
+		language="apex"
+		message="Create this cookie with isSecure set to true"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>A cookie created with isSecure set to false is also sent over a connection that is not encrypted, where it can be read. Create every cookie with isSecure set to true.</description>
 		<priority>3</priority>
 		<properties>
@@ -1119,7 +1175,11 @@
 		trigger of the Trigger Actions Framework is published in its own file,
 		pmd-trigger-framework-rule.xml; it is not part of this ruleset.
 	-->
-	<rule name="NoMethodsInTriggers" language="apex" message="Move this method out of the trigger and into a handler class" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+	<rule
+		name="NoMethodsInTriggers"
+		language="apex"
+		message="Move this method out of the trigger and into a handler class"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
 		<description>A trigger must not declare methods, with or without an access modifier. Logic belongs in a handler class, where it can be called, tested, and governed like any other code.</description>
 		<priority>2</priority>
 		<properties>
