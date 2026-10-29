@@ -22,11 +22,7 @@ coverage:
         branches:
           - main
         flags:
-          - LWC
           - Apex
-      LWC:
-        flags:
-          - LWC
       Apex:
         flags:
           - Apex

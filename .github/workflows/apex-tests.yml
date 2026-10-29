@@ -1,0 +1,75 @@
+# Deploys the framework and the sample to a scratch org and runs every Apex test.
+# Runs only when Apex or project metadata changes, because each run costs a
+# scratch org. It is not a required check for that reason.
+name: Apex tests
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "force-app/**"
+      - "sample-handler/**"
+      - "sfdx-project.json"
+      - "config/project-scratch-def.json"
+      - ".github/workflows/apex-tests.yml"
+
+permissions:
+  contents: read
+
+# A newer push to the same pull request cancels the run in progress
+concurrency:
+  group: apex-tests-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  scratch-org-test:
+    runs-on: ubuntu-latest
+    # The Dev Hub secret is not available to Dependabot or to a pull request from a fork
+    if: ${{ github.actor != 'dependabot[bot]' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) }}
+    steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v7
+
+      - name: "Set up Node.js"
+        uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+
+      - name: "Install Salesforce CLI"
+        run: |
+          npm install --global @salesforce/cli
+          sf --version
+
+      # The secret stays in an environment variable and reaches the CLI through
+      # standard input, so it never appears in a script or a file.
+      - name: "Authenticate Dev Hub"
+        env:
+          SFDX_AUTH_URL: ${{ secrets.SALESFORCE_AUTH_URL }}
+        run: |
+          if [ -z "$SFDX_AUTH_URL" ]; then
+            echo "Missing SALESFORCE_AUTH_URL secret. Is this workflow running on a fork?"
+            exit 1
+          fi
+          echo "$SFDX_AUTH_URL" | sf org login sfdx-url --sfdx-url-stdin --alias devhub --set-default-dev-hub
+
+      - name: "Create scratch org"
+        id: scratch-org
+        run: sf org create scratch --definition-file config/project-scratch-def.json --alias ScratchOrg --set-default --duration-days 1 --wait 20 --no-track-source
+
+      - name: "Deploy source to scratch org"
+        run: sf project deploy start --source-dir force-app --source-dir sample-handler
+
+      - name: "Run Apex tests"
+        run: sf apex run test --test-level RunLocalTests --code-coverage --result-format human --output-dir ./tests/apex --wait 20
+
+      - name: "Upload code coverage for Apex to Codecov.io"
+        uses: codecov/codecov-action@v7
+        with:
+          flags: Apex
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      # Runs only when an org was created, so a failed login does not hide its own error
+      - name: "Delete scratch org"
+        if: ${{ always() && steps.scratch-org.outcome == 'success' }}
+        run: sf org delete scratch --no-prompt --target-org ScratchOrg

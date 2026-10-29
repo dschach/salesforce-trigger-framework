@@ -4,8 +4,6 @@
 			"package-name": ""
 		}
 	},
-	"bump-minor-pre-major": true,
-	"bump-patch-for-minor-pre-major": true,
 	"prerelease": false,
 	"draft": false,
 	"changelog-path": "CHANGELOG.md",
