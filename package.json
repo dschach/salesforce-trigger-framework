@@ -7,17 +7,13 @@
     "node": ">=22.22.1"
   },
   "scripts": {
-    "apex:local:start": "node node_modules/prettier-plugin-apex/dist/bin/start-apex-server.js",
-    "apex:local:stop": "node node_modules/prettier-plugin-apex/dist/bin/stop-apex-server.js",
     "codeanalyzer:run": "sf code-analyzer run --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
     "codeanalyzer:setup": "echo y | sf code-analyzer config --output-file code-analyzer.yml --config-file code-analyzer.yml --include-unmodified-rules --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
     "orginit": "bash scripts/orginit.sh",
     "prepare": "husky",
     "prettier": "prettier --write .",
-    "prettier:apex:local": "prettier --apex-standalone-parser built-in --write .",
     "prettier:docs": "prettier --ignore-path .gitignore --write \"docs/**/*.html\"",
     "prettier:verify": "prettier --check .",
-    "prettier:verify:apex:local": "prettier --apex-standalone-parser built-in --check .",
     "prune": "bash scripts/prune-branches.sh",
     "updateHighlight": "sh scripts/updateHighlight.sh"
   },
