@@ -4,7 +4,7 @@
   "description": "Salesforce Trigger Framework",
   "private": true,
   "engines": {
-    "node": ">=22.22.1"
+    "node": ">=24.22.2"
   },
   "scripts": {
     "codeanalyzer:run": "sf code-analyzer run --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
