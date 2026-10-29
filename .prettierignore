@@ -22,5 +22,7 @@ doc-assets/highlight*.js
 # Code Analyzer reports
 sfca/
 
+.husky/
+
 # Markdown
 *.md

@@ -9,8 +9,8 @@ set -eu
 # Replace text in a file. The .bak suffix makes sed -i work with both the BSD sed of
 # macOS and GNU sed; the backup is removed right away.
 replace_in_file() {
-	sed -i.bak "$1" "$2"
-	rm -f "$2.bak"
+  sed -i.bak "$1" "$2"
+  rm -f "$2.bak"
 }
 
 # update highlight.js version

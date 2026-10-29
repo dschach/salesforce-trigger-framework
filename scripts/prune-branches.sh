@@ -15,15 +15,15 @@ git fetch --prune --quiet
 current=$(git branch --show-current)
 deleted=0
 while read -r branch track; do
-	if [ "$track" != "[gone]" ]; then
-		continue
-	fi
-	if [ "$branch" = "$current" ]; then
-		echo "Skipping $branch: it is checked out."
-		continue
-	fi
-	git branch -D "$branch"
-	deleted=$((deleted + 1))
+  if [ "$track" != "[gone]" ]; then
+    continue
+  fi
+  if [ "$branch" = "$current" ]; then
+    echo "Skipping $branch: it is checked out."
+    continue
+  fi
+  git branch -D "$branch"
+  deleted=$((deleted + 1))
 done < <(git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads)
 
 echo "Deleted $deleted local branch(es) whose remote branch is gone."

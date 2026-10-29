@@ -9,3 +9,5 @@ package.xml
 
 # Prevent org changes from populating project
 *.profile
+**/jsconfig.json
+**/.eslintrc.json

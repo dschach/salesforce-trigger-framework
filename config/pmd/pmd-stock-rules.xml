@@ -119,7 +119,9 @@
 		<priority>2</priority>
 		<properties>
 			<!-- not reported inside test classes; the source ruleset's document-wide //UserClass form is narrowed to the violation's own class -->
-			<property name="violationSuppressXPath" value="ancestor::UserClass/ModifierNode[@Test = true()]" />
+			<property
+				name="violationSuppressXPath"
+				value="ancestor::UserClass/ModifierNode[@Test = true()]" />
 		</properties>
 	</rule>
 
@@ -141,11 +143,13 @@
 	<!-- APEX: BEST PRACTICES                                         -->
 	<!-- ============================================================ -->
 
-	<rule ref="category/apex/bestpractices.xml/ApexAssertionsShouldIncludeMessage">
+	<rule
+		ref="category/apex/bestpractices.xml/ApexAssertionsShouldIncludeMessage">
 		<priority>3</priority>
 	</rule>
 
-	<rule ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveAsserts">
+	<rule
+		ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveAsserts">
 		<!-- PMD default: 3 -->
 		<priority>2</priority>
 	</rule>
@@ -155,12 +159,14 @@
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/bestpractices.xml/ApexUnitTestMethodShouldHaveIsTestAnnotation">
+	<rule
+		ref="category/apex/bestpractices.xml/ApexUnitTestMethodShouldHaveIsTestAnnotation">
 		<!-- PMD default: 3 -->
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/bestpractices.xml/ApexUnitTestShouldNotUseSeeAllDataTrue">
+	<rule
+		ref="category/apex/bestpractices.xml/ApexUnitTestShouldNotUseSeeAllDataTrue">
 		<!-- PMD default: 3 -->
 		<priority>2</priority>
 	</rule>

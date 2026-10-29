@@ -14,10 +14,10 @@ out="${GITHUB_OUTPUT:-/dev/stdout}"
 delimiter="SFCA_TABLE_EOF"
 
 table=$(
-	echo "| File | Line | Rule | Severity | Message |"
-	echo "| ---- | ---- | ---- | -------- | ------- |"
-	if [ -f "$file" ]; then
-		jq -r '
+  echo "| File | Line | Rule | Severity | Message |"
+  echo "| ---- | ---- | ---- | -------- | ------- |"
+  if [ -f "$file" ]; then
+    jq -r '
 			.violations
 			| map(. as $v | ($v.locations[$v.primaryLocationIndex]) as $loc
 				| { file: $loc.file, line: $loc.startLine, rule: $v.rule, severity: $v.severity, message: $v.message })
@@ -25,15 +25,15 @@ table=$(
 			| .[]
 			| "| \(.file) | \(.line) | \(.rule) | \(.severity) | \(.message | gsub("\\|"; "\\|") | gsub("\n"; " ")) |"
 		' "$file"
-	fi
+  fi
 )
 
 if [ "$out" = "/dev/stdout" ]; then
-	echo "$table"
+  echo "$table"
 else
-	{
-		echo "violations-table<<$delimiter"
-		echo "$table"
-		echo "$delimiter"
-	} >> "$out"
+  {
+    echo "violations-table<<$delimiter"
+    echo "$table"
+    echo "$delimiter"
+  } >> "$out"
 fi

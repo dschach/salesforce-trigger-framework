@@ -17,19 +17,19 @@ file="${1:-sfca_results.json}"
 out="${GITHUB_OUTPUT:-/dev/stdout}"
 
 emit() {
-	echo "$1=$2" >> "$out"
-	if [ "$out" != "/dev/stdout" ]; then
-		echo "$1=$2"
-	fi
+  echo "$1=$2" >> "$out"
+  if [ "$out" != "/dev/stdout" ]; then
+    echo "$1=$2"
+  fi
 }
 
 if [ ! -f "$file" ]; then
-	echo "No JSON report at $file; reporting 0 violations." >&2
-	for p in 1 2 3 4 5; do
-		emit "priority$p" 0
-	done
-	emit total 0
-	exit 0
+  echo "No JSON report at $file; reporting 0 violations." >&2
+  for p in 1 2 3 4 5; do
+    emit "priority$p" 0
+  done
+  emit total 0
+  exit 0
 fi
 
 counts=$(jq -r '.violationCounts | [.sev1, .sev2, .sev3, .sev4, .sev5, .total] | @tsv' "$file")

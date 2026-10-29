@@ -1,35 +1,32 @@
 {
-	"name": "salesforce-trigger-framework",
-	"private": true,
-	"version": "1.3.0",
-	"description": "Salesforce Trigger Framework",
-	"engines": {
-		"node": ">=24.22.2"
-	},
-	"scripts": {
-		"codeanalyzer:setup": "echo y | sf code-analyzer config --output-file code-analyzer.yml --config-file code-analyzer.yml --include-unmodified-rules --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
-		"codeanalyzer:run": "sf code-analyzer run --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
-		"prettier:apex:local": "prettier --apex-standalone-parser built-in --write .",
-		"prettier:verify:apex:local": "prettier --apex-standalone-parser built-in --check .",
-		"apex:local:start": "node node_modules/prettier-plugin-apex/dist/bin/start-apex-server.js",
-		"apex:local:stop": "node node_modules/prettier-plugin-apex/dist/bin/stop-apex-server.js",
-		"prettier": "prettier --write .",
-		"prettier:verify": "prettier --check .",
-		"prettier:docs": "prettier --ignore-path .gitignore --write \"docs/**/*.html\"",
-		"orginit": "bash scripts/orginit.sh",
-		"prune": "bash scripts/prune-branches.sh",
-		"updateHighlight": "sh scripts/updateHighlight.sh",
-		"prepare": "husky"
-	},
-	"devDependencies": {
-		"@prettier/plugin-xml": "^3.4.2",
-		"husky": "^9.1.7",
-		"lint-staged": "^17.6.0",
-		"marked": "^18.1.2",
-		"prettier": "^3.9.10",
-		"prettier-plugin-apex": "^2.3.0"
-	},
-	"lint-staged": {
-		"*": ["prettier --write --ignore-unknown"]
-	}
+  "name": "salesforce-trigger-framework",
+  "version": "1.3.0",
+  "description": "Salesforce Trigger Framework",
+  "private": true,
+  "engines": {
+    "node": ">=22.22.1"
+  },
+  "scripts": {
+    "codeanalyzer:run": "sf code-analyzer run --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
+    "codeanalyzer:setup": "echo y | sf code-analyzer config --output-file code-analyzer.yml --config-file code-analyzer.yml --include-unmodified-rules --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
+    "orginit": "bash scripts/orginit.sh",
+    "prepare": "husky",
+    "prettier": "prettier --write .",
+    "prettier:docs": "prettier --ignore-path .gitignore --write \"docs/**/*.html\"",
+    "prettier:verify": "prettier --check .",
+    "prune": "bash scripts/prune-branches.sh",
+    "updateHighlight": "sh scripts/updateHighlight.sh"
+  },
+  "devDependencies": {
+    "@x2od/prettier-config": "^0.6.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "marked": "^18.1.2",
+    "prettier": "^3.9.10"
+  },
+  "lint-staged": {
+    "*": [
+      "prettier --write --ignore-unknown"
+    ]
+  }
 }
