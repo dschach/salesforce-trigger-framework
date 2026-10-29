@@ -38,55 +38,73 @@ jobs:
       - name: "Code formatting verification with Prettier"
         run: npm run prettier:verify
 
-  pmd-analysis:
+  sfca-analysis:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      # The PMD action lists the changed files of a pull request
-      pull-requests: read
+      # The SFCA action lists the changed files of a pull request
+      pull-requests: write
     steps:
       - name: "Checkout source code"
         uses: actions/checkout@v7
-
-      # PMD needs a Java runtime
+      - name: Ensure node v20.9.0 or greater
+        uses: actions/setup-node@v5
+        with:
+          node-version: "lts/*"
+      # SFCA needs a Java runtime
       - name: "Set up Java"
         uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
+      - name: Ensure python v3.10 or greater
+        uses: actions/setup-python@v6
+        with:
+          python-version: ">=3.10"
 
-      # Run the latest PMD release with the project ruleset. A pull request
+      # Run the latest SFCA release with the project ruleset. A pull request
       # analyzes only the changed files; a push analyzes the whole project.
-      - name: "Run PMD scan"
-        id: pmd
-        uses: pmd/pmd-github-action@v2
+      - name: "Run SFCA scan"
+        id: sfca
+        uses: sfca/sfca-github-action@v2
         with:
           version: "latest"
           sourcePath: "."
-          rulesets: "config/pmd/ruleset.xml"
+          rulesets: "config/sfca/ruleset.xml"
           analyzeModifiedFilesOnly: ${{ github.event_name == 'pull_request' }}
+      - name: Install Salesforce CLI
+        run: npm install -g @salesforce/cli@latest
 
-      # The action annotates every violation but never fails the job, and its only
-      # output is the total count. Count the violations by the priority the ruleset
-      # gives each rule, then fail on priority 1 and 2 only.
-      - name: "Count PMD violations by priority"
-        id: priorities
-        uses: ./.github/actions/pmd-sarif-priorities
+      - name: Install Latest Salesforce Code Analyzer CLI Plugin
+        run: sf plugins install code-analyzer@latest
+
+      - name: Run Salesforce Code Analyzer
+        id: run-code-analyzer
+        uses: forcedotcom/run-code-analyzer@v2
         with:
-          sarif-file: pmd-report.sarif
+          run-arguments: --workspace . --view detail --output-file sfca_results.html --output-file sfca_results.json --output-file sfca-report.sarif --rule-selector "(pmd,cpd,sfge,regex):(Recommended,Custom)"
+          results-artifact-name: salesforce-code-analyzer-results
+          github-token: ${{ github.token }}
 
-      - name: "Report PMD violations by priority"
-        run: |
-          {
-            echo "### PMD"
-            echo ""
-            echo "| Priority 1 | Priority 2 | Priority 3 | Priority 4 | Priority 5 | Total |"
-            echo "| ---------- | ---------- | ---------- | ---------- | ---------- | ----- |"
-            echo "| ${{ steps.priorities.outputs.priority1 }} | ${{ steps.priorities.outputs.priority2 }} | ${{ steps.priorities.outputs.priority3 }} | ${{ steps.priorities.outputs.priority4 }} | ${{ steps.priorities.outputs.priority5 }} | ${{ steps.priorities.outputs.total }} |"
-          } >> "$GITHUB_STEP_SUMMARY"
+      # The action annotates every violation but never fails the job. It writes the
+      # counts and the tables to the job summary, and the fail step below reads the counts.
+      - name: "Report SFCA violations"
+        id: sfca-report
+        uses: ./.github/actions/sf-code-analyzer-report
+        with:
+          results-path: "sfca_results.json"
+          severity-cutoff: ""
 
-      - name: "Fail on priority 1 and 2 PMD violations"
-        if: ${{ steps.priorities.outputs.priority1 != 0 || steps.priorities.outputs.priority2 != 0 }}
+      - name: "Upload SFCA report"
+        uses: actions/upload-artifact@v7
+        with:
+          name: sfca-report
+          path: |
+            salesforce-code-analyzer-results.zip
+          if-no-files-found: warn
+
+      - name: "Fail on priority 1 and 2 SFCA violations"
+        if: ${{ steps.sfca-report.outputs.sev1-count != 0 || steps.sfca-report.outputs.sev2-count != 0 }}
         run: |
-          echo "PMD found ${{ steps.priorities.outputs.priority1 }} priority 1 and ${{ steps.priorities.outputs.priority2 }} priority 2 violation(s). See the annotations and the PMD Report artifact."
+          echo "SFCA found ${{ steps.sfca-report.outputs.sev1-count }} priority 1 and ${{ steps.sfca-report.outputs.sev2-count }} priority 2 violation(s). See the annotations and the SFCA Report artifact."
           exit 1

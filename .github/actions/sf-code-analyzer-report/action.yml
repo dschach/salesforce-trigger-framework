@@ -1,0 +1,235 @@
+# .github/actions/sf-code-analyzer-report/action.yml
+name: Code Analyzer Report
+description: Parse Salesforce Code Analyzer results and write a job summary with violation counts and markdown tables.
+
+inputs:
+  results-path:
+    description: "Path to the Salesforce Code Analyzer results JSON file (e.g. code-analyzer-results.json)"
+    required: true
+  severity-cutoff:
+    description: "Violations with severity <= this value appear in the first (high-priority) table. Remaining severities go in the second table. When it is empty, null, or 5, every violation appears in one table and there is no second table. The calling workflow passes it; there is no default here"
+    required: false
+  write-summary:
+    description: '"true" to write the counts and both tables to the job summary. "false" to write nothing there and give the tables as outputs only, for a caller that writes its own summary'
+    required: false
+    default: "true"
+
+outputs:
+  total-violations:
+    description: "Total number of violations found"
+    value: ${{ steps.parse.outputs.total-violations }}
+  sev1-count:
+    description: "Number of severity 1 violations"
+    value: ${{ steps.parse.outputs.sev1-count }}
+  sev2-count:
+    description: "Number of severity 2 violations"
+    value: ${{ steps.parse.outputs.sev2-count }}
+  sev3-count:
+    description: "Number of severity 3 violations"
+    value: ${{ steps.parse.outputs.sev3-count }}
+  sev4-count:
+    description: "Number of severity 4 violations"
+    value: ${{ steps.parse.outputs.sev4-count }}
+  sev5-count:
+    description: "Number of severity 5 violations"
+    value: ${{ steps.parse.outputs.sev5-count }}
+  high-priority-markdown:
+    description: "Markdown table of violations within the high-priority severity range (sev 1 – cutoff), or of every violation when there is no cutoff (empty, null, or 5)"
+    value: ${{ steps.parse.outputs.high-priority-markdown }}
+  low-priority-markdown:
+    description: "Markdown table of violations outside the high-priority severity range (sev cutoff+1 – 5), empty when there is no cutoff (empty, null, or 5)"
+    value: ${{ steps.parse.outputs.low-priority-markdown }}
+
+runs:
+  using: composite
+  steps:
+    - name: Validate results file exists
+      shell: bash
+      env:
+        RESULTS_FILE: ${{ inputs.results-path }}
+      run: | # shell
+        if [ ! -f "$RESULTS_FILE" ]; then
+          echo "::error::Code Analyzer results file not found at path: $RESULTS_FILE"
+          exit 1
+        fi
+
+    - name: Parse results and write summary
+      id: parse
+      shell: bash
+      env:
+        RESULTS_FILE: ${{ inputs.results-path }}
+        SEVERITY_CUTOFF: ${{ inputs.severity-cutoff }}
+        WRITE_SUMMARY: ${{ inputs.write-summary }}
+      run: | # shell
+        # --- Extract top-level counts from violationCounts block ---
+        TOTAL=$(jq '.violationCounts.total // 0' "$RESULTS_FILE")
+        SEV1=$(jq  '.violationCounts.sev1 // 0'  "$RESULTS_FILE")
+        SEV2=$(jq  '.violationCounts.sev2 // 0'  "$RESULTS_FILE")
+        SEV3=$(jq  '.violationCounts.sev3 // 0'  "$RESULTS_FILE")
+        SEV4=$(jq  '.violationCounts.sev4 // 0'  "$RESULTS_FILE")
+        SEV5=$(jq  '.violationCounts.sev5 // 0'  "$RESULTS_FILE")
+
+        # --- Expose violation counts as step outputs ---
+        echo "total-violations=$TOTAL" >> "$GITHUB_OUTPUT"
+        echo "sev1-count=$SEV1"        >> "$GITHUB_OUTPUT"
+        echo "sev2-count=$SEV2"        >> "$GITHUB_OUTPUT"
+        echo "sev3-count=$SEV3"        >> "$GITHUB_OUTPUT"
+        echo "sev4-count=$SEV4"        >> "$GITHUB_OUTPUT"
+        echo "sev5-count=$SEV5"        >> "$GITHUB_OUTPUT"
+
+        # ================================================================
+        # Helper: render table rows for a given severity range (inclusive).
+        # cell: text that is safe in a table cell. A "|" does not start a
+        # column, a line break does not end the row, HTML is shown as text,
+        # and a missing value is an empty cell.
+        # The File cell shows the path without the folders that every file of
+        # the report starts with: when every file is in force-app/main/default,
+        # delta/force-app/main/default/classes/Foo.cls shows as classes/Foo.cls,
+        # and a report of one file shows its name only. It links to the file at
+        # this commit, on the line of the violation, and the link opens in
+        # a new tab. A scan of the folder "delta" gives paths that start with
+        # "delta/", and that prefix is not in the repository, so the link cuts it.
+        # ================================================================
+        render_rows() {
+          local MIN_SEV=$1
+          local MAX_SEV=$2
+          jq -r --argjson min "$MIN_SEV" --argjson max "$MAX_SEV" \
+                --arg server "$GITHUB_SERVER_URL" \
+                --arg repo "$GITHUB_REPOSITORY" \
+                --arg sha "$GITHUB_SHA" '
+            def cell: (. // "") | tostring | gsub("\\|"; "\\|") | gsub("<"; "&lt;") | gsub("\r?\n"; "<br>");
+            def repo_path: (. // "") | sub("^delta/"; "");
+            def link_path: split("/") | map(@uri) | join("/");
+            # The folders that every path in the list starts with
+            def common_folders: reduce .[1:][] as $d (.[0] // []; . as $p
+              | ([$p, $d] | map(length) | min) as $most
+              | (first(range(0; $most) | select($p[.] != $d[.])) // $most) as $n
+              | $p[:$n]);
+            # How many folders to cut: those of every violation, in both tables
+            ([.violations[]? | ((.locations[.primaryLocationIndex // 0] // {}).file // "") | repo_path | split("/") | .[:-1]]
+              | common_folders | length) as $cut
+            | [
+              .violations[]?
+              | select(.severity >= $min and .severity <= $max)
+              | (.locations[.primaryLocationIndex // 0] // {}) as $loc
+              | {
+                  severity: .severity,
+                  rule:     .rule,
+                  engine:   .engine,
+                  message:  .message,
+                  path:     (($loc.file // "") | repo_path),
+                  shown:    (($loc.file // "") | repo_path | split("/") | .[$cut:] | join("/")),
+                  line:     ($loc.startLine // 0),
+                  line_str: (($loc.startLine // "") | tostring)
+                }
+            ]
+            # Sorted by the file name as the table shows it, then by the whole
+            # path, so that the violations of a file are together even when two
+            # files have the same name, then by the line, the severity, and the
+            # engine.
+            | sort_by([.shown, .path, .line, .severity, .engine])
+            | .[]
+            | "| <a href=\"\($server)/\($repo)/blob/\($sha)/\(.path | link_path)\(if .line > 0 then "#L\(.line)" else "" end)\" target=\"_blank\" rel=\"noopener\">\(.shown | cell)</a> | \(.line_str) | \(.rule | cell) | \(.message | cell) | \(.severity) | \(.engine | cell) |"
+          ' "$RESULTS_FILE"
+        }
+
+        TABLE_HEADER="| File | Line | Rule | Description | Severity | Engine |"
+        TABLE_SEP="|------|-----:|------|-------------|:--------:|--------|"
+
+        # An empty, null, or 5 cutoff puts every violation in one table
+        HAS_CUTOFF=true
+        if [ -z "$SEVERITY_CUTOFF" ] || [ "$SEVERITY_CUTOFF" = "null" ] || [ "$SEVERITY_CUTOFF" = "5" ]; then
+          HAS_CUTOFF=false
+        fi
+
+        # ================================================================
+        # Build each markdown block independently so they can be emitted
+        # both to GITHUB_STEP_SUMMARY and as step outputs.
+        # ================================================================
+
+        if [ "$HAS_CUTOFF" = "false" ]; then
+          # --- No cutoff: every violation goes in the high-priority block ---
+          ALL_ROWS=$(render_rows 1 5)
+          if [ -z "$ALL_ROWS" ]; then
+            HIGH_MD="_No violations._"
+          else
+            HIGH_MD=$(printf '%s\n%s\n%s' "$TABLE_HEADER" "$TABLE_SEP" "$ALL_ROWS")
+          fi
+          LOW_MD=""
+        else
+          REMAINING_MIN=$(( SEVERITY_CUTOFF + 1 ))
+
+          # --- High-priority block (severity 1 to the cutoff) ---
+          HIGH_ROWS=$(render_rows 1 "$SEVERITY_CUTOFF")
+          if [ -z "$HIGH_ROWS" ]; then
+            HIGH_MD="_No violations in this severity range._"
+          else
+            HIGH_MD=$(printf '%s\n%s\n%s' "$TABLE_HEADER" "$TABLE_SEP" "$HIGH_ROWS")
+          fi
+
+          # --- Low-priority block (above the cutoff, to severity 5) ---
+          LOW_ROWS=$(render_rows "$REMAINING_MIN" 5)
+          if [ -z "$LOW_ROWS" ]; then
+            LOW_MD="_No violations in this severity range._"
+          else
+            LOW_MD=$(printf '%s\n%s\n%s' "$TABLE_HEADER" "$TABLE_SEP" "$LOW_ROWS")
+          fi
+        fi
+
+        # --- Expose markdown blocks as step outputs (multiline-safe) ---
+        {
+          echo "high-priority-markdown<<EOF_HIGH"
+          echo "$HIGH_MD"
+          echo "EOF_HIGH"
+        } >> "$GITHUB_OUTPUT"
+
+        {
+          echo "low-priority-markdown<<EOF_LOW"
+          echo "$LOW_MD"
+          echo "EOF_LOW"
+        } >> "$GITHUB_OUTPUT"
+
+        # ================================================================
+        # Write $GITHUB_STEP_SUMMARY, unless the caller writes its own
+        # ================================================================
+        if [ "$WRITE_SUMMARY" != "true" ]; then
+          exit 0
+        fi
+        {
+          echo "## Salesforce Code Analyzer Results"
+          echo ""
+
+          # --- Violation counts summary table ---
+          echo "### Violation Counts"
+          echo ""
+          echo "| Severity | Count |"
+          echo "|----------|------:|"
+          echo "| Severity 1 | $SEV1 |"
+          echo "| Severity 2 | $SEV2 |"
+          echo "| Severity 3 | $SEV3 |"
+          echo "| Severity 4 | $SEV4 |"
+          echo "| Severity 5 | $SEV5 |"
+          echo "| **Total** | **$TOTAL** |"
+          echo ""
+
+          if [ "$HAS_CUTOFF" = "false" ]; then
+            # --- One table: every violation ---
+            echo "### All Violations"
+            echo ""
+            echo "$HIGH_MD"
+          else
+            # --- Table 1: severity 1 to the cutoff ---
+            echo "### Violations at Severity 1 to ${SEVERITY_CUTOFF}"
+            echo ""
+            echo "$HIGH_MD"
+            echo ""
+
+            # --- Table 2: above the cutoff, to severity 5 ---
+            if [ "$REMAINING_MIN" -le 5 ]; then
+              echo "### Violations at Severity ${REMAINING_MIN} to 5"
+              echo ""
+              echo "$LOW_MD"
+            fi
+          fi
+
+        } >> "$GITHUB_STEP_SUMMARY"

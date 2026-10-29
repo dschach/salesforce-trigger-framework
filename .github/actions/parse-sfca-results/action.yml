@@ -1,12 +1,12 @@
-name: "PMD SARIF priorities"
-description: "Count the violations in a PMD SARIF report by rule priority, 1 to 5"
+name: "SFCA results priorities"
+description: "Count the violations in a Salesforce Code Analyzer JSON report by priority, 1 to 5"
 author: "David Schach"
 
 inputs:
-  sarif-file:
-    description: "Path to the SARIF report that PMD wrote"
+  results-file:
+    description: "Path to the JSON report that the Code Analyzer wrote"
     required: false
-    default: "pmd-report.sarif"
+    default: "sfca_results.json"
 
 outputs:
   priority1:
@@ -27,6 +27,9 @@ outputs:
   total:
     description: "Number of violations in the report"
     value: ${{ steps.count.outputs.total }}
+  violations-table:
+    description: "Markdown table of the violations, by file and then by line"
+    value: ${{ steps.table.outputs.violations-table }}
 
 runs:
   using: "composite"
@@ -34,4 +37,9 @@ runs:
     - name: "Count violations by priority"
       id: count
       shell: bash
-      run: bash "${{ github.action_path }}/count.sh" "${{ inputs.sarif-file }}"
+      run: bash "${{ github.action_path }}/count.sh" "${{ inputs.results-file }}"
+
+    - name: "Build the violations table"
+      id: table
+      shell: bash
+      run: bash "${{ github.action_path }}/table.sh" "${{ inputs.results-file }}"
