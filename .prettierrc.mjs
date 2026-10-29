@@ -15,8 +15,8 @@ const config = {
 				printWidth: 100
 			}
 		},
-		// The shared config sets XML to 120; the site recommends 180 for
-		// every file, and its rulesets are published in that form.
+		// The shared config also sets XML to 120. This override keeps XML
+		// at 120 here even if the shared default changes.
 		{
 			files: '*.xml',
 			options: {
