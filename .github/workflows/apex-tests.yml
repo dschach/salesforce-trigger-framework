@@ -69,13 +69,18 @@ jobs:
         uses: codecov/codecov-action@v7
         with:
           flags: Apex
-          #token: ${{ secrets.CODECOV_TOKEN }}
-          commit_parent: ${{ github.event.pull_request.base.sha }} # Forces base to PR target branch head
+          #token: ${{ secrets.CODECOV_TOKEN }}\
+          report_type: coverage
+          base_sha: ${{ github.event.pull_request.base.sha }} # Forces base to PR target branch head
+          directory: ./tests/apex
+          verbose: true
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
-        #with:
-        # token: ${{ secrets.CODECOV_TOKEN }}
+        uses: codecov/codecov-action@v7
+        with:
+          report_type: test_results
+          base_sha: ${{ github.event.pull_request.base.sha }} # Forces base to PR target branch head
+          directory: ./tests/apex
 
       # Runs only when an org was created, so a failed login does not hide its own error
       - name: "Delete scratch org"
