@@ -522,7 +522,7 @@
 
 * **ApexDox:** AndFinally documentation ([b4ce9d8](https://github.com/dschach/salesforce-trigger-framework/commit/b4ce9d89af91a7724e9e971af1a1a40b85b6b85a))
 
-## [1.0.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.0.0...v1.0.0) (2023-02-25)
+## [1.0.0](https://github.com/dschach/salesforce-trigger-framework/releases/tag/v1.0.0) (2023-02-25)
 
 
 ### Features
