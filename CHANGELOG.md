@@ -1,5 +1,98 @@
 # Changelog
 
+## [1.4.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.3.0...v1.4.0) (2026-10-29)
+
+
+### Features
+
+* **ci:** Add a job summary report for Code Analyzer results ([437f453](https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4))
+* **handler:** Add protected accessors and correct the ApexDoc ([#349](https://github.com/dschach/salesforce-trigger-framework/issues/349)) ([d3c42d2](https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4))
+* **handler:** Add protected getTriggerEvent and getHandlerName ([d3c42d2](https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4))
+
+
+### Bug Fixes
+
+* **handler:** Log a warning when the loop limit is exceeded ([d3c42d2](https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4))
+* **scripts:** Write highlight.js to doc-assets with portable sed ([032a7b9](https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56))
+
+
+### Miscellaneous Chores
+
+* **apexdox:** Correct 2 stale comments in the ApexDox config ([a15667e](https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805))
+* **code-analyzer:** Install Salesforce Code Analyzer config ([01b0bae](https://github.com/dschach/salesforce-trigger-framework/commit/01b0bae951c0a39deca9107370bb7cda6beb637b))
+* **code-analyzer:** Remove machine paths from the config on commit ([437f453](https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4))
+* **codecov:** Drop the LWC flag that nothing uploads ([6bd4946](https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b))
+* **git:** Ignore the Code Analyzer report folder ([437f453](https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4))
+* **ignore:** Skip the husky hooks and the LWC config files ([7ec40cd](https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0))
+* **pmd:** Move the PMD rulesets to config and add Code Analyzer ([#351](https://github.com/dschach/salesforce-trigger-framework/issues/351)) ([01b0bae](https://github.com/dschach/salesforce-trigger-framework/commit/01b0bae951c0a39deca9107370bb7cda6beb637b))
+* **pmd:** Move the PMD rulesets under config/pmd ([01b0bae](https://github.com/dschach/salesforce-trigger-framework/commit/01b0bae951c0a39deca9107370bb7cda6beb637b))
+* **prettier:** Adopt the shared x2od prettier config ([#359](https://github.com/dschach/salesforce-trigger-framework/issues/359)) ([7ec40cd](https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0))
+* **prettier:** Correct the comment on the XML print width override ([7ec40cd](https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0))
+* **prettier:** Extend the shared x2od Prettier configuration ([7ec40cd](https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0))
+* **prettier:** Ignore only what Prettier should skip ([032a7b9](https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56))
+* **project:** Clean up the tooling scripts, ignore files, and READMEs ([#353](https://github.com/dschach/salesforce-trigger-framework/issues/353)) ([032a7b9](https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56))
+* **project:** Remove template leftovers from the ignore files ([032a7b9](https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56))
+* **release:** Drop the 2 pre-major release-please flags ([6bd4946](https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b))
+* **vscode:** Recommend better-comments-next instead of better-comments ([d3c42d2](https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4))
+
+
+### Code Refactoring
+
+* **ci:** Read Code Analyzer results from JSON, not SARIF ([437f453](https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4))
+* **handler:** Simplify setBypass to 4 statements ([d3c42d2](https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4))
+
+
+### Styles
+
+* **docs:** Reformat the documentation assets to the shared style ([7ec40cd](https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0))
+* **pmd:** Rewrap the PMD rulesets at 80 characters ([7ec40cd](https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0))
+* **prettier:** Reformat the config and scripts to the shared style ([7ec40cd](https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0))
+
+
+### Documentation
+
+* **actions:** Show the Code Analyzer CLI in the action examples ([032a7b9](https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56))
+* **ApexDoc:** Add throws tags to TriggerHandler headers ([01b0bae](https://github.com/dschach/salesforce-trigger-framework/commit/01b0bae951c0a39deca9107370bb7cda6beb637b))
+* **changelog:** Link the first release to its release page ([a15667e](https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805))
+* **contributing:** Add a contributing guide for this repository ([a15667e](https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805))
+* **deploy:** Correct the scratch org instructions ([a15667e](https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805))
+* **github:** Add a pull request template ([a15667e](https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805))
+* **github:** Add the code of conduct to this repository ([f1ff40b](https://github.com/dschach/salesforce-trigger-framework/commit/f1ff40be0918486511599adb2b7e1b2dbe06cd93))
+* **github:** Replace the issue templates with framework issue forms ([a15667e](https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805))
+* **handler:** Correct the ApexDoc statements and examples ([d3c42d2](https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4))
+* **handler:** Say when andFinally does not run ([d3c42d2](https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4))
+* **license:** Keep the BSD text alone and credit the original in NOTICE ([a15667e](https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805))
+* **project:** Add community files and fix the license and deploy docs ([#355](https://github.com/dschach/salesforce-trigger-framework/issues/355)) ([a15667e](https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805))
+* **readme:** Add an API reference and fix the documentation links ([032a7b9](https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56))
+* **readme:** Correct the bypass, loop count, and handler examples ([032a7b9](https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56))
+* **sample:** Move the sample README and describe the sample ([032a7b9](https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56))
+
+
+### Build System
+
+* **@x2od/prettier-config:** Update devDependency @x2od/prettier-config from 0.6.1 to 0.7.0 ([#360](https://github.com/dschach/salesforce-trigger-framework/issues/360)) ([a4585f7](https://github.com/dschach/salesforce-trigger-framework/commit/a4585f7cc436031bec82616a3c12a63e4955a4c4))
+* **node:** Update Node.js from v22.22.1 to v24.22.2 ([#356](https://github.com/dschach/salesforce-trigger-framework/issues/356)) ([f522648](https://github.com/dschach/salesforce-trigger-framework/commit/f522648f2d374f9654ac91bb6c0afc5bc367732f))
+* **npm:** Call lint-staged from the hook and prune gone branches ([032a7b9](https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56))
+* **npm:** Get the Prettier plugins through the shared x2od config ([7ec40cd](https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0))
+* **npm:** Remove the local Apex Prettier server scripts ([7ec40cd](https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0))
+* **npm:** Run the Prettier scripts on the whole tree ([032a7b9](https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56))
+
+
+### Continuous Integration
+
+* **actions/setup-java:** Update actions/setup-java action from v5 to v6 ([#357](https://github.com/dschach/salesforce-trigger-framework/issues/357)) ([34c1596](https://github.com/dschach/salesforce-trigger-framework/commit/34c15969886676ea47f69fd68e95deec16446a89))
+* **apex-tests:** Fetch 2 commits and give Codecov the pull request base ([d3c42d2](https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4))
+* **apex-tests:** Pass the Dev Hub secret through stdin ([6bd4946](https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b))
+* **apex-tests:** Put the stdin flag last so the alias is kept ([6bd4946](https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b))
+* **code-analyzer:** Report Code Analyzer results from JSON ([#352](https://github.com/dschach/salesforce-trigger-framework/issues/352)) ([437f453](https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4))
+* **codecov:** Troubleshoot Codecov base commit error ([#350](https://github.com/dschach/salesforce-trigger-framework/issues/350)) ([d0f4621](https://github.com/dschach/salesforce-trigger-framework/commit/d0f4621a091e97e46b9ee39074b31590cf46bfa2))
+* **java-jdk:** Update dependency java-jdk from v21 to v25 ([#358](https://github.com/dschach/salesforce-trigger-framework/issues/358)) ([83abc66](https://github.com/dschach/salesforce-trigger-framework/commit/83abc662ce03128ffa1273547dd2aa074a270317))
+* **workflows:** Give the workflow tokens read-only permissions ([6bd4946](https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b))
+* **workflows:** Harden the CI workflows and run the checks for every author ([#347](https://github.com/dschach/salesforce-trigger-framework/issues/347)) ([6bd4946](https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b))
+* **workflows:** Run the Code Analyzer CLI and write results to sfca ([437f453](https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4))
+* **workflows:** Run the formatting and PMD checks for every author ([6bd4946](https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b))
+* **workflows:** Split the Apex tests from CI and drop the residue ([6bd4946](https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b))
+
 ## [1.3.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.2.1...v1.3.0) (2026-10-29)
 
 
