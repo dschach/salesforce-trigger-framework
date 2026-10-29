@@ -31,10 +31,10 @@ log_level: 4
 #     - "**/node_modules/**"
 #     - "**/*.test.js"
 # -------------------------------------------
-ignores:
+ignores: # Modified from: {"files":[]}
   files:
-    - "docs/**"
-    - "doc-assets/**"
+    - docs/**
+    - doc-assets/**
     - "**/sfca*"
 
 # Configuration for inline and bulk suppressions.
@@ -339,14 +339,6 @@ rules:
         - Recommended
         - ErrorProne
         - Apex
-    "AvoidTrivialPropertyGetters":
-      severity: 4
-      tags:
-        - Recommended
-        - DevSecOpsReferenceRules
-        - Apex
-        - Custom
-      disabled: true # Modified from: false
     "AvoidWeakCryptoAlgorithms":
       severity: 3
       tags:
@@ -502,7 +494,7 @@ rules:
         - CodeStyle
         - Apex
     "FlagSystemMode":
-      severity: 2 # Modified from: 3
+      severity: 2
       tags:
         - Recommended
         - DevSecOpsReferenceRules
@@ -569,7 +561,7 @@ rules:
         - Apex
         - Custom
     "NoCredentialNamedField":
-      severity: 2 # Modified from: 3
+      severity: 2
       tags:
         - Recommended
         - DevSecOpsReferenceRules
@@ -675,7 +667,7 @@ rules:
         - Apex
         - Custom
     "RequireAccessMode":
-      severity: 2 # Modified from: 3
+      severity: 2
       tags:
         - Recommended
         - DevSecOpsReferenceRules
@@ -696,7 +688,7 @@ rules:
         - Apex
         - Custom
     "RequireInvocableNoArgConstructor":
-      severity: 1 # Modified from: 2
+      severity: 1
       tags:
         - Recommended
         - DevSecOpsReferenceRules
@@ -791,6 +783,14 @@ rules:
         - Recommended
         - CodeStyle
         - Apex
+    "AvoidTrivialPropertyGetters":
+      severity: 4
+      tags:
+        - Recommended
+        - DevSecOpsReferenceRules
+        - Apex
+        - Custom
+      disabled: true # Modified from: false
     "ApexUnitTestClassShouldHaveRunAs":
       severity: 4
       tags:
@@ -1047,7 +1047,7 @@ engines:
     # In these cases, you will need to also add your additional files to the Java classpath using the 'java_classpath_entries' field.
     # See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.html to learn more about PMD rulesets.
     custom_rulesets: # Modified from: []
-      - rulesets/devsecops-java.xml # inside the jar above
+      - rulesets/devsecops-java.xml
       - config/pmd/pmd-stock-rules.xml
       - config/pmd/pmd-custom-rules-apex.xml
 
