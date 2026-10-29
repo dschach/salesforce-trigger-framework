@@ -500,6 +500,13 @@ rules:
         - Recommended
         - CodeStyle
         - Apex
+    "FlagSystemMode":
+      severity: 2 # Modified from: 3
+      tags:
+        - Recommended
+        - DevSecOpsReferenceRules
+        - Apex
+        - Custom
     "ForLoopsMustUseBraces":
       severity: 3
       tags:
@@ -559,6 +566,13 @@ rules:
       tags:
         - Recommended
         - Apex
+        - Custom
+    "NoCredentialNamedField":
+      severity: 2 # Modified from: 3
+      tags:
+        - Recommended
+        - DevSecOpsReferenceRules
+        - Xml
         - Custom
     "NoMethodsInTriggers":
       severity: 3
@@ -659,6 +673,13 @@ rules:
         - DevSecOpsReferenceRules
         - Apex
         - Custom
+    "RequireAccessMode":
+      severity: 2 # Modified from: 3
+      tags:
+        - Recommended
+        - DevSecOpsReferenceRules
+        - Apex
+        - Custom
     "RequireExplicitSharing":
       severity: 2
       tags:
@@ -668,6 +689,13 @@ rules:
         - Custom
     "RequireInnerClassSharing":
       severity: 3
+      tags:
+        - Recommended
+        - DevSecOpsReferenceRules
+        - Apex
+        - Custom
+    "RequireInvocableNoArgConstructor":
+      severity: 1 # Modified from: 2
       tags:
         - Recommended
         - DevSecOpsReferenceRules
@@ -1007,7 +1035,8 @@ engines:
     # Each entry may be given as an absolute path or a relative path to 'config_root'.
     # This field is primarily used to supply custom Java based rule definitions to PMD.
     # See https://pmd.github.io/pmd/pmd_userdocs_extending_writing_java_rules.html
-    java_classpath_entries: []
+    java_classpath_entries: # Modified from: []
+      - config/pmd/pmd-java-rules-1.0.0.jar
 
     # List of xml ruleset files containing custom PMD rules to be made available for rule selection.
     # Each ruleset must be an xml file that is either:
@@ -1017,6 +1046,7 @@ engines:
     # In these cases, you will need to also add your additional files to the Java classpath using the 'java_classpath_entries' field.
     # See https://pmd.github.io/pmd/pmd_userdocs_making_rulesets.html to learn more about PMD rulesets.
     custom_rulesets: # Modified from: []
+      - rulesets/devsecops-java.xml # inside the jar above
       - config/pmd/pmd-stock-rules.xml
       - config/pmd/pmd-custom-rules-apex.xml
 

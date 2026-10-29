@@ -17,7 +17,7 @@ This folder holds a sample trigger, trigger handler, and test for the [Salesforc
   - Before insert, it removes extra spaces from each Account name. Before update, it does the same only for the names that changed, which it finds with the old records.
   - After update, it copies a changed phone number to the child Accounts. It bypasses itself with `TriggerHandler.bypass(AccountSampleTriggerHandler.class)` for that update, so the update does not run the handler again, and it clears the bypass in a `finally` block.
   - `andFinally()` runs after each of the 7 contexts, also the ones the handler does not override. The sample records the finished operation, which the test reads.
-  - The handler is `inherited sharing`, and its query and DML statement name `SYSTEM_MODE`. A trigger runs without sharing, so the handler can update child Accounts that the running user cannot edit.
+  - The handler is `inherited sharing`, and its query and DML statement name `SYSTEM_MODE`. A trigger runs without sharing, so the handler can update child Accounts that the running user cannot edit. Code Analyzer reports system mode with `FlagSystemMode`, so the method suppresses that rule and its ApexDoc gives the reason. The test class does the same for its own setup and checks.
 - `main/default/classes/AccountSampleTriggerHandlerTest.cls` proves each of these behaviors with real DML, 1 test per behavior. It also shows how a test bypasses a handler to set up data.
 
 ## Try it in a scratch org
