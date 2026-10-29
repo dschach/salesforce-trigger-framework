@@ -1,6 +1,8 @@
 # Deploys the framework and the sample to a scratch org and runs every Apex test.
 # Runs only when Apex or project metadata changes, because each run costs a
 # scratch org. It is not a required check for that reason.
+# A push to main that changes an Apex class runs it too, so that Codecov has the
+# coverage of main to compare each pull request with.
 name: Apex tests
 
 on:
@@ -13,13 +15,21 @@ on:
       - "sfdx-project.json"
       - "config/project-scratch-def.json"
       - ".github/workflows/apex-tests.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "force-app/**/*.cls"
+      - "sample-handler/**/*.cls"
 
 permissions:
   contents: read
 
-# A newer push to the same pull request cancels the run in progress
+# A newer push to the same pull request cancels the run in progress. A push to main
+# gets a group of its own, keyed on the commit, so that a quick second merge does not
+# cancel the run of the first: GitHub keeps only 1 pending run in a group.
 concurrency:
-  group: apex-tests-${{ github.event.pull_request.number || github.ref }}
+  group: apex-tests-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 jobs:
