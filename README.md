@@ -105,13 +105,19 @@ A sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-tri
 
 To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger itself and call the `run()` method. Here is an example of an Opportunity trigger.
 
-This is the way to write a trigger that will run the trigger handler above. Note that some objects do not work in every context, so ensure that you list only applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead to deployment problems.
+This is the way to write a trigger that will run the trigger handler above. List all 7 contexts, even the ones the handler does not override yet. Then you write the trigger once and never edit it again: a new override in the handler runs without a change to the trigger. A context that the handler does not override costs little, because `run()` calls the empty base method and then `andFinally()`. Some objects do not support every context, for example an object that cannot be undeleted. For such an object, leave out the contexts that it does not support.
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before update, after update) {
+trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().run();
 }
 ```
+
+### Data access
+
+A trigger runs without sharing, so a handler declared `inherited sharing` runs without sharing too. A handler often must read or change records that the running user cannot see or edit, such as related records. So the examples here name `SYSTEM_MODE` on every query and DML statement: `WITH SYSTEM_MODE` in SOQL, and `AccessLevel.SYSTEM_MODE` in `Database` methods. System mode ignores the user's object and field permissions, and the sharing of the class decides record access.
+
+If a handler must respect the running user's object, field, and record permissions, use `WITH USER_MODE` and `AccessLevel.USER_MODE` instead.
 
 ## Cool Stuff
 
@@ -129,19 +135,19 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
   }
 
   public override void afterUpdate() {
-    List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet() WITH USER_MODE];
+    List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet() WITH SYSTEM_MODE];
 
-    Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId WITH USER_MODE];
+    Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId WITH SYSTEM_MODE];
 
     TriggerHandler.bypass('AccountTriggerHandler');
 
     acc.Name = 'No Trigger';
-    Database.update(acc, AccessLevel.USER_MODE); /* won't invoke the AccountTriggerHandler */
+    Database.update(acc, AccessLevel.SYSTEM_MODE); /* won't invoke the AccountTriggerHandler */
 
     TriggerHandler.clearBypass('AccountTriggerHandler');
 
     acc.Name = 'With Trigger';
-    Database.update(acc, AccessLevel.USER_MODE); /* will invoke the AccountTriggerHandler */
+    Database.update(acc, AccessLevel.SYSTEM_MODE); /* will invoke the AccountTriggerHandler */
   }
 }
 ```
@@ -226,8 +232,8 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
   }
 
   public override void afterUpdate() {
-    List<Opportunity> opps = [SELECT Id FROM Opportunity WHERE Id IN :newRecordsMap.keySet() WITH USER_MODE];
-    Database.update(opps, AccessLevel.USER_MODE);
+    List<Opportunity> opps = [SELECT Id FROM Opportunity WHERE Id IN :newRecordsMap.keySet() WITH SYSTEM_MODE];
+    Database.update(opps, AccessLevel.SYSTEM_MODE);
   }
 }
 ```
@@ -237,7 +243,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
 In version 1.2, the ability to chain methods was added. Now, you can set the max loop count in a single line in your trigger:
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before update, after update) {
+trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().setMaxLoopCount(5).run();
 }
 ```
@@ -266,7 +272,7 @@ or put them in your Apex *trigger handler* code before and after DML statements.
 TriggerHandler.showLimits();
 TriggerHandler.showDebug();
 
-Database.update(leadsList, AccessLevel.USER_MODE);
+Database.update(leadsList, AccessLevel.SYSTEM_MODE);
 
 TriggerHandler.showLimits(false);
 TriggerHandler.showDebug(false);
@@ -275,7 +281,7 @@ TriggerHandler.showDebug(false);
 In version 1.2, the ability to chain methods *in triggers* was added. Now, you can specify showing debug messages and limits in a single line in your trigger:
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before update, after update) {
+trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().debug().limits().run(); // debug() is the same as debug(true)
 }
 ```
@@ -283,7 +289,7 @@ trigger OpportunityTrigger on Opportunity (before update, after update) {
 Or stop showing them.
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before update, after update) {
+trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().debug(false).limits(false).run();
 }
 ```

@@ -1,10 +1,10 @@
 /**
- * @description Sample trigger showing simple implementation of trigger handler.
- * <br/>Note that the handler class is specified in the handler, though it could be specified here
+ * @description Sample trigger for the sample handler. It has no logic: it creates the handler and calls `run()`.
+ * <br>It lists all 7 contexts, so it is written once and never edited again: a new override in the handler runs without a change to the trigger.
+ * <br>A context that the handler does not override costs little: `run()` calls the empty base method and then `andFinally()`.
  *
  * @group SampleTriggerHandler
  */
-trigger AccountSampleTrigger on Account(before insert, after insert, before update, after update, before delete, after delete, after undelete) {
-	TriggerHandler.showLimits();
-	new AccountSampleTriggerHandler('AccountSampleTriggerHandler').debug(true).run();
+trigger AccountSampleTrigger on Account(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+	new AccountSampleTriggerHandler().run();
 }

@@ -1,74 +1,127 @@
 /**
- * @description Account Sample handler
+ * @description A sample Account trigger handler that shows the framework in use.
+ * <br>Before insert and before update, it removes extra spaces from each new or changed Account name.
+ * <br>After update, it copies a changed phone number to the child Accounts. It bypasses itself for that update, so the update does not run this handler again.
+ * <br>A loop limit protects against recursion that the bypass does not stop, and `andFinally()` runs after each context.
+ * <br>A trigger runs without sharing, so this `inherited sharing` handler does too. Every query and DML statement names `SYSTEM_MODE`, so the handler can update child Accounts that the running user cannot edit.
  * @author David Schach
  * @since 2021
  * @group SampleTriggerHandler
  * @group-content doc-assets/files/sampletriggerhandlerhome.html
+ * @see AccountSampleTriggerHandlerTest
  */
 public inherited sharing class AccountSampleTriggerHandler extends TriggerHandler {
+	/**
+	 * The maximum number of runs of this handler in 1 transaction. Each trigger context and each chunk of 200 records uses 1 run, so 100 allows an update of 10,000 records, which runs before update and after update 50 times each.
+	 */
+	private static final Integer MAX_LOOP_COUNT = 100;
+
+	/**
+	 * The trigger operations this handler finished in the transaction, in order. `andFinally()` adds each one.
+	 */
+	@TestVisible
+	private static List<System.TriggerOperation> finishedOperations = new List<System.TriggerOperation>();
+
 	private List<Account> newRecords;
-	private List<Account> oldRecords;
-	private Map<Id, Account> newRecordsMap;
 	private Map<Id, Account> oldRecordsMap;
 
 	/**
-	 * @description Constructor that supplies the class name itself, so the base class never resolves it at runtime
+	 * @description Constructor for the trigger. It passes the class name, so the base class never resolves it at runtime.
 	 * @see AccountSampleTriggerHandler.AccountSampleTriggerHandler[1]
+	 * @example
+	 * new AccountSampleTriggerHandler().run();
 	 */
 	public AccountSampleTriggerHandler() {
-		this('AccountSampleTriggerHandler');
+		this(AccountSampleTriggerHandler.class.getName());
 	}
 
 	/**
-	 * @description Constructor with the class name, which skips the runtime name lookup in the base class
-	 * <br>We cast all four trigger collections
-	 * @param className The name of this class, exactly as `Type.getName()` returns it
+	 * @description Constructor with the handler name. It casts the trigger collections that the handler uses, and it sets the loop limit.
+	 * @param className The name of this class, exactly as `Type.getName()` returns it.
 	 */
 	public AccountSampleTriggerHandler(String className) {
 		super(className);
 		this.newRecords = (List<Account>) Trigger.new;
-		this.oldRecords = (List<Account>) Trigger.old;
-		this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;
 		this.oldRecordsMap = (Map<Id, Account>) Trigger.oldMap;
+		this.setMaxLoopCount(MAX_LOOP_COUNT);
 	}
 
+	/**
+	 * @description Remove extra spaces from the name of each new Account.
+	 */
 	public override void beforeInsert() {
-		method1();
+		normalizeNames(this.newRecords);
 	}
 
+	/**
+	 * @description Remove extra spaces from each Account name that changed.
+	 */
 	public override void beforeUpdate() {
-		method2();
+		List<Account> renamedAccounts = new List<Account>();
+		for (Account updatedAccount : this.newRecords) {
+			if (updatedAccount.Name != this.oldRecordsMap.get(updatedAccount.Id).Name) {
+				renamedAccounts.add(updatedAccount);
+			}
+		}
+		normalizeNames(renamedAccounts);
 	}
 
-	//public override void beforeDelete(){}
-
-	public override void afterInsert() {
-		method3();
+	/**
+	 * @description Copy each changed phone number to the child Accounts.
+	 */
+	public override void afterUpdate() {
+		Map<Id, String> phoneByParentId = new Map<Id, String>();
+		for (Account updatedAccount : this.newRecords) {
+			if (updatedAccount.Phone != this.oldRecordsMap.get(updatedAccount.Id).Phone) {
+				phoneByParentId.put(updatedAccount.Id, updatedAccount.Phone);
+			}
+		}
+		if (phoneByParentId.isEmpty()) {
+			return;
+		}
+		copyPhoneToChildAccounts(phoneByParentId);
 	}
 
-	//public override void afterUpdate(){}
+	/**
+	 * @description Record the finished operation. A real handler puts work here that must follow every context, such as a rollup or 1 platform event for the whole trigger.
+	 */
+	public override void andFinally() {
+		finishedOperations.add(this.getTriggerEvent());
+	}
 
-	//public override void afterDelete(){}
-
-	//public override void afterUndelete(){}
-
-	private void method1() {
-		for (Account a : newRecords) {
-			a.Name = a.Name.toUpperCase();
+	/**
+	 * @description Replace each run of spaces in the Account names with 1 space, and remove the spaces at the start and the end.
+	 * @param accounts The Accounts to change.
+	 */
+	private static void normalizeNames(List<Account> accounts) {
+		for (Account changedAccount : accounts) {
+			changedAccount.Name = changedAccount.Name.normalizeSpace();
 		}
 	}
 
-	private void method2() {
-		for (Account a : newRecords) {
-			a.Name = a.Name.toLowerCase();
+	/**
+	 * @description Update the phone number of the child Accounts, with this handler bypassed for that update.
+	 * <br>A child Account that is in the same trigger run is left out, because a trigger cannot update the records it is running for.
+	 * @param phoneByParentId The new phone number of each parent Account, by Id.
+	 */
+	private void copyPhoneToChildAccounts(Map<Id, String> phoneByParentId) {
+		Set<Id> parentIds = phoneByParentId.keySet();
+		List<Account> childAccounts = new List<Account>();
+		for (Account childAccount : [SELECT Id, ParentId FROM Account WHERE ParentId IN :parentIds WITH SYSTEM_MODE]) {
+			if (!this.oldRecordsMap.containsKey(childAccount.Id)) {
+				childAccount.Phone = phoneByParentId.get(childAccount.ParentId);
+				childAccounts.add(childAccount);
+			}
 		}
-	}
-
-	private void method3() {
-		List<Contact> acctContacts = [SELECT Id FROM Contact WHERE AccountId IN :newRecordsMap.keyset() WITH USER_MODE];
-		if (Contact.getSObjectType().getDescribe().isUpdateable()) {
-			Database.update(acctContacts, AccessLevel.USER_MODE);
+		if (childAccounts.isEmpty()) {
+			return;
 		}
-		// do things here
+		// This handler is running, so it was not bypassed before. The finally block restores that state, also when the update fails.
+		TriggerHandler.bypass(AccountSampleTriggerHandler.class);
+		try {
+			Database.update(childAccounts, AccessLevel.SYSTEM_MODE);
+		} finally {
+			TriggerHandler.clearBypass(AccountSampleTriggerHandler.class);
+		}
 	}
 }
