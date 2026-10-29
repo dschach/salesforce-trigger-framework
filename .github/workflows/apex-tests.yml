@@ -73,7 +73,6 @@ jobs:
           report_type: coverage
           base_sha: ${{ github.event.pull_request.base.sha }} # Forces base to PR target branch head
           directory: ./tests/apex
-          verbose: true
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
         uses: codecov/codecov-action@v7
