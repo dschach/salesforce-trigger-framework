@@ -5,6 +5,8 @@
 	"description": "Salesforce Trigger Framework",
 	"scripts": {
 		"codeanalyzer:setup": "echo y | sf code-analyzer config --output-file code-analyzer.yml --config-file code-analyzer.yml --include-unmodified-rules --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
+		"codeanalyzer:run": "sf code-analyzer run --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
+
 		"prettier:apex:local": "prettier --apex-standalone-parser built-in --write \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
 		"prettier:verify:apex:local": "prettier --apex-standalone-parser built-in --check \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
 		"apex:local:start": "node node_modules/prettier-plugin-apex/dist/bin/start-apex-server.js",

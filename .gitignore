@@ -45,3 +45,6 @@ filelist.txt
 config/pmd/pmd.csv
 # Claude Code local files
 .claude/
+
+# Code Analyzer reports
+sfca/
