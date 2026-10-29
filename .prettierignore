@@ -1,26 +1,26 @@
-# List files or directories below to ignore them when running prettier
-# More information: https://prettier.io/docs/en/ignore.html
-#
+# Files and folders that Prettier does not format or check.
+# More information: https://prettier.io/docs/ignore
 
-**/staticresources/**
-node_modules
-.localdevserver
-.sfdx
+# Salesforce CLI and VS Code state
 .sf
+.sfdx
 .vscode
-./*.json
-!release-please-config.json
-# Code Analyzer reports
-sfca/
+
+# Dependencies and the lock file
+node_modules
+package-lock.json
+
+# Metadata files, which the Salesforce CLI writes
 **/*-meta.xml
+**/staticresources/**
 
-coverage/
-
-# ApexDox website
-docs/assets/*.js
+# Generated documentation site (ApexDox). After a regeneration, run
+# npm run prettier:docs, which reads .gitignore instead of this file.
+docs/
 doc-assets/highlight*.js
 
-# markdown
-*.md
+# Code Analyzer reports
+sfca/
 
-package-lock.json
+# Markdown
+*.md

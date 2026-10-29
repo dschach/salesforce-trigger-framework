@@ -1,6 +1,6 @@
 [![codecov](https://codecov.io/gh/dschach/salesforce-trigger-framework/branch/main/graph/badge.svg?token=1StpM73gpE)](https://codecov.io/gh/dschach/salesforce-trigger-framework)
 [![CI](https://github.com/dschach/salesforce-trigger-framework/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/dschach/salesforce-trigger-framework/actions/workflows/ci.yml)
-[![Twitter](https://img.shields.io/twitter/follow/dschach.svg?style=social)](https://img.shields.io/twitter/follow/dschach.svg?style=social)
+[![Twitter](https://img.shields.io/twitter/follow/dschach.svg?style=social)](https://x.com/dschach)
 
 # Salesforce Trigger Framework
 
@@ -21,6 +21,7 @@
     - [Debug Statements](#debug-statements)
     - [Universal Action](#universal-action)
   - [Overridable Methods](#overridable-methods)
+  - [API Reference](#api-reference)
 
 ## Credit
 
@@ -28,7 +29,7 @@ Based on Kevin O'Hara's famous framework [sfdc-trigger-framework](https://github
 
 ## Documentation
 
-[Class Documentation](https://dschach.github.io/salesforce-trigger-framework/TriggerHandler.html)
+[Class Documentation](https://davidschach.com/salesforce-trigger-framework/TriggerHandler.html)
 
 ### Changelog
 
@@ -46,72 +47,69 @@ The base class also provides a secondary role as a supervisor for Trigger execut
 
 But the most important part of this framework is that it's minimal and simple to use.
 
-**Deploy to SFDX Scratch Org:**
+**Deploy to a scratch org:**
 [Deploy instructions](./DEPLOY.md)
 
-**Deploy to Salesforce Org:**
+**Deploy to a Salesforce org:**
 [![Deploy](https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png)](https://githubsfdeploy.herokuapp.com/?owner=dschach&repo=salesforce-trigger-framework)
 
 ## Usage
 
 ### Trigger Handler
 
-To create a trigger handler, you simply need to create a class that inherits from [TriggerHandler.cls](https://github.com/dschach/salesforce-trigger-framework/blob/main/force-app/main/default/classes/TriggerHandler.cls). Here is an example for creating an Opportunity trigger handler.
+To create a trigger handler, create a class that extends [TriggerHandler.cls](https://github.com/dschach/salesforce-trigger-framework/blob/main/force-app/main/default/classes/TriggerHandler.cls). Here is the declaration of an Opportunity trigger handler.
 
 ```apex
-public class OpportunityTriggerHandler extends TriggerHandler {
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+}
 ```
 
-In your trigger handler, to add logic to any of the trigger contexts, you only need to override them in your trigger handler. Here is how we would add logic to a `beforeUpdate, afterUpdate` trigger.
-
-A sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes) class has been included in this repository, as well as a sample [trigger](https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger). The sample is not a package directory, so the Deploy to Salesforce button and `sf project deploy start` install only the framework. To try the sample in a scratch org, run `sf project deploy start --source-dir sample-handler`.
+To add logic to a trigger context, override that context's method in your trigger handler. Here is how we would add logic to a `beforeUpdate, afterUpdate` trigger.
 
 **Note:** When referencing the Trigger static maps within a class, SObjects are returned versus SObject subclasses like Opportunity, Account, etc. This means that you must cast when you reference them in your trigger handler. You could do this in your constructor if you wanted. Technically, you only need to cast for oldMap and newMap, but for completeness, I encourage casting Trigger.new and Trigger.old as well.
 
 ```apex
-public class OpportunityTriggerHandler extends TriggerHandler {
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
   private List<Opportunity> newRecords;
   private List<Opportunity> oldRecords;
   private Map<Id, Opportunity> newRecordsMap;
   private Map<Id, Opportunity> oldRecordsMap;
 
-  public OpportunityTriggerHandler(){
+  public OpportunityTriggerHandler() {
     super('OpportunityTriggerHandler');
-    this.newRecords = Trigger.new;
-    this.oldRecords = Trigger.old;
+    this.newRecords = (List<Opportunity>) Trigger.new;
+    this.oldRecords = (List<Opportunity>) Trigger.old;
     this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
     this.oldRecordsMap = (Map<Id, Opportunity>) Trigger.oldMap;
   }
 
   public override void beforeUpdate() {
-    for(Opportunity o : newRecords) {
+    for (Opportunity o : newRecords) {
       /* do something */
     }
   }
 
   public override void afterUpdate() {
-      /* do something */
+    /* do something */
   }
 
   /* add overrides for other contexts */
-
 }
 ```
+
+Passing the class name to `super()` is optional, and it makes the handler faster. Without it, the framework works out the name from the running class the first time a bypass or a loop count needs it, and that lookup serializes every field of the handler, including the record lists. Pass the name exactly as `Type.getName()` returns it, so that `TriggerHandler.bypass(OpportunityTriggerHandler.class)` matches. For a top-level class, that is the class name.
+
+A sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes) class has been included in this repository, as well as a sample [trigger](https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger). The sample is not a package directory, so the Deploy to Salesforce button and `sf project deploy start` install only the framework. To try the sample in a scratch org, run `sf project deploy start --source-dir sample-handler`. The [sample README](sample-handler/README.md) describes what it shows.
+
 ### Trigger
 
-To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger handler itself and call the `run()` method. Here is an example of an Opportunity trigger.
+To use the trigger handler, you only need to construct an instance of your trigger handler within the trigger itself and call the `run()` method. Here is an example of an Opportunity trigger.
 
-This is the way to write a trigger that will run the trigger handlers below. Note that some objects do not work in every context, so ensure that you list only applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead to deployment problems.
+This is the way to write a trigger that will run the trigger handler above. Note that some objects do not work in every context, so ensure that you list only applicable trigger contexts in your trigger definition and that you only override those contexts. If you include extra contexts, they will not be covered by Apex tests, which could lead to deployment problems.
 
 ```apex
 trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler().run();
-}
-```
-There is also a faster way to write the trigger, specifying the handler class name so the handler does not need to describe the class for its name, saving precious execution time:
-```apex
-trigger OpportunityTrigger on Opportunity (before update, after update) {
-  new OpportunityTriggerHandler('OpportunityTriggerHandler').run();
 }
 ```
 
@@ -122,33 +120,34 @@ trigger OpportunityTrigger on Opportunity (before update, after update) {
 What if you want to tell other trigger handlers to halt execution? That's easy with the bypass api:
 
 ```apex
-public class OpportunityTriggerHandler extends TriggerHandler {
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
   private Map<Id, Opportunity> newRecordsMap;
 
-  /* Optional Constructor - better performance */
-  public OpportunityTriggerHandler(){
+  public OpportunityTriggerHandler() {
     super('OpportunityTriggerHandler');
     this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
   }
 
   public override void afterUpdate() {
-    List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];
+    List<Opportunity> opps = [SELECT Id, AccountId FROM Opportunity WHERE Id IN :newRecordsMap.keySet() WITH USER_MODE];
 
-    Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId];
+    Account acc = [SELECT Id, Name FROM Account WHERE Id = :opps.get(0).AccountId WITH USER_MODE];
 
     TriggerHandler.bypass('AccountTriggerHandler');
 
     acc.Name = 'No Trigger';
-    update acc; /* won't invoke the AccountTriggerHandler */
+    Database.update(acc, AccessLevel.USER_MODE); /* won't invoke the AccountTriggerHandler */
 
     TriggerHandler.clearBypass('AccountTriggerHandler');
 
     acc.Name = 'With Trigger';
-    update acc; /* will invoke the AccountTriggerHandler */
+    Database.update(acc, AccessLevel.USER_MODE); /* will invoke the AccountTriggerHandler */
   }
-
 }
 ```
+
+Bypass names match regardless of case. You can also bypass by type, as in `TriggerHandler.bypass(AccountTriggerHandler.class)`, so the compiler checks the name. A null or blank name, a null type, or a null list throws `TriggerHandler.TriggerHandlerException`.
+
 ### Check Bypass Status
 
 If you need to check if a handler is bypassed, use the `isBypassed` method:
@@ -158,15 +157,16 @@ if (TriggerHandler.isBypassed('AccountTriggerHandler')) {
   /* ... do something if the Account trigger handler is bypassed! */
 }
 ```
+
 ### Global Bypass
 
-To bypass all handlers, set the global bypass variable:
+To bypass all handlers, use the `bypassAll` method:
 
 ```apex
-TriggerHandler.setGlobalBypass();
+TriggerHandler.bypassAll();
 ```
 
-This will also add an entry 'bypassAll' to the list of handlers returned in `bypassList`.
+This also clears the list of named bypasses, and it adds the entry `BypassAll` to the list from `bypassList()` and the set from `bypassSet()`.
 
 To clear all bypasses for the transaction, simply use the `clearAllBypasses` method, as in:
 
@@ -178,11 +178,11 @@ TriggerHandler.clearAllBypasses();
 /* ... now handlers won't be ignored! */
 ```
 
-This will clear the list of bypassed handlers and set the `globalBypass` Boolean to false.
+This clears the list of bypassed handlers and the global bypass. To clear only one of them, use `clearBypassList()` or `clearGlobalBypass()`.
 
 ### Set Bypass
 
-If you are not sure in a transaction if a handler is bypassed, but want to bypass it (or clear the bypass) and then set it to its original value, use the `setBybass` method:
+If you are not sure in a transaction if a handler is bypassed, but want to bypass it (or clear the bypass) and then set it to its original value, use the `setBypass` method:
 
 ```apex
 Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');
@@ -192,6 +192,8 @@ TriggerHandler.bypass('AccountTriggerHandler');
 
 TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
 ```
+
+`setBypass(name, false)` also clears the global bypass, because a global bypass cannot leave out 1 handler. So this idiom restores the named bypass, not a global bypass that was active before.
 
 To store all currently bypassed handlers, temporarily bypass all handlers, and then restore the originally bypassed list:
 
@@ -205,27 +207,32 @@ TriggerHandler.clearAllBypasses();
 TriggerHandler.bypass(bypassedHandlers);
 ```
 
+If all handlers were bypassed before, the stored list holds `BypassAll`. In that case, call `TriggerHandler.bypassAll()` again instead of restoring the list.
+
 ### Max Loop Count
 
-To prevent recursion, you can set a max loop count for Trigger Handler. If this max is exceeded, the trigger will silently stop running. If `showDebug()` has been included, a statement that the max loop count has been reached will be sent to the debug log. A great use case is when you want to ensure that your trigger runs once and only once within a single execution.
+To limit recursion, you can set a maximum loop count for a trigger handler. The count is kept per handler name, and every trigger context the handler runs in uses 1 count, so a trigger on `before update` and `after update` uses 2 counts for 1 update. A DML statement on more than 200 records runs the trigger once for each chunk of 200 records, and each chunk uses counts too. When the count passes the maximum, `run()` writes a warning to the debug log and returns without calling the context method or `andFinally()`.
+
+This handler runs its update logic once for an update of up to 200 records. The update inside `afterUpdate()` fires the trigger again, and those runs are skipped.
 
 ```apex
-public class OpportunityTriggerHandler extends TriggerHandler {
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
   private Map<Id, Opportunity> newRecordsMap;
 
-  public OpportunityTriggerHandler(){
-    /* Optional Constructor overload - better performance */
+  public OpportunityTriggerHandler() {
     super('OpportunityTriggerHandler');
     this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
-    this.setMaxLoopCount(1);
+    this.setMaxLoopCount(2); /* 1 count for before update, 1 for after update */
   }
 
   public override void afterUpdate() {
-    List<Opportunity> opps = [SELECT Id FROM Opportunity WHERE Id IN :newRecordsMap.keySet()];
-    update opps;
+    List<Opportunity> opps = [SELECT Id FROM Opportunity WHERE Id IN :newRecordsMap.keySet() WITH USER_MODE];
+    Database.update(opps, AccessLevel.USER_MODE);
   }
 }
 ```
+
+`clearMaxLoopCount()` removes the limit, and `TriggerHandler.getLoopCount('OpportunityTriggerHandler')` returns the current count. The count is 0 for a handler that never set a maximum.
 
 In version 1.2, the ability to chain methods was added. Now, you can set the max loop count in a single line in your trigger:
 
@@ -243,23 +250,25 @@ There are two methods that will show additional information.
 
 `TriggerHandler.showDebug()` will show trigger entry and exit in debug logs. Use sparingly, as it will decrease org performance.
 
-To use one or both of these, either add them to the *trigger* (the flags are static, so they apply to every handler that runs later in the transaction, whichever class name you call them on)
+Both flags are static, so they apply to every handler that runs later in the transaction. To use one or both of these, either add them to the *trigger*
+
 ```apex
 TriggerHandler.showLimits();
-AccountTriggerHandler.showDebug();
+TriggerHandler.showDebug();
 new AccountSampleTriggerHandler().run();
 TriggerHandler.showLimits(false);
-AccountTriggerHandler.showDebug(false);
+TriggerHandler.showDebug(false);
 ```
+
 or put them in your Apex *trigger handler* code before and after DML statements.
 
 ```apex
-LeadTriggerHandler.showLimits();
+TriggerHandler.showLimits();
 TriggerHandler.showDebug();
 
-update leadsList;
+Database.update(leadsList, AccessLevel.USER_MODE);
 
-LeadTriggerHandler.showLimits(false);
+TriggerHandler.showLimits(false);
 TriggerHandler.showDebug(false);
 ```
 
@@ -270,7 +279,9 @@ trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler().debug().limits().run(); // debug() is the same as debug(true)
 }
 ```
+
 Or stop showing them.
+
 ```apex
 trigger OpportunityTrigger on Opportunity (before update, after update) {
   new OpportunityTriggerHandler().debug(false).limits(false).run();
@@ -293,3 +304,38 @@ Here are all of the methods that you can override. All of the context possibilit
 - `afterDelete()`
 - `afterUndelete()`
 - `andFinally()`
+
+A handler can also call 2 protected methods: `getTriggerEvent()` returns the current `System.TriggerOperation`, and `getHandlerName()` returns the handler's name.
+
+## API Reference
+
+Every public member of `TriggerHandler`. The [class documentation](https://davidschach.com/salesforce-trigger-framework/TriggerHandler.html) has the full details and examples.
+
+| Member | What it does |
+| --- | --- |
+| `TriggerHandler()` | Constructor. The handler name is worked out from the running class when it is first needed. |
+| `TriggerHandler(String handlerName)` | Constructor with the handler name, which skips the runtime name lookup. |
+| `run()` | Called from the trigger. Runs the context method for the current operation, then `andFinally()`. |
+| `setMaxLoopCount(Integer max)` | Limits how many times this handler runs. A negative value removes the limit. Returns the handler, for chaining. |
+| `clearMaxLoopCount()` | Removes the limit on how many times this handler runs. |
+| `static getLoopCount(String handlerName)` | Returns the loop count of a handler, or 0 when no maximum was set for it. |
+| `static bypass(String handlerName)` | Bypasses a handler by name. The name matches regardless of case. |
+| `static bypass(Type handlerType)` | Bypasses a handler by type, for example `bypass(AccountTriggerHandler.class)`. |
+| `static bypass(List<String> handlerNames)` | Bypasses a list of handlers by name. |
+| `static bypassAll()` | Bypasses every handler, and clears the list of named bypasses. |
+| `static clearBypass(String handlerName)` | Clears the bypass of a handler by name. |
+| `static clearBypass(Type handlerType)` | Clears the bypass of a handler by type. |
+| `static clearBypass(List<String> handlerNames)` | Clears the bypass of a list of handlers by name. |
+| `static isBypassed(String handlerName)` | Returns `true` when the handler is bypassed by name or type, or when all handlers are bypassed. |
+| `static isBypassed(Type handlerType)` | The same check, by type. |
+| `static bypassList()` | Returns a sorted list of the bypassed handlers, with `BypassAll` when all handlers are bypassed. |
+| `static bypassSet()` | Returns a set of the bypassed handlers, with `BypassAll` when all handlers are bypassed. |
+| `static setBypass(String handlerName, Boolean desiredValue)` | Bypasses the handler for `true`. For `false`, clears its bypass and the global bypass. |
+| `static clearAllBypasses()` | Clears the global bypass and the list of named bypasses. |
+| `static clearGlobalBypass()` | Clears only the global bypass. |
+| `static clearBypassList()` | Clears only the list of named bypasses. |
+| `limits()`, `limits(Boolean enabled)` | Turns the limits debug output on, or on and off. Returns the handler, for chaining. |
+| `static showLimits()`, `static showLimits(Boolean enabled)` | The same, without chaining. |
+| `debug()`, `debug(Boolean enabled)` | Turns the entry and exit debug output on, or on and off. Returns the handler, for chaining. |
+| `static showDebug()`, `static showDebug(Boolean enabled)` | The same, without chaining. |
+| `TriggerHandler.TriggerHandlerException` | Thrown when `run()` is called outside a trigger, and when a bypass or loop count method gets a null or blank argument. |

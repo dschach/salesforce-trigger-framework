@@ -1,6 +1,8 @@
 # Salesforce Code Analyzer report
 
-A composite action that reads the JSON report that the Salesforce Code Analyzer wrote, counts the violations by severity, and writes the counts and Markdown tables to the job summary. The Code Analyzer action reports only a total, so a workflow that wants to fail on high-priority violations and tolerate the rest needs these counts and the tables that show them.
+A composite action that reads the JSON report that the Salesforce Code Analyzer wrote, counts the violations by severity, and writes the counts and Markdown tables to the job summary. A workflow that wants to fail on high-priority violations and tolerate the rest needs these counts and the tables that show them.
+
+The action never fails the job because of a violation. The caller's next step reads the counts and fails the job, as the `sfca-analysis` job in `ci.yml` does.
 
 ## Inputs
 
@@ -31,17 +33,16 @@ With a cutoff, the job summary has two tables, "Violations at Severity 1 to" the
 
 ```yaml
 - name: "Run Salesforce Code Analyzer"
-  id: run-code-analyzer
-  uses: forcedotcom/run-code-analyzer@v2
-  with:
-    run-arguments: --workspace . --view detail --output-file sfca_results.json --rule-selector "(pmd,cpd,sfge,regex):(Recommended,Custom)"
-    github-token: ${{ github.token }}
+  run: |
+    mkdir -p sfca
+    sf code-analyzer run --workspace . --output-file sfca/sfca_results.json --rule-selector "(pmd,cpd,sfge,regex):(Recommended,Custom)"
 
 - name: "Report SFCA violations"
+  if: always()
   id: sfca-report
   uses: ./.github/actions/sf-code-analyzer-report
   with:
-    results-path: "sfca_results.json"
+    results-path: "sfca/sfca_results.json"
     severity-cutoff: "2"
 
 - name: "Fail on priority 1 and 2 SFCA violations"
@@ -53,5 +54,6 @@ With a cutoff, the job summary has two tables, "Violations at Severity 1 to" the
 
 - The counts come from the report's `violationCounts`, which holds the count for each severity. A severity is the priority the ruleset gave the rule.
 - The File cell drops the folders that every file in the report starts with, so `delta/force-app/main/default/classes/Foo.cls` shows as `classes/Foo.cls`. A report of one file shows only its name.
+- The example assumes that the job installed the Salesforce CLI and the `code-analyzer` plugin, as the `sfca-analysis` job in `ci.yml` does. `if: always()` writes the summary even when the scan step fails.
 - The action needs `jq`, which is on every GitHub-hosted runner.
 - Set `write-summary` to `false` when the caller writes its own summary, and use the `high-priority-markdown` and `low-priority-markdown` outputs instead.
