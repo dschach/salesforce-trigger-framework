@@ -12,11 +12,20 @@ public without sharing class AccountSampleTriggerHandler extends TriggerHandler 
 	private Map<Id, Account> oldRecordsMap;
 
 	/**
-	 * @description Constructor using passed-in class name constructor for faster performance
+	 * @description Constructor that supplies the class name itself, so the base class never resolves it at runtime
+	 * @see AccountSampleTriggerHandler.AccountSampleTriggerHandler[1]
+	 */
+	public AccountSampleTriggerHandler() {
+		this('AccountSampleTriggerHandler');
+	}
+
+	/**
+	 * @description Constructor with the class name, which skips the runtime name lookup in the base class
 	 * <br>We cast all four trigger collections
-	 * @param className The name of this class. Pass in the string to make the handler run faster
+	 * @param className The name of this class, exactly as `Type.getName()` returns it
 	 */
 	public AccountSampleTriggerHandler(String className) {
+		super(className);
 		this.newRecords = (List<Account>) Trigger.new;
 		this.oldRecords = (List<Account>) Trigger.old;
 		this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;

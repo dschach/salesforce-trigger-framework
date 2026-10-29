@@ -29,4 +29,13 @@ private class AccountSampleTriggerHandlerTest {
 		a = [SELECT Id, Name FROM Account WHERE Id = :a.Id LIMIT 1];
 		System.assert(a.Name.isAllLowerCase(), 'Name is not lowercase');
 	}
+
+	/**
+	 * @description The handler forwards the class name it is given, and the no-arg constructor supplies it
+	 */
+	@IsTest
+	static void constructorsRegisterTheHandlerName() {
+		Assert.areEqual('AccountSampleTriggerHandler', new AccountSampleTriggerHandler().getHandlerName(), 'the no-arg constructor should register the class name');
+		Assert.areEqual('CustomName', new AccountSampleTriggerHandler('CustomName').getHandlerName(), 'the String constructor should forward the name it is given');
+	}
 }

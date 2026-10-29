@@ -20,10 +20,15 @@ public virtual class TriggerHandler {
 	private static Map<String, LoopCount> loopCountMap;
 
 	/**
-	 * All bypassed handlers
+	 * All bypassed handlers, as the caller spelled them
 	 */
 	@TestVisible
 	private static Set<String> bypassedHandlers;
+
+	/**
+	 * Lower-case copy of `bypassedHandlers`, used for every membership check so that a bypass name matches regardless of case
+	 */
+	private static Set<String> bypassedHandlersLower;
 
 	/**
 	 * `true` if we bypass all triggers without checking the contents of `bypassedHandlers`
@@ -66,19 +71,21 @@ public virtual class TriggerHandler {
 	static {
 		loopCountMap = new Map<String, LoopCount>();
 		bypassedHandlers = new Set<String>();
+		bypassedHandlersLower = new Set<String>();
 		globalBypass = false;
 		showLimits = false;
 		showDebug = false;
 	}
 
 	/**
-	 * @description Basic constructor. Slower than the other one
+	 * @description Basic constructor. The handler name is resolved from the runtime class name the first time a bypass or a loop count needs it
+	 * <br>That lookup serializes every field of the handler, so pass the name to the other constructor to avoid it
 	 * @see TriggerHandler.TriggerHandler[1]
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
-	 *  // (in Trigger Handler)
-	 * public AccountSampleTriggerHandler) {
-	 *   super('AccountSampleTriggerHandler');
+	 * // (in Trigger Handler)
+	 * public AccountSampleTriggerHandler() {
+	 *   super();
 	 *   this.newRecords = (List<Account>) Trigger.new;
 	 *   this.oldRecords = (List<Account>) Trigger.old;
 	 *   this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;
@@ -90,14 +97,15 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Constructor with handler name to improve performance
+	 * @description Constructor with handler name. Skips the runtime class name lookup
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2021
-	 * @param  handlerName The name of the handler
+	 * @param  handlerName The name of the handler. Pass the class name exactly as `Type.getName()` returns it, so that `bypass(Type)` matches
 	 * @example
 	 * new AccountSampleTriggerHandler('AccountSampleTriggerHandler').run();
 	 * // (in Trigger Handler)
-	 * public AccountSampleTriggerHandler('AccountSampleTriggerHandler') {
+	 * public AccountSampleTriggerHandler(String className) {
+	 *   super(className);
 	 *   this.newRecords = (List<Account>) Trigger.new;
 	 *   this.oldRecords = (List<Account>) Trigger.old;
 	 *   this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;
@@ -192,6 +200,9 @@ public virtual class TriggerHandler {
 	 * new TriggerHandler().setMaxLoopCount(5).run(); // in trigger
 	 */
 	public TriggerHandler setMaxLoopCount(Integer max) {
+		if (max == null) {
+			throw new TriggerHandlerException(ERROR_LOOP_COUNT);
+		}
 		String handlerName = getHandlerName();
 		if (!TriggerHandler.loopCountMap.containsKey(handlerName)) {
 			TriggerHandler.loopCountMap.put(handlerName, new LoopCount(max));
@@ -215,7 +226,9 @@ public virtual class TriggerHandler {
 	 * @example TriggerHandler.bypass('AccountSampleTriggerHandler');
 	 */
 	public static void bypass(String handlerName) {
+		requireHandlerName(handlerName);
 		TriggerHandler.bypassedHandlers.add(handlerName);
+		TriggerHandler.bypassedHandlersLower.add(handlerName.toLowerCase());
 	}
 
 	/**
@@ -227,6 +240,7 @@ public virtual class TriggerHandler {
 	 * TriggerHandler.bypass(AccountTriggerHandler.class);
 	 */
 	public static void bypass(Type handlerType) {
+		requireHandlerType(handlerType);
 		TriggerHandler.bypass(handlerType.getName());
 	}
 
@@ -236,7 +250,10 @@ public virtual class TriggerHandler {
 	 * @param handlerNames List of handlernames
 	 */
 	public static void bypass(List<String> handlerNames) {
-		TriggerHandler.bypassedHandlers.addAll(handlerNames);
+		requireHandlerNames(handlerNames);
+		for (String handlerName : handlerNames) {
+			TriggerHandler.bypass(handlerName);
+		}
 	}
 
 	/**
@@ -245,7 +262,7 @@ public virtual class TriggerHandler {
 	 * TriggerHandler.bypassAll();
 	 */
 	public static void bypassAll() {
-		TriggerHandler.bypassedHandlers.clear();
+		TriggerHandler.clearBypassList();
 		globalBypass = true;
 	}
 
@@ -258,8 +275,14 @@ public virtual class TriggerHandler {
 	 * TriggerHandler.clearBypass('AccountSampleTriggerHandler');
 	 */
 	public static void clearBypass(String handlerName) {
-		if (TriggerHandler.bypassedHandlers.contains(handlerName)) {
-			TriggerHandler.bypassedHandlers.remove(handlerName);
+		requireHandlerName(handlerName);
+		if (!TriggerHandler.bypassedHandlersLower.remove(handlerName.toLowerCase())) {
+			return;
+		}
+		for (String bypassedName : new List<String>(TriggerHandler.bypassedHandlers)) {
+			if (bypassedName.equalsIgnoreCase(handlerName)) {
+				TriggerHandler.bypassedHandlers.remove(bypassedName);
+			}
 		}
 	}
 
@@ -271,6 +294,7 @@ public virtual class TriggerHandler {
 	 * TriggerHandler.clearBypass(AccountSampleTriggerHandler.class);
 	 */
 	public static void clearBypass(Type handlerType) {
+		requireHandlerType(handlerType);
 		TriggerHandler.clearBypass(handlerType.getName());
 	}
 
@@ -283,8 +307,9 @@ public virtual class TriggerHandler {
 	 * TriggerHandler.clearBypass(classList);
 	 */
 	public static void clearBypass(List<String> handlerNames) {
-		for (String s : handlerNames) {
-			clearBypass(s);
+		requireHandlerNames(handlerNames);
+		for (String handlerName : handlerNames) {
+			TriggerHandler.clearBypass(handlerName);
 		}
 	}
 
@@ -297,7 +322,8 @@ public virtual class TriggerHandler {
 	 * TriggerHandler.isBypassed('AccountTriggerHandler');
 	 */
 	public static Boolean isBypassed(String handlerName) {
-		return (globalBypass || TriggerHandler.bypassedHandlers.contains(handlerName));
+		requireHandlerName(handlerName);
+		return globalBypass || TriggerHandler.bypassedHandlersLower.contains(handlerName.toLowerCase());
 	}
 
 	/**
@@ -310,7 +336,8 @@ public virtual class TriggerHandler {
 	 * TriggerHandler.isBypassed(AccountTriggerHandler.class);
 	 */
 	public static Boolean isBypassed(Type handlerType) {
-		return (globalBypass || TriggerHandler.bypassedHandlers.contains(handlerType.getName()));
+		requireHandlerType(handlerType);
+		return TriggerHandler.isBypassed(handlerType.getName());
 	}
 
 	/**
@@ -382,6 +409,7 @@ public virtual class TriggerHandler {
 	 */
 	public static void clearBypassList() {
 		TriggerHandler.bypassedHandlers.clear();
+		TriggerHandler.bypassedHandlersLower.clear();
 	}
 
 	/**
@@ -399,6 +427,10 @@ public virtual class TriggerHandler {
 	 * TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
 	 */
 	public static void setBypass(String handlerName, Boolean desiredValue) {
+		requireHandlerName(handlerName);
+		if (desiredValue == null) {
+			throw new TriggerHandlerException(ERROR_BYPASS_VALUE);
+		}
 		if (globalBypass) {
 			if (desiredValue == true) {
 				TriggerHandler.bypass(handlerName);
@@ -552,6 +584,7 @@ public virtual class TriggerHandler {
 	 * @return            `Integer` How many times has this handler run?
 	 */
 	public static Integer getLoopCount(String handlerName) {
+		requireHandlerName(handlerName);
 		if (TriggerHandler.loopCountMap.containsKey(handlerName)) {
 			return TriggerHandler.loopCountMap.get(handlerName).getCount();
 		}
@@ -567,12 +600,8 @@ public virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description    Set the current trigger context based on the System.TriggerOperation
-	 * <br>If we are not in a trigger context, then we set isTriggerExecuting to false
-	 * <r>A single line is not covered by tests because we do not "fool" the handler into
-	 * thinking that `Trigger.isExecuting` is true when we are running our tests. This line
-	 * would be covered by any trigger handler in the org (and is the reason we include a
-	 * sample handler for assistance when creating a package for this project)
+	 * @description    Set the current trigger context from a `System.TriggerOperation`
+	 * <br>Outside a trigger, and in a test that does not force a context, `isTriggerExecuting` is false
 	 *
 	 * @param opType   The operation type - set automatically by the system
 	 * @param testMode Only used in test methods to force certain contexts
@@ -580,47 +609,8 @@ public virtual class TriggerHandler {
 	 */
 	@TestVisible
 	private void setTriggerContext(System.TriggerOperation opType, Boolean testMode) {
-		if (!Trigger.isExecuting && !testMode) {
-			this.isTriggerExecuting = false;
-			return;
-		} else {
-			this.isTriggerExecuting = true;
-		}
-
-		if (Trigger.isExecuting && !testMode) {
-			// line not covered by TriggerHandlerTest
-			this.triggerEvent = Trigger.operationType;
-		}
-
-		String context = opType?.name();
-
-		switch on context {
-			when 'BEFORE_INSERT' {
-				this.triggerEvent = System.TriggerOperation.BEFORE_INSERT;
-			}
-			when 'BEFORE_UPDATE' {
-				this.triggerEvent = System.TriggerOperation.BEFORE_UPDATE;
-			}
-			when 'BEFORE_DELETE' {
-				this.triggerEvent = System.TriggerOperation.BEFORE_DELETE;
-			}
-			when 'AFTER_INSERT' {
-				this.triggerEvent = System.TriggerOperation.AFTER_INSERT;
-			}
-			when 'AFTER_UPDATE' {
-				this.triggerEvent = System.TriggerOperation.AFTER_UPDATE;
-			}
-			when 'AFTER_DELETE' {
-				this.triggerEvent = System.TriggerOperation.AFTER_DELETE;
-			}
-			when 'AFTER_UNDELETE' {
-				this.triggerEvent = System.TriggerOperation.AFTER_UNDELETE;
-			}
-			when else {
-				// we are not in trigger context
-				this.isTriggerExecuting = false;
-			}
-		}
+		this.isTriggerExecuting = (Trigger.isExecuting || testMode == true) && opType != null;
+		this.triggerEvent = opType;
 	}
 
 	/**
@@ -632,21 +622,17 @@ public virtual class TriggerHandler {
 	 * @return   `Boolean` Should the trigger continue execution?
 	 */
 	private Boolean incrementCheckLoopCount() {
-		String handlerName = getHandlerName();
-		if (TriggerHandler.loopCountMap.containsKey(handlerName)) {
-			Boolean exceeded = TriggerHandler.loopCountMap.get(handlerName).increment();
-			if (exceeded) {
-				/* Integer max = TriggerHandler.loopCountMap.get(handlerName).max;
-				 throw new TriggerHandlerException('Maximum loop count of ' + String.valueOf(max) + ' reached in ' + handlerName); */
-				if (showDebug) {
-					Integer max = TriggerHandler.loopCountMap.get(handlerName).max;
-					System.debug(logginglevel.INFO, 'Maximum loop count of ' + String.valueOf(max) + ' reached in ' + handlerName);
-				}
-				return false;
-			}
+		if (TriggerHandler.loopCountMap.isEmpty()) {
 			return true;
 		}
-		return true;
+		LoopCount loopCount = TriggerHandler.loopCountMap.get(getHandlerName());
+		if (loopCount == null || !loopCount.increment()) {
+			return true;
+		}
+		if (showDebug) {
+			System.debug(LoggingLevel.INFO, 'Maximum loop count of ' + loopCount.getMax() + ' reached in ' + getHandlerName()); // NOPMD
+		}
+		return false;
 	}
 
 	/**
@@ -662,11 +648,14 @@ public virtual class TriggerHandler {
 		if (!this.isTriggerExecuting || this.triggerEvent == null) {
 			throw new TriggerHandlerException(ERROR_TRIGGERCONTEXT);
 		}
-		return (!globalBypass && !TriggerHandler.bypassedHandlers.contains(getHandlerName()));
+		if (globalBypass) {
+			return false;
+		}
+		return TriggerHandler.bypassedHandlersLower.isEmpty() || !TriggerHandler.bypassedHandlersLower.contains(getHandlerName().toLowerCase());
 	}
 
 	/**
-	 * @description The name of this handler. Set by `getHandlerName()`
+	 * @description The name of this handler. Set by the String constructor, or resolved by `getHandlerName()` the first time it is needed
 	 */
 	private String handlerName;
 
@@ -827,6 +816,42 @@ public virtual class TriggerHandler {
 	}
 
 	/**
+	 * @description Reject a null or blank handler name
+	 * @param handlerName The name to check
+	 * @exception TriggerHandlerException when the name is null or blank
+	 */
+	private static void requireHandlerName(String handlerName) {
+		if (String.isBlank(handlerName)) {
+			throw new TriggerHandlerException(ERROR_HANDLER_NAME);
+		}
+	}
+
+	/**
+	 * @description Reject a null handler type
+	 * @param handlerType The type to check
+	 * @exception TriggerHandlerException when the type is null
+	 */
+	private static void requireHandlerType(Type handlerType) {
+		if (handlerType == null) {
+			throw new TriggerHandlerException(ERROR_HANDLER_TYPE);
+		}
+	}
+
+	/**
+	 * @description Reject a null list, or a list with a null or blank name, before any name is used
+	 * @param handlerNames The names to check
+	 * @exception TriggerHandlerException when the list is null or holds a null or blank name
+	 */
+	private static void requireHandlerNames(List<String> handlerNames) {
+		if (handlerNames == null) {
+			throw new TriggerHandlerException(ERROR_HANDLER_NAMES);
+		}
+		for (String handlerName : handlerNames) {
+			requireHandlerName(handlerName);
+		}
+	}
+
+	/**
 	 * @description Exception class
 	 */
 	public class TriggerHandlerException extends Exception {
@@ -837,4 +862,34 @@ public virtual class TriggerHandler {
 	 */
 	@TestVisible
 	private static final String ERROR_TRIGGERCONTEXT = 'Trigger handler called outside of Trigger execution'; //NOPMD
+
+	/**
+	 * @description Error text when a handler name is null or blank
+	 */
+	@TestVisible
+	private static final String ERROR_HANDLER_NAME = 'A handler name is required';
+
+	/**
+	 * @description Error text when a handler type is null
+	 */
+	@TestVisible
+	private static final String ERROR_HANDLER_TYPE = 'A handler type is required';
+
+	/**
+	 * @description Error text when a list of handler names is null
+	 */
+	@TestVisible
+	private static final String ERROR_HANDLER_NAMES = 'A list of handler names is required';
+
+	/**
+	 * @description Error text when the maximum loop count is null
+	 */
+	@TestVisible
+	private static final String ERROR_LOOP_COUNT = 'A maximum loop count is required';
+
+	/**
+	 * @description Error text when the desired bypass value is null
+	 */
+	@TestVisible
+	private static final String ERROR_BYPASS_VALUE = 'A bypass value is required';
 }
