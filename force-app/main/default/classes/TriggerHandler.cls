@@ -1,4 +1,3 @@
-@SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.FieldDeclarationsShouldBeAtStart, PMD.EmptyStatementBlock')
 /**
  * @description Trigger Handler virtual class as base for all trigger handlers
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
@@ -8,13 +7,14 @@
  * @since 2023-02-24 add andFinally method
  * @since 2023-09 method chaining
  * @group Trigger Handler
- * @see [License](https://github.com/dschach/salesforce-trigger-handler/blob/master/LICENSE)
- * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
+ * @see [License](https://github.com/dschach/salesforce-trigger-framework/blob/main/LICENSE)
+ * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
  * @see TriggerHandlerTest
  */
+@SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.FieldDeclarationsShouldBeAtStart, PMD.EmptyStatementBlock')
 public inherited sharing virtual class TriggerHandler {
 	/**
-	 * Map of `handlerName` => times `run()` was invoked
+	 * Loop counter per handler name. A handler has an entry only after `setMaxLoopCount()` was called for it, so `getLoopCount()` is 0 for a handler with no limit
 	 */
 	@TestVisible
 	private static Map<String, LoopCount> loopCountMap;
@@ -187,17 +187,17 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Limit the number of times this handler can be run before it fails silently
+	 * @description Limit the number of times `run()` executes this handler's context methods
+	 * <br>The count is kept per handler name. Every trigger context and every 200-record chunk consumes 1 count
+	 * <br>When the limit is exceeded, `run()` logs a warning and returns without calling the context method or `andFinally()`
 	 * <br>Returning `TriggerHandler` enables method chaining when used in a trigger
-	 * <br>Use this in the trigger or handler
 	 * @author {@link [David Schach](https://github.com/dschach)}
-	 * @param  max Naximum number of times
+	 * @param  max Maximum number of times. A negative value removes the limit
 	 * @return      `TriggerHandler` enables method chaining
 	 * @example
-	 * this.setMaxLoopCount(5); // in handler
-	 * AccountTriggerHandler.setMaxLoopCount(5); // in handler
-	 * or
-	 * new TriggerHandler().setMaxLoopCount(5).run(); // in trigger
+	 * this.setMaxLoopCount(5); // in the handler constructor
+	 * // or, in the trigger
+	 * new AccountSampleTriggerHandler().setMaxLoopCount(5).run();
 	 */
 	public TriggerHandler setMaxLoopCount(Integer max) {
 		if (max == null) {
@@ -351,7 +351,7 @@ public inherited sharing virtual class TriggerHandler {
 	public static List<String> bypassList() {
 		List<String> bypasses = new List<String>(TriggerHandler.bypassedHandlers);
 		bypasses.sort();
-		// bypassAll clears bypassedHandlers, so bypasses is empty here
+		// the alias marks the global bypass; a name added after bypassAll() stays in the collection
 		if (globalBypass) {
 			bypasses.add(BYPASS_ALL_ALIAS);
 		}
@@ -373,7 +373,7 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	public static Set<String> bypassSet() {
 		Set<String> bypasses = new Set<String>(TriggerHandler.bypassedHandlers);
-		// bypassAll clears bypassedHandlers, so bypasses is empty here
+		// the alias marks the global bypass; a name added after bypassAll() stays in the collection
 		if (globalBypass) {
 			bypasses.add(BYPASS_ALL_ALIAS);
 		}
@@ -414,10 +414,13 @@ public inherited sharing virtual class TriggerHandler {
 
 	/**
 	 * @description Set bypass status to a specific value. Eliminates the need to know the current bypass status
+	 * <br>`false` also clears the global bypass, so that this handler runs. Every other handler then runs too, because a global bypass cannot exclude 1 handler
+	 * <br>So the save-and-restore idiom below restores the named bypass only, not a global bypass that was active before
 	 * @since 2021
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @param  handlerName  The name of the TriggerHandler class
 	 * @param  desiredValue `true` to bypass, and `false` to run the handler/clear the bypass
+	 * @throws TriggerHandlerException when the name is null or blank, or the value is null
 	 * @example
 	 * TriggerHandler.setBypass('AccountTriggerHandler', false);
 	 * -or-
@@ -431,33 +434,23 @@ public inherited sharing virtual class TriggerHandler {
 		if (desiredValue == null) {
 			throw new TriggerHandlerException(ERROR_BYPASS_VALUE);
 		}
-		if (globalBypass) {
-			if (desiredValue == true) {
-				TriggerHandler.bypass(handlerName);
-			} else if (desiredValue == false) {
-				clearGlobalBypass();
-				TriggerHandler.clearBypass(handlerName);
-			}
+		if (desiredValue) {
+			TriggerHandler.bypass(handlerName);
+			return;
 		}
-		if (TriggerHandler.isBypassed(handlerName)) {
-			if (desiredValue == false) {
-				TriggerHandler.clearBypass(handlerName);
-			}
-		} else {
-			if (desiredValue == true) {
-				TriggerHandler.bypass(handlerName);
-			}
-		}
+		clearGlobalBypass();
+		TriggerHandler.clearBypass(handlerName);
 	}
 
 	// handle limits
 
 	/**
-	 * @description Instance method to show limits for just this trigger handler, allowing method chaining in the trigger.
+	 * @description Instance method that turns on the limits debug output, allowing method chaining in the trigger
+	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction
 	 * @since 2023
 	 * @see TriggerHandler.showLimits[0]
 	 * @example
-	 * new AccountSampleTriggerHandler.limits().run();
+	 * new AccountSampleTriggerHandler().limits().run();
 	 *
 	 * @return      `TriggerHandler` returning this class enables method chaining
 	 */
@@ -467,11 +460,12 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Instance method to show/hide limits for just this trigger handler, allowing method chaining  in the trigger.
+	 * @description Instance method that turns the limits debug output on or off, allowing method chaining in the trigger
+	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction
 	 * @since 2023
 	 * @see TriggerHandler.showLimits[1]
 	 * @example
-	 * new AccountSampleTriggerHandler.limits(false).run();
+	 * new AccountSampleTriggerHandler().limits(false).run();
 	 *
 	 * @param enabled true to enable; false to disable
 	 * @return        `TriggerHandler` returning this class enables method chaining
@@ -487,7 +481,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @see TriggerHandler.showLimits[1]
 	 * @example
 	 * TriggerHandler.showLimits();
-	 * new AccountSampleTriggerHandler.run();
+	 * new AccountSampleTriggerHandler().run();
 	 * -or-
 	 * AccountSampleTriggerHandler.showLimits();
 	 */
@@ -510,11 +504,12 @@ public inherited sharing virtual class TriggerHandler {
 	// handle debugs
 
 	/**
-	 * @description Instance method to show debug logs for just this trigger handler, allowing method chaining in the trigger.
+	 * @description Instance method that turns on the entry and exit debug output, allowing method chaining in the trigger
+	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction
 	 * @since 2023
 	 * @see TriggerHandler.showDebug[0]
 	 * @example
-	 * new AccountSampleTriggerHandler.debug().run();
+	 * new AccountSampleTriggerHandler().debug().run();
 	 *
 	 * @return      `TriggerHandler` returning this class enables method chaining
 	 */
@@ -524,13 +519,14 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Instance method to show debug logs for just this trigger handler, allowing method chaining in the trigger.
+	 * @description Instance method that turns the entry and exit debug output on or off, allowing method chaining in the trigger
+	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction
 	 * @since 2023
 	 * @param enabled true to enable; false to disable
 	 * @return      `TriggerHandler` returning this class enables method chaining
 	 * @see TriggerHandler.showDebug[0]
 	 * @example
-	 * new AccountSampleTriggerHandler.debug().run();
+	 * new AccountSampleTriggerHandler().debug(false).run();
 	 */
 	public TriggerHandler debug(Boolean enabled) {
 		showDebug(enabled);
@@ -545,7 +541,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @see TriggerHandler.showDebug[1]
 	 * @example
 	 * TriggerHandler.showDebug();
-	 * new AccountSampleTriggerHandler.run(); // in trigger
+	 * new AccountSampleTriggerHandler().run(); // in trigger
 	 * -or-
 	 * AccountSampleTriggerHandler.showDebug(); // in handler
 	 */
@@ -600,7 +596,7 @@ public inherited sharing virtual class TriggerHandler {
 
 	/**
 	 * @description Increment the loop count and check if we exceeded the max loop count.
-	 * <br>Silently exit if we have exceeded it. (Log to System.debug)
+	 * <br>When it is exceeded, log a warning and tell `run()` to return without calling the context method
 	 *
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @author {@link [fbouzeraa](https://github.com/fbouzeraa)}
@@ -614,9 +610,7 @@ public inherited sharing virtual class TriggerHandler {
 		if (loopCount == null || !loopCount.increment()) {
 			return true;
 		}
-		if (showDebug) {
-			System.debug(LoggingLevel.INFO, 'Maximum loop count of ' + loopCount.getMax() + ' reached in ' + getHandlerName()); // NOPMD
-		}
+		System.debug(LoggingLevel.WARN, 'Maximum loop count of ' + loopCount.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + this.triggerEvent); // NOPMD
 		return false;
 	}
 
@@ -625,7 +619,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * <br>Returning `false` causes trigger handler to exit
 	 *
 	 * @return      `Boolean` Is the run valid?
-	 * @exception   TriggerHandlerException
+	 * @throws TriggerHandlerException when `run()` is called outside a trigger context
 	 * @see TriggerHandler.TriggerHandlerException
 	 */
 	@TestVisible
@@ -645,13 +639,22 @@ public inherited sharing virtual class TriggerHandler {
 	private String handlerName;
 
 	/**
-	 * @description Get the name of the current handler. This can be set by using the constructor with the string parameter to improve performance
+	 * @description The trigger operation this handler is running for. Also set under the test seam, where `Trigger.operationType` is null
+	 * @return `System.TriggerOperation` The current operation, or null outside a trigger
+	 */
+	protected System.TriggerOperation getTriggerEvent() {
+		return this.triggerEvent;
+	}
+
+	/**
+	 * @description The name of this handler, as given to the String constructor or resolved from the runtime class name
+	 * <br>Available to subclasses, for example for a log line or a `bypass()` call
 	 *
 	 * @return      `String` Name of the current handler
 	 * @see         TriggerHandler.handlerName
 	 */
 	@TestVisible
-	private String getHandlerName() {
+	protected String getHandlerName() {
 		if (String.isBlank(this.handlerName)) {
 			this.handlerName = this.toString().substringBefore(':');
 		}
@@ -710,7 +713,8 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description `andFinally` is called in every context, regardless of Trigger context
+	 * @description `andFinally()` runs after the context method, in every trigger context
+	 * <br>It does not run when the handler is bypassed, when the loop limit is exceeded, or when the context method throws an exception
 	 * <br>Credit to James Simone for this idea
 	 * @see [The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/)
 	 * @author James Simone
@@ -757,10 +761,8 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * @description Increment the internal counter returning the results of
-		 * this.exceeded().
-		 * @return     `Boolean` true if count will exceed max count or is less
-		 * than 0.
+		 * @description Increment the internal counter and return `exceeded()`
+		 * @return     `Boolean` true when the new count is greater than a max of 0 or more. A negative max never exceeds
 		 */
 		public Boolean increment() {
 			this.count++;
@@ -768,8 +770,8 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * @description Determines if we're about to exceed the loop count.
-		 * @return     `Boolean` True if less than 0 or more than max.
+		 * @description Whether the count has passed the limit
+		 * @return     `Boolean` true when max is 0 or more and count is greater than max. A negative max means no limit
 		 */
 		public Boolean exceeded() {
 			return this.max >= 0 && this.count > this.max;
@@ -803,7 +805,7 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * @description Reject a null or blank handler name
 	 * @param handlerName The name to check
-	 * @exception TriggerHandlerException when the name is null or blank
+	 * @throws TriggerHandlerException when the name is null or blank
 	 */
 	private static void requireHandlerName(String handlerName) {
 		if (String.isBlank(handlerName)) {
@@ -814,7 +816,7 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * @description Reject a null handler type
 	 * @param handlerType The type to check
-	 * @exception TriggerHandlerException when the type is null
+	 * @throws TriggerHandlerException when the type is null
 	 */
 	private static void requireHandlerType(Type handlerType) {
 		if (handlerType == null) {
@@ -825,7 +827,7 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * @description Reject a null list, or a list with a null or blank name, before any name is used
 	 * @param handlerNames The names to check
-	 * @exception TriggerHandlerException when the list is null or holds a null or blank name
+	 * @throws TriggerHandlerException when the list is null or holds a null or blank name
 	 */
 	private static void requireHandlerNames(List<String> handlerNames) {
 		if (handlerNames == null) {

@@ -6,12 +6,14 @@
  * @since 2021 Update, add new methods
  * @since 2023-02-08 Update assert methods to Assert class
  * @group Trigger Handler
- * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
+ * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
  * @see TriggerHandler
  */
 @IsTest(isParallel=true testFor='ApexClass:TriggerHandler')
 private inherited sharing class TriggerHandlerTest {
 	private static String lastMethodCalled;
+	private static System.TriggerOperation lastEventSeen;
+	private static String lastNameSeen;
 	private static TriggerHandlerTest.TestHandler handler;
 	/**
 	 * The name the fixture registers with the base class: the same string `Type.getName()` returns, so that `bypass(Type)` matches
@@ -283,6 +285,7 @@ private inherited sharing class TriggerHandlerTest {
 
 		handler.run();
 		Assert.isTrue(TriggerHandler.loopCountMap.get(HANDLER_NAME).getCount() > TriggerHandler.loopCountMap.get(HANDLER_NAME).getMax(), 'We should have exceeded the max count');
+		Assert.isNull(lastMethodCalled, 'run() should skip the context method once the loop limit is exceeded');
 
 		// clear the tests
 		resetTest();
@@ -467,6 +470,17 @@ private inherited sharing class TriggerHandlerTest {
 		Assert.areNotEqual(HANDLER_NAME, blankNamed.getHandlerName(), 'for an inner class the fallback name differs from Type.getName()');
 	}
 
+	/**
+	 * @description A subclass can read its own trigger event and handler name through the protected accessors
+	 */
+	@IsTest
+	private static void subclassReadsItsEventAndName() {
+		beforeInsertMode();
+		handler.run();
+		Assert.areEqual(System.TriggerOperation.BEFORE_INSERT, lastEventSeen, 'getTriggerEvent() should return the current operation to the subclass');
+		Assert.areEqual(HANDLER_NAME, lastNameSeen, 'getHandlerName() should return the registered name to the subclass');
+	}
+
 	// testing utilities
 
 	private static void resetTest() {
@@ -525,6 +539,8 @@ private inherited sharing class TriggerHandlerTest {
 
 		public override void beforeInsert() {
 			TriggerHandlerTest.lastMethodCalled = 'beforeInsert';
+			TriggerHandlerTest.lastEventSeen = getTriggerEvent();
+			TriggerHandlerTest.lastNameSeen = getHandlerName();
 		}
 
 		public override void beforeUpdate() {
