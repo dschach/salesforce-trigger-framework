@@ -5,7 +5,7 @@
  * @group SampleTriggerHandler
  * @group-content doc-assets/files/sampletriggerhandlerhome.html
  */
-public without sharing class AccountSampleTriggerHandler extends TriggerHandler {
+public inherited sharing class AccountSampleTriggerHandler extends TriggerHandler {
 	private List<Account> newRecords;
 	private List<Account> oldRecords;
 	private Map<Id, Account> newRecordsMap;
@@ -65,9 +65,9 @@ public without sharing class AccountSampleTriggerHandler extends TriggerHandler 
 	}
 
 	private void method3() {
-		List<Contact> acctContacts = [SELECT Id FROM Contact WHERE AccountId IN :newRecordsMap.keyset() WITH SECURITY_ENFORCED];
+		List<Contact> acctContacts = [SELECT Id FROM Contact WHERE AccountId IN :newRecordsMap.keyset() WITH USER_MODE];
 		if (Contact.getSObjectType().getDescribe().isUpdateable()) {
-			update acctContacts; //NOPMD
+			Database.update(acctContacts, AccessLevel.USER_MODE);
 		}
 		// do things here
 	}
