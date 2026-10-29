@@ -1,0 +1,1223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ruleset
+	name="DevSecOps Reference Rules"
+	xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+	<description>
+		Custom PMD rules for Apex, written in XPath. The other custom rules are in
+		pmd-custom-rules-markup.xml, pmd-custom-rules-metadata.xml,
+		pmd-custom-rules-flow.xml, and, for JavaScript,
+		pmd-custom-rules-javascript.xml. The stock PMD rules this reference adopts
+		are in pmd-stock-rules.xml and, for JavaScript, in
+		pmd-stock-rules-javascript.xml. Adjust priorities and suppressions to
+		match your organisation's risk posture and coding standards.
+	</description>
+
+	<!--
+		Rule messages contain no apostrophes. PMD formats a message with Java's
+		MessageFormat, which treats a single apostrophe as a quoting character
+		and drops it, so "class's" would be printed as "classs".
+	-->
+
+	<exclude-pattern>.*/.sfdx/.*</exclude-pattern>
+	<exclude-pattern>.*/.sf/.*</exclude-pattern>
+	<exclude-pattern>.*/node_modules/.*</exclude-pattern>
+
+	<!-- ============================================================ -->
+	<!-- CUSTOM RULES: APEX ACCESS, SHARING, AND ACCESS MODE         -->
+	<!-- ============================================================ -->
+
+	<!--
+		Requires every Apex method, test methods included, to declare an explicit
+		access modifier. The body of a trigger is exempt: PMD models it as a method,
+		and it cannot carry a modifier.
+		Methods without an explicit access modifier default to private in Apex.
+		While the default behavior is conservative, explicit modifiers improve
+		readability and make intent unambiguous.
+	-->
+	<rule name="DeclareAccessOnMethods" message="Explicitly use public/private/protected/global on Apex methods" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" language="apex">
+		<description>Every method that is not a test method must declare an explicit access modifier: instance and static methods, constructors, and the helper and setup methods of a test class. Apex treats a method without a modifier as private, so this rule changes no behaviour; it exists for readability and auditability, so that a reader or reviewer never has to know the default.</description>
+		<priority>2</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//Method[@StaticInitializer = false()][not(parent::Property)][not(parent::UserTrigger and @RealLoc = false())][ModifierNode[@Public = false() and @Private = false() and @Protected = false() and @Global = false() and @Test = false()]]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Flags use of without sharing on any class.
+		Classes using without sharing should include a comment explaining
+		the business justification. The rule applies to all classes including
+		test classes - the requirement for documented justification is not
+		relaxed in a test context.
+	-->
+	<rule
+		name="DoNotUseWithoutSharing"
+		message="Use with sharing or inherited sharing, or document the justification for without sharing"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule"
+		language="apex">
+		<description>Flags any class declared as without sharing.</description>
+		<priority>2</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//UserClass/ModifierNode[@WithoutSharing=true()]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<rule
+		name="RequireExplicitSharing"
+		message="Declare the sharing of this class: with sharing, without sharing, or inherited sharing"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule"
+		language="apex">
+		<description>Every outer class must declare its sharing. The reportInTestClasses property decides whether test classes are reported. Interfaces and enums are never checked, and an inner class without a sharing declaration takes the sharing of the class that calls it, so no declaration is needed there.</description>
+		<priority>1</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//UserClass[@Nested = false()][
+						ModifierNode[
+							@WithoutSharing = false() and
+							@WithSharing = false() and
+							@InheritedSharing = false() and
+							($reportInTestClasses or @Test = false())
+						]
+					]
+				]]></value>
+			</property>
+			<property name="reportInTestClasses" type="Boolean" value="true" description="Whether a test class without a sharing declaration is reported" />
+		</properties>
+	</rule>
+
+	<rule
+		name="RequireInnerClassSharing"
+		message="Declare the sharing of this inner class: with sharing, without sharing, or inherited sharing"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule"
+		language="apex">
+		<description>An inner class should declare its sharing. An inner class with no declaration takes the sharing of the class that calls it, so the declaration is a recommendation and not a need: with it written, a reader knows how the class runs without tracing its callers.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//UserClass[@Nested = true()]
+						[not(ends-with(lower-case(@SuperClassName), 'exception'))]
+						[not(ancestor::UserClass[ModifierNode[@Test = true()]])]
+						[not(ancestor::UserClass[@SuperClassName != '' or string-join(@InterfaceNames, '') != ''])]
+						[
+							ModifierNode[
+								@WithoutSharing = false() and
+								@WithSharing = false() and
+								@InheritedSharing = false()
+							]
+						]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<rule name="RequireOuterClassAccess" message="Specify public, private, or global on outer Apex classes" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" language="apex">
+		<description>All outer Apex classes must have an explicit access modifier.</description>
+		<priority>1</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					/ApexFile/UserClass[
+						ModifierNode[
+							@Public = false() and
+							@Private = false() and
+							@Global = false()
+						] and
+						@Nested = false()
+					]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<rule
+		name="DoNotRunAsCurrentUser"
+		message="Do not execute test methods as the running user - use a dedicated test user instead"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule"
+		language="apex">
+		<description>Tests must not run as the current user, for example System.runAs(new User(Id = UserInfo.getUserId())). The rule is deliberately over-strict: any UserInfo.getUserId() call inside a System.runAs statement is reported because this is a screening rule. Methods annotated @TestSetup are exempt.</description>
+		<priority>2</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//RunAsBlockStatement[.//MethodCallExpression[lower-case(@FullMethodName) = 'userinfo.getuserid'] and ancestor::Method/ModifierNode[count(Annotation[lower-case(@Name) = 'testsetup']) = 0]]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Access mode. The standard is enforced by two custom rules written in
+		Java, RequireAccessMode and FlagSystemMode. XPath can do neither
+		job: both read the DML access mode, which PMD does not expose to
+		XPath (pmd/pmd#7108). The one access mode rule that XPath can
+		express in full is here: WITH SECURITY_ENFORCED is rejected.
+	-->
+	<rule name="NoSecurityEnforced" message="Replace WITH SECURITY_ENFORCED with WITH USER_MODE" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule" language="apex">
+		<description>WITH SECURITY_ENFORCED is not accepted in a query. WITH USER_MODE replaces it, and is stricter.</description>
+		<priority>2</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//SoqlExpression[matches(@Query, 'WITH\s+SECURITY_ENFORCED', 'i')]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- CUSTOM RULES: APEX ERROR PRONE                               -->
+	<!-- ============================================================ -->
+
+	<!--
+		Reports a switch statement with no when else block. A switch on a
+		value, an sObject type, or an enum handles the values it names and
+		falls through for every other, so a new picklist value or enum value
+		arrives unhandled with no sign of it. The when else block says what
+		happens then, even when that is nothing but a comment.
+	-->
+	<rule
+		name="SwitchWithoutWhenElse"
+		language="apex"
+		message="Add a when else block to this switch statement, to say what happens for a value it does not name"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>Every switch statement has a when else block, so that a value the switch does not name is handled on purpose. A switch with no when else is reported and does not block.</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//SwitchStatement[not(ElseWhenBlock)]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports an if statement, with its else-if branches, whose every
+		condition compares one variable with a value that a when clause can
+		hold, when it makes minConditions or more such comparisons (3 by
+		default). A condition may join comparisons with ||, and each one
+		counts: if (s == 'a' || s == 'b') {} else if (s == 'c') {} makes
+		three. A value is a String, Integer, or Long literal (a negative number
+		included), null, or a name such as Status.ACTIVE whose first part is
+		not a variable of the method or the class, as an enum value is. A
+		comparison with null may be in the chain, but it is not counted. The
+		variable is on either side of ==, and it may be a field of a record
+		(acc.Type); this.name and name are the same variable. A chain of
+		instanceof tests is reported as well, when the variable is declared
+		as SObject in the method or the class and no condition uses ||. An
+		else branch does not stop the report: it becomes when else.
+
+		Not reported: a condition with any other operator (!=, &&, <, a
+		method call), a variable declared in the method or the class with a
+		type that switch does not take (Id, Decimal, Double, Boolean, Date,
+		Datetime, Time, Blob, Object, or SObjectType), and separate if
+		statements that follow one another, because each of them runs and a
+		switch runs only one branch. Names are compared without regard to case.
+		The type of a variable declared in another file is not known, so a
+		chain on such a variable is read from its values alone, and a static
+		final constant reached through its class (Constants.ACTIVE, or the
+		class's own name) looks like an enum value.
+
+		Adapted from PreferSwitchOverIfElseChains of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="PreferSwitchOverIfElseChains"
+		language="apex"
+		message="This if statement compares one variable with ${minConditions} or more values. Use a switch statement on the variable"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>An if statement whose branches compare one variable with a list of values reads as a list of cases, and a switch statement says that directly: each value is written once, in a when clause, and the variable is written once. The minConditions property sets how many comparisons make the if statement a switch, and it is 3 by default, so a test of one or two values stays an if statement. Comparisons with null are not counted. Check the change: == compares two strings without regard to case, but a when clause on a String is case-sensitive. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//IfElseBlockStatement[
+						let $conditions := IfBlockStatement/StandardCondition/*,
+							$ors := $conditions/descendant-or-self::BooleanExpression[@Op = '||'],
+							$leaves := ($conditions | $ors/*)[not(self::BooleanExpression[@Op = '||'])],
+							$method := ancestor::Method[1],
+							$class := ancestor::UserClass[1],
+							$fields := ($class/Field | $class/Property/Field),
+							$declared := ($method//VariableDeclaration/lower-case(@Image), $method/Parameter/lower-case(@Image), $fields/lower-case(@Name)),
+							$isValue := function($node) {
+								exists($node/self::LiteralExpression[@LiteralType = ('STRING', 'INTEGER', 'LONG', 'NULL')]
+									| $node/self::PrefixExpression[@Op = '-'][LiteralExpression[@LiteralType = ('INTEGER', 'LONG')]]
+									| $node/self::VariableExpression[ReferenceExpression[@Image != ''][not(*)][not(lower-case(@Image) = $declared)]])
+							},
+							$name := function($node) {
+								lower-case(string-join(($node/ReferenceExpression/@Image[. != ''], $node/@Image), '.'))
+							},
+							$subjects := function($leaf) {
+								if ($leaf/self::InstanceOfExpression) then $leaf/VariableExpression ! $name(.)
+								else for $operand in $leaf/VariableExpression return (if ($isValue($leaf/*[not(. is $operand)])) then $name($operand) else ())
+							},
+							$subject := (for $candidate in $subjects($leaves[1]) return $candidate[every $leaf in $leaves satisfies $candidate = $subjects($leaf)])[1],
+							$type := lower-case((
+								$method//VariableDeclaration[lower-case(@Image) = $subject]/@Type,
+								$method/Parameter[lower-case(@Image) = $subject]/@Type,
+								$fields[lower-case(@Name) = $subject]/@Type
+							)[1])
+						return exists($leaves)
+							and (every $leaf in $leaves satisfies $leaf[self::BooleanExpression[@Op = '=='] or self::InstanceOfExpression])
+							and exists($subject)
+							and not($type = ('id', 'decimal', 'double', 'boolean', 'date', 'datetime', 'time', 'blob', 'object', 'sobjecttype', 'schema.sobjecttype'))
+							and (not($leaves/self::InstanceOfExpression) or ($type = 'sobject' and empty($ors)))
+							and count($leaves[not(*/@LiteralType = 'NULL')]) >= $minConditions
+					]
+				]]></value>
+			</property>
+			<property name="minConditions" type="Integer" value="3" description="The number of comparisons of one variable that make an if statement a switch statement" />
+		</properties>
+	</rule>
+
+	<!--
+		Flags a null check that comes after the collection has already been
+		used: `accts.isEmpty() && accts != null` throws before the guard runs.
+		The guard must come first. The rule looks at each `&&` whose left
+		operand calls isEmpty() and whose right operand is a `!= null` test;
+		it does not report isEmpty() with no guard at all, which is usually a
+		collection the method itself created.
+	-->
+	<rule
+		name="NullValueCheckBeforeEmptyCheck"
+		language="apex"
+		message="Check for null before calling isEmpty() on a collection, not after"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A null check placed after an isEmpty() call on the same expression runs too late; the isEmpty() call throws first. Put the null check first.</description>
+		<priority>2</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//BooleanExpression[@Op = '&&'][*[1][descendant-or-self::MethodCallExpression[lower-case(@MethodName) = 'isempty']]][*[2][self::BooleanExpression[@Op = '!='][*[1][self::VariableExpression] and *[2][self::LiteralExpression[@LiteralType = 'NULL']]]]]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports every call to getRecordTypeInfosByName(), which looks a record
+		type up by its label. A label can be changed in Setup, so the lookup
+		breaks without a deployment. getRecordTypeInfosByDeveloperName() and
+		getRecordTypeInfosById() are not reported.
+	-->
+	<rule
+		name="AvoidRecordTypeInfosByName"
+		language="apex"
+		message="Look the record type up by its developer name - use getRecordTypeInfosByDeveloperName()"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>getRecordTypeInfosByName() finds a record type by its label, which can be changed in Setup at any time. Find it by its developer name, which does not change, with getRecordTypeInfosByDeveloperName().</description>
+		<priority>3</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//MethodCallExpression[lower-case(@MethodName) = 'getrecordtypeinfosbyname']
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- CUSTOM RULES: APEX DOCUMENTATION                             -->
+	<!-- ============================================================ -->
+
+	<!--
+		Reports an ApexDoc comment whose description is shorter than 10
+		characters. Salesforce writes the description as the text at the top of
+		the comment, before any tag; a comment may also write it after a
+		@description tag. PMD exposes an ApexDoc block to XPath as a
+		FormalComment node whose Image is the whole comment, unlike an
+		ordinary comment, which XPath cannot see. The rule takes the text after
+		the @description tag when there is one, and otherwise the text before the
+		first tag, cuts it at the next ApexDoc block tag or the end of the
+		comment, turns each line's leading asterisk into a space, collapses the
+		whitespace, and counts from the first letter, spaces included. A comment
+		with no description at all is the stock ApexDoc rule's to report.
+	-->
+	<rule
+		name="ApexDocDescriptionLength"
+		language="apex"
+		message="Write a description of at least 10 characters at the top of the ApexDoc comment"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>The description of an ApexDoc comment, the text at its top or the text after a @description tag, is at least 10 characters long, counted from its first letter and including spaces, across the lines it wraps onto. A shorter one, such as a placeholder, says nothing, and is reported without blocking.</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//FormalComment[
+						let $c := @Image,
+						    $d := if (contains($c, '@description')) then substring-after($c, '@description') else replace($c, '^\s*/\*+', ''),
+						    $t := normalize-space(replace(replace(replace($d, '(^|[\s*])@(param|return|throws|exception|deprecated|since|see|author|version|group|example)(\s|$).*$', '', 'is'), '(^|\n)\s*\*+/?', ' ', 's'), '\*+/\s*$', ''))
+						return string-length($t) < 10 and (contains($c, '@description') or string-length($t) > 0)
+					]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports a method that has an ApexDoc comment and a throw statement
+		whose exception the comment does not name in a @throws tag. Each type
+		thrown needs its own tag. The type of a throw is read from new X(...),
+		from the catch clause that declares a rethrown variable, or from a
+		local variable or parameter of that name; names are compared without
+		regard to case, and by the part after the last dot, so
+		@throws MyClass.MyException and @throws MyException both name
+		new MyClass.MyException(). When the type cannot be read, as in
+		throw buildException(), any @throws tag is enough. A throw inside a
+		try block whose own catch clause takes that type, or Exception, never
+		leaves the method and is not counted; the rule does not know which
+		exception types extend which others. The @exception tag is not read
+		as a synonym of @throws. A method without an ApexDoc comment is not
+		reported.
+
+		Adapted from ExceptionDocumentationRequired of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="ExceptionDocumentationRequired"
+		language="apex"
+		message="Name each exception this method throws in a @throws tag of its ApexDoc comment"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>The ApexDoc comment of a method that throws an exception should name each exception type it throws in a @throws tag, so that a caller knows what to catch. An exception that the method catches itself is not counted, and a method without an ApexDoc comment is not reported. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//Method[FormalComment][
+						let $tags := for $part in tokenize(lower-case(FormalComment/@Image), '@throws\s+')[position() > 1]
+							return tokenize(tokenize($part, '[^\w.]')[1], '\.')[last()]
+						return some $throw in .//ThrowStatement satisfies (
+							let $name := $throw/VariableExpression[not(*[not(self::EmptyReferenceExpression)])]/lower-case(@Image),
+								$declared := (
+									$throw/NewObjectExpression/@Type,
+									$throw/ancestor::CatchBlockStatement[lower-case(@VariableName) = $name][1]/@ExceptionType,
+									.//VariableDeclaration[lower-case(@Image) = $name]/@Type,
+									Parameter[lower-case(@Image) = $name]/@Type
+								)[1],
+								$type := replace(lower-case(string($declared)), '^.*\.', '')
+							return not($throw/ancestor::BlockStatement[parent::TryCatchFinallyBlockStatement][not(preceding-sibling::*)]
+									/following-sibling::CatchBlockStatement[replace(lower-case(@ExceptionType), '^.*\.', '') = ('exception', $type)])
+								and (if ($type = '') then empty($tags) else not($type = $tags))
+						)
+					]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports an element that has the @Deprecated annotation and no @deprecated
+		tag in its ApexDoc comment, or a tag with no text after it. Salesforce's
+		Apex Developer Guide says to include the tag, with the reason for the
+		deprecation and the recommended alternative. The rule reads the ApexDoc
+		comment as the whole text of a FormalComment node, as
+		ApexDocDescriptionLength does, and finds the tag as a word that follows
+		whitespace or an asterisk. It cuts the text after the tag at the next
+		ApexDoc block tag or the end of the comment. It cannot tell whether that
+		text gives a reason and an alternative; a reviewer checks that. A
+		deprecated element with no comment at all is reported too. PMD does not
+		keep the comment of an enum in the tree, so an enum is never reported. A
+		property is read once, and the accessor methods and the field that PMD
+		makes for it are skipped.
+	-->
+	<rule
+		name="DeprecatedDocumentationRequired"
+		language="apex"
+		message="Give this deprecated element a @deprecated tag in its ApexDoc comment, with the reason and the alternative"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>An element with the @Deprecated annotation has a @deprecated tag in its ApexDoc comment, and the tag has text after it. The text gives the reason for the deprecation and the recommended alternative, so that a developer who uses the element knows what to use instead. A deprecated element with no comment, with no tag, or with an empty tag is reported without blocking. An enum is not read, because PMD does not keep the comment of an enum.</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//*[ModifierNode/Annotation[lower-case(@Name) = 'deprecated']][not(self::Field or self::UserEnum or parent::Property)][
+						let $c := string((FormalComment | FieldDeclaration/FormalComment)[1]/@Image),
+						    $has := matches($c, '(^|[\s*])@deprecated(\s|$)', 'i'),
+						    $after := replace($c, '^.*?(^|[\s*])@deprecated(\s|$)', '', 'is'),
+						    $t := normalize-space(replace(replace(replace($after, '(^|[\s*])@(param|return|throws|exception|deprecated|since|see|author|version|group|example|description)(\s|$).*$', '', 'is'), '(^|\n)\s*\*+/?', ' ', 's'), '\*+/\s*$', ''))
+						return not($has and string-length($t) > 0)
+					]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- CUSTOM RULES: APEX NAMING                                    -->
+	<!-- ============================================================ -->
+
+	<!--
+		Two rules on a field or property that shares a name with something else
+		in its class. Apex compiles both, because fields, methods, and types
+		are looked up separately, and names are compared without regard to
+		case. A method is matched by name alone, whatever its parameters; a
+		constructor is not a method here; and an inner class is compared with
+		its own methods and its own name.
+	-->
+	<rule name="FieldNameMatchesMethodName" language="apex" message="Rename this field or the method that has the same name" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A field or property with the same name as a method of its class makes each harder to tell from the other where it is used. Apex names are case-insensitive, so two names that differ only in case are the same name.</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//Field[lower-case(@Name) = ancestor::UserClass[1]/Method[@Constructor = false()]/lower-case(@Image)]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<rule name="FieldNameMatchesClassName" language="apex" message="Rename this variable - it has the same name as a class" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A field or property with the same name as the class that declares it reads as a reference to the class, and so does a local variable with the name of any class declared in the same file. Apex names are case-insensitive, so two names that differ only in case are the same name.</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//Field[lower-case(@Name) = lower-case(ancestor::UserClass[1]/@SimpleName)]
+					| //VariableDeclaration[lower-case(@Image) = (/ApexFile//UserClass/lower-case(@SimpleName))]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		A top-level class with an @AuraEnabled method is the server side of a
+		Lightning component, Aura or Lightning Web Component, and is named as a
+		controller. A class that only has @AuraEnabled fields is a data class
+		and is not reported, and neither is an inner class. The
+		controllerPattern property is a regular expression that the whole class
+		name must match.
+	-->
+	<rule
+		name="AuraEnabledControllerNaming"
+		language="apex"
+		message="Rename this class - a class with @AuraEnabled methods has a name that matches ${controllerPattern}"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A top-level class with an @AuraEnabled method is called from a Lightning component, and its name says so. The controllerPattern property holds the pattern the name must match, and each organisation sets its own.</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//UserClass[@Nested = false()][not(matches(@SimpleName, concat('^(', $controllerPattern, ')$')))][Method/ModifierNode/Annotation[lower-case(@Name) = 'auraenabled']]
+				]]></value>
+			</property>
+			<property name="controllerPattern" type="String" value=".*Controller" description="A regular expression that the name of a class with @AuraEnabled methods must match" />
+		</properties>
+	</rule>
+
+	<rule name="TriggerNameSuffix" language="apex" message="End the trigger name with the suffix ${suffixes}" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A trigger's name ends with one of the suffixes in the suffixes property, compared without regard to case, so that every trigger in the org is named the same way. Each organisation sets the list to its own convention.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//UserTrigger[not(matches(@Image, concat('(', string-join($suffixes, '|'), ')$'), 'i'))]
+				]]></value>
+			</property>
+			<property name="suffixes" type="List[String]" value="Trigger" description="The suffixes a trigger name may end with; a name that ends with any of them passes" />
+		</properties>
+	</rule>
+
+	<!--
+		A variable with a one-letter name: a local variable (a loop variable
+		included), a parameter, a field, a property, or the variable of a
+		catch block. An enum value is not a variable and is not read. Only the
+		length of the name is read, so the case of the letter does not matter.
+		A variable in a test class, an inner class of a test class included, is
+		reported only when the reportInTestClasses property is true, and it is
+		false by default.
+	-->
+	<rule name="NoSingleLetterVariableName" language="apex" message="Give this variable a name of two or more letters" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A variable with a one-letter name says nothing about what it holds, so a reader has to read the code around it to find out. A local variable, a loop variable, a parameter, a field, a property, and the variable of a catch block each have a name of two or more letters that says what the variable holds. Three names are allowed in their place: i and j as the counter of a for loop, and e as the variable of a catch block. The allowedNames property lists other one-letter names that are allowed for every kind of variable, and it is empty by default. An enum value is not a variable and is not reported. The reportInTestClasses property decides whether a test class is reported, and it is false by default.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					let $allowed := for $name in $allowedNames return lower-case($name)
+					return (
+						//VariableDeclaration[string-length(@Image) = 1]
+							[not(lower-case(@Image) = ('i', 'j') and parent::VariableDeclarationStatements/parent::ForLoopStatement)]
+							[not(lower-case(@Image) = $allowed)]
+						| //Field[@RealLoc = true()][not(parent::UserEnum)][string-length(@Name) = 1][not(lower-case(@Name) = $allowed)]
+						| //Parameter[@RealLoc = true()][string-length(@Image) = 1][not(lower-case(@Image) = $allowed)]
+						| //CatchBlockStatement[string-length(@VariableName) = 1][not(lower-case(@VariableName) = ('e', $allowed))]
+					)[$reportInTestClasses or not(ancestor::UserClass/ModifierNode[@Test = true()])]
+				]]></value>
+			</property>
+			<property name="allowedNames" type="List[String]" value="" description="Other one-letter names that are allowed for every kind of variable, compared without regard to case" />
+			<property name="reportInTestClasses" type="Boolean" value="false" description="Whether a variable in a test class is reported" />
+		</properties>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- CUSTOM RULES: APEX READABILITY                               -->
+	<!-- ============================================================ -->
+
+	<!--
+		Reports a ternary that only supplies a default for a null value: the
+		condition compares an expression with null, using == or != with null
+		on either side, and the branch that runs when the expression is not
+		null is the expression itself, or a call or a field read on it. So
+		x != null ? x : d, x == null ? d : x, and null == x ? d : x are
+		reported, and are written x ?? d; obj != null ? obj.m() : d and
+		obj != null ? obj.Field : d are reported, and are written
+		obj?.m() ?? d and obj?.Field ?? d. The second form also returns d
+		when obj.m() itself returns null, where the ternary returned null.
+		The expression is matched to the branch by name, without regard to
+		case: a variable, a field read through this, a field read through one
+		variable (acc.Owner), or a call with no arguments. PMD keeps only the
+		first and last names of a longer dotted name, so acc.Owner.Name and
+		acc.Parent.Name look the same to the rule. A call or field read on the
+		value is matched only when the value is a plain variable. A ternary in
+		a SOQL bind expression is not reported, because neither operator can
+		be used there. A ternary that tests anything else, or whose branch is
+		some other value, is not reported.
+
+		Adapted from PreferNullCoalescingOverTernary of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="PreferNullCoalescingOverTernary"
+		language="apex"
+		message="Write this null check with the null coalescing operator (??), and with the safe navigation operator (?.) for a call or a field on the value"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A ternary that only supplies a default for a null value is written with the null coalescing operator (??), with the safe navigation operator (?.) where the value is a call or a field on an object. The shorter form names the value once, and it says plainly that the value has a default. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//TernaryExpression[not(ancestor::BindExpressions)][
+						let $test := StandardCondition/BooleanExpression[@Op = ('==', '!=')][count(*) = 2][count(LiteralExpression[@Null = true()]) = 1],
+							$checked := $test/*[not(self::LiteralExpression[@Null = true()])],
+							$value := if ($test/@Op = '!=') then *[2] else *[3]
+						return exists($checked) and (
+							($checked/self::VariableExpression and $value/self::VariableExpression
+								and lower-case($checked/@Image) = lower-case($value/@Image)
+								and (
+									($checked/EmptyReferenceExpression and $value/EmptyReferenceExpression)
+									or ($checked/ReferenceExpression/ThisVariableExpression and $value/ReferenceExpression/ThisVariableExpression)
+									or ($checked/ReferenceExpression[not(*)][@Image != ''] and lower-case($checked/ReferenceExpression/@Image) = lower-case($value/ReferenceExpression[not(*)]/@Image))
+								))
+							or ($checked/self::MethodCallExpression[@InputParametersSize = 0][not(*[1]/*)]
+								and $value/self::MethodCallExpression[@InputParametersSize = 0][not(*[1]/*)]
+								and lower-case($checked/@FullMethodName) = lower-case($value/@FullMethodName))
+							or ($checked/self::VariableExpression[EmptyReferenceExpression]
+								and $value[self::MethodCallExpression or self::VariableExpression]/descendant::*
+									[self::ReferenceExpression[not(*)] or self::VariableExpression[EmptyReferenceExpression][parent::ReferenceExpression]]
+									[lower-case(@Image) = lower-case($checked/@Image)]
+									[every $step in ancestor-or-self::*[. >> $value] satisfies
+										($step/self::ReferenceExpression and not($step/preceding-sibling::*))
+										or (($step/self::MethodCallExpression or $step/self::VariableExpression) and $step/parent::ReferenceExpression)])
+						)
+					]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports an if statement that only checks a variable for null and then
+		makes one call or one read on it: the condition is variable != null
+		or null != variable and nothing else; there is no else and no else
+		if; and the block holds one statement, which is either a call whose
+		chain starts at the variable (obj.doSomething(), obj.Owner.m(), or
+		obj.a().b()) or the declaration of a local variable whose value is
+		such a call or a field read on the variable (String n = obj.Name;).
+		Such a statement is written obj?.doSomething(); or
+		String n = obj?.Name;. Not reported, because ?. cannot be used or
+		would change what the code does: more logic in the condition, an else,
+		more than one statement, an assignment (obj.Name = x, or x = obj.Name,
+		which would set x to null), an increment or decrement, a return, the
+		variable passed as or inside an argument (foo(obj.Name) would still
+		call foo), a SOQL bind (:obj.Id), addError(), a static call or field
+		(String.format(), Integer.MAX_VALUE), and a namespace, class, or
+		Trigger reference (Trigger.new, Page.MyPage). Names are compared
+		without regard to case, so a local variable named like the class it
+		calls (string and String.format()) is reported.
+
+		Adapted from PreferSafeNavigationOperator of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="PreferSafeNavigationOperator"
+		language="apex"
+		message="Replace this null check with the safe navigation operator (?.)"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>An if statement that only checks an object for null, and then makes one call on it or reads one value from it, is written as one statement with the safe navigation operator (?.). The statement says the same thing without the extra block and its indentation. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//IfBlockStatement[count(../*) = 1][
+						let $name := StandardCondition/BooleanExpression[@Op = '!='][count(*) = 2][LiteralExpression[@Null = true()]]/VariableExpression[EmptyReferenceExpression]/lower-case(@Image),
+							$statement := BlockStatement[count(*) = 1]/*,
+							$use := ($statement/self::ExpressionStatement/MethodCallExpression
+								| $statement/self::VariableDeclarationStatements[count(VariableDeclaration) = 1]/VariableDeclaration[count(*) = 2]/*[1][self::MethodCallExpression or self::VariableExpression])
+						return exists($name) and exists($use)
+							and not($use/self::MethodCallExpression[lower-case(@MethodName) = 'adderror'])
+							and exists($use/descendant::*
+								[self::ReferenceExpression[not(*)] or self::VariableExpression[EmptyReferenceExpression][parent::ReferenceExpression]]
+								[lower-case(@Image) = $name]
+								[every $step in ancestor-or-self::*[. >> $use] satisfies
+									($step/self::ReferenceExpression and not($step/preceding-sibling::*))
+									or (($step/self::MethodCallExpression or $step/self::VariableExpression) and $step/parent::ReferenceExpression)])
+					]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports a method named getX, with no parameters and a return type,
+		whose body is one statement that returns x or this.x, where x is a
+		field or a property declared in the same class, static when the
+		method is static. Names are compared without regard to case, so
+		getName() that returns NAME is reported. Such a method is written as
+		a property, public String x { get; private set; }, and code that
+		calls getX() reads x instead. A Visualforce page binds to the
+		property with the same expression, {!x}. Not reported, because a
+		property cannot take the method's place: a method that is override,
+		virtual, abstract, or global; a method with an annotation other than
+		@TestVisible or @SuppressWarnings (an @AuraEnabled or @RemoteAction
+		method is called by name from the client, and an @HttpGet method is
+		a REST resource); and any method of a class that implements an
+		interface, because the method may be one the interface requires,
+		and an interface cannot declare a property. A field inherited from a
+		superclass, or a static field of an outer class, is not read.
+
+		Adapted from AvoidTrivialPropertyGetters of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="AvoidTrivialPropertyGetters"
+		language="apex"
+		message="Replace this getter, which only returns a field, with a property"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A method named getX whose body only returns the field x is written as a property instead, such as public String x { get; private set; }. The property keeps the value and the way it is read in one declaration. A Visualforce page binds to the property with the same expression, {!x}, and code that called the method reads the property. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//Method[@Arity = 0][@Constructor = false()][lower-case(@ReturnType) != 'void'][matches(@Image, '^get.', 'i')]
+						[parent::UserClass[not(@InterfaceNames != '')]]
+						[not(ModifierNode[@Override = true() or @Virtual = true() or @Abstract = true() or @Global = true()])]
+						[not(ModifierNode/Annotation[not(lower-case(@Name) = ('testvisible', 'suppresswarnings'))])]
+						[
+							let $field := lower-case(substring(@Image, 4)),
+								$static := ModifierNode/@Static
+							return BlockStatement[count(*) = 1]/ReturnStatement/VariableExpression[EmptyReferenceExpression or ReferenceExpression/ThisVariableExpression][lower-case(@Image) = $field]
+								and parent::UserClass/(Field | Property/Field)[lower-case(@Image) = $field][ModifierNode/@Static = $static]
+						]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports an if statement whose block holds only another if statement,
+		when neither has an else or an else if after it. The two are written
+		as one if statement that joins the conditions with &&, which runs the
+		same code in the same cases. The outer statement may be the last
+		branch of an else if chain with no else: if (a) { ... } else if (b)
+		{ if (c) { ... } } is reported at the else if line, and is written
+		else if (b && c). A first branch followed by else or else if is not
+		reported, because joining its conditions would send the case where
+		the outer condition holds and the inner one does not to the next
+		branch. An if statement that is reported can also be the inner one of
+		another report, so three nested if statements give two reports.
+		Nesting is read whether or not the blocks have braces.
+
+		Adapted from CombineNestedIfStatements of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="CombineNestedIfStatements"
+		language="apex"
+		message="Join this if statement and the if statement inside it into one, with &amp;&amp; between the conditions"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>An if statement whose only statement is another if statement, when neither has an else, is written as one if statement that joins the two conditions with &amp;&amp;. One condition is easier to read than two levels of nesting, and the code runs in the same cases. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//IfBlockStatement[not(following-sibling::*)][BlockStatement[count(*) = 1]/IfElseBlockStatement[count(*) = 1]]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports a local variable that is given a value and returned in the
+		very next statement: a declaration with an initialiser followed by
+		return of that variable, or an assignment with = to a local variable
+		of the method followed by return of it. The returned expression must
+		be the bare variable; this.name and other.name are not read as the
+		local. A declaration without an initialiser, a compound assignment
+		such as +=, and a variable that a statement between the two uses are
+		not reported. The rule does not look at a finally block that reads
+		the variable after the return.
+
+		Adapted from NoUnnecessaryReturnVariables of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="NoUnnecessaryReturnVariables"
+		language="apex"
+		message="Return this value directly instead of storing it in a variable that is only returned"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A value that is assigned to a local variable and returned in the next statement should be returned directly. The variable adds a line to read and nothing else. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>5</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//VariableDeclarationStatements[following-sibling::*[1][self::ReturnStatement]]
+						/VariableDeclaration[count(*) = 2]
+						[lower-case(@Image) = ../following-sibling::*[1]/VariableExpression[not(*[not(self::EmptyReferenceExpression)])]/lower-case(@Image)]
+					| //ExpressionStatement[following-sibling::*[1][self::ReturnStatement]]
+						[AssignmentExpression[@Op = '=']/*[1][self::VariableExpression][not(*[not(self::EmptyReferenceExpression)])]
+							[lower-case(@Image) = ../../following-sibling::*[1]/VariableExpression[not(*[not(self::EmptyReferenceExpression)])]/lower-case(@Image)]
+							[lower-case(@Image) = ancestor::Method[1]//VariableDeclaration/lower-case(@Image)]]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- CUSTOM RULES: APEX HARD-CODED VALUES                         -->
+	<!-- ============================================================ -->
+
+	<!--
+		Reports a string literal that is an IPv4 address, alone or with a
+		port, or a URL whose host is one. An address inside other text is not
+		reported, so that a version number in a sentence or in a path is not
+		taken for one. A string that is nothing but a four-part version
+		number, such as '1.0.0.0', cannot be told from an address and is
+		reported.
+	-->
+	<rule
+		name="AvoidHardcodedIpAddressApex"
+		language="apex"
+		message="Do not hard-code an IP address - read it from configuration"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A string literal that is an IPv4 address, or a URL whose host is one, ties the code to one network address. Read the address from a Named Credential, a custom metadata record, or a custom setting.</description>
+		<priority>1</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//LiteralExpression[@String = true()][matches(@Image, '(^|://)((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])($|[:/?#])')]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports a string literal that holds the absolute URL of a Salesforce
+		org: a My Domain, Lightning, Visualforce, Sites, or Experience Cloud
+		host, an instance host, or one of the two login hosts. The URL is found
+		anywhere in the string. The allowedSubdomains property holds the
+		subdomains of salesforce.com that may be written out, and a string that
+		links to one of them is not reported. It starts with the public
+		Salesforce websites, which are the same for every org. An organisation
+		adds its own: login allows https://login.salesforce.com, and acme.my
+		allows https://acme.my.salesforce.com.
+	-->
+	<rule
+		name="AvoidAbsoluteSalesforceUrl"
+		language="apex"
+		message="Do not hard-code a Salesforce URL - use a relative URL, or as a last resort build it from the org domain"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A string literal that holds the absolute URL of a Salesforce org is right in one org only, because every sandbox and every production org has a host name of its own. Use a relative URL. Where a URL has to be absolute, build it from URL.getOrgDomainUrl() as a last resort. The allowedSubdomains property holds the subdomains of salesforce.com that may be written out, and each organisation adds its own.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//LiteralExpression[@String = true()][matches(@Image, 'https?://([a-z0-9-]+\.)+((salesforce|force|visualforce|salesforce-sites|salesforce-setup|cloudforce)\.com|my\.site\.com)', 'i')][not(some $s in $allowedSubdomains satisfies matches(@Image, concat('https?://', $s, '\.salesforce\.com'), 'i'))]
+				]]></value>
+			</property>
+			<property
+				name="allowedSubdomains"
+				type="List[String]"
+				value="www,help,developer,trailhead,status,trust,appexchange"
+				description="The subdomains of salesforce.com whose URLs may be written out, each as the part of the host before .salesforce.com" />
+		</properties>
+	</rule>
+
+	<!--
+		Reports a numeric literal (an Integer, Long, Decimal, or Double) whose
+		value is not in the allowedNumbers property, which holds 0, 1, and -1
+		by default. A minus sign written before the number is part of its
+		value, and the values are compared as numbers, so 1.0 and 1L match 1.
+		These are not reported: a number in the index of a list (xs[2], or
+		xs[xs.size() - 2]), in the condition of a for, while, or do loop, in
+		the initialiser of a static final field or in its assignment in a
+		static initialiser block, in a when value of a switch statement (which
+		must be a literal), or in a comparison whose other side is an allowed
+		number. A test class, an inner class of a test class included, is not
+		read. A number inside a SOQL query is not read.
+
+		Adapted from AvoidMagicNumbers of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="AvoidMagicNumbers"
+		language="apex"
+		message="Replace this number with a constant whose name says what the number means"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A number written in the code says nothing about what it means, and when the same value is needed in two places, the two copies can drift apart. A number is declared once, as a static final constant whose name says what it means, and the code uses the constant. The allowedNumbers property lists the numbers that may be written in the code, and it holds 0, 1, and -1 by default. A list index, a loop condition, a when value of a switch statement, and a test class are not reported. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					let $allowed := for $number in $allowedNumbers return number(normalize-space($number)),
+						$value := function($node) {
+							if ($node/self::PrefixExpression[@Op = '-']) then -number($node/LiteralExpression[@LiteralType = ('INTEGER', 'LONG', 'DECIMAL', 'DOUBLE')]/@Image)
+							else number($node/self::LiteralExpression[@LiteralType = ('INTEGER', 'LONG', 'DECIMAL', 'DOUBLE')]/@Image)
+						}
+					return //LiteralExpression[@LiteralType = ('INTEGER', 'LONG', 'DECIMAL', 'DOUBLE')]
+						[not(ancestor::UserClass/ModifierNode[@Test = true()])]
+						[not($value((parent::PrefixExpression[@Op = '-'], .)[1]) = $allowed)]
+						[not(ancestor-or-self::*[parent::ArrayLoadExpression or parent::ArrayStoreExpression][preceding-sibling::*])]
+						[not(ancestor::StandardCondition[parent::ForLoopStatement or parent::WhileLoopStatement or parent::DoLoopStatement])]
+						[not(ancestor::FieldDeclarationStatements[ModifierNode[@Static = true() and @Final = true()]])]
+						[not(ancestor::AssignmentExpression[ancestor::Method[1][@StaticInitializer = true()]]/*[1][self::VariableExpression[not(ReferenceExpression[@Image != ''])]]/lower-case(@Image)
+							= ancestor::UserClass[1]/FieldDeclarationStatements[ModifierNode[@Static = true() and @Final = true()]]/FieldDeclaration/lower-case(@Name))]
+						[not(ancestor::LiteralCase)]
+						[not(
+							let $operand := (parent::PrefixExpression[@Op = '-'], .)[1]
+							return $operand/parent::BooleanExpression[@Op = ('==', '!=', '<>', '===', '!==', '<', '<=', '>', '>=')]
+								and (some $other in $operand/../*[not(. is $operand)] satisfies $value($other) = $allowed)
+						)]
+				]]></value>
+			</property>
+			<property
+				name="allowedNumbers"
+				type="List[String]"
+				value="0,1,-1"
+				description="The numbers that may be written in the code, compared as numbers, with a minus sign for a negative number" />
+		</properties>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- CUSTOM RULES: APEX COOKIES AND CRYPTOGRAPHY                  -->
+	<!-- ============================================================ -->
+
+	<!--
+		Reports a Cookie created with the literal false as its fifth argument,
+		isSecure, with or without the sixth argument, SameSite. A value passed
+		in a variable is not followed.
+	-->
+	<rule name="AvoidInsecureCookies" language="apex" message="Create this cookie with isSecure set to true" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A cookie created with isSecure set to false is also sent over a connection that is not encrypted, where it can be read. Create every cookie with isSecure set to true.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//NewObjectExpression[lower-case(@Type) = ('cookie', 'system.cookie')][*[5][self::LiteralExpression[@LiteralType = 'FALSE']]]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports a call to a digest, MAC, or signature method of the Crypto class
+		that names MD5 or SHA-1 in a string literal. In Apex the algorithm
+		name RSA is another name for RSA-SHA1. An algorithm name passed in a
+		variable or a constant is not followed.
+	-->
+	<rule
+		name="AvoidWeakCryptoAlgorithms"
+		language="apex"
+		message="Use SHA-256 or a stronger algorithm - MD5 and SHA-1 are not collision resistant"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>MD5 and SHA-1 are not collision resistant, and SHA-1 is being retired for every use. Name an algorithm of the SHA-2 family for a digest, a message authentication code, or a signature.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//MethodCallExpression[matches(@FullMethodName, '^(system\.)?crypto\.(generateDigest|generateMac|sign|signWithCertificate|signXml|verify|verifyHmac|verifyWithCertificate)$', 'i')][LiteralExpression[@String = true()][matches(@Image, '^(md5|sha-?1|hmacmd5|hmacsha-?1|rsa|rsa-sha1)$', 'i')]]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- CUSTOM RULES: APEX PERFORMANCE                               -->
+	<!-- ============================================================ -->
+
+	<!--
+		Reports getDescribe(), fields.getMap(), and fieldSets.getMap() in the
+		body of a loop, when the call uses no variable that the loop declares.
+		A call on the loop variable, such as field.getDescribe() in a loop
+		over fields, differs on each pass and is not reported, and neither is
+		a call in the expression a for-each loop iterates over, which runs
+		once. Schema.getGlobalDescribe() and Schema.describeSObjects() in a
+		loop are left to PMD's OperationWithHighCostInLoop.
+	-->
+	<rule
+		name="AvoidDescribeInLoops"
+		language="apex"
+		message="Move this describe call out of the loop - its result is the same on every pass"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A describe call in the body of a loop is run again on every pass. When the call does not use a variable of the loop, its result is the same each time: make the call once, before the loop.</description>
+		<priority>3</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//MethodCallExpression[lower-case(@MethodName) = 'getdescribe' or matches(@FullMethodName, '(^|\.)(fields|fieldSets)\.getMap$', 'i')][ancestor::BlockStatement/parent::*[self::ForEachStatement or self::ForLoopStatement or self::WhileLoopStatement or self::DoLoopStatement]][not((descendant::ReferenceExpression | descendant::VariableExpression)/lower-case(@Image) = ancestor::*[self::ForEachStatement or self::ForLoopStatement or self::WhileLoopStatement or self::DoLoopStatement]//VariableDeclaration/lower-case(@Image))]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports a call, in the body of a loop, to a method of the same file that
+		runs DML: an insert, update, upsert, delete, undelete, or merge
+		statement, or the Database method of the same name. A loop of any kind
+		is read (for, for-each, while, and do), and so is a loop body with no
+		braces; the collection that a for-each loop iterates over is not. The
+		call is reported, not the loop, so a call in a nested loop is reported
+		once. Methods are matched by name, without regard to case, so a call to
+		another object's method of the same name is reported too. Only one
+		step is followed: a method that calls the DML method is not read, and
+		neither is a method in another file. DML in the loop body itself is
+		left to PMD's OperationWithLimitsInLoop.
+
+		Adapted from DmlInLoopAcrossMethods of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="DmlInLoopAcrossMethods"
+		language="apex"
+		message="This loop calls a method that runs DML. Collect the records in a list in the loop, and run the DML once, after the loop"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A loop that calls a method which runs DML runs that DML once on every pass, and each statement counts against the limit on DML statements in a transaction. Collect the records in the loop, and run one DML statement after it. The rule reads methods of the same file only, and it matches them by name. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>2</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					let $dmlMethods := (//Method[
+						.//(DmlInsertStatement | DmlUpdateStatement | DmlUpsertStatement | DmlDeleteStatement | DmlUndeleteStatement | DmlMergeStatement)
+						or .//MethodCallExpression[lower-case(@FullMethodName) = ('database.insert', 'database.update', 'database.upsert', 'database.delete', 'database.undelete', 'database.merge')]
+					]/lower-case(@Image))
+					return //MethodCallExpression[lower-case(@MethodName) = $dmlMethods]
+						[ancestor::BlockStatement/parent::*[self::ForEachStatement or self::ForLoopStatement or self::WhileLoopStatement or self::DoLoopStatement]]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports a SOQL query whose WHERE clause has a filter that cannot use an
+		index: a negative filter (!=, <>, EXCLUDES, or NOT as a logical
+		modifier: NOT IN, NOT (...), NOT Field LIKE), or a LIKE whose pattern
+		starts with a wildcard (% or _). The query planner cannot use an index
+		for either, so the filter reads the whole table. A query written as a
+		string is read too: any string literal that starts with SELECT and
+		holds FROM, wherever it sits, so the string assigned to a variable
+		before the call is read as well as one passed to the call. Of a query
+		built from several strings, only the piece that starts with SELECT is
+		read. A LIKE whose pattern is a bind variable is not read, because the
+		pattern is not in the code.
+	-->
+	<rule
+		name="AvoidNonSelectiveSoqlFilter"
+		language="apex"
+		message="Do not use a negative expression or a leading wildcard in a WHERE clause. It cannot use an index, so the query is not selective and reads the whole table"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A WHERE clause with a negative filter (!=, &lt;&gt;, NOT, NOT IN, EXCLUDES), or with a LIKE whose pattern starts with a wildcard, cannot use an index, so the query reads every row of the object, affecting performance and failing on large data volumes. Inline SOQL is read, and so is a query written as a string, wherever the string sits.</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//SoqlExpression[matches(replace(@Query, "'[^']*'", "''"), '\sWHERE\s(.*(!=|<>)|(.*[\s(])?NOT\s*[\s(]|.*\sEXCLUDES\s*\()', 'is') or matches(@Query, "\sLIKE\s*'[%_]", 'i')]
+					|
+					//LiteralExpression[@String = true()][matches(@Image, '^\s*SELECT\s.*\sFROM\s', 'is')][matches(replace(@Image, "'[^']*'", "''"), '\sWHERE\s(.*(!=|<>)|(.*[\s(])?NOT\s*[\s(]|.*\sEXCLUDES\s*\()', 'is') or matches(@Image, "\sLIKE\s*\\?'[%_]", 'i')]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports a call to Pattern.compile() or Pattern.matches(), with or
+		without the System namespace, whose pattern argument is a string
+		literal written in the call. The call is not reported in the
+		initialiser of a static final field, or in a static initialiser block
+		when the call is part of an assignment to a static final field of the
+		same class, because there the pattern is compiled once. A pattern held
+		in a variable or a constant is not read, so a pattern built at run time
+		is never reported, and neither is a literal joined to another string
+		with +. The methods of String that take a regular expression (split(),
+		matches(), replaceAll(), and replaceFirst()) are not read.
+
+		Adapted from RegexPatternsMustBeStaticFinal of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="RegexPatternsMustBeStaticFinal"
+		language="apex"
+		message="Compile this regular expression once, into a static final Pattern, instead of on every call"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>Pattern.compile() and Pattern.matches() compile their regular expression each time they run, and that costs CPU time on every call. A regular expression that is written in the code is compiled once, into a static final Pattern, and the code uses that Pattern. The field also gives the expression a name, and every use of it reads the same definition. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>4</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//MethodCallExpression[lower-case(@FullMethodName) = ('pattern.compile', 'pattern.matches', 'system.pattern.compile', 'system.pattern.matches')]
+						[*[2][self::LiteralExpression[@String = true()]]]
+						[not(ancestor::FieldDeclarationStatements[ModifierNode[@Static = true() and @Final = true()]])]
+						[not(ancestor::AssignmentExpression[ancestor::Method[1][@StaticInitializer = true()]]/*[1][self::VariableExpression[not(ReferenceExpression[@Image != ''])]]/lower-case(@Image)
+							= ancestor::UserClass[1]/FieldDeclarationStatements[ModifierNode[@Static = true() and @Final = true()]]/FieldDeclaration/lower-case(@Name))]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- CUSTOM RULES: APEX TRIGGERS                                  -->
+	<!-- ============================================================ -->
+
+	<!--
+		A trigger hands off to a handler class and declares no methods of its
+		own: a method written in a trigger is logic in the trigger, and it
+		breaks the one-line trigger that a trigger framework requires, so the
+		rule is priority 1. Each method is reported at its own line, not at
+		the trigger's first line. PMD
+		models the trigger's body as a method too; @RealLoc tells the two
+		apart. DeclareAccessOnMethods also applies inside a trigger, so a
+		method there with no access modifier is reported by both rules: run
+		either rule, or both. A sample rule that checks the whole one-line
+		trigger of the Trigger Actions Framework is published in its own file,
+		pmd-trigger-framework-rule.xml; it is not part of this ruleset.
+	-->
+	<rule name="NoMethodsInTriggers" language="apex" message="Move this method out of the trigger and into a handler class" class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A trigger must not declare methods, with or without an access modifier. Logic belongs in a handler class, where it can be called, tested, and governed like any other code.</description>
+		<priority>2</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//UserTrigger/Method[@RealLoc = true()]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- CUSTOM RULES: APEX TESTING                                   -->
+	<!-- ============================================================ -->
+
+	<!--
+		The RunRelevantTests test level chooses a test class through a
+		reference in code, or through the testFor and critical parameters of
+		its IsTest annotation. This rule asks for one of the two parameters on
+		every test class, so that no test depends on the analysis alone. Both
+		parameters compile only at API 66.0 or later, so a test class below
+		that version has to be raised before it can satisfy the rule. PMD
+		7.28.0 ships a stock rule for the same check,
+		ApexUnitTestClassShouldHaveRunRelevantTestsAnnotation, which does not
+		report a class below API 66.0; this rule reports at every version. An
+		organisation that is not ready switches this rule off, or lowers its
+		priority.
+	-->
+	<rule
+		name="RequireTestForOrCritical"
+		language="apex"
+		message="Add testFor or critical=true to the IsTest annotation of this test class"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A test class names the classes and triggers it tests in the testFor parameter of its IsTest annotation, or is marked with critical=true.</description>
+		<priority>2</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//UserClass[@Nested = false()]
+						[ModifierNode/Annotation[lower-case(@Name) = 'istest']]
+						[Method[ModifierNode/Annotation[lower-case(@Name) = 'istest'] or ModifierNode[@Test = true()]]]
+						[not(ModifierNode/Annotation[lower-case(@Name) = 'istest']/AnnotationParameter[
+							(lower-case(@Name) = 'testfor' and string-length(@Value) > 0)
+							or (lower-case(@Name) = 'critical' and lower-case(@Value) = 'true')
+						])]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+
+	<!--
+		Reports a top-level test class, one with an IsTest annotation and at
+		least one test method, whose own IsTest annotation does not carry
+		IsParallel=true or IsParallel=false: an explicit IsParallel=false is a
+		stated choice and passes (David, 2026-10-24). A test
+		class is not reported when it cannot run in parallel: when the class or
+		any of its methods has SeeAllData=true; when it calls
+		Test.getStandardPricebookId(), System.schedule(), or
+		System.enqueueJob(); or when it creates a ContentNote, User, or
+		GroupMember record, which the rule reads as a new expression of that
+		type anywhere in the file. A new User that sets only its Id, as in
+		System.runAs(new User(Id = UserInfo.getUserId())), refers to an
+		existing user and does not count. The setup objects that cannot be
+		mixed with other sObjects in one DML transaction, and so cannot be used
+		in a parallel test, are read the same way (David, 2026-10-24), from
+		the list on the page sObjects That Cannot Be Used Together in DML
+		Operations of the Apex Developer Guide, which says it is not complete.
+		Only the test class itself is read: a record that a data factory in
+		another class creates is not seen, so such a class states
+		IsParallel=false. A
+		utility class annotated IsTest with no test method is not reported.
+
+		Adapted from TestClassIsParallel of sca-extra,
+		https://github.com/starch-uk/sca-extra, under its MIT licence:
+		Copyright (c) 2025 Beech Horn
+		https://github.com/starch-uk/sca-extra/blob/main/LICENSE.md
+	-->
+	<rule
+		name="TestClassIsParallel"
+		language="apex"
+		message="State IsParallel in the IsTest annotation of this test class: true if it can run in parallel, false if it cannot"
+		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule">
+		<description>A test class states whether it can run in parallel, with IsParallel=true or IsParallel=false in its IsTest annotation. IsParallel=true runs the class in parallel even when parallel Apex testing is disabled for the org. A class that cannot run in parallel is not reported: one with SeeAllData=true, one that calls Test.getStandardPricebookId(), System.schedule(), or System.enqueueJob(), and one that creates a ContentNote, a User, a GroupMember, or another setup object that cannot be mixed with other sObjects in one DML transaction. Adapted from sca-extra, https://github.com/starch-uk/sca-extra (MIT licence).</description>
+		<priority>5</priority>
+		<properties>
+			<property name="xpath">
+				<value><![CDATA[
+					//UserClass[@Nested = false()]
+						[ModifierNode/Annotation[lower-case(@Name) = 'istest']]
+						[Method[ModifierNode[@Test = true()]]]
+						[not(ModifierNode/Annotation[lower-case(@Name) = 'istest']/AnnotationParameter[lower-case(@Name) = 'isparallel'])]
+						[not(.//Annotation[lower-case(@Name) = 'istest']/AnnotationParameter[lower-case(@Name) = 'seealldata' and lower-case(@Value) = 'true'])]
+						[not(.//MethodCallExpression[lower-case(@FullMethodName) = ('test.getstandardpricebookid', 'system.test.getstandardpricebookid', 'system.schedule', 'system.enqueuejob')])]
+						[not(.//(NewObjectExpression | NewKeyValueObjectExpression)
+							[replace(lower-case(@Type), '^schema\.', '') = ('contentnote', 'user', 'groupmember', 'authsession', 'contentworkspace', 'fieldpermissions', 'forecastingshare', 'group', 'objectpermissions', 'objectterritory2assignmentrule', 'objectterritory2assignmentruleitem', 'permissionset', 'permissionsetassignment', 'queuesobject', 'ruleterritory2association', 'setupentityaccess', 'territory', 'territory2', 'territory2model', 'userpackagelicense', 'userrole', 'userterritory', 'userterritory2association')]
+							[not(@ParameterCount = 1 and AssignmentExpression/VariableExpression[lower-case(@Image) = 'id'])])]
+				]]></value>
+			</property>
+		</properties>
+	</rule>
+</ruleset>

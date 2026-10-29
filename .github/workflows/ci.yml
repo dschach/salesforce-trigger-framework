@@ -63,7 +63,7 @@ jobs:
         with:
           version: "latest"
           sourcePath: "."
-          rulesets: "pmd/ruleset.xml"
+          rulesets: "config/pmd/ruleset.xml"
           analyzeModifiedFilesOnly: ${{ github.event_name == 'pull_request' }}
 
       # The action annotates every violation but never fails the job, and its only
