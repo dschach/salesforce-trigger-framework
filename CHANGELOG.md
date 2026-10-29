@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/dschach/salesforce-trigger-framework/compare/v1.4.0...v1.4.1) (2026-10-29)
+
+
+### Build System
+
+* **node:** Update Node.js from v22.22.1 to v24.22.2 ([#361](https://github.com/dschach/salesforce-trigger-framework/issues/361)) ([905728c](https://github.com/dschach/salesforce-trigger-framework/commit/905728c2394e16727571f918e979a53ff75f3c38))
+
 ## [1.4.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.3.0...v1.4.0) (2026-10-29)
 
 
