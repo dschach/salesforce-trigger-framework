@@ -14,9 +14,11 @@ on:
 permissions:
   contents: read
 
-# A newer push to the same pull request or branch cancels the run in progress
+# A newer push to the same pull request cancels the run in progress. A push to main
+# gets a group of its own, keyed on the commit, so that every commit on main keeps a
+# finished check: GitHub keeps only 1 pending run in a group and cancels the rest.
 concurrency:
-  group: ci-${{ github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.event.pull_request.number || github.sha }}
   cancel-in-progress: true
 
 jobs:

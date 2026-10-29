@@ -7,6 +7,11 @@ on:
 permissions:
   contents: write
   pull-requests: write
+# 1 run at a time, so that 2 quick merges do not update the release PR at once. A run
+# in progress is never cancelled, so a release is never cut off halfway.
+concurrency:
+  group: release-please
+  cancel-in-progress: false
 jobs:
   release-please:
     runs-on: ubuntu-latest
