@@ -243,7 +243,7 @@ There are two methods that will show additional information.
 
 `TriggerHandler.showDebug()` will show trigger entry and exit in debug logs. Use sparingly, as it will decrease org performance.
 
-To use one or both of these, either add them to the *trigger* (note that you can specify for ALL handlers or for a specific handler)
+To use one or both of these, either add them to the *trigger* (the flags are static, so they apply to every handler that runs later in the transaction, whichever class name you call them on)
 ```apex
 TriggerHandler.showLimits();
 AccountTriggerHandler.showDebug();
@@ -279,7 +279,7 @@ trigger OpportunityTrigger on Opportunity (before update, after update) {
 
 ### Universal Action
 
-Version 1.1 added a new method/context: `andFinally()` can contain actions that should happen in every trigger context, after all other actions. Credit to James Simone for this idea. As he writes, "runs after every context - can be used to easily implement something like apex-rollup!" ([The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/))
+Version 1.1 added a new method/context: `andFinally()` can contain actions that should happen in every trigger context, after all other actions. It does not run when the handler is bypassed, when the loop limit is exceeded, or when the context method throws an exception. Credit to James Simone for this idea. As he writes, "runs after every context - can be used to easily implement something like apex-rollup!" ([The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/))
 
 ## Overridable Methods
 

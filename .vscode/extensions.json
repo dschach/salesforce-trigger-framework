@@ -20,7 +20,7 @@
 		// Formatting
 		"esbenp.prettier-vscode",
 		// Alignment
-		"aaron-bond.better-comments",
+		"edwinhuish.better-comments-next",
 		"sirtori.indenticator",
 		"oderwat.indent-rainbow",
 		// Documentation
@@ -34,6 +34,6 @@
 		"matteopieroni.refresh-npm-packages",
 		// Themes
 		"pkief.material-icon-theme",
-		"subc4i.sublime-mavensmate-monokai-apex"
+		"subc4i.sublime-mavensmate-monokai-apex",
 	]
 }
