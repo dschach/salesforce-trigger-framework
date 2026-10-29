@@ -7,7 +7,7 @@
     "node": ">=24.22.2"
   },
   "scripts": {
-    "codeanalyzer:run": "sf code-analyzer run --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
+    "codeanalyzer:run": "mkdir -p sfca && sf code-analyzer run --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)' --output-file sfca/sfca_results.json --include-suggestions --include-fixes --output-file sfca/sfca_results.html",
     "codeanalyzer:setup": "echo y | sf code-analyzer config --output-file code-analyzer.yml --config-file code-analyzer.yml --include-unmodified-rules --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
     "orginit": "bash scripts/orginit.sh",
     "prepare": "husky",
