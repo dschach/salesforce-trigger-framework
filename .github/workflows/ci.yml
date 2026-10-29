@@ -53,14 +53,45 @@ jobs:
       - name: "Checkout source code"
         uses: actions/checkout@v7
 
-      # Install PMD
-      - name: "Install PMD"
-        run: |
-          PMD_VERSION=$(curl -s https://api.github.com/repos/pmd/pmd/releases/latest | grep '.tag_name' | sed 's:.*/::' | sed 's:",::')
-          wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F$PMD_VERSION/pmd-dist-$PMD_VERSION-bin.zip
-          unzip pmd-dist-$PMD_VERSION-bin.zip -d ~
-          mv ~/pmd-bin-$PMD_VERSION ~/pmd
-          ~/pmd/bin/pmd --version
-      # Run PMD scan
+      # PMD needs a Java runtime
+      - name: "Set up Java"
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # Run the latest PMD release with the project ruleset. A pull request
+      # analyzes only the changed files; a push analyzes the whole project.
       - name: "Run PMD scan"
-        run: ~/pmd/bin/pmd check --dir force-app --dir sample-handler --rulesets pmd/ruleset.xml --format csv --no-cache --verbose --report-file pmd/pmd.csv
+        id: pmd
+        uses: pmd/pmd-github-action@v2
+        with:
+          version: "latest"
+          sourcePath: "."
+          rulesets: "pmd/ruleset.xml"
+          analyzeModifiedFilesOnly: ${{ github.event_name == 'pull_request' }}
+
+      # The action annotates every violation but never fails the job, and its only
+      # output is the total count. Count the violations by the priority the ruleset
+      # gives each rule, then fail on priority 1 and 2 only.
+      - name: "Count PMD violations by priority"
+        id: priorities
+        uses: ./.github/actions/pmd-sarif-priorities
+        with:
+          sarif-file: pmd-report.sarif
+
+      - name: "Report PMD violations by priority"
+        run: |
+          {
+            echo "### PMD"
+            echo ""
+            echo "| Priority 1 | Priority 2 | Priority 3 | Priority 4 | Priority 5 | Total |"
+            echo "| ---------- | ---------- | ---------- | ---------- | ---------- | ----- |"
+            echo "| ${{ steps.priorities.outputs.priority1 }} | ${{ steps.priorities.outputs.priority2 }} | ${{ steps.priorities.outputs.priority3 }} | ${{ steps.priorities.outputs.priority4 }} | ${{ steps.priorities.outputs.priority5 }} | ${{ steps.priorities.outputs.total }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: "Fail on priority 1 and 2 PMD violations"
+        if: ${{ steps.priorities.outputs.priority1 != 0 || steps.priorities.outputs.priority2 != 0 }}
+        run: |
+          echo "PMD found ${{ steps.priorities.outputs.priority1 }} priority 1 and ${{ steps.priorities.outputs.priority2 }} priority 2 violation(s). See the annotations and the PMD Report artifact."
+          exit 1

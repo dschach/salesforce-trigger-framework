@@ -166,7 +166,7 @@ public inherited sharing virtual class TriggerHandler {
 		this.andFinally();
 
 		if (showLimits) {
-			System.debug(
+			System.debug( // NOPMD
 				LoggingLevel.DEBUG,
 				String.format(
 					'{0} on {1} ({2}/{3} queries) and ({4}/{5} DML calls)',
@@ -179,7 +179,7 @@ public inherited sharing virtual class TriggerHandler {
 						Limits.getLimitDmlStatements() + ''
 					}
 				)
-			); // NOPMD
+			);
 		}
 		if (showDebug) {
 			System.debug(LoggingLevel.DEBUG, String.format('Exiting {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent + '' })); // NOPMD
