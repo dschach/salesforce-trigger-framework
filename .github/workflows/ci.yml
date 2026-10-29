@@ -42,25 +42,20 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      # The SFCA action lists the changed files of a pull request
-      pull-requests: read
     steps:
       - name: "Checkout source code"
         uses: actions/checkout@v7
-      - name: Ensure node v20.9.0 or greater
-        uses: actions/setup-node@v5
+      - name: Set up node
+        uses: actions/setup-node@v7
         with:
-          node-version: "lts/*"
+          node-version: lts/*
+          cache: npm
       # SFCA needs a Java runtime
       - name: "Set up Java"
         uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
-      - name: Ensure python v3.10 or greater
-        uses: actions/setup-python@v6
-        with:
-          python-version: ">=3.10"
 
       - name: Install Salesforce CLI
         run: npm install -g @salesforce/cli@latest
@@ -68,21 +63,22 @@ jobs:
       - name: Install Latest Salesforce Code Analyzer CLI Plugin
         run: sf plugins install code-analyzer@latest
 
+      - name: "Create the results folder"
+        run: mkdir -p sfca
+
       - name: Run Salesforce Code Analyzer
         id: run-code-analyzer
-        uses: forcedotcom/run-code-analyzer@v2
-        with:
-          run-arguments: --workspace . --view detail --output-file sfca_results.html --output-file sfca_results.json --output-file sfca-report.sarif --rule-selector "(pmd,cpd,sfge,regex):(Recommended,Custom)"
-          results-artifact-name: salesforce-code-analyzer-results
-          github-token: ${{ github.token }}
+        run: | # shell
+          sf code-analyzer run --workspace . --view detail --output-file sfca/sfca_results.html --output-file sfca/sfca_results.json --output-file sfca/sfca-report.sarif --rule-selector "(pmd,cpd,sfge,regex):(Recommended,Custom)"
 
-      # The action annotates every violation but never fails the job. It writes the
-      # counts and the tables to the job summary, and the fail step below reads the counts.
+      # The action writes the counts and the tables to the job summary, and it never
+      # fails the job. The fail step below reads the counts and fails the job.
       - name: "Report SFCA violations"
+        if: always()
         id: sfca-report
         uses: ./.github/actions/sf-code-analyzer-report
         with:
-          results-path: "sfca_results.json"
+          results-path: "sfca/sfca_results.json"
           severity-cutoff: "2"
 
       - name: "Upload SFCA report"
@@ -90,12 +86,11 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: sfca-report
-          path: |
-            salesforce-code-analyzer-results.zip
+          path: sfca
           if-no-files-found: warn
 
       - name: "Fail on priority 1 and 2 SFCA violations"
         if: ${{ steps.sfca-report.outputs.sev1-count != 0 || steps.sfca-report.outputs.sev2-count != 0 }}
         run: |
-          echo "SFCA found ${{ steps.sfca-report.outputs.sev1-count }} priority 1 and ${{ steps.sfca-report.outputs.sev2-count }} priority 2 violation(s). See the annotations and the SFCA Report artifact."
+          echo "SFCA found ${{ steps.sfca-report.outputs.sev1-count }} priority 1 and ${{ steps.sfca-report.outputs.sev2-count }} priority 2 violation(s). See the job summary and the SFCA Report artifact."
           exit 1

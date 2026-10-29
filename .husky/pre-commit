@@ -1,2 +1,2 @@
-sed -i '' 's/ *# Last calculated by the config command as:.*$//' code-analyzer.yml
+perl -pi -e 's/ *# Last calculated by the config command as:.*$//' code-analyzer.yml
 npm run precommit
