@@ -69,6 +69,7 @@ sf plugins install code-analyzer
 
 - Classes and triggers use the API version in `sfdx-project.json`, and every class declares its sharing.
 - Every database operation in the sample and in the README states its access mode. Handler examples use system mode, `WITH SYSTEM_MODE` or `AccessLevel.SYSTEM_MODE`, as the README section on data access explains.
+- Code Analyzer reports every system-mode operation with the rule `FlagSystemMode` at severity 2, which fails CI. When system mode is deliberate, suppress the rule on the method or the class with `@SuppressWarnings('PMD.FlagSystemMode')`, and give the reason in its ApexDoc. A reviewer accepts or rejects each suppression.
 - Every public method has an ApexDoc comment, and every sentence in it ends with a period.
 - A method that can throw has an `@exception` tag, followed by the same line with a `@throws` tag. The documentation generator reads `@exception`.
 - Every `@example` in an ApexDoc comment, and every Apex block in the README, must compile.

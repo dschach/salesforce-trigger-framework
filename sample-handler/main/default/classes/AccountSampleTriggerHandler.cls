@@ -102,8 +102,10 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	/**
 	 * @description Update the phone number of the child Accounts, with this handler bypassed for that update.
 	 * <br>A child Account that is in the same trigger run is left out, because a trigger cannot update the records it is running for.
+	 * <br>The query and the update run in system mode, so `FlagSystemMode` is suppressed for this method. The phone number must reach every child Account, also a child Account that the running user cannot see or edit.
 	 * @param phoneByParentId The new phone number of each parent Account, by Id.
 	 */
+	@SuppressWarnings('PMD.FlagSystemMode')
 	private void copyPhoneToChildAccounts(Map<Id, String> phoneByParentId) {
 		Set<Id> parentIds = phoneByParentId.keySet();
 		List<Account> childAccounts = new List<Account>();
