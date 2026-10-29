@@ -194,6 +194,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @param  max Maximum number of times. A negative value removes the limit.
 	 * @exception TriggerHandlerException when the value is null.
+	 * @throws TriggerHandlerException when the value is null.
 	 * @return      `TriggerHandler` This instance, which enables method chaining.
 	 * @example
 	 * this.setMaxLoopCount(5); // in the handler constructor
@@ -227,6 +228,7 @@ public inherited sharing virtual class TriggerHandler {
 	 *
 	 * @param handlerName Name of the handler to be bypassed.
 	 * @exception TriggerHandlerException when the name is null or blank.
+	 * @throws TriggerHandlerException when the name is null or blank.
 	 * @example
 	 * TriggerHandler.bypass('AccountSampleTriggerHandler');
 	 */
@@ -241,6 +243,7 @@ public inherited sharing virtual class TriggerHandler {
 	 *
 	 * @param handlerType The class to be bypassed, written as `ClassName.class`.
 	 * @exception TriggerHandlerException when the type is null.
+	 * @throws TriggerHandlerException when the type is null.
 	 * @author {@link [vr8hub](https://github.com/vr8hub)}
 	 * @example
 	 * TriggerHandler.bypass(AccountSampleTriggerHandler.class);
@@ -255,6 +258,7 @@ public inherited sharing virtual class TriggerHandler {
 	 *
 	 * @param handlerNames List of handler names.
 	 * @exception TriggerHandlerException when the list is null, or a name in it is null or blank.
+	 * @throws TriggerHandlerException when the list is null, or a name in it is null or blank.
 	 * @example
 	 * TriggerHandler.bypass(new List<String>{ 'AccountSampleTriggerHandler', 'ContactTriggerHandler' });
 	 */
@@ -280,6 +284,7 @@ public inherited sharing virtual class TriggerHandler {
 	 *
 	 * @param handlerName The class name whose bypass is cleared.
 	 * @exception TriggerHandlerException when the name is null or blank.
+	 * @throws TriggerHandlerException when the name is null or blank.
 	 * @author {@link [vr8hub](https://github.com/vr8hub)}
 	 * @example
 	 * TriggerHandler.clearBypass('AccountSampleTriggerHandler');
@@ -301,6 +306,7 @@ public inherited sharing virtual class TriggerHandler {
 	 *
 	 * @param handlerType The class whose bypass is cleared, written as `ClassName.class`.
 	 * @exception TriggerHandlerException when the type is null.
+	 * @throws TriggerHandlerException when the type is null.
 	 * @example
 	 * TriggerHandler.clearBypass(AccountSampleTriggerHandler.class);
 	 */
@@ -314,6 +320,7 @@ public inherited sharing virtual class TriggerHandler {
 	 *
 	 * @param handlerNames List of handler names whose bypass is cleared.
 	 * @exception TriggerHandlerException when the list is null, or a name in it is null or blank.
+	 * @throws TriggerHandlerException when the list is null, or a name in it is null or blank.
 	 * @example
 	 * List<String> classList = new List<String>{ 'AccountSampleTriggerHandler', 'ContactTriggerHandler' };
 	 * TriggerHandler.clearBypass(classList);
@@ -331,6 +338,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @param handlerName The class name of the handler to check. It matches regardless of case.
 	 * @return            `Boolean` Is this handler bypassed?
 	 * @exception TriggerHandlerException when the name is null or blank.
+	 * @throws TriggerHandlerException when the name is null or blank.
 	 * @example
 	 * if (TriggerHandler.isBypassed('AccountSampleTriggerHandler')) {
 	 *   // the handler will not run
@@ -348,6 +356,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @param handlerType The handler class to check, written as `ClassName.class`.
 	 * @return            `Boolean` Is this handler bypassed?
 	 * @exception TriggerHandlerException when the type is null.
+	 * @throws TriggerHandlerException when the type is null.
 	 * @example
 	 * if (TriggerHandler.isBypassed(AccountSampleTriggerHandler.class)) {
 	 *   // the handler will not run
@@ -441,6 +450,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @param  handlerName  The name of the TriggerHandler class.
 	 * @param  desiredValue `true` to bypass the handler, `false` to clear its bypass so that it runs.
 	 * @exception TriggerHandlerException when the name is null or blank, or the value is null.
+	 * @throws TriggerHandlerException when the name is null or blank, or the value is null.
 	 * @example
 	 * TriggerHandler.setBypass('AccountSampleTriggerHandler', false);
 	 * // or, save the current state, bypass, and restore
@@ -585,6 +595,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @param handlerName The handler name to check.
 	 * @return            `Integer` The count, or 0 when `setMaxLoopCount()` was never called for the handler.
 	 * @exception TriggerHandlerException when the name is null or blank.
+	 * @throws TriggerHandlerException when the name is null or blank.
 	 * @example
 	 * Integer runs = TriggerHandler.getLoopCount('AccountSampleTriggerHandler');
 	 */
@@ -641,6 +652,7 @@ public inherited sharing virtual class TriggerHandler {
 	 *
 	 * @return      `Boolean` `true` when the handler runs, `false` when it is bypassed.
 	 * @exception TriggerHandlerException when `run()` is called outside a trigger context.
+	 * @throws TriggerHandlerException when `run()` is called outside a trigger context.
 	 * @see TriggerHandler.TriggerHandlerException
 	 */
 	@TestVisible
@@ -825,6 +837,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @description Reject a null or blank handler name.
 	 * @param handlerName The name to check.
 	 * @exception TriggerHandlerException when the name is null or blank.
+	 * @throws TriggerHandlerException when the name is null or blank.
 	 */
 	private static void requireHandlerName(String handlerName) {
 		if (String.isBlank(handlerName)) {
@@ -836,6 +849,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @description Reject a null handler type.
 	 * @param handlerType The type to check.
 	 * @exception TriggerHandlerException when the type is null.
+	 * @throws TriggerHandlerException when the type is null.
 	 */
 	private static void requireHandlerType(Type handlerType) {
 		if (handlerType == null) {
@@ -847,6 +861,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @description Reject a null list, or a list with a null or blank name, before any name is used.
 	 * @param handlerNames The names to check.
 	 * @exception TriggerHandlerException when the list is null or holds a null or blank name.
+	 * @throws TriggerHandlerException when the list is null or holds a null or blank name.
 	 */
 	private static void requireHandlerNames(List<String> handlerNames) {
 		if (handlerNames == null) {
