@@ -51,7 +51,7 @@ jobs:
             echo "Missing SALESFORCE_AUTH_URL secret. Is this workflow running on a fork?"
             exit 1
           fi
-          echo "$SFDX_AUTH_URL" | sf org login sfdx-url --sfdx-url-stdin --alias devhub --set-default-dev-hub
+          echo "$SFDX_AUTH_URL" | sf org login sfdx-url --alias devhub --set-default-dev-hub --sfdx-url-stdin
 
       - name: "Create scratch org"
         id: scratch-org
