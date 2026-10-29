@@ -1171,9 +1171,7 @@
 		models the trigger's body as a method too; @RealLoc tells the two
 		apart. DeclareAccessOnMethods also applies inside a trigger, so a
 		method there with no access modifier is reported by both rules: run
-		either rule, or both. A sample rule that checks the whole one-line
-		trigger of the Trigger Actions Framework is published in its own file,
-		pmd-trigger-framework-rule.xml; it is not part of this ruleset.
+		either rule, or both.
 	-->
 	<rule
 		name="NoMethodsInTriggers"

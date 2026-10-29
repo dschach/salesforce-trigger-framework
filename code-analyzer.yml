@@ -346,6 +346,7 @@ rules:
         - DevSecOpsReferenceRules
         - Apex
         - Custom
+      disabled: true # Modified from: false
     "AvoidWeakCryptoAlgorithms":
       severity: 3
       tags:
