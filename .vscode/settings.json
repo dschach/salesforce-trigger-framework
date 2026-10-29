@@ -9,10 +9,15 @@
   "apexPMD.runOnFileChange": true,
   "apexPMD.runOnFileOpen": true,
   "apexPMD.rulesets": [
-    "pmd/ruleset.xml"
+    "config/pmd/ruleset.xml"
   ],
   "force.showApexJavadocTrailingCloseComment": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "xml.preferences.showSchemaDocumentationType": "all"
+  "xml.preferences.showSchemaDocumentationType": "all",
+  "codeAnalyzer.includeFixes": true,
+  "codeAnalyzer.ruleSelectors": "(pmd,cpd,sfge,regex):(Recommended,Custom)",
+  "codeAnalyzer.severity 1": "Error",
+  "codeAnalyzer.severity 2": "Error",
+  "codeAnalyzer.severity 5": "Info"
 }
