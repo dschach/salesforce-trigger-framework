@@ -13,7 +13,6 @@
 		"prettier:docs": "prettier --write  \"docs/**/*.html\"",
 		"initialize": ". scripts/initialize.sh",
 		"orginit": ". scripts/orginit.sh",
-		"postinstall": "husky install",
 		"precommit": "lint-staged",
 		"prune": "git branch | grep -v \"main\" | xargs git branch -D",
 		"updateHighlight": ". scripts/updateHighlight.sh",
