@@ -9,8 +9,8 @@
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
  * @see TriggerHandler
  */
-@isTest
-private class TriggerHandlerTest {
+@IsTest(isParallel=true testFor='ApexClass:TriggerHandler')
+private inherited sharing class TriggerHandlerTest {
 	private static String lastMethodCalled;
 	private static TriggerHandlerTest.TestHandler handler;
 	/**
@@ -26,7 +26,7 @@ private class TriggerHandlerTest {
 
 	// contexts tests
 
-	@isTest
+	@IsTest
 	private static void testBeforeInsert() {
 		beforeInsertMode();
 		handler.run();
@@ -34,49 +34,49 @@ private class TriggerHandlerTest {
 		Assert.areEqual(System.TriggerOperation.BEFORE_INSERT, handler.triggerEvent, 'triggerEvent should be set to current context');
 	}
 
-	@isTest
+	@IsTest
 	private static void testBeforeUpdate() {
 		beforeUpdateMode();
 		handler.run();
 		Assert.areEqual('beforeUpdate', lastMethodCalled, 'last method should be beforeUpdate');
 	}
 
-	@isTest
+	@IsTest
 	private static void testBeforeDelete() {
 		beforeDeleteMode();
 		handler.run();
 		Assert.areEqual('beforeDelete', lastMethodCalled, 'last method should be beforeDelete');
 	}
 
-	@isTest
+	@IsTest
 	private static void testAfterInsert() {
 		afterInsertMode();
 		handler.run();
 		Assert.areEqual('afterInsert', lastMethodCalled, 'last method should be afterInsert');
 	}
 
-	@isTest
+	@IsTest
 	private static void testAfterUpdate() {
 		afterUpdateMode();
 		handler.run();
 		Assert.areEqual('afterUpdate', lastMethodCalled, 'last method should be afterUpdate');
 	}
 
-	@isTest
+	@IsTest
 	private static void testAfterDelete() {
 		afterDeleteMode();
 		handler.run();
 		Assert.areEqual('afterDelete', lastMethodCalled, 'last method should be afterDelete');
 	}
 
-	@isTest
+	@IsTest
 	private static void testAfterUndelete() {
 		afterUndeleteMode();
 		handler.run();
 		Assert.areEqual('afterUndelete', lastMethodCalled, 'last method should be afterUndelete');
 	}
 
-	@isTest
+	@IsTest
 	private static void testNonTriggerContext() {
 		try {
 			handler.run();
@@ -88,7 +88,7 @@ private class TriggerHandlerTest {
 		}
 	}
 
-	@isTest
+	@IsTest
 	private static void testConstructorWithParameter() {
 		handler = new TriggerHandlerTest.TestHandler(HANDLER_NAME);
 		// override its internal trigger detection
@@ -99,7 +99,7 @@ private class TriggerHandlerTest {
 		Assert.areEqual('beforeInsert', lastMethodCalled, 'last method should be beforeInsert');
 	}
 
-	@isTest
+	@IsTest
 	private static void testConstructorWithParametersAndBypass() {
 		handler = new TriggerHandlerTest.TestHandler('TestHandler');
 		// override its internal trigger detection
@@ -117,7 +117,7 @@ private class TriggerHandlerTest {
 	 * @description test bypass api
 	 */
 	@SuppressWarnings('PMD.NcssMethodCount')
-	@isTest
+	@IsTest
 	private static void testBypassAPI() {
 		afterUpdateMode();
 
@@ -224,7 +224,7 @@ private class TriggerHandlerTest {
 	/**
 	 * @description Test and show/hide limits and debug
 	 */
-	@isTest
+	@IsTest
 	private static void testBeforeInsertWithLimits() {
 		beforeInsertMode();
 		TriggerHandler.showLimits(false);
@@ -244,7 +244,7 @@ private class TriggerHandlerTest {
 	/**
 	 * @description Test and show/hide limits and debug using chaining
 	 */
-	@isTest
+	@IsTest
 	private static void testBeforeInsertWithLimitsChaining() {
 		beforeInsertMode();
 		handler.limits().debug().run();
@@ -264,7 +264,7 @@ private class TriggerHandlerTest {
 	/**
 	 * @description instance method tests
 	 */
-	@isTest
+	@IsTest
 	private static void testLoopCount() {
 		beforeInsertMode();
 
@@ -294,7 +294,7 @@ private class TriggerHandlerTest {
 		Assert.areEqual('beforeInsert', lastMethodCalled, 'last method should be beforeInsert');
 	}
 
-	@isTest
+	@IsTest
 	private static void testLoopCountClass() {
 		TriggerHandler.LoopCount lc = new TriggerHandler.LoopCount();
 		Assert.areEqual(5, lc.getMax(), 'max should be five on init');
@@ -326,7 +326,7 @@ private class TriggerHandlerTest {
 	/**
 	 * @description test virtual methods
 	 */
-	@isTest
+	@IsTest
 	private static void testVirtualMethods() {
 		TriggerHandler h = new TriggerHandler();
 		h.beforeInsert();
@@ -342,7 +342,7 @@ private class TriggerHandlerTest {
 	/**
 	 * @description call from outside trigger
 	 */
-	@isTest
+	@IsTest
 	private static void testOutsideTrigger() {
 		TriggerHandler th = new TriggerHandler();
 		Assert.isFalse(th.isTriggerExecuting, 'Should be outside trigger context');

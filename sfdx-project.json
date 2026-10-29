@@ -4,14 +4,10 @@
 			"path": "force-app",
 			"default": true,
 			"versionNumber": "1.2.1.NEXT"
-		},
-		{
-			"path": "sample-handler",
-			"default": false
 		}
 	],
 	"name": "Trigger Framework",
 	"namespace": "",
 	"sfdcLoginUrl": "https://login.salesforce.com",
-	"sourceApiVersion": "58.0"
+	"sourceApiVersion": "67.0"
 }

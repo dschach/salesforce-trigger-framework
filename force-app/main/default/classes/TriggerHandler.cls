@@ -12,7 +12,7 @@
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-handler)
  * @see TriggerHandlerTest
  */
-public virtual class TriggerHandler {
+public inherited sharing virtual class TriggerHandler {
 	/**
 	 * Map of `handlerName` => times `run()` was invoked
 	 */
@@ -504,13 +504,7 @@ public virtual class TriggerHandler {
 	 * @see TriggerHandler.showLimits[0]
 	 */
 	public static void showLimits(Boolean enabled) {
-		if (enabled == null) {
-			showLimits = false;
-		} else if (enabled) {
-			showLimits = true;
-		} else {
-			showLimits = false;
-		}
+		showLimits = enabled ?? false;
 	}
 
 	// handle debugs
@@ -569,13 +563,7 @@ public virtual class TriggerHandler {
 	 * @see TriggerHandler.showDebug[0]
 	 */
 	public static void showDebug(Boolean enabled) {
-		if (enabled == null) {
-			showDebug = false;
-		} else if (enabled) {
-			showDebug = true;
-		} else {
-			showDebug = false;
-		}
+		showDebug = enabled ?? false;
 	}
 
 	/**
@@ -585,10 +573,7 @@ public virtual class TriggerHandler {
 	 */
 	public static Integer getLoopCount(String handlerName) {
 		requireHandlerName(handlerName);
-		if (TriggerHandler.loopCountMap.containsKey(handlerName)) {
-			return TriggerHandler.loopCountMap.get(handlerName).getCount();
-		}
-		return 0;
+		return TriggerHandler.loopCountMap.get(handlerName)?.getCount() ?? 0;
 	}
 
 	/**

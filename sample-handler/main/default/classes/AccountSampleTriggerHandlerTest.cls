@@ -4,8 +4,8 @@
  * @since 2021
  * @group SampleTriggerHandler
  */
-@IsTest
-private class AccountSampleTriggerHandlerTest {
+@IsTest(isParallel=true testFor='ApexClass:AccountSampleTriggerHandler,ApexTrigger:AccountSampleTrigger')
+private inherited sharing class AccountSampleTriggerHandlerTest {
 	@IsTest
 	/**
 	 * @description Test method to demonstrate using our sample handler and showing limits and debug

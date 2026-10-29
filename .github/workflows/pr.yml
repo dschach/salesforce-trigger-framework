@@ -82,7 +82,7 @@ jobs:
 
       # Deploy source to scratch org
       - name: "Push source to scratch org"
-        run: sf deploy metadata
+        run: sf project deploy start --source-dir force-app --source-dir sample-handler
 
       # Run Apex tests in scratch org
       - name: "Run Apex tests"
