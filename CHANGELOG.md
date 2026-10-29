@@ -1,5 +1,61 @@
 # Changelog
 
+## [1.3.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.2.1...v1.3.0) (2026-10-29)
+
+
+### Features
+
+* **api:** Raise the API version to 67.0 and declare sharing everywhere ([#345](https://github.com/dschach/salesforce-trigger-framework/issues/345)) ([5aec525](https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a))
+* **metadata:** Raise the API version to 67.0 ([5aec525](https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a))
+
+
+### Bug Fixes
+
+* **handler:** Declare inherited sharing on the base class and tests ([5aec525](https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a))
+* **handler:** Match bypass names regardless of case ([3e3ed59](https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043))
+* **handler:** Reject null and blank bypass and loop count arguments ([3e3ed59](https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043))
+* **handler:** Skip the name lookup, match bypass case, and reject null arguments ([#342](https://github.com/dschach/salesforce-trigger-framework/issues/342)) ([3e3ed59](https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043))
+* **sample:** Forward the class name to the base constructor ([3e3ed59](https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043))
+* **sample:** Use inherited sharing and user mode in the sample handler ([5aec525](https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a))
+
+
+### Tests
+
+* **handler:** Assert bypass by Type and register the fixture name ([3e3ed59](https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043))
+* **handler:** Mark the test classes parallel and name what they test ([5aec525](https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a))
+
+
+### Performance Improvements
+
+* **handler:** Skip the handler name lookup when nothing needs it ([3e3ed59](https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043))
+
+
+### Miscellaneous Chores
+
+* **pmd:** Drop the message attributes from the ruleset rules ([dd1e950](https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8))
+* **pmd:** Replace the 4 rules that PMD 8 removes with NcssCount ([dd1e950](https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8))
+
+
+### Code Refactoring
+
+* **handler:** Delete the identity switch in setTriggerContext ([3e3ed59](https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043))
+* **handler:** Move 2 PMD suppressions to the lines PMD reads ([dd1e950](https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8))
+
+
+### Build System
+
+* **husky:** Remove the deprecated postinstall husky install script ([#344](https://github.com/dschach/salesforce-trigger-framework/issues/344)) ([72a2ab8](https://github.com/dschach/salesforce-trigger-framework/commit/72a2ab89b8962185dc11fc15da112cf25dde40a1))
+* **marked:** Update devDependency marked from 18.1.1 to 18.1.2 ([#341](https://github.com/dschach/salesforce-trigger-framework/issues/341)) ([962a067](https://github.com/dschach/salesforce-trigger-framework/commit/962a06793872487c05e25a1ff9632a0a7aa268b7))
+* **project:** Keep the sample trigger out of the deploy button ([5aec525](https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a))
+
+
+### Continuous Integration
+
+* **actions:** Add an action that counts PMD violations by priority ([dd1e950](https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8))
+* **deploy:** Replace the deprecated sf deploy metadata command ([5aec525](https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a))
+* **pmd:** Run PMD through its GitHub action and fail on priority 1 and 2 ([#346](https://github.com/dschach/salesforce-trigger-framework/issues/346)) ([dd1e950](https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8))
+* **pmd:** Run PMD through pmd/pmd-github-action ([dd1e950](https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8))
+
 ## [1.2.1](https://github.com/dschach/salesforce-trigger-framework/compare/v1.2.0...v1.2.1) (2026-10-29)
 
 
