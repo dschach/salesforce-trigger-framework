@@ -116,7 +116,7 @@ private inherited sharing class TriggerHandlerTest {
 	/**
 	 * @description test bypass api
 	 */
-	@SuppressWarnings('PMD.NcssMethodCount')
+	@SuppressWarnings('PMD.NcssCount')
 	@IsTest
 	private static void testBypassAPI() {
 		afterUpdateMode();

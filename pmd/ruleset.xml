@@ -9,68 +9,41 @@
 	<exclude-pattern>.*/.sf/.*</exclude-pattern>
 
 	<!-- BEST PRACTICES -->
-	<rule ref="category/apex/bestpractices.xml/UnusedLocalVariable" message="Variable ''{0}'' defined but not used">
+	<rule ref="category/apex/bestpractices.xml/UnusedLocalVariable">
 		<priority>2</priority>
 	</rule>
 
 	<!-- COMPLEXITY -->
-	<rule ref="category/apex/design.xml/ExcessiveClassLength" message="Avoid really long classes (lines of code)">
-		<priority>5</priority>
-		<properties>
-			<property name="minimum" value="1000" />
-		</properties>
-	</rule>
-
-	<rule ref="category/apex/design.xml/ExcessiveParameterList" message="Avoid long parameter lists (you have more than 80)">
+	<rule ref="category/apex/design.xml/ExcessiveParameterList">
 		<priority>3</priority>
 		<properties>
 			<property name="minimum" value="80" />
 		</properties>
 	</rule>
 
-	<rule ref="category/apex/design.xml/ExcessivePublicCount" message="This class has too many public methods and attributes">
+	<rule ref="category/apex/design.xml/ExcessivePublicCount">
 		<priority>3</priority>
 		<properties>
 			<property name="minimum" value="25" />
 		</properties>
 	</rule>
 
-	<rule ref="category/apex/design.xml/NcssConstructorCount" message="The constructor has an NCSS line count of {0}">
+	<rule ref="category/apex/design.xml/NcssCount">
 		<priority>3</priority>
 		<properties>
-			<property name="minimum" value="20" />
+			<property name="methodReportLevel" value="60" />
+			<property name="classReportLevel" value="700" />
 		</properties>
 	</rule>
 
-	<rule ref="category/apex/design.xml/NcssMethodCount" message="The method {0}() has an NCSS line count of {1}">
-		<priority>3</priority>
-		<properties>
-			<property name="minimum" value="60" />
-		</properties>
-	</rule>
-
-	<rule ref="category/apex/design.xml/NcssTypeCount" message="The type has an NCSS line count of {0}">
-		<priority>3</priority>
-		<properties>
-			<property name="minimum" value="700" />
-		</properties>
-	</rule>
-
-	<rule ref="category/apex/design.xml/StdCyclomaticComplexity" message="The {0} ''{1}'' has a Standard Cyclomatic Complexity of {2}.">
-		<priority>3</priority>
-		<properties>
-			<property name="reportLevel" value="10" />
-		</properties>
-	</rule>
-
-	<rule ref="category/apex/design.xml/TooManyFields" message="Too many fields">
+	<rule ref="category/apex/design.xml/TooManyFields">
 		<priority>3</priority>
 		<properties>
 			<property name="maxfields" value="20" />
 		</properties>
 	</rule>
 
-	<rule ref="category/apex/design.xml/AvoidDeeplyNestedIfStmts" message="Deeply nested if..else statements are hard to read">
+	<rule ref="category/apex/design.xml/AvoidDeeplyNestedIfStmts">
 		<priority>3</priority>
 		<properties>
 			<property name="problemDepth" value="4" />
@@ -83,19 +56,19 @@
 
 	<!-- <rule ref="category/apex/design.xml/CognitiveComplexity"/> -->
 	<!-- PERFORMANCE -->
-	<rule ref="category/apex/performance.xml/OperationWithLimitsInLoop" message="Avoid operations in loops that may hit governor limits">
+	<rule ref="category/apex/performance.xml/OperationWithLimitsInLoop">
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/errorprone.xml/AvoidDirectAccessTriggerMap" message="Avoid directly accessing Trigger.old and Trigger.new">
+	<rule ref="category/apex/errorprone.xml/AvoidDirectAccessTriggerMap">
 		<priority>3</priority>
 	</rule>
 
-	<rule ref="category/apex/bestpractices.xml/AvoidLogicInTrigger" message="Avoid logic in triggers">
+	<rule ref="category/apex/bestpractices.xml/AvoidLogicInTrigger">
 		<priority>4</priority>
 	</rule>
 
-	<rule ref="category/apex/bestpractices.xml/AvoidGlobalModifier" message="Avoid using global modifier">
+	<rule ref="category/apex/bestpractices.xml/AvoidGlobalModifier">
 		<priority>2</priority>
 	</rule>
 
@@ -103,20 +76,20 @@
 		<priority>1</priority>
 	</rule>
 
-	<rule ref="category/apex/errorprone.xml/AvoidHardcodingId" message="Avoid hardcoding ID's">
+	<rule ref="category/apex/errorprone.xml/AvoidHardcodingId">
 		<priority>2</priority>
 	</rule>
 
 	<!-- NAMING -->
-	<rule ref="category/apex/codestyle.xml/ClassNamingConventions" message="Class names should begin with an uppercase character">
+	<rule ref="category/apex/codestyle.xml/ClassNamingConventions">
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/codestyle.xml/MethodNamingConventions" message="Method name does not begin with a lower case character.">
+	<rule ref="category/apex/codestyle.xml/MethodNamingConventions">
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/errorprone.xml/MethodWithSameNameAsEnclosingClass" message="Classes should not have non-constructor methods with the same name as the class">
+	<rule ref="category/apex/errorprone.xml/MethodWithSameNameAsEnclosingClass">
 		<priority>1</priority>
 	</rule>
 
@@ -138,15 +111,11 @@
 	</rule>
 
 	<!-- TESTS -->
-	<rule
-		ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveAsserts"
-		message="Apex unit test classes should have at least one System.assert() or assertEquals() or AssertNotEquals() call">
+	<rule ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveAsserts">
 		<priority>2</priority>
 	</rule>
 
-	<rule
-		ref="category/apex/bestpractices.xml/ApexUnitTestShouldNotUseSeeAllDataTrue"
-		message="@isTest(seeAllData=true) should not be used in Apex unit tests because it opens up the existing database data for unexpected modification by tests">
+	<rule ref="category/apex/bestpractices.xml/ApexUnitTestShouldNotUseSeeAllDataTrue">
 		<priority>2</priority>
 	</rule>
 
@@ -161,11 +130,11 @@
 	</rule>
 
 	<!-- SECURITY -->
-	<rule ref="category/apex/security.xml/ApexSharingViolations" message="Apex classes should declare a sharing model if DML or SOQL is used">
+	<rule ref="category/apex/security.xml/ApexSharingViolations">
 		<priority>3</priority>
 	</rule>
 
-	<rule ref="category/apex/security.xml/ApexInsecureEndpoint" message="Apex callouts should use encrypted communication channels">
+	<rule ref="category/apex/security.xml/ApexInsecureEndpoint">
 		<priority>3</priority>
 	</rule>
 
@@ -173,73 +142,73 @@
 		<priority>3</priority>
 	</rule>
 
-	<rule ref="category/apex/security.xml/ApexOpenRedirect" message="Apex classes should safely redirect to a known location">
+	<rule ref="category/apex/security.xml/ApexOpenRedirect">
 		<priority>3</priority>
 	</rule>
 
-	<rule ref="category/apex/security.xml/ApexSOQLInjection" message="Apex classes should escape variables merged in DML query">
+	<rule ref="category/apex/security.xml/ApexSOQLInjection">
 		<priority>3</priority>
 	</rule>
 
-	<rule ref="category/apex/security.xml/ApexXSSFromURLParam" message="Apex classes should escape Strings obtained from URL parameters">
+	<rule ref="category/apex/security.xml/ApexXSSFromURLParam">
 		<priority>3</priority>
 	</rule>
 
-	<rule ref="category/apex/security.xml/ApexXSSFromEscapeFalse" message="Apex classes should escape addError strings">
+	<rule ref="category/apex/security.xml/ApexXSSFromEscapeFalse">
 		<priority>4</priority>
 	</rule>
 
-	<rule ref="category/apex/security.xml/ApexBadCrypto" message="Apex Crypto should use random IV/key">
+	<rule ref="category/apex/security.xml/ApexBadCrypto">
 		<priority>4</priority>
 	</rule>
 
-	<rule ref="category/apex/security.xml/ApexCRUDViolation" message="Validate CRUD permission before SOQL/DML operation">
+	<rule ref="category/apex/security.xml/ApexCRUDViolation">
 		<priority>4</priority>
 	</rule>
 
-	<rule ref="category/apex/security.xml/ApexDangerousMethods" message="Calling potentially dangerous method">
+	<rule ref="category/apex/security.xml/ApexDangerousMethods">
 		<priority>3</priority>
 	</rule>
 
-	<rule ref="category/apex/security.xml/ApexSuggestUsingNamedCred" message="Consider using named credentials for authenticated callouts">
+	<rule ref="category/apex/security.xml/ApexSuggestUsingNamedCred">
 		<priority>3</priority>
 	</rule>
 
 	<!-- BRACES -->
-	<rule ref="category/apex/codestyle.xml/IfStmtsMustUseBraces" message="Avoid using if statements without curly braces">
+	<rule ref="category/apex/codestyle.xml/IfStmtsMustUseBraces">
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/codestyle.xml/WhileLoopsMustUseBraces" message="Avoid using 'while' statements without curly braces">
+	<rule ref="category/apex/codestyle.xml/WhileLoopsMustUseBraces">
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/codestyle.xml/IfElseStmtsMustUseBraces" message="Avoid using 'if...else' statements without curly braces">
+	<rule ref="category/apex/codestyle.xml/IfElseStmtsMustUseBraces">
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/codestyle.xml/ForLoopsMustUseBraces" message="Avoid using 'for' statements without curly braces">
+	<rule ref="category/apex/codestyle.xml/ForLoopsMustUseBraces">
 		<priority>2</priority>
 	</rule>
 
 	<!-- EMPTY -->
-	<rule ref="category/apex/errorprone.xml/EmptyCatchBlock" message="Avoid empty catch blocks">
+	<rule ref="category/apex/errorprone.xml/EmptyCatchBlock">
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/errorprone.xml/EmptyIfStmt" message="Avoid empty 'if' statements">
+	<rule ref="category/apex/errorprone.xml/EmptyIfStmt">
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/errorprone.xml/EmptyWhileStmt" message="Avoid empty 'while' statements">
+	<rule ref="category/apex/errorprone.xml/EmptyWhileStmt">
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/errorprone.xml/EmptyTryOrFinallyBlock" message="Avoid empty try or finally blocks">
+	<rule ref="category/apex/errorprone.xml/EmptyTryOrFinallyBlock">
 		<priority>2</priority>
 	</rule>
 
-	<rule ref="category/apex/errorprone.xml/EmptyStatementBlock" message="Avoid empty block statements.">
+	<rule ref="category/apex/errorprone.xml/EmptyStatementBlock">
 		<priority>2</priority>
 	</rule>
 
@@ -251,7 +220,7 @@
 	<!-- <rule ref="category/apex/codestyle.xml/FieldDeclarationsShouldBeAtStart"/> -->
 
 	<!-- ERROR_PRONE -->
-	<rule ref="category/apex/documentation.xml/ApexDoc" message="Document classes, methods, and properties that are public or global.">
+	<rule ref="category/apex/documentation.xml/ApexDoc">
 		<priority>3</priority>
 		<properties>
 			<property name="reportMissingDescription" value="false" />

@@ -1,0 +1,37 @@
+name: "PMD SARIF priorities"
+description: "Count the violations in a PMD SARIF report by rule priority, 1 to 5"
+author: "David Schach"
+
+inputs:
+  sarif-file:
+    description: "Path to the SARIF report that PMD wrote"
+    required: false
+    default: "pmd-report.sarif"
+
+outputs:
+  priority1:
+    description: "Number of violations whose rule has priority 1"
+    value: ${{ steps.count.outputs.priority1 }}
+  priority2:
+    description: "Number of violations whose rule has priority 2"
+    value: ${{ steps.count.outputs.priority2 }}
+  priority3:
+    description: "Number of violations whose rule has priority 3"
+    value: ${{ steps.count.outputs.priority3 }}
+  priority4:
+    description: "Number of violations whose rule has priority 4"
+    value: ${{ steps.count.outputs.priority4 }}
+  priority5:
+    description: "Number of violations whose rule has priority 5"
+    value: ${{ steps.count.outputs.priority5 }}
+  total:
+    description: "Number of violations in the report"
+    value: ${{ steps.count.outputs.total }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Count violations by priority"
+      id: count
+      shell: bash
+      run: bash "${{ github.action_path }}/count.sh" "${{ inputs.sarif-file }}"
