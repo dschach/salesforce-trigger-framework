@@ -25,7 +25,7 @@
 
 ## Credit
 
-Based on Kevin O'Hara's famous framework [sfdc-trigger-framework](https://github.com/kevinohara80/sfdc-trigger-framework)
+Based on Kevin O'Hara's famous framework [sfdc-trigger-framework](https://github.com/kevinohara80/sfdc-trigger-framework). Its MIT license notice is in [NOTICE](NOTICE).
 
 ## Documentation
 

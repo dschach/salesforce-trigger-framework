@@ -1,0 +1,59 @@
+name: ✨ Feature request
+description: Suggest a new feature or a change to the trigger framework
+title: "[FEAT]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please search the open and closed issues first, in case someone already asked for this.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What do you want to do that the framework makes hard or impossible today?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: The solution you would like
+      description: Describe what you want to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: example
+    attributes:
+      label: How it would look in your code
+      description: If it helps, show how a trigger or handler would use the feature. This is shown as Apex.
+      render: apex
+
+  - type: dropdown
+    id: compatibility
+    attributes:
+      label: Does this change an existing public method or behavior?
+      description: Changes to existing behavior wait for the next major version.
+      options:
+        - "No, it only adds something"
+        - "Yes"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you have considered
+      description: Any other ways you have solved or worked around the problem.
+
+  - type: checkboxes
+    id: code-of-conduct
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow the [Code of Conduct](https://github.com/dschach/.github/blob/main/CODE_OF_CONDUCT.md).
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

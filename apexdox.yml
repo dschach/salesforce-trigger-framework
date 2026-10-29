@@ -10,7 +10,7 @@ engine:
   title: Salesforce Trigger Handler code documentation
   subtitle: Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
   sortOrder: alpha
-  cleanDir: true # keep prettier config file
+  cleanDir: true # delete the old docs in the target directory before each build
   showTOCSnippets: true
   scope:
     - public
@@ -30,7 +30,7 @@ engine:
     - "${workspaceFolder}/doc-assets/index.js"
     - "${workspaceFolder}/doc-assets/logo.png"
     - "${workspaceFolder}/doc-assets/styling.css"
-    #- "${workspaceFolder}/doc-assets/files/sampletriggerhandlerhome.html"
+    # The sample handler's page comes in through the group-content tag in AccountSampleTriggerHandler.cls
   port: 9090
 docblock:
   alignItems: true
