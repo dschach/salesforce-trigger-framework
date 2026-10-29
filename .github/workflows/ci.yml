@@ -43,7 +43,7 @@ jobs:
     permissions:
       contents: read
       # The SFCA action lists the changed files of a pull request
-      pull-requests: write
+      pull-requests: read
     steps:
       - name: "Checkout source code"
         uses: actions/checkout@v7
@@ -62,16 +62,6 @@ jobs:
         with:
           python-version: ">=3.10"
 
-      # Run the latest SFCA release with the project ruleset. A pull request
-      # analyzes only the changed files; a push analyzes the whole project.
-      - name: "Run SFCA scan"
-        id: sfca
-        uses: sfca/sfca-github-action@v2
-        with:
-          version: "latest"
-          sourcePath: "."
-          rulesets: "config/sfca/ruleset.xml"
-          analyzeModifiedFilesOnly: ${{ github.event_name == 'pull_request' }}
       - name: Install Salesforce CLI
         run: npm install -g @salesforce/cli@latest
 
@@ -93,9 +83,10 @@ jobs:
         uses: ./.github/actions/sf-code-analyzer-report
         with:
           results-path: "sfca_results.json"
-          severity-cutoff: ""
+          severity-cutoff: "2"
 
       - name: "Upload SFCA report"
+        if: always()
         uses: actions/upload-artifact@v7
         with:
           name: sfca-report
