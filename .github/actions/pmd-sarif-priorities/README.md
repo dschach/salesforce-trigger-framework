@@ -30,7 +30,7 @@ A missing report counts as 0 violations.
   with:
     version: "latest"
     sourcePath: "."
-    rulesets: "pmd/ruleset.xml"
+    rulesets: "config/pmd/ruleset.xml"
 
 - name: "Count PMD violations by priority"
   id: priorities

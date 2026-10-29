@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ruleset
+	name="Stock Rules"
+	xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+	<description>
+		The stock PMD rules this reference adopts for Apex, HTML, Visualforce, and
+		XML metadata, each with an explicit priority and, where a rule's behaviour
+		is changed, the property overrides. The stock PMD rules for JavaScript are
+		in pmd-stock-rules-javascript.xml, and the custom rules are in
+		pmd-custom-rules-apex.xml, pmd-custom-rules-markup.xml,
+		pmd-custom-rules-metadata.xml, pmd-custom-rules-flow.xml, and, for
+		JavaScript, pmd-custom-rules-javascript.xml; all seven files are listed
+		under engines.pmd.custom_rulesets in code-analyzer.yml.
+	</description>
+
+	<!--
+		How to read this file.
+		- Every rule carries an explicit priority. Code Analyzer derives its own severity
+		  from the priority (1 becomes 2, 2 and 3 become 3, 4 and 5 become 4), so
+		  code-analyzer.yml overrides each rule's severity with the same number as its
+		  priority; priorities 1 and 2 then block the pull request. Where the priority differs from the one
+		  PMD ships, the comment names the PMD default.
+		- A property is listed only when its value differs from PMD's default, and the
+		  comment on it names that default. Properties left unset keep their defaults.
+		- violationSuppressXPath entries are evaluated with the violation node as the
+		  context, in PMD's legacy XPath form.
+		- Defaults were read from PMD 7.26.0, the version Code Analyzer 5.16.0 bundles.
+		- Every Apex, HTML, and Visualforce rule in that PMD version is here, and every JavaScript
+		  rule is in pmd-stock-rules-javascript.xml. The JavaScript rules have a file of their own
+		  because PMD ships the four brace rules under one name for Apex and for JavaScript, and
+		  Code Analyzer runs only the first of two rules that share a name in one file. A rule
+		  this reference does not recommend enforcing is commented out, on one line and with
+		  no priority, so that it is seen to be left out on purpose: ExcessivePublicCount;
+		  ApexCRUDViolation and ApexSharingViolations, whose ground the custom rules cover
+		  (RequireAccessMode, FlagSystemMode, and RequireExplicitSharing); and four that PMD
+		  has deprecated in favour of NcssCount (ExcessiveClassLength, NcssConstructorCount,
+		  NcssMethodCount, and NcssTypeCount). To enforce one, take it out of its comment and
+		  give it a priority.
+	-->
+
+	<exclude-pattern>.*/.sfdx/.*</exclude-pattern>
+	<exclude-pattern>.*/.sf/.*</exclude-pattern>
+	<exclude-pattern>.*/node_modules/.*</exclude-pattern>
+
+	<!-- ============================================================ -->
+	<!-- APEX: SECURITY                                               -->
+	<!-- ============================================================ -->
+
+	<rule ref="category/apex/security.xml/ApexBadCrypto">
+		<!-- PMD default: 3 -->
+		<priority>1</priority>
+	</rule>
+
+	<!--
+		The access mode standard is enforced by RequireAccessMode and
+		FlagSystemMode, and this rule repeats the first.
+	-->
+	<!-- <rule ref="category/apex/security.xml/ApexCRUDViolation" /> -->
+
+	<rule ref="category/apex/security.xml/ApexDangerousMethods">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/security.xml/ApexInsecureEndpoint">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/security.xml/ApexOpenRedirect">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<!--
+		RequireExplicitSharing is more restrictive, because it does not check
+		for and depend on DML: it requires a sharing declaration on every outer
+		class, test classes included, whether or not the class touches data.
+		ApexSharingViolations reports only a class that holds a query, a DML
+		statement, or a Database method call, and does not include tests. It
+		also reports inner classes, where the standard recommends the
+		declaration and does not require it.
+	-->
+	<!-- <rule ref="category/apex/security.xml/ApexSharingViolations" /> -->
+
+	<rule ref="category/apex/security.xml/ApexSOQLInjection">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/security.xml/ApexSuggestUsingNamedCred">
+		<!-- PMD default: 3 -->
+		<priority>1</priority>
+	</rule>
+
+	<rule ref="category/apex/security.xml/ApexXSSFromEscapeFalse">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/security.xml/ApexXSSFromURLParam">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- APEX: PERFORMANCE                                            -->
+	<!-- ============================================================ -->
+
+	<rule ref="category/apex/performance.xml/AvoidDebugStatements">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/performance.xml/AvoidNonRestrictiveQueries">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+		<properties>
+			<!-- not reported inside test classes; the source ruleset's document-wide //UserClass form is narrowed to the violation's own class -->
+			<property name="violationSuppressXPath" value="ancestor::UserClass/ModifierNode[@Test = true()]" />
+		</properties>
+	</rule>
+
+	<rule ref="category/apex/performance.xml/EagerlyLoadedDescribeSObjectResult">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/performance.xml/OperationWithHighCostInLoop">
+		<priority>3</priority>
+	</rule>
+
+	<rule ref="category/apex/performance.xml/OperationWithLimitsInLoop">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- APEX: BEST PRACTICES                                         -->
+	<!-- ============================================================ -->
+
+	<rule ref="category/apex/bestpractices.xml/ApexAssertionsShouldIncludeMessage">
+		<priority>3</priority>
+	</rule>
+
+	<rule ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveAsserts">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/bestpractices.xml/ApexUnitTestClassShouldHaveRunAs">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/bestpractices.xml/ApexUnitTestMethodShouldHaveIsTestAnnotation">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/bestpractices.xml/ApexUnitTestShouldNotUseSeeAllDataTrue">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/bestpractices.xml/AvoidFutureAnnotation">
+		<priority>4</priority>
+	</rule>
+
+	<rule ref="category/apex/bestpractices.xml/AvoidGlobalModifier">
+		<!-- PMD default: 3 -->
+		<priority>4</priority>
+	</rule>
+
+	<rule ref="category/apex/bestpractices.xml/AvoidLogicInTrigger">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/bestpractices.xml/DebugsShouldUseLoggingLevel">
+		<!-- PMD default: 3 -->
+		<priority>4</priority>
+	</rule>
+
+	<rule ref="category/apex/bestpractices.xml/QueueableWithoutFinalizer">
+		<priority>5</priority>
+	</rule>
+
+	<rule ref="category/apex/bestpractices.xml/UnusedLocalVariable">
+		<!-- PMD default: 5 -->
+		<priority>3</priority>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- APEX: ERROR PRONE                                            -->
+	<!-- ============================================================ -->
+
+	<rule ref="category/apex/errorprone.xml/ApexCSRF">
+		<!-- PMD default: 3 -->
+		<priority>1</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/AvoidDirectAccessTriggerMap">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/AvoidHardcodingId">
+		<priority>3</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/AvoidInterfaceAsMapKey">
+		<priority>3</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/AvoidNonExistentAnnotations">
+		<priority>3</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/AvoidStatefulDatabaseResult">
+		<!-- PMD default: 2 -->
+		<priority>3</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/EmptyCatchBlock">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/EmptyIfStmt">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/EmptyStatementBlock">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+		<properties>
+			<!-- PMD default: true -->
+			<property name="reportEmptyPrivateNoArgConstructor" value="false" />
+			<!-- PMD default: true -->
+			<property name="reportEmptyVirtualMethod" value="false" />
+			<!-- not reported: the block of a when else, which holds a comment when it does nothing -->
+			<property name="violationSuppressXPath" value="./parent::ElseWhenBlock" />
+		</properties>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/EmptyTryOrFinallyBlock">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/EmptyWhileStmt">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/InaccessibleAuraEnabledGetter">
+		<priority>3</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/InvocableClassNoArgConstructor">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/MethodWithSameNameAsEnclosingClass">
+		<priority>3</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/OverrideBothEqualsAndHashcode">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/TestMethodsMustBeInTestClasses">
+		<!-- PMD default: 3 -->
+		<priority>1</priority>
+	</rule>
+
+	<rule ref="category/apex/errorprone.xml/TypeShadowsBuiltInNamespace">
+		<!-- PMD default: 1 -->
+		<priority>2</priority>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- APEX: DOCUMENTATION                                          -->
+	<!-- ============================================================ -->
+
+	<rule ref="category/apex/documentation.xml/ApexDoc">
+		<!-- PMD default: 3 -->
+		<priority>4</priority>
+		<properties>
+			<!-- PMD default: false -->
+			<property name="reportPrivate" value="true" />
+			<!-- PMD default: true -->
+			<property name="reportProperty" value="false" />
+			<!-- PMD default: false -->
+			<property name="reportProtected" value="true" />
+		</properties>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- APEX: CODE STYLE                                             -->
+	<!-- ============================================================ -->
+
+	<rule ref="category/apex/codestyle.xml/AnnotationsNamingConventions">
+		<!-- PMD default: 3 -->
+		<priority>1</priority>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/ClassNamingConventions">
+		<priority>1</priority>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/FieldDeclarationsShouldBeAtStart">
+		<!-- PMD default: 3 -->
+		<priority>4</priority>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/FieldNamingConventions">
+		<priority>1</priority>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/ForLoopsMustUseBraces">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/FormalParameterNamingConventions">
+		<priority>1</priority>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/IfElseStmtsMustUseBraces">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/IfStmtsMustUseBraces">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/LocalVariableNamingConventions">
+		<priority>1</priority>
+		<properties>
+			<!-- PMD default: [a-z][a-zA-Z0-9]* -->
+			<property name="finalLocalPattern" value="[a-zA-Z][a-zA-Z0-9]*" />
+		</properties>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/MethodNamingConventions">
+		<priority>1</priority>
+		<properties>
+			<!-- PMD default for each of the three: [a-z][a-zA-Z0-9]*. Underscores are allowed in a test method name and discouraged: test methods have long been written with them, so the standards are lenient on purpose. An organisation should remove them as it revises its code -->
+			<property name="instancePattern" value="[a-z][a-zA-Z0-9]*" />
+			<property name="staticPattern" value="[a-z][a-zA-Z0-9]*" />
+			<property name="testPattern" value="[a-z][a-zA-Z0-9_]*" />
+		</properties>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/OneDeclarationPerLine">
+		<priority>1</priority>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/PropertyNamingConventions">
+		<priority>1</priority>
+	</rule>
+
+	<rule ref="category/apex/codestyle.xml/WhileLoopsMustUseBraces">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- APEX: DESIGN                                                 -->
+	<!-- ============================================================ -->
+
+	<rule ref="category/apex/design.xml/AvoidBooleanMethodParameters">
+		<!-- PMD default: 2 -->
+		<priority>4</priority>
+	</rule>
+
+	<rule ref="category/apex/design.xml/AvoidDeeplyNestedIfStmts">
+		<priority>3</priority>
+	</rule>
+
+	<rule ref="category/apex/design.xml/CognitiveComplexity">
+		<priority>3</priority>
+	</rule>
+
+	<rule ref="category/apex/design.xml/CyclomaticComplexity">
+		<priority>3</priority>
+	</rule>
+
+	<!-- Deprecated by PMD in favour of NcssCount, which the stock rules file adopts. -->
+	<!-- <rule ref="category/apex/design.xml/ExcessiveClassLength" /> -->
+
+	<!-- These standards set no limit on the number of parameters of a method. -->
+	<!-- <rule ref="category/apex/design.xml/ExcessiveParameterList" /> -->
+
+	<!-- These standards set no limit on the number of public members of a class. -->
+	<!-- <rule ref="category/apex/design.xml/ExcessivePublicCount" /> -->
+
+	<!-- Deprecated by PMD in favour of NcssCount. -->
+	<!-- <rule ref="category/apex/design.xml/NcssConstructorCount" /> -->
+
+	<rule ref="category/apex/design.xml/NcssCount">
+		<!-- PMD default: 3 -->
+		<priority>4</priority>
+	</rule>
+
+	<!-- Deprecated by PMD in favour of NcssCount. -->
+	<!-- <rule ref="category/apex/design.xml/NcssMethodCount" /> -->
+
+	<!-- Deprecated by PMD in favour of NcssCount. -->
+	<!-- <rule ref="category/apex/design.xml/NcssTypeCount" /> -->
+
+	<!-- A duplicate of CyclomaticComplexity, which the stock rules file adopts: both count the decision points of a method, and CyclomaticComplexity also counts && and ||, so a complex method was reported twice. -->
+	<!-- <rule ref="category/apex/design.xml/StdCyclomaticComplexity" /> -->
+
+	<rule ref="category/apex/design.xml/TooManyFields">
+		<!-- PMD default: 3 -->
+		<priority>4</priority>
+	</rule>
+
+	<rule ref="category/apex/design.xml/UnusedMethod">
+		<priority>3</priority>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- HTML (LWC AND AURA): BEST PRACTICES                          -->
+	<!-- ============================================================ -->
+
+	<rule ref="category/html/bestpractices.xml/AvoidInlineStyles">
+		<priority>3</priority>
+	</rule>
+
+	<!--
+		Several kinds of HTML-like file go through the HTML engine, and one of
+		them may need the type attribute, so a redundant one does no harm.
+	-->
+	<!-- <rule ref="category/html/bestpractices.xml/UnnecessaryTypeAttribute" /> -->
+
+	<!--
+		ImageWithoutAltHtmlLwcAura reports the same missing alt at a blocking
+		severity, matches the tag in any case, and also reads Aura markup.
+	-->
+	<!-- <rule ref="category/html/bestpractices.xml/UseAltAttributeForImages" /> -->
+
+	<!-- ============================================================ -->
+	<!-- VISUALFORCE: SECURITY                                        -->
+	<!-- ============================================================ -->
+
+	<rule ref="category/visualforce/security.xml/VfCsrf">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/visualforce/security.xml/VfHtmlStyleTagXss">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<rule ref="category/visualforce/security.xml/VfUnescapeEl">
+		<!-- PMD default: 3 -->
+		<priority>2</priority>
+	</rule>
+
+	<!-- ============================================================ -->
+	<!-- XML METADATA: BEST PRACTICES                                 -->
+	<!-- ============================================================ -->
+
+	<!--
+		Salesforce writes the XML declaration, with its encoding, on every
+		metadata file it retrieves.
+	-->
+	<!-- <rule ref="category/xml/bestpractices.xml/MissingEncoding" /> -->
+
+	<!-- ============================================================ -->
+	<!-- XML METADATA: ERROR PRONE                                    -->
+	<!-- ============================================================ -->
+
+	<!--
+		Salesforce writes the metadata XML, and a mistyped CDATA section in a
+		hand-written file fails the deployment itself.
+	-->
+	<!-- <rule ref="category/xml/errorprone.xml/MistypedCDATASection" /> -->
+</ruleset>

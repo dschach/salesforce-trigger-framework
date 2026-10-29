@@ -42,6 +42,6 @@ $RECYCLE.BIN/
 # PMD
 .pmdCache
 filelist.txt
-pmd/pmd.csv
+config/pmd/pmd.csv
 # Claude Code local files
 .claude/

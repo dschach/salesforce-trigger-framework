@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+	Every ruleset of the reference in one file, for a run of PMD by itself: give
+	pmd check this file as its only ruleset, from the root of the repository.
+
+	Each line below imports a whole ruleset file, with the priorities and the
+	properties set there. The paths are read from the folder PMD runs in, the
+	root of the repository, not from this file's folder.
+
+	Salesforce Code Analyzer does not read this file: code-analyzer.yml lists
+	the ruleset files one by one.
+-->
+<ruleset
+	name="All Rules"
+	xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+	<description>All rules adopted for this project</description>
+
+	<rule ref="config/pmd/pmd-stock-rules.xml" />
+	<rule ref="config/pmd/pmd-custom-rules-apex.xml" />
+</ruleset>
