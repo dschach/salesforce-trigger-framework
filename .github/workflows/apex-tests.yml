@@ -81,7 +81,9 @@ jobs:
           base_sha: ${{ github.event.pull_request.base.sha }} # Forces base to PR target branch head
           directory: ./tests/apex
 
-      # Runs only when an org was created, so a failed login does not hide its own error
+      # Runs whenever the create step started, including when a newer push cancelled
+      # this run, so that a created org does not wait a day to expire. A failed login
+      # skips the create step, so its error stays the last one in the log.
       - name: "Delete scratch org"
-        if: ${{ always() && steps.scratch-org.outcome == 'success' }}
-        run: sf org delete scratch --no-prompt --target-org ScratchOrg
+        if: ${{ always() && steps.scratch-org.outcome != 'skipped' }}
+        run: sf org delete scratch --no-prompt --target-org ScratchOrg || echo "No scratch org to delete."

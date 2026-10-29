@@ -30,6 +30,12 @@ on:
 
 permissions: {}
 
+# 1 run at a time for each pull request, so that 2 events cannot approve or merge the
+# same pull request at once. A run in progress is never cancelled.
+concurrency:
+  group: dependabot-update-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
 jobs:
   dependabot:
     if: github.event.pull_request.user.login == 'dependabot[bot]'
