@@ -17,7 +17,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * Loop counter per handler name. A handler has an entry only after `setMaxLoopCount()` was called for it, so `getLoopCount()` is 0 for a handler with no limit.
 	 */
 	@TestVisible
-	private static Map<String, LoopCount> loopCountMap = new Map<String, LoopCount>();
+	private static Map<String, LoopCounter> loopCountMap = new Map<String, LoopCounter>();
 
 	/**
 	 * All bypassed handlers, as the caller spelled them.
@@ -73,7 +73,7 @@ public inherited sharing virtual class TriggerHandler {
 	private static final String BYPASS_ALL_ALIAS = 'BypassAll';
 
 	/**
-	 * The maximum loop count of a `LoopCount` created with no maximum. `setMaxLoopCount()` always gives its own maximum.
+	 * The maximum loop count of a `LoopCounter` created with no maximum. `setMaxLoopCount()` always gives its own maximum.
 	 */
 	private static final Integer DEFAULT_MAX_LOOP_COUNT = 5;
 
@@ -254,9 +254,9 @@ public inherited sharing virtual class TriggerHandler {
 			throw new TriggerHandlerException(ERROR_LOOP_COUNT);
 		}
 		String handlerName = getHandlerName();
-		LoopCount counter = TriggerHandler.loopCountMap.get(handlerName);
+		LoopCounter counter = TriggerHandler.loopCountMap.get(handlerName);
 		if (counter == null) {
-			TriggerHandler.loopCountMap.put(handlerName, new LoopCount(max));
+			TriggerHandler.loopCountMap.put(handlerName, new LoopCounter(max));
 		} else {
 			counter.setMax(max);
 		}
@@ -687,11 +687,11 @@ public inherited sharing virtual class TriggerHandler {
 		if (TriggerHandler.loopCountMap.isEmpty()) {
 			return true;
 		}
-		LoopCount loopCount = TriggerHandler.loopCountMap.get(getHandlerName());
-		if (loopCount == null || !loopCount.increment()) {
+		LoopCounter counter = TriggerHandler.loopCountMap.get(getHandlerName());
+		if (counter == null || !counter.increment()) {
 			return true;
 		}
-		this.log(LoggingLevel.WARN, 'Maximum loop count of ' + loopCount.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + this.triggerEvent.name());
+		this.log(LoggingLevel.WARN, 'Maximum loop count of ' + counter.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + this.triggerEvent.name());
 		return false;
 	}
 
@@ -839,10 +839,10 @@ public inherited sharing virtual class TriggerHandler {
 	// inner classes
 
 	/**
-	 * Inner class that keeps the loop count of 1 handler.
+	 * Inner class that counts the runs of 1 handler against its maximum.
 	 */
 	@TestVisible
-	private inherited sharing class LoopCount {
+	private inherited sharing class LoopCounter {
 		/**
 		 * Maximum number of times this handler should be run.
 		 */
@@ -850,24 +850,23 @@ public inherited sharing virtual class TriggerHandler {
 		/**
 		 * Number of times this handler has been run.
 		 */
-		private Integer count;
+		private Integer loopCount;
 
 		/**
 		 * Standard constructor. The max is `DEFAULT_MAX_LOOP_COUNT`, 5, and the count is 0.
 		 */
-		public LoopCount() {
-			this.max = DEFAULT_MAX_LOOP_COUNT;
-			this.count = 0;
+		public LoopCounter() {
+			this(DEFAULT_MAX_LOOP_COUNT);
 		}
 
 		/**
 		 * Constructor with specified max loops.
 		 *
-		 * @param max   Max number of loops allowed.
+		 * @param maxCount Max number of loops allowed.
 		 */
-		public LoopCount(Integer max) {
-			this.max = max;
-			this.count = 0;
+		public LoopCounter(Integer maxCount) {
+			this.max = maxCount;
+			this.loopCount = 0;
 		}
 
 		/**
@@ -875,7 +874,7 @@ public inherited sharing virtual class TriggerHandler {
 		 * @return     `Boolean` true when the new count is greater than a max of 0 or more. A negative max never exceeds.
 		 */
 		public Boolean increment() {
-			this.count++;
+			this.loopCount++;
 			return this.exceeded();
 		}
 
@@ -884,7 +883,7 @@ public inherited sharing virtual class TriggerHandler {
 		 * @return     `Boolean` true when max is 0 or more and count is greater than max. A negative max means no limit.
 		 */
 		public Boolean exceeded() {
-			return this.max >= 0 && this.count > this.max;
+			return this.max >= 0 && this.loopCount > this.max;
 		}
 
 		/**
@@ -900,15 +899,15 @@ public inherited sharing virtual class TriggerHandler {
 		 * @return     `Integer` Current loop count.
 		 */
 		public Integer getCount() {
-			return this.count;
+			return this.loopCount;
 		}
 
 		/**
 		 * Sets the max loop count.
-		 * @param max   The new maximum. A negative value means no limit.
+		 * @param maxCount The new maximum. A negative value means no limit.
 		 */
-		public void setMax(Integer max) {
-			this.max = max;
+		public void setMax(Integer maxCount) {
+			max = maxCount;
 		}
 	}
 

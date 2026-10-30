@@ -437,11 +437,11 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * The `LoopCount` class counts up and reports when the count passes the maximum.
+	 * The `LoopCounter` class counts up and reports when the count passes the maximum.
 	 */
 	@IsTest
-	private static void loopCountClassCountsAndReportsExceeded() {
-		TriggerHandler.LoopCount lc = new TriggerHandler.LoopCount();
+	private static void loopCounterClassCountsAndReportsExceeded() {
+		TriggerHandler.LoopCounter lc = new TriggerHandler.LoopCounter();
 		Assert.areEqual(5, lc.getMax(), 'max should be 5 on init');
 		Assert.areEqual(0, lc.getCount(), 'count should be 0 on init');
 
