@@ -1,5 +1,6 @@
 /**
  * Trigger handler abstract class, the base for every trigger handler. A handler extends it, and code cannot build the base class itself.
+ * <br>`EmptyStatementBlock` is suppressed for the empty virtual context methods, which a handler overrides as needed. Stock PMD reports them, so an org that scans this class with default rules sees no finding.
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @since 2013
  * @author {@link [David Schach](https://github.com/dschach)}
