@@ -1,7 +1,7 @@
 /**
  * Tests for the sample handler and the sample trigger. Each test proves 1 behavior through real DML.
- * <br>`AccountSampleTriggerHandler.finishedOperations` is the call log: `andFinally()` adds each operation that the handler finished.
- * <br>The test DML and the queries that read the results back run in system mode, so `FlagSystemMode` is suppressed for the class. The tests set up and check data directly: the access under test is the handler's own, which states system mode on purpose.
+ * <br>`AccountSampleTriggerHandler.finishedOperations` is the call log. `andFinally()` adds each operation that the handler finished.
+ * <br>The test DML and the queries that read the results run in system mode, so the class suppresses `FlagSystemMode`. The tests set up and check the data directly. The access under test is the access of the handler, which uses system mode on purpose.
  * @author David Schach
  * @since 2021
  * @since 2026-10-30 1 test per behavior, with the finished operations as the call log
@@ -35,7 +35,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * An update that does not change the name leaves it as it is.
+	 * An update that does not change the name keeps the name as it is.
 	 */
 	@IsTest
 	private static void updateLeavesUnchangedNameAlone() {
@@ -50,7 +50,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * A changed phone number is copied to the child Accounts.
+	 * A changed phone number goes to the child Accounts.
 	 */
 	@IsTest
 	private static void phoneChangeCopiesToChildAccounts() {
@@ -63,7 +63,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * A child Account in the same update as its parent keeps the phone number of its own update, because a trigger cannot update the records it is running for.
+	 * A child Account in the same update as its parent keeps the phone number of its own update. A trigger cannot update the records that it runs for.
 	 */
 	@IsTest
 	private static void childInSameUpdateKeepsItsOwnPhone() {
@@ -158,7 +158,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * A bulk insert of more than 200 records runs in chunks, and the loop limit does not stop any chunk.
+	 * A bulk insert of more than 200 records runs in chunks, and the loop limit does not stop a chunk.
 	 */
 	@IsTest
 	private static void bulkInsertStaysInsideLoopLimit() {
@@ -173,7 +173,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * The constructor registers the class name through the Type constructor of the base class.
+	 * The constructor sets the class name through the Type constructor of the base class.
 	 */
 	@IsTest
 	private static void constructorRegistersTheHandlerName() {
@@ -181,9 +181,9 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * Insert an Account with the given name.
+	 * Inserts an Account with the name.
 	 * @param name The Account name.
-	 * @return `Account` The inserted Account.
+	 * @return `Account` The new Account.
 	 */
 	private static Account insertAccount(String name) {
 		Account newAccount = new Account(Name = name);
@@ -192,9 +192,9 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * Insert a child Account of the given parent.
+	 * Inserts a child Account of the parent.
 	 * @param parentId The Id of the parent Account.
-	 * @return `Account` The inserted child Account.
+	 * @return `Account` The new child Account.
 	 */
 	private static Account insertChildAccount(Id parentId) {
 		Account childAccount = new Account(Name = 'Child Account', ParentId = parentId);
@@ -203,7 +203,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * Read the stored name of an Account.
+	 * Reads the stored name of an Account.
 	 * @param accountId The Account Id.
 	 * @return `String` The name in the database.
 	 */

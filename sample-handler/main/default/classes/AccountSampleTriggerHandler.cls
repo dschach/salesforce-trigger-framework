@@ -1,9 +1,9 @@
 /**
- * A sample Account trigger handler that shows the framework in use.
+ * A sample Account trigger handler that shows how to use the framework.
  * <br>Before insert and before update, it removes extra spaces from each new or changed Account name.
  * <br>After update, it copies a changed phone number to the child Accounts. It bypasses itself for that update, so the update does not run this handler again.
- * <br>A loop limit protects against recursion that the bypass does not stop, and `andFinally()` runs after each context.
- * <br>A trigger runs without sharing, so this `inherited sharing` handler does too. Every query and DML statement names `SYSTEM_MODE`, so the handler can update child Accounts that the running user cannot edit.
+ * <br>A loop limit stops recursion that the bypass does not stop. `andFinally()` runs after each context.
+ * <br>A trigger runs without sharing, so this `inherited sharing` handler does too. Each query and DML statement names `SYSTEM_MODE`, so the handler can update child Accounts that the running user cannot edit.
  * @author David Schach
  * @since 2021
  * @group SampleTriggerHandler
@@ -12,12 +12,12 @@
  */
 public inherited sharing class AccountSampleTriggerHandler extends TriggerHandler {
 	/**
-	 * The maximum number of runs of each trigger operation of this handler in 1 transaction. Each chunk of 200 records uses 1 run of its operation, so 50 allows an update of 10,000 records, which runs before update and after update 50 times each.
+	 * The maximum number of runs of each trigger operation of this handler in 1 transaction. Each chunk of 200 records uses 1 run. So 50 allows an update of 10,000 records, which runs before update and after update 50 times each.
 	 */
 	private static final Integer MAX_LOOP_COUNT = 50;
 
 	/**
-	 * The trigger operations this handler finished in the transaction, in order. `andFinally()` adds each one.
+	 * The trigger operations that this handler finished in the transaction, in order. `andFinally()` adds each one.
 	 */
 	@TestVisible
 	private static List<System.TriggerOperation> finishedOperations = new List<System.TriggerOperation>();
@@ -26,7 +26,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	private Map<Id, Account> oldRecordsMap;
 
 	/**
-	 * Constructor for the trigger. It passes the class to the base class, so the base class never resolves the name at runtime. It casts the trigger collections that the handler uses, and it sets the loop limit.
+	 * Creates the handler for the trigger. It passes its class to the base class, so the base class does no name lookup. It casts the trigger collections that the handler uses, and it sets the loop limit.
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
 	 */
@@ -38,14 +38,14 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	}
 
 	/**
-	 * Remove extra spaces from the name of each new Account.
+	 * Removes extra spaces from the name of each new Account.
 	 */
 	public override void beforeInsert() {
 		normalizeNames(newRecords);
 	}
 
 	/**
-	 * Remove extra spaces from each Account name that changed.
+	 * Removes extra spaces from each Account name that changed.
 	 */
 	public override void beforeUpdate() {
 		List<Account> renamedAccounts = new List<Account>();
@@ -58,7 +58,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	}
 
 	/**
-	 * Copy each changed phone number to the child Accounts.
+	 * Copies each changed phone number to the child Accounts.
 	 */
 	public override void afterUpdate() {
 		Map<Id, String> phoneByParentId = new Map<Id, String>();
@@ -74,14 +74,14 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	}
 
 	/**
-	 * Record the finished operation. A real handler puts work here that must follow every context, such as a rollup or 1 platform event for the whole trigger.
+	 * Records the finished operation. A real handler puts work here that must follow each context, for example a rollup or 1 platform event for the full trigger.
 	 */
 	public override void andFinally() {
 		finishedOperations.add(getTriggerEvent());
 	}
 
 	/**
-	 * Replace each run of spaces in the Account names with 1 space, and remove the spaces at the start and the end.
+	 * Replaces each group of spaces in the Account names with 1 space, and removes the spaces at the start and the end.
 	 * @param accounts The Accounts to change.
 	 */
 	private static void normalizeNames(List<Account> accounts) {
@@ -91,9 +91,9 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	}
 
 	/**
-	 * Update the phone number of the child Accounts, with this handler bypassed for that update.
-	 * <br>A child Account that is in the same trigger run is left out, because a trigger cannot update the records it is running for.
-	 * <br>The query and the update run in system mode, so `FlagSystemMode` is suppressed for this method. The phone number must reach every child Account, also a child Account that the running user cannot see or edit.
+	 * Updates the phone number of the child Accounts. The handler is bypassed for that update.
+	 * <br>It leaves out a child Account that is in the same trigger run, because a trigger cannot update the records that it runs for.
+	 * <br>The query and the update run in system mode, so this method suppresses `FlagSystemMode`. The phone number must reach all child Accounts, also the ones that the running user cannot see or edit.
 	 * @param phoneByParentId The new phone number of each parent Account, by Id.
 	 */
 	@SuppressWarnings('PMD.FlagSystemMode')
