@@ -16,13 +16,11 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * The loop counters of every handler in the transaction. A handler has a counter for an operation only after a limit is set for that operation, so `getLoopCount()` returns `NOT_COUNTED` for an operation with no limit.
 	 */
-	@TestVisible
 	private static LoopCounterRegistry loopCounters = new LoopCounterRegistry();
 
 	/**
 	 * The bypasses of the transaction: the named bypasses and the global bypass.
 	 */
-	@TestVisible
 	private static BypassRegistry bypasses = new BypassRegistry();
 
 	/**
@@ -64,11 +62,6 @@ public inherited sharing abstract class TriggerHandler {
 	 * The name of this handler. Set by the Type constructor, or resolved by `getHandlerName()` the first time it is needed.
 	 */
 	private String handlerName;
-
-	/**
-	 * The maximum loop count of a `LoopCounter` created with no maximum. `setMaxLoopCount()` always gives its own maximum.
-	 */
-	private static final Integer DEFAULT_MAX_LOOP_COUNT = 5;
 
 	/**
 	 * The maximum loop count that means no limit. `clearMaxLoopCount()` sets it, and a `LoopCounter` stores a maximum of 0 or less as this value.
@@ -821,7 +814,6 @@ public inherited sharing abstract class TriggerHandler {
 	 * <br>Outside a trigger, `isTriggerExecuting` is false. A test sets its own context with `setTestContext()`.
 	 * @see TriggerHandler.isTriggerExecuting
 	 */
-	@TestVisible
 	private void setTriggerContext() {
 		triggerEvent = Trigger.operationType;
 		isTriggerExecuting = Trigger.isExecuting && triggerEvent != null;
@@ -856,7 +848,6 @@ public inherited sharing abstract class TriggerHandler {
 	 * @throws TriggerHandlerException when `run()` is called outside a trigger context.
 	 * @see TriggerHandler.TriggerHandlerException
 	 */
-	@TestVisible
 	private Boolean validateRun() {
 		if (!isTriggerExecuting || triggerEvent == null) {
 			throw new TriggerHandlerException(ERROR_TRIGGERCONTEXT);
@@ -1192,13 +1183,6 @@ public inherited sharing abstract class TriggerHandler {
 		 * The number of runs counted so far, including runs that the limit stopped.
 		 */
 		private Integer loopCount;
-
-		/**
-		 * Constructor with the default maximum, `DEFAULT_MAX_LOOP_COUNT`, which is 5. The count starts at 0.
-		 */
-		public LoopCounter() {
-			this(DEFAULT_MAX_LOOP_COUNT);
-		}
 
 		/**
 		 * Constructor with a maximum. The count starts at 0.
