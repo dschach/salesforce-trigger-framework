@@ -146,7 +146,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * Constructor with handler name. Skips the runtime class name lookup.
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2021
-	 * @param  handlerName The name of the handler. Pass the class name exactly as `Type.getName()` returns it, so that `bypass(Type)` matches.
+	 * @param  handlerName The name of the handler. Pass the class name exactly as `Type.getName()` returns it, so that `bypass(Type)` matches. Spaces at the start and the end are removed.
 	 * @example
 	 * new AccountSampleTriggerHandler('AccountSampleTriggerHandler').run();
 	 * // in the trigger handler class
@@ -159,7 +159,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * }
 	 */
 	public TriggerHandler(String handlerName) {
-		this.handlerName = handlerName;
+		this.handlerName = handlerName?.trim();
 		this.setTriggerContext();
 	}
 
@@ -726,6 +726,7 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * The name of this handler, as given to the String constructor or resolved from the runtime class name.
 	 * <br>Available to subclasses, for example for a log line or a `bypass()` call.
+	 * <br>The runtime lookup reads the start of `toString()`. A handler that overrides `toString()` must pass its name to the String constructor.
 	 *
 	 * @return      `String` Name of the current handler.
 	 * @see         TriggerHandler.handlerName

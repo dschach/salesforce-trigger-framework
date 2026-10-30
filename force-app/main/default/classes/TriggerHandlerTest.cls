@@ -145,6 +145,15 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
+	 * The String constructor removes the spaces at the start and the end of the name.
+	 */
+	@IsTest
+	private static void stringConstructorTrimsHandlerName() {
+		TriggerHandlerTest.TestHandler padded = new TriggerHandlerTest.TestHandler('  NamedHandler  ');
+		Assert.areEqual('NamedHandler', padded.getHandlerName(), 'the handler name should have no spaces at the start or the end');
+	}
+
+	/**
 	 * A blank name given to the String constructor falls back to the runtime class name.
 	 * <br>For an inner class the fallback is the short name, which differs from `Type.getName()`. That is why the fixture passes `HANDLER_NAME`.
 	 */
