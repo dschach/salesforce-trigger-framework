@@ -320,7 +320,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
 }
 ```
 
-`clearMaxLoopCount()` removes the limit of every operation, and the counts go on. `TriggerHandler.getLoopCount('OpportunityTriggerHandler', System.TriggerOperation.AFTER_UPDATE)` returns the current count of 1 operation. The count is 0 for an operation that never had a limit.
+`clearMaxLoopCount()` removes the limit of every operation, and the counts go on. `TriggerHandler.getLoopCount('OpportunityTriggerHandler', System.TriggerOperation.AFTER_UPDATE)` returns the current count of 1 operation. The count is -1 for an operation that never had a limit, because its runs are not counted.
 
 In version 1.2, the ability to chain methods was added. Now, you can set the max loop count in a single line in your trigger:
 
@@ -476,8 +476,8 @@ Every public member of `TriggerHandler`. The [class documentation](https://david
 | `setMaxLoopCount(Integer max)`                                               | Limits how many times this handler runs, with the same limit for each trigger operation. 0 means the handler never runs, and a negative value removes the limit. Returns the handler, for chaining. |
 | `setMaxLoopCount(System.TriggerOperation operation, Integer max)`            | Limits how many times this handler runs for 1 trigger operation. Returns the handler, for chaining.                                                                                                 |
 | `clearMaxLoopCount()`                                                        | Removes the limit of every trigger operation of this handler. The counts go on.                                                                                                                     |
-| `static getLoopCount(String handlerName)`                                    | Deprecated: use the form with the operation. Returns the total count of all operations of a handler, or 0 when no limit was set for it. A later major release removes it.                           |
-| `static getLoopCount(String handlerName, System.TriggerOperation operation)` | Returns the count of 1 trigger operation of a handler, or 0 when no limit was set for it.                                                                                                           |
+| `static getLoopCount(String handlerName)`                                    | Deprecated: use the form with the operation. Returns the total count of all operations of a handler, or -1 when no limit was set for it. A later major release removes it.                          |
+| `static getLoopCount(String handlerName, System.TriggerOperation operation)` | Returns the count of 1 trigger operation of a handler, or -1 when no limit was set for it.                                                                                                          |
 | `static bypass(String handlerName)`                                          | Bypasses a handler by name. The name matches regardless of case.                                                                                                                                    |
 | `static bypass(Type handlerType)`                                            | Bypasses a handler by type, for example `bypass(AccountTriggerHandler.class)`.                                                                                                                      |
 | `static bypass(List<String> handlerNames)`                                   | Bypasses a list of handlers by name.                                                                                                                                                                |

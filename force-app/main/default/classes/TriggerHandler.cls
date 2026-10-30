@@ -14,7 +14,7 @@
 @SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.EmptyStatementBlock')
 public inherited sharing virtual class TriggerHandler {
 	/**
-	 * The loop counters of each handler, by handler name and then by trigger operation. A handler has a counter for an operation only after a limit is set for that operation, so `getLoopCount()` is 0 for an operation with no limit.
+	 * The loop counters of each handler, by handler name and then by trigger operation. A handler has a counter for an operation only after a limit is set for that operation, so `getLoopCount()` returns `NOT_COUNTED` for an operation with no limit.
 	 */
 	@TestVisible
 	private static Map<String, Map<System.TriggerOperation, LoopCounter>> loopCountMap = new Map<String, Map<System.TriggerOperation, LoopCounter>>();
@@ -75,6 +75,12 @@ public inherited sharing virtual class TriggerHandler {
 	 * The maximum loop count that `clearMaxLoopCount()` sets. Any negative maximum means no limit.
 	 */
 	private static final Integer NO_LOOP_LIMIT = -1;
+
+	/**
+	 * The count that `getLoopCount()` returns when no limit was ever set, so the runs are not counted.
+	 */
+	@TestVisible
+	private static final Integer NOT_COUNTED = -1;
 
 	/**
 	 * The character that ends the class name in the `toString()` text of an Apex object.
@@ -747,7 +753,7 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * Return the number of runs counted for a handler in this transaction, for all trigger operations together, including runs that the loop limit stopped.
 	 * @param handlerName The handler name to check.
-	 * @return            `Integer` The total count, or 0 when no limit was ever set for the handler.
+	 * @return            `Integer` The total count, or -1 when no limit was ever set for the handler.
 	 * @exception TriggerHandlerException when the name is null or blank.
 	 * @throws TriggerHandlerException when the name is null or blank.
 	 * @deprecated Use `getLoopCount(String, System.TriggerOperation)`, which returns the count of 1 trigger operation. A later major release removes this method.
@@ -756,8 +762,12 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	public static Integer getLoopCount(String handlerName) {
 		requireHandlerName(handlerName);
+		Map<System.TriggerOperation, LoopCounter> counters = TriggerHandler.loopCountMap.get(handlerName);
+		if (counters == null) {
+			return NOT_COUNTED;
+		}
 		Integer total = 0;
-		for (LoopCounter counter : TriggerHandler.loopCountMap.get(handlerName)?.values() ?? new List<LoopCounter>()) {
+		for (LoopCounter counter : counters.values()) {
 			total += counter.getCount();
 		}
 		return total;
@@ -767,7 +777,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * Return the number of runs counted for 1 trigger operation of a handler in this transaction, including runs that the loop limit stopped.
 	 * @param handlerName The handler name to check.
 	 * @param operation The trigger operation to check.
-	 * @return            `Integer` The count, or 0 when no limit was ever set for the operation.
+	 * @return            `Integer` The count, or -1 when no limit was ever set for the operation, because its runs are not counted.
 	 * @exception TriggerHandlerException when the name is null or blank, or the operation is null.
 	 * @throws TriggerHandlerException when the name is null or blank, or the operation is null.
 	 * @example
@@ -778,7 +788,7 @@ public inherited sharing virtual class TriggerHandler {
 		if (operation == null) {
 			throw new TriggerHandlerException(ERROR_TRIGGER_OPERATION);
 		}
-		return TriggerHandler.loopCountMap.get(handlerName)?.get(operation)?.getCount() ?? 0;
+		return TriggerHandler.loopCountMap.get(handlerName)?.get(operation)?.getCount() ?? NOT_COUNTED;
 	}
 
 	/**

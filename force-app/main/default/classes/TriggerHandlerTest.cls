@@ -537,7 +537,11 @@ private inherited sharing class TriggerHandlerTest {
 		limited.setTestContext(System.TriggerOperation.BEFORE_UPDATE).run();
 		limited.run();
 		Assert.areEqual(new List<String>{ 'beforeUpdate', 'andFinally', 'beforeUpdate', 'andFinally' }, calls, 'before update should have no limit');
-		Assert.areEqual(0, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_UPDATE), 'an operation without a limit should not be counted');
+		Assert.areEqual(
+			TriggerHandler.NOT_COUNTED,
+			TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_UPDATE),
+			'an operation without a limit should not be counted'
+		);
 		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.AFTER_UPDATE), 'after update should count its 2 runs');
 	}
 
@@ -550,17 +554,23 @@ private inherited sharing class TriggerHandlerTest {
 		handler.clearMaxLoopCount();
 		handler.run();
 		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally' }, calls, 'the handler should run');
-		Assert.areEqual(0, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the run should not be counted');
+		Assert.areEqual(TriggerHandler.NOT_COUNTED, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the run should not be counted');
 	}
 
 	/**
-	 * Without a loop limit, runs are not counted. A handler that was never limited has a count of 0.
+	 * Without a loop limit, runs are not counted. A handler that was never limited has a count of -1.
 	 */
 	@IsTest
-	private static void loopCountIsZeroWithoutLimit() {
+	private static void loopCountIsNotCountedWithoutLimit() {
 		newHandler(System.TriggerOperation.BEFORE_INSERT).run();
-		Assert.areEqual(0, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'a handler without a limit should not be counted');
-		Assert.areEqual(0, TriggerHandler.getLoopCount(OTHER_HANDLER, System.TriggerOperation.BEFORE_INSERT), 'an unknown handler should have a count of 0');
+		Assert.areEqual(
+			TriggerHandler.NOT_COUNTED,
+			TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT),
+			'a handler without a limit should not be counted'
+		);
+		Assert.areEqual(TriggerHandler.NOT_COUNTED, TriggerHandler.getLoopCount(OTHER_HANDLER, System.TriggerOperation.BEFORE_INSERT), 'an unknown handler should not be counted');
+		Assert.areEqual(TriggerHandler.NOT_COUNTED, TriggerHandler.getLoopCount(OTHER_HANDLER), 'the deprecated total should not count an unknown handler');
+		Assert.areEqual(-1, TriggerHandler.NOT_COUNTED, 'a count that is not kept should be -1');
 	}
 
 	/**
