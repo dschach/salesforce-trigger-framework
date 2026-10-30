@@ -1,5 +1,51 @@
 # Changelog
 
+## [1.4.2](https://github.com/dschach/salesforce-trigger-framework/compare/v1.4.1...v1.4.2) (2026-10-30)
+
+
+### Tests
+
+* **handler:** Assert through the public API with correct messages ([5359db1](https://github.com/dschach/salesforce-trigger-framework/commit/5359db1a6f4982f99600be52ad4b33488d53fd0a))
+* **handler:** Cover the bypass clears and run outside a trigger ([5359db1](https://github.com/dschach/salesforce-trigger-framework/commit/5359db1a6f4982f99600be52ad4b33488d53fd0a))
+* **handler:** Prove that bypasses and the loop limit stop andFinally ([5359db1](https://github.com/dschach/salesforce-trigger-framework/commit/5359db1a6f4982f99600be52ad4b33488d53fd0a))
+* **handler:** Rewrite the TriggerHandler tests with 1 test per behavior ([#365](https://github.com/dschach/salesforce-trigger-framework/issues/365)) ([5359db1](https://github.com/dschach/salesforce-trigger-framework/commit/5359db1a6f4982f99600be52ad4b33488d53fd0a))
+* **handler:** Split the handler tests into 1 test per behavior ([5359db1](https://github.com/dschach/salesforce-trigger-framework/commit/5359db1a6f4982f99600be52ad4b33488d53fd0a))
+
+
+### Miscellaneous Chores
+
+* **hooks:** Strip the config machine paths in the staged file ([65276b0](https://github.com/dschach/salesforce-trigger-framework/commit/65276b01694043ff29725a9fd724eec79d491e4a))
+* **pmd:** Add the DevSecOps Java rules to Code Analyzer ([73b70a4](https://github.com/dschach/salesforce-trigger-framework/commit/73b70a44ebec81ab12a65b5fa46612359479d9d6))
+* **pmd:** Add the DevSecOps Java rules to Code Analyzer ([#367](https://github.com/dschach/salesforce-trigger-framework/issues/367)) ([73b70a4](https://github.com/dschach/salesforce-trigger-framework/commit/73b70a44ebec81ab12a65b5fa46612359479d9d6))
+* **pmd:** Regenerate code-analyzer.yml and correct the ruleset notes ([65276b0](https://github.com/dschach/salesforce-trigger-framework/commit/65276b01694043ff29725a9fd724eec79d491e4a))
+* **pmd:** Turn off a rule and keep machine paths out of the config ([#369](https://github.com/dschach/salesforce-trigger-framework/issues/369)) ([65276b0](https://github.com/dschach/salesforce-trigger-framework/commit/65276b01694043ff29725a9fd724eec79d491e4a))
+* **pmd:** Turn off AvoidTrivialPropertyGetters ([65276b0](https://github.com/dschach/salesforce-trigger-framework/commit/65276b01694043ff29725a9fd724eec79d491e4a))
+* **sample:** Suppress FlagSystemMode where system mode is deliberate ([73b70a4](https://github.com/dschach/salesforce-trigger-framework/commit/73b70a44ebec81ab12a65b5fa46612359479d9d6))
+* **scripts:** Write the Code Analyzer results to the sfca folder ([73b70a4](https://github.com/dschach/salesforce-trigger-framework/commit/73b70a44ebec81ab12a65b5fa46612359479d9d6))
+
+
+### Code Refactoring
+
+* **sample:** Rewrite the sample to show the framework in use ([149de0c](https://github.com/dschach/salesforce-trigger-framework/commit/149de0cbb14769b5699d570cc6868301852d8a55))
+* **sample:** Rewrite the sample to show the framework in use ([#366](https://github.com/dschach/salesforce-trigger-framework/issues/366)) ([149de0c](https://github.com/dschach/salesforce-trigger-framework/commit/149de0cbb14769b5699d570cc6868301852d8a55))
+
+
+### Documentation
+
+* **contributing:** Explain how to mark a deliberate system mode ([73b70a4](https://github.com/dschach/salesforce-trigger-framework/commit/73b70a44ebec81ab12a65b5fa46612359479d9d6))
+* **readme:** List all 7 contexts in every trigger example ([149de0c](https://github.com/dschach/salesforce-trigger-framework/commit/149de0cbb14769b5699d570cc6868301852d8a55))
+* **readme:** Use system mode in the handler examples ([149de0c](https://github.com/dschach/salesforce-trigger-framework/commit/149de0cbb14769b5699d570cc6868301852d8a55))
+* **sample:** Describe the new sample in its README and docs page ([149de0c](https://github.com/dschach/salesforce-trigger-framework/commit/149de0cbb14769b5699d570cc6868301852d8a55))
+
+
+### Continuous Integration
+
+* **apex-tests:** Delete the scratch org after a cancelled run ([0890448](https://github.com/dschach/salesforce-trigger-framework/commit/0890448ea91ef566f01311ab89e8b96f7b259dd2))
+* **ci:** Give each push to main its own concurrency group ([0890448](https://github.com/dschach/salesforce-trigger-framework/commit/0890448ea91ef566f01311ab89e8b96f7b259dd2))
+* **dependabot:** Run the update workflow once per pull request at a time ([0890448](https://github.com/dschach/salesforce-trigger-framework/commit/0890448ea91ef566f01311ab89e8b96f7b259dd2))
+* **release-please:** Queue runs instead of running them at once ([0890448](https://github.com/dschach/salesforce-trigger-framework/commit/0890448ea91ef566f01311ab89e8b96f7b259dd2))
+* **workflows:** Add concurrency groups so runs do not cancel each other ([#363](https://github.com/dschach/salesforce-trigger-framework/issues/363)) ([0890448](https://github.com/dschach/salesforce-trigger-framework/commit/0890448ea91ef566f01311ab89e8b96f7b259dd2))
+
 ## [1.4.1](https://github.com/dschach/salesforce-trigger-framework/compare/v1.4.0...v1.4.1) (2026-10-29)
 
 
