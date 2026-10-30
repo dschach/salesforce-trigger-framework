@@ -325,12 +325,11 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Bypass all handlers. The list of named bypasses is cleared too.
+	 * Bypass all handlers. The named bypasses stay, so `clearGlobalBypass()` brings them back.
 	 * @example
 	 * TriggerHandler.bypassAll();
 	 */
 	public static void bypassAll() {
-		TriggerHandler.clearBypassList();
 		globalBypass = true;
 	}
 
@@ -477,7 +476,7 @@ public inherited sharing virtual class TriggerHandler {
 
 	/**
 	 * Clear only the global bypass, and keep the list of bypassed handlers.
-	 * <br>Use it to keep a base set of bypassed handlers for a whole operation.
+	 * <br>Use it to keep a base set of bypassed handlers for a whole operation. After `bypassAll()`, the handlers that were bypassed by name before stay bypassed.
 	 * @example
 	 * TriggerHandler.clearGlobalBypass();
 	 */

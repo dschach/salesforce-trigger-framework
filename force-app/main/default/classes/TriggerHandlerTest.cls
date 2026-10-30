@@ -290,15 +290,18 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * `bypassAll()` clears the named bypasses, so a later `clearGlobalBypass()` leaves no handler bypassed.
+	 * `bypassAll()` keeps the named bypasses, so a later `clearGlobalBypass()` brings them back.
 	 */
 	@IsTest
-	private static void bypassAllClearsNamedBypasses() {
+	private static void bypassAllKeepsNamedBypasses() {
 		TriggerHandler.bypass(HANDLER_NAME);
 		TriggerHandler.bypassAll();
-		Assert.areEqual(new List<String>{ TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassList(), 'bypassAll() should clear the named bypasses');
+		Assert.areEqual(new List<String>{ HANDLER_NAME, TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassList(), 'bypassAll() should keep the named bypasses');
 		TriggerHandler.clearGlobalBypass();
-		Assert.isFalse(TriggerHandler.isBypassed(HANDLER_NAME), 'the named bypass should be gone with the global bypass cleared');
+		Assert.isTrue(TriggerHandler.isBypassed(HANDLER_NAME), 'the named bypass should stay after the global bypass is cleared');
+		Assert.isFalse(TriggerHandler.isBypassed(OTHER_HANDLER), 'a handler that was not named should no longer be bypassed');
+		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
+		Assert.isTrue(calls.isEmpty(), 'the named handler should still be bypassed');
 	}
 
 	/**

@@ -249,7 +249,7 @@ To bypass all handlers, use the `bypassAll` method:
 TriggerHandler.bypassAll();
 ```
 
-This also clears the list of named bypasses, and it adds the entry `BypassAll` to the list from `bypassList()` and the set from `bypassSet()`.
+The named bypasses stay, so `clearGlobalBypass()` brings them back. A global bypass adds the entry `BypassAll` to the list from `bypassList()` and the set from `bypassSet()`.
 
 To clear all bypasses for the transaction, simply use the `clearAllBypasses` method, as in:
 
@@ -278,19 +278,17 @@ TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
 
 `setBypass(name, false)` also clears the global bypass, because a global bypass cannot leave out 1 handler. So this idiom restores the named bypass, not a global bypass that was active before.
 
-To store all currently bypassed handlers, temporarily bypass all handlers, and then restore the originally bypassed list:
+To bypass all handlers for a while, and then go back to the handlers that were bypassed by name before, call `bypassAll()` and then `clearGlobalBypass()`. The named bypasses stay during the global bypass, so you do not need to store them:
 
 ```apex
-List<String> bypassedHandlers = TriggerHandler.bypassList();
 TriggerHandler.bypassAll();
 
 /* do something here */
 
-TriggerHandler.clearAllBypasses();
-TriggerHandler.bypass(bypassedHandlers);
+TriggerHandler.clearGlobalBypass();
 ```
 
-If all handlers were bypassed before, the stored list holds `BypassAll`. In that case, call `TriggerHandler.bypassAll()` again instead of restoring the list.
+If all handlers were bypassed before, leave out `clearGlobalBypass()`, so that the global bypass stays.
 
 ### Max Loop Count
 
@@ -474,7 +472,7 @@ Every public member of `TriggerHandler`. The [class documentation](https://david
 | `static bypass(String handlerName)`                          | Bypasses a handler by name. The name matches regardless of case.                                                                                         |
 | `static bypass(Type handlerType)`                            | Bypasses a handler by type, for example `bypass(AccountTriggerHandler.class)`.                                                                           |
 | `static bypass(List<String> handlerNames)`                   | Bypasses a list of handlers by name.                                                                                                                     |
-| `static bypassAll()`                                         | Bypasses every handler, and clears the list of named bypasses.                                                                                           |
+| `static bypassAll()`                                         | Bypasses every handler. The named bypasses stay.                                                                                                         |
 | `static clearBypass(String handlerName)`                     | Clears the bypass of a handler by name.                                                                                                                  |
 | `static clearBypass(Type handlerType)`                       | Clears the bypass of a handler by type.                                                                                                                  |
 | `static clearBypass(List<String> handlerNames)`              | Clears the bypass of a list of handlers by name.                                                                                                         |
