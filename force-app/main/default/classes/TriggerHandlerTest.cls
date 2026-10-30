@@ -1,6 +1,7 @@
 /**
  * Test class for base TriggerHandler class.
  * <br>Each test builds its own handler with `newHandler()` and proves 1 behavior through the call log.
+ * <br>`NcssCount` is suppressed: the class holds 1 test for each behavior of the whole framework, its bypass and loop counter registries included, so it is large by design.
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @since 2013
  * @author {@link [David Schach](https://github.com/dschach)}
@@ -11,7 +12,7 @@
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
  * @see TriggerHandler
  */
-@SuppressWarnings('PMD.CyclomaticComplexity')
+@SuppressWarnings('PMD.CyclomaticComplexity, PMD.NcssCount')
 @IsTest(isParallel=true testFor='ApexClass:TriggerHandler')
 private inherited sharing class TriggerHandlerTest {
 	/**
@@ -612,6 +613,61 @@ private inherited sharing class TriggerHandlerTest {
 		lc.increment();
 		Assert.areEqual(6, lc.getCount(), 'count should be 6');
 		Assert.isTrue(lc.exceeded(), 'should be exceeded with count of 6');
+	}
+
+	// bypass and loop counter registries
+
+	/**
+	 * The `BypassRegistry` inner class keeps the named bypasses and the global bypass apart, and it matches names regardless of case.
+	 */
+	@IsTest
+	private static void bypassRegistryKeepsNamesAndGlobalApart() {
+		TriggerHandler.BypassRegistry registry = new TriggerHandler.BypassRegistry();
+		Assert.isFalse(registry.hasNames(), 'a new registry should have no named bypass');
+		Assert.isFalse(registry.isAllBypassed(), 'a new registry should have no global bypass');
+
+		registry.add('Zulu');
+		registry.add('alpha');
+		Assert.isTrue(registry.contains('ZULU'), 'a name should match regardless of case');
+		Assert.areEqual(new List<String>{ 'Zulu', 'alpha' }, registry.sortedNames(), 'the names should keep their spelling, in sorted order');
+		Assert.areEqual(new Set<String>{ 'Zulu', 'alpha' }, registry.nameSet(), 'the set should hold the same names');
+
+		registry.remove('ALPHA');
+		registry.remove('Unknown');
+		Assert.isFalse(registry.contains('alpha'), 'a name removed in another case should be gone');
+		Assert.areEqual(new List<String>{ 'Zulu' }, registry.sortedNames(), 'removing an unknown name should change nothing');
+
+		registry.setAllBypassed(true);
+		registry.clearNames();
+		Assert.isTrue(registry.isAllBypassed(), 'clearing the names should keep the global bypass');
+		Assert.isFalse(registry.hasNames(), 'every named bypass should be cleared');
+	}
+
+	/**
+	 * The `LoopCounterRegistry` inner class keeps 1 counter for each handler and trigger operation, and it reports `NOT_COUNTED` where no limit was set.
+	 */
+	@IsTest
+	private static void loopCounterRegistryCountsEachOperation() {
+		TriggerHandler.LoopCounterRegistry registry = new TriggerHandler.LoopCounterRegistry();
+		Assert.isTrue(registry.isEmpty(), 'a new registry should have no counter');
+		Assert.areEqual(TriggerHandler.NOT_COUNTED, registry.total('Handler'), 'a handler without a limit should not be counted');
+
+		registry.setMax('Handler', System.TriggerOperation.BEFORE_INSERT, 1);
+		registry.get('Handler', System.TriggerOperation.BEFORE_INSERT).increment();
+		Assert.isFalse(registry.isEmpty(), 'the registry should have a counter after a limit is set');
+		Assert.areEqual(1, registry.count('Handler', System.TriggerOperation.BEFORE_INSERT), 'the operation should count its run');
+		Assert.areEqual(TriggerHandler.NOT_COUNTED, registry.count('Handler', System.TriggerOperation.AFTER_INSERT), 'an operation without a limit should not be counted');
+		Assert.isNull(registry.get('Handler', System.TriggerOperation.AFTER_INSERT), 'an operation without a limit should have no counter');
+		Assert.areEqual(1, registry.total('Handler'), 'the total should add the counted operations');
+
+		registry.setMax('Handler', System.TriggerOperation.BEFORE_INSERT, 3);
+		Assert.areEqual(3, registry.get('Handler', System.TriggerOperation.BEFORE_INSERT).getMax(), 'a second limit should change the maximum');
+		Assert.areEqual(1, registry.count('Handler', System.TriggerOperation.BEFORE_INSERT), 'a second limit should keep the count');
+
+		registry.clearMax('Handler');
+		registry.clearMax('Unknown');
+		Assert.areEqual(-1, registry.get('Handler', System.TriggerOperation.BEFORE_INSERT).getMax(), 'clearing should remove the limit');
+		Assert.isNull(registry.get('Unknown', System.TriggerOperation.BEFORE_INSERT), 'clearing an unknown handler should create no counter');
 	}
 
 	// debug and limits
