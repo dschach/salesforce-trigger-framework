@@ -648,6 +648,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * Instance method that turns on the limits debug output, allowing method chaining in the trigger.
 	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction.
 	 * @since 2023
+	 * @deprecated Use `showHandlerLimits()` for this handler only, or the static `showLimits()` for every handler. A later major release removes this method.
 	 * @see TriggerHandler.showLimits[0]
 	 * @example
 	 * new AccountSampleTriggerHandler().limits().run();
@@ -663,6 +664,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * Instance method that turns the limits debug output on or off, allowing method chaining in the trigger.
 	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction.
 	 * @since 2023
+	 * @deprecated Use `showHandlerLimits(Boolean)` for this handler only, or the static `showLimits(Boolean)` for every handler. A later major release removes this method.
 	 * @see TriggerHandler.showLimits[1]
 	 * @example
 	 * new AccountSampleTriggerHandler().limits(false).run();
@@ -706,6 +708,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * Instance method that turns on the entry and exit debug output, allowing method chaining in the trigger.
 	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction.
 	 * @since 2023
+	 * @deprecated Use `showHandlerDebug()` for this handler only, or the static `showDebug()` for every handler. A later major release removes this method.
 	 * @see TriggerHandler.showDebug[0]
 	 * @example
 	 * new AccountSampleTriggerHandler().debug().run();
@@ -721,6 +724,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * Instance method that turns the entry and exit debug output on or off, allowing method chaining in the trigger.
 	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction.
 	 * @since 2023
+	 * @deprecated Use `showHandlerDebug(Boolean)` for this handler only, or the static `showDebug(Boolean)` for every handler. A later major release removes this method.
 	 * @param enabled `true` to enable, `false` or null to disable.
 	 * @return      `TriggerHandler` Returning this instance enables method chaining.
 	 * @see TriggerHandler.showDebug[0]
