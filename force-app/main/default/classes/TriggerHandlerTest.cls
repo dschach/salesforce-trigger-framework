@@ -6,9 +6,9 @@
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @since 2013
  * @author {@link [David Schach](https://github.com/dschach)}
- * @since 2021 Update, add new methods
- * @since 2023-02-08 Update assert methods to Assert class
- * @since 2026-10-30 1 test per behavior, with a call log that records `andFinally()`
+ * @since 2021 Add tests for the new methods
+ * @since 2023-02-08 Use the `Assert` class
+ * @since 2026-10 Rewrite with 1 test for each behavior, and a call log that records `andFinally()`
  * @group Trigger Handler
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
  * @see TriggerHandler

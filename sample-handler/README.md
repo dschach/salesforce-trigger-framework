@@ -50,6 +50,7 @@ trigger AccountSampleTrigger on Account(before insert, before update, before del
  * <br>A trigger runs without sharing, so this `inherited sharing` handler does too. Each query and DML statement names `SYSTEM_MODE`, so the handler can update child Accounts that the running user cannot edit.
  * @author David Schach
  * @since 2021
+ * @since 2026-10 Rewrite the sample to show the framework in use
  * @group SampleTriggerHandler
  * @group-content doc-assets/files/sampletriggerhandlerhome.html
  * @see AccountSampleTriggerHandlerTest
@@ -126,8 +127,9 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 
   /**
    * Records the finished operation. A real handler puts work here that must follow each context, for example a rollup.
-   * <br>`andFinally()` runs after each context. For an insert, an update, or a delete, it runs 2 times for each chunk of 200 records: after the before context and after the after context.
+   * <br>`andFinally()` runs after each context. For an insert, an update, or a delete, it runs 2 times for each chunk of 200 records. It runs after the before context and again after the after context.
    * <br>Some work must run only once for each chunk, for example the publication of 1 platform event. Put that work in an `if` block that checks `getTriggerEvent()` for an after context.
+   * @since 2026-10
    * @example
    * // andFinally() runs after the before context and again after the after context.
    * // This example runs only once for each chunk of 200 records, after the after context.
@@ -144,6 +146,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
   /**
    * Replaces each group of spaces in the Account names with 1 space, and removes the spaces at the start and the end.
    * @param accounts The Accounts to change.
+   * @since 2026-10
    */
   private static void normalizeNames(List<Account> accounts) {
     for (Account changedAccount : accounts) {
@@ -156,6 +159,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
    * <br>It leaves out a child Account that is in the same trigger run, because a trigger cannot update the records that it runs for.
    * <br>The query and the update run in system mode, so this method suppresses `FlagSystemMode`. The phone number must reach all child Accounts, also the ones that the running user cannot see or edit.
    * @param phoneByParentId The new phone number of each parent Account, by Id.
+   * @since 2026-10
    */
   @SuppressWarnings('PMD.FlagSystemMode')
   private void copyPhoneToChildAccounts(Map<Id, String> phoneByParentId) {

@@ -4,7 +4,7 @@
  * <br>The test DML and the queries that read the results run in system mode, so the class suppresses `FlagSystemMode`. The tests set up and check the data directly. The access under test is the access of the handler, which uses system mode on purpose.
  * @author David Schach
  * @since 2021
- * @since 2026-10-30 1 test per behavior, with the finished operations as the call log
+ * @since 2026-10 Rewrite with 1 test for each behavior, and the finished operations as the call log
  * @group SampleTriggerHandler
  * @see AccountSampleTriggerHandler
  */
