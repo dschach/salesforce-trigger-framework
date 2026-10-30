@@ -14,27 +14,16 @@
 @SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.EmptyStatementBlock')
 public inherited sharing abstract class TriggerHandler {
 	/**
-	 * The loop counters of each handler, by handler name and then by trigger operation. A handler has a counter for an operation only after a limit is set for that operation, so `getLoopCount()` returns `NOT_COUNTED` for an operation with no limit.
+	 * The loop counters of every handler in the transaction. A handler has a counter for an operation only after a limit is set for that operation, so `getLoopCount()` returns `NOT_COUNTED` for an operation with no limit.
 	 */
 	@TestVisible
-	private static Map<String, Map<System.TriggerOperation, LoopCounter>> loopCountMap = new Map<String, Map<System.TriggerOperation, LoopCounter>>();
+	private static LoopCounterRegistry loopCounters = new LoopCounterRegistry();
 
 	/**
-	 * All bypassed handlers, as the caller spelled them.
+	 * The bypasses of the transaction: the named bypasses and the global bypass.
 	 */
 	@TestVisible
-	private static Set<String> bypassedHandlers = new Set<String>();
-
-	/**
-	 * Lower-case copy of `bypassedHandlers`, used for every membership check so that a bypass name matches regardless of case.
-	 */
-	private static Set<String> bypassedHandlersLower = new Set<String>();
-
-	/**
-	 * `true` when all handlers are bypassed. The named bypasses are not checked then.
-	 */
-	@TestVisible
-	private static Boolean globalBypass = false;
+	private static BypassRegistry bypasses = new BypassRegistry();
 
 	/**
 	 * `true` when every handler writes the limits line after its run. `showLimits()` and `showLimits(Boolean)` set it.
@@ -277,8 +266,9 @@ public inherited sharing abstract class TriggerHandler {
 		if (max == null) {
 			throw new TriggerHandlerException(ERROR_LOOP_COUNT);
 		}
+		String handlerName = getHandlerName();
 		for (System.TriggerOperation operation : System.TriggerOperation.values()) {
-			setOperationMax(operation, max);
+			TriggerHandler.loopCounters.setMax(handlerName, operation, max);
 		}
 		return this;
 	}
@@ -301,7 +291,7 @@ public inherited sharing abstract class TriggerHandler {
 		if (max == null) {
 			throw new TriggerHandlerException(ERROR_LOOP_COUNT);
 		}
-		setOperationMax(operation, max);
+		TriggerHandler.loopCounters.setMax(getHandlerName(), operation, max);
 		return this;
 	}
 
@@ -311,33 +301,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * clearMaxLoopCount(); // in the handler
 	 */
 	public void clearMaxLoopCount() {
-		Map<System.TriggerOperation, LoopCounter> counters = TriggerHandler.loopCountMap.get(getHandlerName());
-		if (counters == null) {
-			return;
-		}
-		for (LoopCounter counter : counters.values()) {
-			counter.setMax(NO_LOOP_LIMIT);
-		}
-	}
-
-	/**
-	 * Set the limit of 1 trigger operation of this handler, and create its counter when it has none.
-	 * @param operation The trigger operation.
-	 * @param max The maximum number of runs. 0 or a negative value means no limit.
-	 */
-	private void setOperationMax(System.TriggerOperation operation, Integer max) {
-		String handlerName = getHandlerName();
-		Map<System.TriggerOperation, LoopCounter> counters = TriggerHandler.loopCountMap.get(handlerName);
-		if (counters == null) {
-			counters = new Map<System.TriggerOperation, LoopCounter>();
-			TriggerHandler.loopCountMap.put(handlerName, counters);
-		}
-		LoopCounter counter = counters.get(operation);
-		if (counter == null) {
-			counters.put(operation, new LoopCounter(max));
-		} else {
-			counter.setMax(max);
-		}
+		TriggerHandler.loopCounters.clearMax(getHandlerName());
 	}
 
 	/**
@@ -351,8 +315,7 @@ public inherited sharing abstract class TriggerHandler {
 	 */
 	public static void bypass(String handlerName) {
 		requireHandlerName(handlerName);
-		TriggerHandler.bypassedHandlers.add(handlerName);
-		TriggerHandler.bypassedHandlersLower.add(handlerName.toLowerCase());
+		TriggerHandler.bypasses.add(handlerName);
 	}
 
 	/**
@@ -392,7 +355,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * TriggerHandler.bypassAll();
 	 */
 	public static void bypassAll() {
-		globalBypass = true;
+		TriggerHandler.bypasses.setAllBypassed(true);
 	}
 
 	/**
@@ -407,14 +370,7 @@ public inherited sharing abstract class TriggerHandler {
 	 */
 	public static void clearBypass(String handlerName) {
 		requireHandlerName(handlerName);
-		if (!TriggerHandler.bypassedHandlersLower.remove(handlerName.toLowerCase())) {
-			return;
-		}
-		for (String bypassedName : new List<String>(TriggerHandler.bypassedHandlers)) {
-			if (bypassedName.equalsIgnoreCase(handlerName)) {
-				TriggerHandler.bypassedHandlers.remove(bypassedName);
-			}
-		}
+		TriggerHandler.bypasses.remove(handlerName);
 	}
 
 	/**
@@ -463,7 +419,7 @@ public inherited sharing abstract class TriggerHandler {
 	 */
 	public static Boolean isBypassed(String handlerName) {
 		requireHandlerName(handlerName);
-		return TriggerHandler.bypassedHandlersLower.contains(handlerName.toLowerCase());
+		return TriggerHandler.bypasses.contains(handlerName);
 	}
 
 	/**
@@ -495,7 +451,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * }
 	 */
 	public static Boolean isGlobalBypassed() {
-		return globalBypass;
+		return TriggerHandler.bypasses.isAllBypassed();
 	}
 
 	/**
@@ -511,7 +467,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * }
 	 */
 	public static Boolean isSkipped(String handlerName) {
-		return TriggerHandler.isBypassed(handlerName) || globalBypass;
+		return TriggerHandler.isBypassed(handlerName) || TriggerHandler.bypasses.isAllBypassed();
 	}
 
 	/**
@@ -527,7 +483,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * }
 	 */
 	public static Boolean isSkipped(Type handlerType) {
-		return TriggerHandler.isBypassed(handlerType) || globalBypass;
+		return TriggerHandler.isBypassed(handlerType) || TriggerHandler.bypasses.isAllBypassed();
 	}
 
 	/**
@@ -540,9 +496,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * List<String> bypassed = TriggerHandler.bypassList();
 	 */
 	public static List<String> bypassList() {
-		List<String> bypasses = new List<String>(TriggerHandler.bypassedHandlers);
-		bypasses.sort();
-		return bypasses;
+		return TriggerHandler.bypasses.sortedNames();
 	}
 
 	/**
@@ -560,7 +514,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * }
 	 */
 	public static Set<String> bypassSet() {
-		return new Set<String>(TriggerHandler.bypassedHandlers);
+		return TriggerHandler.bypasses.nameSet();
 	}
 
 	/**
@@ -580,7 +534,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * TriggerHandler.clearGlobalBypass();
 	 */
 	public static void clearGlobalBypass() {
-		globalBypass = false;
+		TriggerHandler.bypasses.setAllBypassed(false);
 	}
 
 	/**
@@ -590,8 +544,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * TriggerHandler.clearBypassList();
 	 */
 	public static void clearBypassList() {
-		TriggerHandler.bypassedHandlers.clear();
-		TriggerHandler.bypassedHandlersLower.clear();
+		TriggerHandler.bypasses.clearNames();
 	}
 
 	/**
@@ -842,15 +795,7 @@ public inherited sharing abstract class TriggerHandler {
 	 */
 	public static Integer getLoopCount(String handlerName) {
 		requireHandlerName(handlerName);
-		Map<System.TriggerOperation, LoopCounter> counters = TriggerHandler.loopCountMap.get(handlerName);
-		if (counters == null) {
-			return NOT_COUNTED;
-		}
-		Integer total = 0;
-		for (LoopCounter counter : counters.values()) {
-			total += counter.getCount();
-		}
-		return total;
+		return TriggerHandler.loopCounters.total(handlerName);
 	}
 
 	/**
@@ -868,7 +813,7 @@ public inherited sharing abstract class TriggerHandler {
 		if (operation == null) {
 			throw new TriggerHandlerException(ERROR_TRIGGER_OPERATION);
 		}
-		return TriggerHandler.loopCountMap.get(handlerName)?.get(operation)?.getCount() ?? NOT_COUNTED;
+		return TriggerHandler.loopCounters.count(handlerName, operation);
 	}
 
 	/**
@@ -891,10 +836,10 @@ public inherited sharing abstract class TriggerHandler {
 	 * @return   `Boolean` `true` when `run()` should continue: the operation has no counter, or it is within its limit. `false` when the limit is exceeded.
 	 */
 	private Boolean incrementCheckLoopCount() {
-		if (TriggerHandler.loopCountMap.isEmpty()) {
+		if (TriggerHandler.loopCounters.isEmpty()) {
 			return true;
 		}
-		LoopCounter counter = TriggerHandler.loopCountMap.get(getHandlerName())?.get(triggerEvent);
+		LoopCounter counter = TriggerHandler.loopCounters.get(getHandlerName(), triggerEvent);
 		if (counter == null || !counter.increment()) {
 			return true;
 		}
@@ -916,11 +861,11 @@ public inherited sharing abstract class TriggerHandler {
 		if (!isTriggerExecuting || triggerEvent == null) {
 			throw new TriggerHandlerException(ERROR_TRIGGERCONTEXT);
 		}
-		if (globalBypass) {
+		if (TriggerHandler.bypasses.isAllBypassed()) {
 			return false;
 		}
 		// the same rule as isSkipped(); with no named bypass, the handler name is not needed
-		return TriggerHandler.bypassedHandlersLower.isEmpty() || !TriggerHandler.isBypassed(getHandlerName());
+		return !TriggerHandler.bypasses.hasNames() || !TriggerHandler.isBypassed(getHandlerName());
 	}
 
 	/**
@@ -1043,6 +988,196 @@ public inherited sharing abstract class TriggerHandler {
 	}
 
 	// inner classes
+
+	/**
+	 * Inner class that holds the bypasses of the transaction: the named bypasses and the global bypass, which are independent.
+	 * <br>`TriggerHandler` keeps 1 instance in `bypasses`, because an inner class cannot have static members. The public static methods check their arguments and then call it.
+	 */
+	@TestVisible
+	private inherited sharing class BypassRegistry {
+		/**
+		 * All handlers bypassed by name or by type, as the caller spelled them.
+		 */
+		private Set<String> names = new Set<String>();
+		/**
+		 * Lower-case copy of `names`, used for every membership check so that a name matches regardless of case.
+		 */
+		private Set<String> namesLower = new Set<String>();
+		/**
+		 * `true` when all handlers are bypassed.
+		 */
+		private Boolean allBypassed = false;
+
+		/**
+		 * Bypass a handler by name.
+		 * @param handlerName The name, which is not null or blank.
+		 */
+		public void add(String handlerName) {
+			names.add(handlerName);
+			namesLower.add(handlerName.toLowerCase());
+		}
+
+		/**
+		 * Clear the bypass of a handler by name, whatever its case. A name that is not bypassed changes nothing.
+		 * @param handlerName The name, which is not null or blank.
+		 */
+		public void remove(String handlerName) {
+			if (!namesLower.remove(handlerName.toLowerCase())) {
+				return;
+			}
+			for (String bypassedName : new List<String>(names)) {
+				if (bypassedName.equalsIgnoreCase(handlerName)) {
+					names.remove(bypassedName);
+				}
+			}
+		}
+
+		/**
+		 * Whether a handler is bypassed by name, whatever its case.
+		 * @param handlerName The name, which is not null or blank.
+		 * @return `Boolean` `true` when the name is bypassed.
+		 */
+		public Boolean contains(String handlerName) {
+			return namesLower.contains(handlerName.toLowerCase());
+		}
+
+		/**
+		 * Whether any handler is bypassed by name.
+		 * @return `Boolean` `true` when at least 1 name is bypassed.
+		 */
+		public Boolean hasNames() {
+			return !namesLower.isEmpty();
+		}
+
+		/**
+		 * The bypassed names, as the caller spelled them, in sorted order.
+		 * @return `List<String>` A new sorted list.
+		 */
+		public List<String> sortedNames() {
+			List<String> sorted = new List<String>(names);
+			sorted.sort();
+			return sorted;
+		}
+
+		/**
+		 * The bypassed names, as the caller spelled them.
+		 * @return `Set<String>` A new set.
+		 */
+		public Set<String> nameSet() {
+			return new Set<String>(names);
+		}
+
+		/**
+		 * Clear every named bypass, and keep the global bypass.
+		 */
+		public void clearNames() {
+			names.clear();
+			namesLower.clear();
+		}
+
+		/**
+		 * Whether all handlers are bypassed.
+		 * @return `Boolean` `true` when the global bypass is on.
+		 */
+		public Boolean isAllBypassed() {
+			return allBypassed;
+		}
+
+		/**
+		 * Turn the global bypass on or off, and keep the named bypasses.
+		 * @param value `true` to bypass all handlers, `false` to clear the global bypass.
+		 */
+		public void setAllBypassed(Boolean value) {
+			allBypassed = value;
+		}
+	}
+
+	/**
+	 * Inner class that holds the loop counters of the transaction, by handler name and then by trigger operation.
+	 * <br>`TriggerHandler` keeps 1 instance in `loopCounters`, because an inner class cannot have static members. The public methods check their arguments and then call it.
+	 */
+	@TestVisible
+	private inherited sharing class LoopCounterRegistry {
+		/**
+		 * The loop counters of each handler, by handler name and then by trigger operation.
+		 */
+		private Map<String, Map<System.TriggerOperation, LoopCounter>> counters = new Map<String, Map<System.TriggerOperation, LoopCounter>>();
+
+		/**
+		 * Whether no handler has a counter, so that `run()` can skip the handler name lookup.
+		 * @return `Boolean` `true` when no limit was set in the transaction.
+		 */
+		public Boolean isEmpty() {
+			return counters.isEmpty();
+		}
+
+		/**
+		 * The counter of 1 trigger operation of a handler.
+		 * @param handlerName The handler name.
+		 * @param operation The trigger operation.
+		 * @return `LoopCounter` The counter, or null when no limit was set for the operation.
+		 */
+		public LoopCounter get(String handlerName, System.TriggerOperation operation) {
+			return counters.get(handlerName)?.get(operation);
+		}
+
+		/**
+		 * Set the limit of 1 trigger operation of a handler, and create its counter when it has none.
+		 * @param handlerName The handler name.
+		 * @param operation The trigger operation.
+		 * @param max The maximum number of runs. 0 or a negative value means no limit.
+		 */
+		public void setMax(String handlerName, System.TriggerOperation operation, Integer max) {
+			Map<System.TriggerOperation, LoopCounter> handlerCounters = counters.get(handlerName);
+			if (handlerCounters == null) {
+				handlerCounters = new Map<System.TriggerOperation, LoopCounter>();
+				counters.put(handlerName, handlerCounters);
+			}
+			LoopCounter counter = handlerCounters.get(operation);
+			if (counter == null) {
+				handlerCounters.put(operation, new LoopCounter(max));
+			} else {
+				counter.setMax(max);
+			}
+		}
+
+		/**
+		 * Remove the limit of every counter that a handler has. The counters keep counting, and no counter is created.
+		 * @param handlerName The handler name.
+		 */
+		public void clearMax(String handlerName) {
+			for (LoopCounter counter : counters.get(handlerName)?.values() ?? new List<LoopCounter>()) {
+				counter.setMax(NO_LOOP_LIMIT);
+			}
+		}
+
+		/**
+		 * The count of 1 trigger operation of a handler.
+		 * @param handlerName The handler name.
+		 * @param operation The trigger operation.
+		 * @return `Integer` The count, or `NOT_COUNTED` when no limit was set for the operation.
+		 */
+		public Integer count(String handlerName, System.TriggerOperation operation) {
+			return get(handlerName, operation)?.getCount() ?? NOT_COUNTED;
+		}
+
+		/**
+		 * The total count of all trigger operations of a handler.
+		 * @param handlerName The handler name.
+		 * @return `Integer` The total, or `NOT_COUNTED` when no limit was set for the handler.
+		 */
+		public Integer total(String handlerName) {
+			Map<System.TriggerOperation, LoopCounter> handlerCounters = counters.get(handlerName);
+			if (handlerCounters == null) {
+				return NOT_COUNTED;
+			}
+			Integer sum = 0;
+			for (LoopCounter counter : handlerCounters.values()) {
+				sum += counter.getCount();
+			}
+			return sum;
+		}
+	}
 
 	/**
 	 * Inner class that counts the runs of 1 trigger operation of 1 handler against its maximum.
