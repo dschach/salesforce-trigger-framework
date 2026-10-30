@@ -81,7 +81,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * Error text for a run outside a trigger. English only.
 	 */
 	@TestVisible
-	private static final String ERROR_TRIGGERCONTEXT = 'Trigger handler called outside of Trigger execution'; //NOPMD
+	private static final String ERROR_TRIGGERCONTEXT = 'Trigger handler called outside of Trigger execution';
 
 	/**
 	 * Error text when a handler name is null or blank.
