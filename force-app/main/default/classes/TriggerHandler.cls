@@ -1,5 +1,5 @@
 /**
- * Trigger handler virtual class, the base for every trigger handler.
+ * Trigger handler abstract class, the base for every trigger handler. A handler extends it, and code cannot build the base class itself.
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @since 2013
  * @author {@link [David Schach](https://github.com/dschach)}
@@ -12,7 +12,7 @@
  * @see TriggerHandlerTest
  */
 @SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.EmptyStatementBlock')
-public inherited sharing virtual class TriggerHandler {
+public inherited sharing abstract class TriggerHandler {
 	/**
 	 * The loop counters of each handler, by handler name and then by trigger operation. A handler has a counter for an operation only after a limit is set for that operation, so `getLoopCount()` returns `NOT_COUNTED` for an operation with no limit.
 	 */
@@ -873,24 +873,13 @@ public inherited sharing virtual class TriggerHandler {
 
 	/**
 	 * Set the current context from `Trigger.operationType`. Called by both constructors.
-	 */
-	@TestVisible
-	private void setTriggerContext() {
-		setTriggerContext(Trigger.operationType, false);
-	}
-
-	/**
-	 * Set the current trigger context from a `System.TriggerOperation`.
-	 * <br>Outside a trigger, and in a test that does not force a context, `isTriggerExecuting` is false.
-	 *
-	 * @param opType   The operation type, which the platform sets.
-	 * @param testMode Only used in test methods to force a context.
+	 * <br>Outside a trigger, `isTriggerExecuting` is false. A test sets its own context with `setTestContext()`.
 	 * @see TriggerHandler.isTriggerExecuting
 	 */
 	@TestVisible
-	private void setTriggerContext(System.TriggerOperation opType, Boolean testMode) {
-		isTriggerExecuting = (Trigger.isExecuting || testMode == true) && opType != null;
-		triggerEvent = opType;
+	private void setTriggerContext() {
+		triggerEvent = Trigger.operationType;
+		isTriggerExecuting = Trigger.isExecuting && triggerEvent != null;
 	}
 
 	/**
@@ -962,6 +951,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * Make this handler run as if a trigger fired the given operation, so that a test can call `run()` without DML.
 	 * <br>Set the records that the handler reads before you call `run()`, for example through `@TestVisible` fields of the handler.
 	 * <br>Outside a test it changes nothing: the handler keeps the context of the real trigger.
+	 * <br>A null operation clears the context, so that `run()` throws as it does outside a trigger.
 	 * @param operation The trigger operation to simulate.
 	 * @return `TriggerHandler` This instance, which enables method chaining.
 	 * @example
@@ -971,8 +961,10 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	@TestVisible
 	protected TriggerHandler setTestContext(System.TriggerOperation operation) {
-		Boolean inTest = Test.isRunningTest();
-		setTriggerContext(inTest ? operation : Trigger.operationType, inTest);
+		if (Test.isRunningTest()) {
+			triggerEvent = operation;
+			isTriggerExecuting = operation != null;
+		}
 		return this;
 	}
 
@@ -997,49 +989,42 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void beforeInsert() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void beforeUpdate() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void beforeDelete() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void afterInsert() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void afterUpdate() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void afterDelete() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void afterUndelete() {
 	}
 
@@ -1054,7 +1039,6 @@ public inherited sharing virtual class TriggerHandler {
 	 * @author James Simone
 	 * @since 2022
 	 */
-	@TestVisible
 	protected virtual void andFinally() {
 	}
 
