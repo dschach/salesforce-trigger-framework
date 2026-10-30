@@ -254,10 +254,11 @@ public inherited sharing virtual class TriggerHandler {
 			throw new TriggerHandlerException(ERROR_LOOP_COUNT);
 		}
 		String handlerName = getHandlerName();
-		if (!TriggerHandler.loopCountMap.containsKey(handlerName)) {
+		LoopCount counter = TriggerHandler.loopCountMap.get(handlerName);
+		if (counter == null) {
 			TriggerHandler.loopCountMap.put(handlerName, new LoopCount(max));
 		} else {
-			TriggerHandler.loopCountMap.get(handlerName).setMax(max);
+			counter.setMax(max);
 		}
 		return this;
 	}
