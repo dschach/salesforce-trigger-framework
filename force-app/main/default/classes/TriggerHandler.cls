@@ -148,6 +148,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param  handlerType The handler class, written as `ClassName.class`.
 	 * @exception TriggerHandlerException when the type is null.
 	 * @throws TriggerHandlerException when the type is null.
+	 * @see TriggerHandler.TriggerHandler[0]
 	 * @since 2026-10
 	 * @example
 	 * // in the trigger
@@ -277,6 +278,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @exception TriggerHandlerException when the operation or the value is null.
 	 * @throws TriggerHandlerException when the operation or the value is null.
+	 * @see TriggerHandler.setMaxLoopCount[0]
 	 * @since 2026-10
 	 * @example
 	 * this.setMaxLoopCount(System.TriggerOperation.AFTER_UPDATE, 1); // in the handler constructor
@@ -493,6 +495,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * <br>The set does not include the global bypass. For the global bypass, use `isGlobalBypassed()`.
 	 * @deprecated Use `bypassList()`, which holds the same names in sorted order. A later major release removes this method.
 	 * @return `Set<String>` The bypassed handlers.
+	 * @see TriggerHandler.bypassList
 	 * @author David Schach
 	 * @since 2022
 	 * @example
@@ -543,6 +546,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param  desiredValue `true` to bypass the handler, `false` to clear its named bypass.
 	 * @exception TriggerHandlerException when the name is null or blank, or the value is null.
 	 * @throws TriggerHandlerException when the name is null or blank, or the value is null.
+	 * @see TriggerHandler.setBypass[1]
 	 * @since 2021
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @example
@@ -592,6 +596,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @deprecated Use `showHandlerLimits()` for this handler only, or the static `showLimits()` for all handlers. A later major release removes this method.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showLimits[0]
+	 * @see TriggerHandler.showHandlerLimits[0]
 	 * @since 2023
 	 * @example
 	 * // before
@@ -611,6 +616,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param enabled `true` to write the line, `false` or null to stop it.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showLimits[1]
+	 * @see TriggerHandler.showHandlerLimits[1]
 	 * @since 2023
 	 * @example
 	 * // before
@@ -654,6 +660,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @deprecated Use `showHandlerDebug()` for this handler only, or the static `showDebug()` for all handlers. A later major release removes this method.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showDebug[0]
+	 * @see TriggerHandler.showHandlerDebug[0]
 	 * @since 2023
 	 * @example
 	 * // before
@@ -673,6 +680,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param enabled `true` to write the lines, `false` or null to stop them.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showDebug[1]
+	 * @see TriggerHandler.showHandlerDebug[1]
 	 * @since 2023
 	 * @example
 	 * // before
@@ -790,6 +798,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @return `Integer` The total count, or -1 when `setMaxLoopCount()` was never called for the handler.
 	 * @exception TriggerHandlerException when the name is null or blank.
 	 * @throws TriggerHandlerException when the name is null or blank.
+	 * @see TriggerHandler.getLoopCount[1]
 	 * @example
 	 * Integer runs = TriggerHandler.getLoopCount('AccountSampleTriggerHandler');
 	 */
@@ -821,7 +830,6 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Sets the current context from `Trigger.operationType`. Both constructors call it.
 	 * <br>Outside a trigger, `isTriggerExecuting` is false. A test sets its own context with `setTestContext()`.
-	 * @see TriggerHandler.isTriggerExecuting
 	 */
 	private void setTriggerContext() {
 		triggerEvent = Trigger.operationType;
@@ -879,7 +887,6 @@ public inherited sharing abstract class TriggerHandler {
 	 * <br>A subclass can use it, for example in a log line or in a `bypass()` call.
 	 * <br>The runtime lookup reads the start of `toString()`. For an inner class, it gives only the short name. A handler that is an inner class, or that overrides `toString()`, must pass its type to the Type constructor.
 	 * @return `String` The name of this handler.
-	 * @see TriggerHandler.handlerName
 	 * @since 2026-10
 	 */
 	@TestVisible
