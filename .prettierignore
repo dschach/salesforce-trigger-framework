@@ -22,7 +22,7 @@ doc-assets/highlight*.js
 # Code Analyzer reports
 sfca/
 
-.husky/
+# Release Please writes the changelog
+CHANGELOG.md
 
-# Markdown
-*.md
+.husky/
