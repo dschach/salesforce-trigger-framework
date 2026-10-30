@@ -13,7 +13,7 @@
     "prepare": "husky",
     "prepareApexDox": "sh scripts/prepareApexDox.sh",
     "prettier": "prettier --write .",
-    "prettier:docs": "prettier --ignore-path .gitignore --write \"docs/**/*.html\"",
+    "prettier:docs": "prettier --ignore-path .gitignore --write \"docs/**/*.html\" \"doc-assets/**/*.html\"",
     "prettier:verify": "prettier --check .",
     "prune": "bash scripts/prune-branches.sh"
   },

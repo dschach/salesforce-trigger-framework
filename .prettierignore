@@ -16,7 +16,7 @@ package-lock.json
 
 # Generated documentation site (ApexDox). After a regeneration, run
 # npm run prettier:docs, which reads .gitignore instead of this file.
-docs/
+docs/**/*.js
 doc-assets/highlight*.js
 
 # Code Analyzer reports
