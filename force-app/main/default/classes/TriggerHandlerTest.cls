@@ -283,8 +283,10 @@ private inherited sharing class TriggerHandlerTest {
 		TriggerHandler.bypassAll();
 		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
 		Assert.isTrue(calls.isEmpty(), 'a global bypass should stop the handler');
-		Assert.isTrue(TriggerHandler.isBypassed(HANDLER_NAME), 'every handler should be bypassed');
-		Assert.isTrue(TriggerHandler.isBypassed(OTHER_HANDLER), 'a handler that was never named should be bypassed too');
+		Assert.isTrue(TriggerHandler.isGlobalBypassed(), 'the global bypass should be on');
+		Assert.isTrue(TriggerHandler.isSkipped(HANDLER_NAME), 'every handler should be skipped');
+		Assert.isTrue(TriggerHandler.isSkipped(OTHER_HANDLER), 'a handler that was never named should be skipped too');
+		Assert.isFalse(TriggerHandler.isBypassed(OTHER_HANDLER), 'isBypassed should answer only the named bypass');
 		Assert.areEqual(new List<String>{ TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassList(), 'the bypass list should hold only the alias');
 		Assert.areEqual(new Set<String>{ TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassSet(), 'the bypass set should hold only the alias');
 	}
@@ -325,7 +327,8 @@ private inherited sharing class TriggerHandlerTest {
 		TriggerHandler.bypassAll();
 		TriggerHandler.bypass(HANDLER_NAME);
 		TriggerHandler.clearGlobalBypass();
-		Assert.isFalse(TriggerHandler.isBypassed(OTHER_HANDLER), 'the global bypass should be cleared');
+		Assert.isFalse(TriggerHandler.isGlobalBypassed(), 'the global bypass should be cleared');
+		Assert.isFalse(TriggerHandler.isSkipped(OTHER_HANDLER), 'a handler that was not named should run');
 		Assert.isTrue(TriggerHandler.isBypassed(HANDLER_NAME), 'the named bypass should stay');
 		Assert.areEqual(new List<String>{ HANDLER_NAME }, TriggerHandler.bypassList(), 'the bypass list should hold only the named handler');
 		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
@@ -340,7 +343,8 @@ private inherited sharing class TriggerHandlerTest {
 		TriggerHandler.bypassAll();
 		TriggerHandler.bypass(HANDLER_NAME);
 		TriggerHandler.clearBypassList();
-		Assert.isTrue(TriggerHandler.isBypassed(OTHER_HANDLER), 'the global bypass should stay');
+		Assert.isTrue(TriggerHandler.isGlobalBypassed(), 'the global bypass should stay');
+		Assert.isFalse(TriggerHandler.isBypassed(HANDLER_NAME), 'the named bypass should be cleared');
 		Assert.areEqual(new List<String>{ TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassList(), 'the bypass list should hold only the alias');
 		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
 		Assert.isTrue(calls.isEmpty(), 'the handler should still be bypassed');
@@ -363,17 +367,55 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * `setBypass(name, false)` clears the named bypass and also the global bypass.
+	 * `setBypass(name, false)` clears only the named bypass. A global bypass stays, so the handler runs only after `clearGlobalBypass()`.
 	 */
 	@IsTest
-	private static void setBypassFalseClearsNamedAndGlobalBypass() {
+	private static void setBypassFalseClearsOnlyNamedBypass() {
 		TriggerHandler.bypassAll();
 		TriggerHandler.bypass(HANDLER_NAME);
 		TriggerHandler.setBypass(HANDLER_NAME, false);
-		Assert.isFalse(TriggerHandler.isBypassed(OTHER_HANDLER), 'setBypass false should clear the global bypass');
-		Assert.isTrue(TriggerHandler.bypassList().isEmpty(), 'the bypass list should be empty');
+		Assert.isFalse(TriggerHandler.isBypassed(HANDLER_NAME), 'setBypass false should clear the named bypass');
+		Assert.isTrue(TriggerHandler.isGlobalBypassed(), 'setBypass false should keep the global bypass');
+		Assert.isTrue(TriggerHandler.isSkipped(HANDLER_NAME), 'the handler should still be skipped');
 		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
-		Assert.areEqual(new List<String>{ 'afterUpdate', 'andFinally' }, calls, 'the handler should run');
+		Assert.isTrue(calls.isEmpty(), 'the global bypass should still stop the handler');
+
+		TriggerHandler.clearGlobalBypass();
+		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
+		Assert.areEqual(new List<String>{ 'afterUpdate', 'andFinally' }, calls, 'the handler should run after the global bypass is cleared');
+	}
+
+	/**
+	 * The save-and-restore idiom with `isBypassed()` and `setBypass()` gives back exactly the state before it, also under a global bypass.
+	 */
+	@IsTest
+	private static void setBypassRestoresTheEarlierState() {
+		TriggerHandler.bypassAll();
+		Boolean wasBypassed = TriggerHandler.isBypassed(HANDLER_NAME);
+		TriggerHandler.bypass(HANDLER_NAME);
+		TriggerHandler.setBypass(HANDLER_NAME, wasBypassed);
+		Assert.isFalse(TriggerHandler.isBypassed(HANDLER_NAME), 'the idiom should not leave a named bypass behind');
+
+		TriggerHandler.clearGlobalBypass();
+		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
+		Assert.areEqual(new List<String>{ 'afterUpdate', 'andFinally' }, calls, 'the handler should run once the global bypass is cleared');
+	}
+
+	/**
+	 * `isSkipped()` is true for a named bypass or a global bypass, by name and by type.
+	 */
+	@IsTest
+	private static void isSkippedCombinesNamedAndGlobalBypass() {
+		Assert.isFalse(TriggerHandler.isSkipped(HANDLER_NAME), 'a handler with no bypass should not be skipped');
+		Assert.isFalse(TriggerHandler.isSkipped(TriggerHandlerTest.TestHandler.class), 'a handler type with no bypass should not be skipped');
+
+		TriggerHandler.bypass(TriggerHandlerTest.TestHandler.class);
+		Assert.isTrue(TriggerHandler.isSkipped(HANDLER_NAME), 'a named bypass should skip the handler');
+		Assert.isTrue(TriggerHandler.isSkipped(TriggerHandlerTest.TestHandler.class), 'a type bypass should skip the handler');
+		Assert.isFalse(TriggerHandler.isSkipped(OTHER_HANDLER), 'another handler should not be skipped');
+
+		TriggerHandler.bypassAll();
+		Assert.isTrue(TriggerHandler.isSkipped(OTHER_HANDLER), 'the global bypass should skip every handler');
 	}
 
 	// loop count
@@ -609,6 +651,8 @@ private inherited sharing class TriggerHandlerTest {
 			'clearBypass null list' => TriggerHandler.ERROR_HANDLER_NAMES,
 			'isBypassed null string' => TriggerHandler.ERROR_HANDLER_NAME,
 			'isBypassed null type' => TriggerHandler.ERROR_HANDLER_TYPE,
+			'isSkipped null string' => TriggerHandler.ERROR_HANDLER_NAME,
+			'isSkipped null type' => TriggerHandler.ERROR_HANDLER_TYPE,
 			'setBypass null value' => TriggerHandler.ERROR_BYPASS_VALUE,
 			'setMaxLoopCount null' => TriggerHandler.ERROR_LOOP_COUNT,
 			'getLoopCount null' => TriggerHandler.ERROR_HANDLER_NAME
@@ -661,6 +705,12 @@ private inherited sharing class TriggerHandlerTest {
 			}
 			when 'isBypassed null type' {
 				TriggerHandler.isBypassed((Type) null);
+			}
+			when 'isSkipped null string' {
+				TriggerHandler.isSkipped((String) null);
+			}
+			when 'isSkipped null type' {
+				TriggerHandler.isSkipped((Type) null);
 			}
 			when 'setBypass null value' {
 				TriggerHandler.setBypass(HANDLER_NAME, null);

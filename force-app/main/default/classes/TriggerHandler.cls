@@ -387,38 +387,85 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * A handler is bypassed when it was bypassed by name or type, or when all handlers are bypassed.
+	 * Whether a handler is bypassed by name or by type. The global bypass is not part of the answer: use `isGlobalBypassed()` for it, or `isSkipped()` for both.
 	 *
 	 * @param handlerName The class name of the handler to check. It matches regardless of case.
-	 * @return            `Boolean` Is this handler bypassed?
+	 * @return            `Boolean` Is this handler bypassed by name or by type?
 	 * @exception TriggerHandlerException when the name is null or blank.
 	 * @throws TriggerHandlerException when the name is null or blank.
+	 * @see TriggerHandler.isSkipped[0]
 	 * @example
 	 * if (TriggerHandler.isBypassed('AccountSampleTriggerHandler')) {
-	 *   // the handler will not run
+	 *   // the handler is bypassed by name
 	 * }
 	 */
 	public static Boolean isBypassed(String handlerName) {
 		requireHandlerName(handlerName);
-		return globalBypass || TriggerHandler.bypassedHandlersLower.contains(handlerName.toLowerCase());
+		return TriggerHandler.bypassedHandlersLower.contains(handlerName.toLowerCase());
 	}
 
 	/**
-	 * A handler is bypassed when it was bypassed by name or type, or when all handlers are bypassed.
+	 * Whether a handler is bypassed by name or by type. The global bypass is not part of the answer: use `isGlobalBypassed()` for it, or `isSkipped()` for both.
 	 *
 	 * @since 2021
 	 * @param handlerType The handler class to check, written as `ClassName.class`.
-	 * @return            `Boolean` Is this handler bypassed?
+	 * @return            `Boolean` Is this handler bypassed by name or by type?
 	 * @exception TriggerHandlerException when the type is null.
 	 * @throws TriggerHandlerException when the type is null.
+	 * @see TriggerHandler.isSkipped[1]
 	 * @example
 	 * if (TriggerHandler.isBypassed(AccountSampleTriggerHandler.class)) {
-	 *   // the handler will not run
+	 *   // the handler is bypassed by name
 	 * }
 	 */
 	public static Boolean isBypassed(Type handlerType) {
 		requireHandlerType(handlerType);
 		return TriggerHandler.isBypassed(handlerType.getName());
+	}
+
+	/**
+	 * Whether all handlers are bypassed, after `bypassAll()`.
+	 *
+	 * @return `Boolean` Is the global bypass on?
+	 * @example
+	 * if (TriggerHandler.isGlobalBypassed()) {
+	 *   // no handler will run
+	 * }
+	 */
+	public static Boolean isGlobalBypassed() {
+		return globalBypass;
+	}
+
+	/**
+	 * Whether a handler will not run, because it is bypassed by name or by type, or because all handlers are bypassed.
+	 *
+	 * @param handlerName The class name of the handler to check. It matches regardless of case.
+	 * @return            `Boolean` Will this handler be skipped?
+	 * @exception TriggerHandlerException when the name is null or blank.
+	 * @throws TriggerHandlerException when the name is null or blank.
+	 * @example
+	 * if (TriggerHandler.isSkipped('AccountSampleTriggerHandler')) {
+	 *   // the handler will not run
+	 * }
+	 */
+	public static Boolean isSkipped(String handlerName) {
+		return TriggerHandler.isBypassed(handlerName) || globalBypass;
+	}
+
+	/**
+	 * Whether a handler will not run, because it is bypassed by name or by type, or because all handlers are bypassed.
+	 *
+	 * @param handlerType The handler class to check, written as `ClassName.class`.
+	 * @return            `Boolean` Will this handler be skipped?
+	 * @exception TriggerHandlerException when the type is null.
+	 * @throws TriggerHandlerException when the type is null.
+	 * @example
+	 * if (TriggerHandler.isSkipped(AccountSampleTriggerHandler.class)) {
+	 *   // the handler will not run
+	 * }
+	 */
+	public static Boolean isSkipped(Type handlerType) {
+		return TriggerHandler.isBypassed(handlerType) || globalBypass;
 	}
 
 	/**
@@ -496,9 +543,9 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Set bypass status to a specific value. Eliminates the need to know the current bypass status.
-	 * <br>`false` also clears the global bypass, so that this handler runs. Every other handler then runs too, because a global bypass cannot exclude 1 handler.
-	 * <br>So the save-and-restore idiom below restores the named bypass only, not a global bypass that was active before.
+	 * Set the named bypass of a handler to a specific value. Eliminates the need to know the current bypass status.
+	 * <br>`false` clears only the named bypass. A global bypass stays, so the handler still does not run until `clearGlobalBypass()`.
+	 * <br>`isBypassed()` answers only the named bypass, so the save-and-restore idiom below gives back exactly the state before it.
 	 * @since 2021
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @param  handlerName  The name of the TriggerHandler class.
@@ -522,7 +569,6 @@ public inherited sharing virtual class TriggerHandler {
 			TriggerHandler.bypass(handlerName);
 			return;
 		}
-		clearGlobalBypass();
 		TriggerHandler.clearBypass(handlerName);
 	}
 
@@ -717,7 +763,8 @@ public inherited sharing virtual class TriggerHandler {
 		if (globalBypass) {
 			return false;
 		}
-		return TriggerHandler.bypassedHandlersLower.isEmpty() || !TriggerHandler.bypassedHandlersLower.contains(getHandlerName().toLowerCase());
+		// the same rule as isSkipped(); with no named bypass, the handler name is not needed
+		return TriggerHandler.bypassedHandlersLower.isEmpty() || !TriggerHandler.isBypassed(getHandlerName());
 	}
 
 	/**

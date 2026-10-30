@@ -233,11 +233,15 @@ Bypass names match regardless of case. You can also bypass by type, as in `Trigg
 
 ### Check Bypass Status
 
-If you need to check if a handler is bypassed, use the `isBypassed` method:
+A handler can be bypassed by name, or all handlers can be bypassed together. 3 methods tell you which:
+
+- `isBypassed(name)` or `isBypassed(type)` is `true` when the handler is bypassed by name or by type. It does not include the global bypass.
+- `isGlobalBypassed()` is `true` when all handlers are bypassed.
+- `isSkipped(name)` or `isSkipped(type)` is `true` when either of them is true, so the handler will not run.
 
 ```apex
-if (TriggerHandler.isBypassed('AccountTriggerHandler')) {
-  /* ... do something if the Account trigger handler is bypassed! */
+if (TriggerHandler.isSkipped(AccountTriggerHandler.class)) {
+  /* ... do something if the Account trigger handler will not run! */
 }
 ```
 
@@ -276,19 +280,22 @@ TriggerHandler.bypass('AccountTriggerHandler');
 TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
 ```
 
-`setBypass(name, false)` also clears the global bypass, because a global bypass cannot leave out 1 handler. So this idiom restores the named bypass, not a global bypass that was active before.
+`setBypass(name, false)` clears only the named bypass, and `isBypassed()` answers only the named bypass. So this idiom gives back exactly the state before it. A global bypass stays on through it.
 
 To bypass all handlers for a while, and then go back to the handlers that were bypassed by name before, call `bypassAll()` and then `clearGlobalBypass()`. The named bypasses stay during the global bypass, so you do not need to store them:
 
 ```apex
+Boolean wasGlobalBypassed = TriggerHandler.isGlobalBypassed();
 TriggerHandler.bypassAll();
 
 /* do something here */
 
-TriggerHandler.clearGlobalBypass();
+if (!wasGlobalBypassed) {
+  TriggerHandler.clearGlobalBypass();
+}
 ```
 
-If all handlers were bypassed before, leave out `clearGlobalBypass()`, so that the global bypass stays.
+The check of `isGlobalBypassed()` keeps a global bypass that was on before.
 
 ### Max Loop Count
 
@@ -476,11 +483,14 @@ Every public member of `TriggerHandler`. The [class documentation](https://david
 | `static clearBypass(String handlerName)`                     | Clears the bypass of a handler by name.                                                                                                                  |
 | `static clearBypass(Type handlerType)`                       | Clears the bypass of a handler by type.                                                                                                                  |
 | `static clearBypass(List<String> handlerNames)`              | Clears the bypass of a list of handlers by name.                                                                                                         |
-| `static isBypassed(String handlerName)`                      | Returns `true` when the handler is bypassed by name or type, or when all handlers are bypassed.                                                          |
+| `static isBypassed(String handlerName)`                      | Returns `true` when the handler is bypassed by name or type. The global bypass is not part of the answer.                                                |
 | `static isBypassed(Type handlerType)`                        | The same check, by type.                                                                                                                                 |
+| `static isGlobalBypassed()`                                  | Returns `true` when all handlers are bypassed.                                                                                                           |
+| `static isSkipped(String handlerName)`                       | Returns `true` when the handler will not run: it is bypassed by name or type, or all handlers are bypassed.                                              |
+| `static isSkipped(Type handlerType)`                         | The same check, by type.                                                                                                                                 |
 | `static bypassList()`                                        | Returns a sorted list of the bypassed handlers, with `BypassAll` when all handlers are bypassed.                                                         |
 | `static bypassSet()`                                         | Returns a set of the bypassed handlers, with `BypassAll` when all handlers are bypassed.                                                                 |
-| `static setBypass(String handlerName, Boolean desiredValue)` | Bypasses the handler for `true`. For `false`, clears its bypass and the global bypass.                                                                   |
+| `static setBypass(String handlerName, Boolean desiredValue)` | Bypasses the handler for `true`. For `false`, clears only its named bypass.                                                                              |
 | `static clearAllBypasses()`                                  | Clears the global bypass and the list of named bypasses.                                                                                                 |
 | `static clearGlobalBypass()`                                 | Clears only the global bypass.                                                                                                                           |
 | `static clearBypassList()`                                   | Clears only the list of named bypasses.                                                                                                                  |
