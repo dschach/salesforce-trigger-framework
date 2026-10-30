@@ -117,50 +117,42 @@
 						<a href="https://x.com/dschach"><img src="https://img.shields.io/twitter/follow/dschach.svg?style=social" alt="Twitter" /></a>
 					</p>
 					<h1>Salesforce Trigger Framework</h1>
+					<!-- START doctoc -->
 					<ul>
+						<li><a href="#credit">Credit</a></li>
 						<li>
-							<a href="#salesforce-trigger-framework">Salesforce Trigger Framework</a>
+							<a href="#documentation">Documentation</a>
 							<ul>
-								<li><a href="#credit">Credit</a></li>
-								<li>
-									<a href="#documentation">Documentation</a>
-									<ul>
-										<li><a href="#changelog">Changelog</a></li>
-									</ul>
-								</li>
-								<li><a href="#overview">Overview</a></li>
-								<li>
-									<a href="#usage">Usage</a>
-									<ul>
-										<li><a href="#trigger-handler">Trigger Handler</a></li>
-										<li><a href="#trigger">Trigger</a></li>
-										<li><a href="#data-access">Data access</a></li>
-									</ul>
-								</li>
-								<li>
-									<a href="#cool-stuff">Cool Stuff</a>
-									<ul>
-										<li><a href="#bypass-api">Bypass API</a></li>
-										<li><a href="#check-bypass-status">Check Bypass Status</a></li>
-										<li><a href="#global-bypass">Global Bypass</a></li>
-										<li><a href="#set-bypass">Set Bypass</a></li>
-										<li><a href="#max-loop-count">Max Loop Count</a></li>
-										<li><a href="#debug-statements">Debug Statements</a></li>
-										<li>
-											<a href="#send-the-messages-to-your-logging-framework">Send the Messages to Your Logging Framework</a>
-											<ul>
-												<li><a href="#example-nebula-logger">Example: Nebula Logger</a></li>
-											</ul>
-										</li>
-										<li><a href="#universal-action">Universal Action</a></li>
-									</ul>
-								</li>
-								<li><a href="#test-a-handler-without-dml">Test a Handler Without DML</a></li>
-								<li><a href="#overridable-methods">Overridable Methods</a></li>
-								<li><a href="#api-reference">API Reference</a></li>
+								<li><a href="#changelog">Changelog</a></li>
 							</ul>
 						</li>
+						<li><a href="#overview">Overview</a></li>
+						<li>
+							<a href="#usage">Usage</a>
+							<ul>
+								<li><a href="#trigger-handler">Trigger Handler</a></li>
+								<li><a href="#trigger">Trigger</a></li>
+								<li><a href="#data-access">Data access</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#cool-stuff">Cool Stuff</a>
+							<ul>
+								<li><a href="#bypass-api">Bypass API</a></li>
+								<li><a href="#check-bypass-status">Check Bypass Status</a></li>
+								<li><a href="#global-bypass">Global Bypass</a></li>
+								<li><a href="#set-bypass">Set Bypass</a></li>
+								<li><a href="#max-loop-count">Max Loop Count</a></li>
+								<li><a href="#debug-statements">Debug Statements</a></li>
+								<li><a href="#send-the-messages-to-your-logging-framework">Send the Messages to Your Logging Framework</a></li>
+								<li><a href="#universal-action">Universal Action</a></li>
+							</ul>
+						</li>
+						<li><a href="#test-a-handler-without-dml">Test a Handler Without DML</a></li>
+						<li><a href="#overridable-methods">Overridable Methods</a></li>
+						<li><a href="#api-reference">API Reference</a></li>
 					</ul>
+					<!-- END doctoc -->
 					<h2>Credit</h2>
 					<p>
 						Based on Kevin O&#39;Hara&#39;s famous framework
@@ -272,7 +264,7 @@
 						<code>andFinally()</code>. Some objects do not support every context, for example an object that cannot be undeleted. For such an object,
 						leave out the contexts that it does not support.
 					</p>
-					<pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+					<pre><code class="language-apex">trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().run();
 }
 </code></pre>
@@ -408,7 +400,7 @@ TriggerHandler.bypass(bypassedHandlers);
 						never set a maximum.
 					</p>
 					<p>In version 1.2, the ability to chain methods was added. Now, you can set the max loop count in a single line in your trigger:</p>
-					<pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+					<pre><code class="language-apex">trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().setMaxLoopCount(5).run();
 }
 </code></pre>
@@ -442,12 +434,12 @@ TriggerHandler.showDebug(false);
 						In version 1.2, the ability to chain methods <em>in triggers</em> was added. Now, you can specify showing debug messages and limits in a
 						single line in your trigger:
 					</p>
-					<pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+					<pre><code class="language-apex">trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().debug().limits().run(); // debug() is the same as debug(true)
 }
 </code></pre>
 					<p>Or stop showing them.</p>
-					<pre><code class="language-apex">trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+					<pre><code class="language-apex">trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().debug(false).limits(false).run();
 }
 </code></pre>
