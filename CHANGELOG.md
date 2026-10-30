@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.5.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.4.2...v1.5.0) (2026-10-30)
+
+
+### Features
+
+* **handler:** Let a test run a handler without DML ([312e121](https://github.com/dschach/salesforce-trigger-framework/commit/312e121e4a5f17471212e555d8748e278bf43ea8))
+* **handler:** Route the framework messages through a log hook ([#372](https://github.com/dschach/salesforce-trigger-framework/issues/372)) ([312e121](https://github.com/dschach/salesforce-trigger-framework/commit/312e121e4a5f17471212e555d8748e278bf43ea8))
+
+
+### Code Refactoring
+
+* **handler:** Clear 4 Code Analyzer findings in TriggerHandler ([#373](https://github.com/dschach/salesforce-trigger-framework/issues/373)) ([3cc05e4](https://github.com/dschach/salesforce-trigger-framework/commit/3cc05e4dee1a3119cb64ed561369a94129e031a2))
+
+
+### Continuous Integration
+
+* **apex-tests:** Run the Apex tests on pushes to main that change a class ([#368](https://github.com/dschach/salesforce-trigger-framework/issues/368)) ([e9a4ed3](https://github.com/dschach/salesforce-trigger-framework/commit/e9a4ed3f8aa4167e16669e1860ba049cf847c750))
+* **apex-tests:** Stop project config changes from starting a run ([e9a4ed3](https://github.com/dschach/salesforce-trigger-framework/commit/e9a4ed3f8aa4167e16669e1860ba049cf847c750))
+* **release-please:** Open release PRs with a token of their own ([#371](https://github.com/dschach/salesforce-trigger-framework/issues/371)) ([94e1de0](https://github.com/dschach/salesforce-trigger-framework/commit/94e1de0ef8a4da4a52d498f14308633197cedc17))
+
 ## [1.4.2](https://github.com/dschach/salesforce-trigger-framework/compare/v1.4.1...v1.4.2) (2026-10-30)
 
 
