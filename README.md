@@ -4,18 +4,30 @@
 
 # Salesforce Trigger Framework
 
-<!-- toc -->
+<!-- START doctoc -->
 
 - [Credit](#credit)
 - [Documentation](#documentation)
+  - [Changelog](#changelog)
 - [Overview](#overview)
 - [Usage](#usage)
+  - [Trigger Handler](#trigger-handler)
+  - [Trigger](#trigger)
+  - [Data access](#data-access)
 - [Cool Stuff](#cool-stuff)
+  - [Bypass API](#bypass-api)
+  - [Check Bypass Status](#check-bypass-status)
+  - [Global Bypass](#global-bypass)
+  - [Set Bypass](#set-bypass)
+  - [Max Loop Count](#max-loop-count)
+  - [Debug Statements](#debug-statements)
+  - [Send the Messages to Your Logging Framework](#send-the-messages-to-your-logging-framework)
+  - [Universal Action](#universal-action)
 - [Test a Handler Without DML](#test-a-handler-without-dml)
 - [Overridable Methods](#overridable-methods)
 - [API Reference](#api-reference)
 
-<!-- tocstop -->
+<!-- END doctoc -->
 
 ## Credit
 

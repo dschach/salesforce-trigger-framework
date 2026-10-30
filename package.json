@@ -19,6 +19,7 @@
   },
   "devDependencies": {
     "@x2od/prettier-config": "^0.7.0",
+    "doctoc": "^2.5.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.6.0",
     "marked": "^18.1.2",
@@ -27,6 +28,9 @@
   "lint-staged": {
     "code-analyzer.yml": [
       "sh scripts/strip-config-paths.sh"
+    ],
+    "*.md": [
+      "doctoc --update-only --minlevel 2 --notitle --toc-pragma-style compact --loglevel warn --maxlevel 3"
     ],
     "*": [
       "prettier --write --ignore-unknown"
