@@ -114,37 +114,51 @@ The value to pass is the name of your handler class, followed by `.class`. In Ap
 
 ```apex
 public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+  private List<Opportunity> newRecords;
+  private List<Opportunity> oldRecords;
+
   public OpportunityTriggerHandler() {
     super(OpportunityTriggerHandler.class);
+    this.newRecords = (List<Opportunity>) Trigger.new;
+    this.oldRecords = (List<Opportunity>) Trigger.old;
   }
 }
 ```
+
+Call `super()` first, and then cast the trigger collections that the handler uses.
 
 For a handler that is an inner class, write the outer class name, a dot, and the inner class name. The handler name is then `SalesHandlers.OpportunityTriggerHandler`, and `TriggerHandler.bypass(SalesHandlers.OpportunityTriggerHandler.class)` matches it. An inner-class handler must pass its class, because without it the framework finds only the short name, `OpportunityTriggerHandler`.
 
 ```apex
 public inherited sharing class SalesHandlers {
   public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+    private List<Opportunity> newRecords;
+    private List<Opportunity> oldRecords;
+
     public OpportunityTriggerHandler() {
       super(SalesHandlers.OpportunityTriggerHandler.class);
+      this.newRecords = (List<Opportunity>) Trigger.new;
+      this.oldRecords = (List<Opportunity>) Trigger.old;
     }
   }
 }
 ```
 
-A handler with more than 1 constructor passes the class in the constructor that calls `super()`. The other constructors call that constructor with `this()`.
+A handler with more than 1 constructor passes the class in the constructor that calls `super()`. The other constructors call that constructor with `this()`. In this example, the trigger uses the first constructor, which passes `Trigger.new` and `Trigger.old` to the second. A test can call the second constructor with its own records.
 
 ```apex
 public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
   private List<Opportunity> newRecords;
+  private List<Opportunity> oldRecords;
 
   public OpportunityTriggerHandler() {
-    this((List<Opportunity>) Trigger.new);
+    this((List<Opportunity>) Trigger.new, (List<Opportunity>) Trigger.old);
   }
 
-  public OpportunityTriggerHandler(List<Opportunity> newRecords) {
+  public OpportunityTriggerHandler(List<Opportunity> newRecords, List<Opportunity> oldRecords) {
     super(OpportunityTriggerHandler.class);
     this.newRecords = newRecords;
+    this.oldRecords = oldRecords;
   }
 }
 ```

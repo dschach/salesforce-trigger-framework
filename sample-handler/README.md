@@ -6,14 +6,11 @@ This folder holds a sample trigger, trigger handler, and test for the [Salesforc
 
 - `main/default/triggers/AccountSampleTrigger.trigger` has no logic: it creates the handler and calls `run()`. It lists all 7 contexts, even the ones the handler does not override, so the trigger is written once and never edited again. A new override in the handler runs without a change to the trigger:
 
-  ```apex
-  trigger AccountSampleTrigger on Account(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
-    new AccountSampleTriggerHandler().run();
-  ```
-
+```apex
+trigger AccountSampleTrigger on Account(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+  new AccountSampleTriggerHandler().run();
 }
-
-````
+```
 
 - `main/default/classes/AccountSampleTriggerHandler.cls` extends `TriggerHandler` and shows these parts of the framework:
 - The constructor passes the class to `super()`, casts the trigger collections that the handler uses, and sets a loop limit with `setMaxLoopCount()`. The limit is high enough that a bulk update does not reach it.
@@ -30,7 +27,7 @@ Deploy the framework and the sample together, and run the sample test:
 ```bash
 sf project deploy start --source-dir force-app --source-dir sample-handler --target-org <alias>
 sf apex run test --class-names AccountSampleTriggerHandlerTest --target-org <alias> --wait 10
-````
+```
 
 ## General Theme
 
@@ -55,10 +52,10 @@ trigger AccountSampleTrigger on Account(before insert, before update, before del
 ```apex
 /**
  * A sample Account trigger handler that shows the framework in use.
- * <br>Before insert and before update, it removes extra spaces from each new or changed Account name.
- * <br>After update, it copies a changed phone number to the child Accounts. It bypasses itself for that update, so the update does not run this handler again.
- * <br>A loop limit protects against recursion that the bypass does not stop, and `andFinally()` runs after each context.
- * <br>A trigger runs without sharing, so this `inherited sharing` handler does too. Every query and DML statement names `SYSTEM_MODE`, so the handler can update child Accounts that the running user cannot edit.
+ * Before insert and before update, it removes extra spaces from each new or changed Account name.
+ * After update, it copies a changed phone number to the child Accounts. It bypasses itself for that update, so the update does not run this handler again.
+ * A loop limit protects against recursion that the bypass does not stop, and `andFinally()` runs after each context.
+ * A trigger runs without sharing, so this `inherited sharing` handler does too. Every query and DML statement names `SYSTEM_MODE`, so the handler can update child Accounts that the running user cannot edit.
  * @author David Schach
  * @since 2021
  * @group SampleTriggerHandler
@@ -147,8 +144,8 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 
   /**
    * Update the phone number of the child Accounts, with this handler bypassed for that update.
-   * <br>A child Account that is in the same trigger run is left out, because a trigger cannot update the records it is running for.
-   * <br>The query and the update run in system mode, so `FlagSystemMode` is suppressed for this method. The phone number must reach every child Account, also a child Account that the running user cannot see or edit.
+   * A child Account that is in the same trigger run is left out, because a trigger cannot update the records it is running for.
+   * The query and the update run in system mode, so `FlagSystemMode` is suppressed for this method. The phone number must reach every child Account, also a child Account that the running user cannot see or edit.
    * @param phoneByParentId The new phone number of each parent Account, by Id.
    */
   @SuppressWarnings('PMD.FlagSystemMode')
