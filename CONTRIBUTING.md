@@ -25,7 +25,7 @@ npm ci
 sf plugins install code-analyzer
 ```
 
-`npm ci` installs Prettier and its plugins. It also installs the commit hook, which formats the files that you stage and updates the table of contents of each staged markdown file.
+`npm ci` installs Prettier and its plugins. It also installs the commit hook, which formats the files that you stage and updates the table of contents of each staged markdown file. When you stage a file of the sample, the hook also copies the sample trigger and handler into `sample-handler/README.md`.
 
 ## Project Layout
 

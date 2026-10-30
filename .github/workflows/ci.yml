@@ -40,6 +40,9 @@ jobs:
       - name: "Code formatting verification with Prettier"
         run: npm run prettier:verify
 
+      - name: "Check the sample code in the sample README"
+        run: node scripts/sync-sample-code.mjs --check
+
   sfca-analysis:
     runs-on: ubuntu-latest
     permissions:

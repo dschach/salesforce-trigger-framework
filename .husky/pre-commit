@@ -1,1 +1,13 @@
+# When a sample file or the sample README is staged, copy the staged sample code into the
+# sample README and stage it. Unstaged changes in the README would be staged with it, so
+# the hook stops when there are some.
+if git diff --cached --name-only | grep -Eq '^sample-handler/(README\.md|.+\.(cls|trigger))$'; then
+	if ! git diff --quiet -- sample-handler/README.md; then
+		echo "sample-handler/README.md has unstaged changes. Stage or stash them, and commit again." >&2
+		exit 1
+	fi
+	node scripts/sync-sample-code.mjs --index || exit 1
+	git add sample-handler/README.md
+fi
+
 npx lint-staged --concurrent false
