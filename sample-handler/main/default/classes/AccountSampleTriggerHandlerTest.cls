@@ -84,7 +84,8 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 		Account parentAccount = insertAccount('Parent Account');
 		insertChildAccount(parentAccount.Id);
 		AccountSampleTriggerHandler.finishedOperations.clear();
-		Integer loopCountBefore = TriggerHandler.getLoopCount(HANDLER_NAME);
+		Integer beforeUpdateRuns = TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_UPDATE);
+		Integer afterUpdateRuns = TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.AFTER_UPDATE);
 
 		parentAccount.Phone = '555-0100';
 		update as system parentAccount;
@@ -93,7 +94,16 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 			AccountSampleTriggerHandler.finishedOperations,
 			'only the update of the parent should run the handler'
 		);
-		Assert.areEqual(loopCountBefore + 2, TriggerHandler.getLoopCount(HANDLER_NAME), 'the update of the parent should use 2 runs, and the child update none');
+		Assert.areEqual(
+			beforeUpdateRuns + 1,
+			TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_UPDATE),
+			'the update of the parent should use 1 before update run, and the child update none'
+		);
+		Assert.areEqual(
+			afterUpdateRuns + 1,
+			TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.AFTER_UPDATE),
+			'the update of the parent should use 1 after update run, and the child update none'
+		);
 	}
 
 	/**
@@ -157,7 +167,8 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 			accounts.add(new Account(Name = '  Bulk   Account ' + index));
 		}
 		insert as system accounts;
-		Assert.areEqual(4, TriggerHandler.getLoopCount(HANDLER_NAME), 'the 2 chunks of the insert should each use 1 run before insert and 1 after insert');
+		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the 2 chunks of the insert should each use 1 before insert run');
+		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.AFTER_INSERT), 'the 2 chunks of the insert should each use 1 after insert run');
 		Assert.areEqual(250, [SELECT COUNT() FROM Account WHERE Name LIKE 'Bulk Account %' WITH SYSTEM_MODE], 'every chunk should remove the extra spaces');
 	}
 

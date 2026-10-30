@@ -14,10 +14,10 @@
 @SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.EmptyStatementBlock')
 public inherited sharing virtual class TriggerHandler {
 	/**
-	 * The loop counter of each handler, by handler name. A handler has a counter only after `setMaxLoopCount()` is called for it, so `getLoopCount()` is 0 for a handler with no limit.
+	 * The loop counters of each handler, by handler name and then by trigger operation. A handler has a counter for an operation only after a limit is set for that operation, so `getLoopCount()` returns `NOT_COUNTED` for an operation with no limit.
 	 */
 	@TestVisible
-	private static Map<String, LoopCounter> loopCountMap = new Map<String, LoopCounter>();
+	private static Map<String, Map<System.TriggerOperation, LoopCounter>> loopCountMap = new Map<String, Map<System.TriggerOperation, LoopCounter>>();
 
 	/**
 	 * All bypassed handlers, as the caller spelled them.
@@ -72,9 +72,15 @@ public inherited sharing virtual class TriggerHandler {
 	private static final Integer DEFAULT_MAX_LOOP_COUNT = 5;
 
 	/**
-	 * The maximum loop count that `clearMaxLoopCount()` sets. Any negative maximum means no limit.
+	 * The maximum loop count that means no limit. `clearMaxLoopCount()` sets it, and a `LoopCounter` stores a maximum of 0 or less as this value.
 	 */
 	private static final Integer NO_LOOP_LIMIT = -1;
+
+	/**
+	 * The count that `getLoopCount()` returns when no limit was ever set, so the runs are not counted.
+	 */
+	@TestVisible
+	private static final Integer NOT_COUNTED = -1;
 
 	/**
 	 * The character that ends the class name in the `toString()` text of an Apex object.
@@ -110,6 +116,12 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	@TestVisible
 	private static final String ERROR_LOOP_COUNT = 'A maximum loop count is required';
+
+	/**
+	 * Error text when the trigger operation is null.
+	 */
+	@TestVisible
+	private static final String ERROR_TRIGGER_OPERATION = 'A trigger operation is required';
 
 	/**
 	 * Error text when the desired bypass value is null.
@@ -236,15 +248,16 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Limit the number of times `run()` executes this handler's context methods.
-	 * <br>The count is kept per handler name for the whole transaction, and it starts when this method is first called for the handler. Every trigger context and every 200-record chunk counts as 1 run. A bypassed run is not counted, and a run that the limit stops is counted.
-	 * <br>When the limit is exceeded, `run()` logs a warning and returns without calling the context method or `andFinally()`.
+	 * Limit the number of times `run()` executes this handler's context methods, with the same limit for each trigger operation.
+	 * <br>Each trigger operation has its own count for the whole transaction, and it starts when a limit is first set for that operation. Every 200-record chunk counts as 1 run of its operation. A bypassed run is not counted, and a run that the limit stops is counted.
+	 * <br>When the limit of an operation is exceeded, `run()` logs a warning and returns without calling the context method or `andFinally()`.
 	 * <br>Returning `TriggerHandler` enables method chaining when used in a trigger.
 	 * @author {@link [David Schach](https://github.com/dschach)}
-	 * @param  max Maximum number of times. 0 means the handler never runs, and a negative value removes the limit.
+	 * @param  max Maximum number of runs of each operation. 0 or a negative value removes the limit.
 	 * @exception TriggerHandlerException when the value is null.
 	 * @throws TriggerHandlerException when the value is null.
 	 * @return      `TriggerHandler` This instance, which enables method chaining.
+	 * @see TriggerHandler.setMaxLoopCount[1]
 	 * @example
 	 * this.setMaxLoopCount(5); // in the handler constructor
 	 * // or, in the trigger
@@ -254,23 +267,67 @@ public inherited sharing virtual class TriggerHandler {
 		if (max == null) {
 			throw new TriggerHandlerException(ERROR_LOOP_COUNT);
 		}
-		String handlerName = getHandlerName();
-		LoopCounter counter = TriggerHandler.loopCountMap.get(handlerName);
-		if (counter == null) {
-			TriggerHandler.loopCountMap.put(handlerName, new LoopCounter(max));
-		} else {
-			counter.setMax(max);
+		for (System.TriggerOperation operation : System.TriggerOperation.values()) {
+			setOperationMax(operation, max);
 		}
 		return this;
 	}
 
 	/**
-	 * Remove the limit on the number of times this handler can run. The handler keeps its counter, so its runs are still counted.
+	 * Limit the number of times `run()` executes this handler's context method for 1 trigger operation. The other operations keep their limits.
+	 * <br>The count of the operation is kept for the whole transaction, and it starts when a limit is first set for it. Every 200-record chunk counts as 1 run. A bypassed run is not counted, and a run that the limit stops is counted.
+	 * @param  operation The trigger operation to limit.
+	 * @param  max Maximum number of runs of the operation. 0 or a negative value removes the limit.
+	 * @exception TriggerHandlerException when the operation or the value is null.
+	 * @throws TriggerHandlerException when the operation or the value is null.
+	 * @return      `TriggerHandler` This instance, which enables method chaining.
+	 * @example
+	 * this.setMaxLoopCount(System.TriggerOperation.AFTER_UPDATE, 1); // in the handler constructor
+	 */
+	public TriggerHandler setMaxLoopCount(System.TriggerOperation operation, Integer max) {
+		if (operation == null) {
+			throw new TriggerHandlerException(ERROR_TRIGGER_OPERATION);
+		}
+		if (max == null) {
+			throw new TriggerHandlerException(ERROR_LOOP_COUNT);
+		}
+		setOperationMax(operation, max);
+		return this;
+	}
+
+	/**
+	 * Remove the limit of every trigger operation of this handler. The handler keeps its counters, so its runs are still counted.
 	 * @example
 	 * clearMaxLoopCount(); // in the handler
 	 */
 	public void clearMaxLoopCount() {
-		setMaxLoopCount(NO_LOOP_LIMIT);
+		Map<System.TriggerOperation, LoopCounter> counters = TriggerHandler.loopCountMap.get(getHandlerName());
+		if (counters == null) {
+			return;
+		}
+		for (LoopCounter counter : counters.values()) {
+			counter.setMax(NO_LOOP_LIMIT);
+		}
+	}
+
+	/**
+	 * Set the limit of 1 trigger operation of this handler, and create its counter when it has none.
+	 * @param operation The trigger operation.
+	 * @param max The maximum number of runs. 0 or a negative value means no limit.
+	 */
+	private void setOperationMax(System.TriggerOperation operation, Integer max) {
+		String handlerName = getHandlerName();
+		Map<System.TriggerOperation, LoopCounter> counters = TriggerHandler.loopCountMap.get(handlerName);
+		if (counters == null) {
+			counters = new Map<System.TriggerOperation, LoopCounter>();
+			TriggerHandler.loopCountMap.put(handlerName, counters);
+		}
+		LoopCounter counter = counters.get(operation);
+		if (counter == null) {
+			counters.put(operation, new LoopCounter(max));
+		} else {
+			counter.setMax(max);
+		}
 	}
 
 	/**
@@ -694,17 +751,44 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Return the number of runs counted for a handler in this transaction, including runs that the loop limit stopped.
+	 * Return the number of runs counted for a handler in this transaction, for all trigger operations together, including runs that the loop limit stopped.
 	 * @param handlerName The handler name to check.
-	 * @return            `Integer` The count, or 0 when `setMaxLoopCount()` was never called for the handler.
+	 * @return            `Integer` The total count, or -1 when no limit was ever set for the handler.
 	 * @exception TriggerHandlerException when the name is null or blank.
 	 * @throws TriggerHandlerException when the name is null or blank.
+	 * @deprecated Use `getLoopCount(String, System.TriggerOperation)`, which returns the count of 1 trigger operation. A later major release removes this method.
 	 * @example
 	 * Integer runs = TriggerHandler.getLoopCount('AccountSampleTriggerHandler');
 	 */
 	public static Integer getLoopCount(String handlerName) {
 		requireHandlerName(handlerName);
-		return TriggerHandler.loopCountMap.get(handlerName)?.getCount() ?? 0;
+		Map<System.TriggerOperation, LoopCounter> counters = TriggerHandler.loopCountMap.get(handlerName);
+		if (counters == null) {
+			return NOT_COUNTED;
+		}
+		Integer total = 0;
+		for (LoopCounter counter : counters.values()) {
+			total += counter.getCount();
+		}
+		return total;
+	}
+
+	/**
+	 * Return the number of runs counted for 1 trigger operation of a handler in this transaction, including runs that the loop limit stopped.
+	 * @param handlerName The handler name to check.
+	 * @param operation The trigger operation to check.
+	 * @return            `Integer` The count, or -1 when no limit was ever set for the operation, because its runs are not counted.
+	 * @exception TriggerHandlerException when the name is null or blank, or the operation is null.
+	 * @throws TriggerHandlerException when the name is null or blank, or the operation is null.
+	 * @example
+	 * Integer runs = TriggerHandler.getLoopCount('AccountSampleTriggerHandler', System.TriggerOperation.AFTER_UPDATE);
+	 */
+	public static Integer getLoopCount(String handlerName, System.TriggerOperation operation) {
+		requireHandlerName(handlerName);
+		if (operation == null) {
+			throw new TriggerHandlerException(ERROR_TRIGGER_OPERATION);
+		}
+		return TriggerHandler.loopCountMap.get(handlerName)?.get(operation)?.getCount() ?? NOT_COUNTED;
 	}
 
 	/**
@@ -730,18 +814,18 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Count this run on the handler's loop counter, when the handler has one, and check the limit.
+	 * Count this run on the loop counter of the handler's current trigger operation, when it has one, and check the limit.
 	 * <br>When the limit is exceeded, log a warning and tell `run()` to return without calling the context method or `andFinally()`.
 	 *
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @author {@link [fbouzeraa](https://github.com/fbouzeraa)}
-	 * @return   `Boolean` `true` when `run()` should continue: the handler has no counter, or it is within its limit. `false` when the limit is exceeded.
+	 * @return   `Boolean` `true` when `run()` should continue: the operation has no counter, or it is within its limit. `false` when the limit is exceeded.
 	 */
 	private Boolean incrementCheckLoopCount() {
 		if (TriggerHandler.loopCountMap.isEmpty()) {
 			return true;
 		}
-		LoopCounter counter = TriggerHandler.loopCountMap.get(getHandlerName());
+		LoopCounter counter = TriggerHandler.loopCountMap.get(getHandlerName())?.get(triggerEvent);
 		if (counter == null || !counter.increment()) {
 			return true;
 		}
@@ -880,8 +964,11 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * `andFinally()` runs after the context method, in every trigger context.
-	 * <br>It does not run when the handler is bypassed, when the loop limit is exceeded, or when the context method throws an exception.
+	 * `andFinally()` runs after the context method returns, in every trigger context, also a context that the handler does not override.
+	 * <br>It does not run when the handler is bypassed or the loop limit stops the run, because then nothing in the handler runs. It also does not run when the context method throws an exception that it does not catch.
+	 * <br>Once a run has started its context method, a bypass cannot stop its `andFinally()`. If the context method bypasses this handler and then updates records of the same object, the run of the handler for that update is skipped completely, and the `andFinally()` of the first run still comes last.
+	 * <br>It also runs when the context method catches its own exception or calls `addError()`.
+	 * <br>If `andFinally()` throws, the exception reaches the caller, and the exit and limits debug lines are not written.
 	 * <br>Credit to James Simone for this idea.
 	 * @see [The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/)
 	 * @author James Simone
@@ -894,12 +981,12 @@ public inherited sharing virtual class TriggerHandler {
 	// inner classes
 
 	/**
-	 * Inner class that counts the runs of 1 handler against its maximum.
+	 * Inner class that counts the runs of 1 trigger operation of 1 handler against its maximum.
 	 */
 	@TestVisible
 	private inherited sharing class LoopCounter {
 		/**
-		 * The maximum number of runs. A negative value means no limit.
+		 * The maximum number of runs, or `NO_LOOP_LIMIT` for no limit.
 		 */
 		private Integer max;
 		/**
@@ -917,16 +1004,16 @@ public inherited sharing virtual class TriggerHandler {
 		/**
 		 * Constructor with a maximum. The count starts at 0.
 		 *
-		 * @param maxCount The maximum number of runs. A negative value means no limit.
+		 * @param maxCount The maximum number of runs. 0 or a negative value means no limit.
 		 */
 		public LoopCounter(Integer maxCount) {
-			this.max = maxCount;
+			setMax(maxCount);
 			this.loopCount = 0;
 		}
 
 		/**
 		 * Add 1 to the count and return `exceeded()`.
-		 * @return     `Boolean` true when the new count is greater than a max of 0 or more. A negative max never exceeds.
+		 * @return     `Boolean` true when the new count is greater than the maximum. A counter with no limit never exceeds.
 		 */
 		public Boolean increment() {
 			loopCount++;
@@ -935,15 +1022,15 @@ public inherited sharing virtual class TriggerHandler {
 
 		/**
 		 * Whether the count has passed the limit.
-		 * @return     `Boolean` true when max is 0 or more and count is greater than max. A negative max means no limit.
+		 * @return     `Boolean` true when the counter has a limit and the count is greater than it.
 		 */
 		public Boolean exceeded() {
-			return max >= 0 && loopCount > max;
+			return max != NO_LOOP_LIMIT && loopCount > max;
 		}
 
 		/**
 		 * Returns the maximum number of runs.
-		 * @return     `Integer` The maximum. A negative value means no limit.
+		 * @return     `Integer` The maximum, or -1 when there is no limit.
 		 */
 		public Integer getMax() {
 			return max;
@@ -958,11 +1045,11 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * Sets the maximum number of runs. The count does not change.
-		 * @param maxCount The new maximum. A negative value means no limit.
+		 * Sets the maximum number of runs. The count does not change. A maximum of 0 or less is stored as `NO_LOOP_LIMIT`.
+		 * @param maxCount The new maximum. 0 or a negative value means no limit.
 		 */
 		public void setMax(Integer maxCount) {
-			max = maxCount;
+			max = maxCount > 0 ? maxCount : NO_LOOP_LIMIT;
 		}
 	}
 

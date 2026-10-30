@@ -95,7 +95,10 @@ private inherited sharing class TriggerHandlerTest {
 			baseHandler.setTriggerContext(operation, true);
 			baseHandler.run();
 		}
-		Assert.areEqual(System.TriggerOperation.values().size(), TriggerHandler.getLoopCount('TriggerHandler'), 'the base class should complete 1 run for each operation');
+		for (System.TriggerOperation operation : System.TriggerOperation.values()) {
+			Assert.areEqual(1, TriggerHandler.getLoopCount('TriggerHandler', operation), 'the base class should complete 1 run of ' + operation);
+		}
+		Assert.areEqual(System.TriggerOperation.values().size(), TriggerHandler.getLoopCount('TriggerHandler'), 'the deprecated total should count 1 run for each operation');
 	}
 
 	// trigger context
@@ -457,22 +460,24 @@ private inherited sharing class TriggerHandlerTest {
 		limited.setMaxLoopCount(2).run();
 		limited.run();
 		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally', 'beforeInsert', 'andFinally' }, calls, 'the handler should run twice');
-		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME), 'the loop count should be 2 after 2 runs');
+		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the loop count should be 2 after 2 runs');
 
 		calls.clear();
 		limited.run();
 		Assert.isTrue(calls.isEmpty(), 'the third run should call no method');
-		Assert.areEqual(3, TriggerHandler.getLoopCount(HANDLER_NAME), 'the skipped run should still count');
+		Assert.areEqual(3, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the skipped run should still count');
 	}
 
 	/**
-	 * A maximum loop count of 0 stops every run, `andFinally()` included.
+	 * A maximum loop count of 0 means no limit, as a negative value does. The runs are still counted.
 	 */
 	@IsTest
-	private static void maxLoopCountOfZeroStopsEveryRun() {
-		newHandler(System.TriggerOperation.BEFORE_INSERT).setMaxLoopCount(0).run();
-		Assert.isTrue(calls.isEmpty(), 'a maximum of 0 should stop the first run');
-		Assert.areEqual(1, TriggerHandler.getLoopCount(HANDLER_NAME), 'the stopped run should still count');
+	private static void maxLoopCountOfZeroMeansNoLimit() {
+		TriggerHandlerTest.TestHandler unlimited = newHandler(System.TriggerOperation.BEFORE_INSERT);
+		unlimited.setMaxLoopCount(0).run();
+		unlimited.run();
+		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally', 'beforeInsert', 'andFinally' }, calls, 'a maximum of 0 should stop no run');
+		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the runs should still be counted');
 	}
 
 	/**
@@ -499,18 +504,89 @@ private inherited sharing class TriggerHandlerTest {
 		TriggerHandlerTest.TestHandler limited = newHandler(System.TriggerOperation.BEFORE_INSERT);
 		limited.setMaxLoopCount(1).run();
 		limited.setMaxLoopCount(2).run();
-		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME), 'the count should continue under the new limit');
+		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the count should continue under the new limit');
 		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally', 'beforeInsert', 'andFinally' }, calls, 'the second run should be inside the new limit');
 	}
 
 	/**
-	 * Without a loop limit, runs are not counted. A handler that was never limited has a count of 0.
+	 * Each trigger operation has its own count, so a limit of 1 lets every operation run once.
 	 */
 	@IsTest
-	private static void loopCountIsZeroWithoutLimit() {
+	private static void eachOperationHasItsOwnLoopCount() {
+		TriggerHandlerTest.TestHandler limited = newHandler(System.TriggerOperation.BEFORE_INSERT);
+		limited.setMaxLoopCount(1).run();
+		limited.setTestContext(System.TriggerOperation.AFTER_INSERT).run();
+		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally', 'afterInsert', 'andFinally' }, calls, 'each operation should run once under a limit of 1');
+
+		calls.clear();
+		limited.setTestContext(System.TriggerOperation.BEFORE_INSERT).run();
+		Assert.isTrue(calls.isEmpty(), 'a second run of the same operation should be stopped');
+		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'before insert should count its 2 runs');
+		Assert.areEqual(1, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.AFTER_INSERT), 'after insert should count its own run');
+	}
+
+	/**
+	 * A limit for 1 operation stops only that operation, and the other operations are not counted.
+	 */
+	@IsTest
+	private static void setMaxLoopCountForOneOperationLimitsOnlyIt() {
+		TriggerHandlerTest.TestHandler limited = newHandler(System.TriggerOperation.AFTER_UPDATE);
+		limited.setMaxLoopCount(System.TriggerOperation.AFTER_UPDATE, 1).run();
+		limited.run();
+		Assert.areEqual(new List<String>{ 'afterUpdate', 'andFinally' }, calls, 'the second after update run should be stopped');
+
+		calls.clear();
+		limited.setTestContext(System.TriggerOperation.BEFORE_UPDATE).run();
+		limited.run();
+		Assert.areEqual(new List<String>{ 'beforeUpdate', 'andFinally', 'beforeUpdate', 'andFinally' }, calls, 'before update should have no limit');
+		Assert.areEqual(
+			TriggerHandler.NOT_COUNTED,
+			TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_UPDATE),
+			'an operation without a limit should not be counted'
+		);
+		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.AFTER_UPDATE), 'after update should count its 2 runs');
+	}
+
+	/**
+	 * `clearMaxLoopCount()` on a handler with no limit creates no counter.
+	 */
+	@IsTest
+	private static void clearMaxLoopCountWithoutLimitCreatesNoCounter() {
+		TriggerHandlerTest.TestHandler handler = newHandler(System.TriggerOperation.BEFORE_INSERT);
+		handler.clearMaxLoopCount();
+		handler.run();
+		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally' }, calls, 'the handler should run');
+		Assert.areEqual(TriggerHandler.NOT_COUNTED, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the run should not be counted');
+	}
+
+	/**
+	 * Without a loop limit, runs are not counted. A handler that was never limited has a count of -1.
+	 */
+	@IsTest
+	private static void loopCountIsNotCountedWithoutLimit() {
 		newHandler(System.TriggerOperation.BEFORE_INSERT).run();
-		Assert.areEqual(0, TriggerHandler.getLoopCount(HANDLER_NAME), 'a handler without a limit should not be counted');
-		Assert.areEqual(0, TriggerHandler.getLoopCount(OTHER_HANDLER), 'an unknown handler should have a count of 0');
+		Assert.areEqual(
+			TriggerHandler.NOT_COUNTED,
+			TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT),
+			'a handler without a limit should not be counted'
+		);
+		Assert.areEqual(TriggerHandler.NOT_COUNTED, TriggerHandler.getLoopCount(OTHER_HANDLER, System.TriggerOperation.BEFORE_INSERT), 'an unknown handler should not be counted');
+		Assert.areEqual(TriggerHandler.NOT_COUNTED, TriggerHandler.getLoopCount(OTHER_HANDLER), 'the deprecated total should not count an unknown handler');
+		Assert.areEqual(-1, TriggerHandler.NOT_COUNTED, 'a count that is not kept should be -1');
+	}
+
+	/**
+	 * The `LoopCounter` class stores a maximum of 0 or less as -1, which means no limit.
+	 */
+	@IsTest
+	private static void loopCounterStoresZeroAsNoLimit() {
+		TriggerHandler.LoopCounter zero = new TriggerHandler.LoopCounter(0);
+		Assert.areEqual(-1, zero.getMax(), 'a maximum of 0 should be stored as -1');
+		Assert.isFalse(zero.increment(), 'a counter with no limit should never be exceeded');
+		zero.setMax(-5);
+		Assert.areEqual(-1, zero.getMax(), 'a negative maximum should be stored as -1');
+		zero.setMax(3);
+		Assert.areEqual(3, zero.getMax(), 'a positive maximum should be stored as given');
 	}
 
 	/**
@@ -658,7 +734,7 @@ private inherited sharing class TriggerHandlerTest {
 		TriggerHandler.showDebug();
 		TriggerHandler.showLimits();
 		baseHandler.setMaxLoopCount(5).run();
-		Assert.areEqual(1, TriggerHandler.getLoopCount('TriggerHandler'), 'the base handler should complete its run with logging on');
+		Assert.areEqual(1, TriggerHandler.getLoopCount('TriggerHandler', System.TriggerOperation.BEFORE_INSERT), 'the base handler should complete its run with logging on');
 	}
 
 	// argument checks
@@ -685,6 +761,10 @@ private inherited sharing class TriggerHandlerTest {
 			'setBypass null type' => TriggerHandler.ERROR_HANDLER_TYPE,
 			'setBypass type null value' => TriggerHandler.ERROR_BYPASS_VALUE,
 			'setMaxLoopCount null' => TriggerHandler.ERROR_LOOP_COUNT,
+			'setMaxLoopCount null operation' => TriggerHandler.ERROR_TRIGGER_OPERATION,
+			'setMaxLoopCount operation null value' => TriggerHandler.ERROR_LOOP_COUNT,
+			'getLoopCount null operation' => TriggerHandler.ERROR_TRIGGER_OPERATION,
+			'getLoopCount operation null name' => TriggerHandler.ERROR_HANDLER_NAME,
 			'getLoopCount null' => TriggerHandler.ERROR_HANDLER_NAME
 		};
 		for (String scenario : expectedMessages.keySet()) {
@@ -701,7 +781,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * Make 1 framework call with a null or blank argument.
+	 * Make 1 bypass call with a null or blank argument, or pass a loop count scenario to `callLoopCountWithNullArgument()`.
 	 * @param scenario Which call to make.
 	 */
 	private static void callWithNullArgument(String scenario) {
@@ -751,11 +831,35 @@ private inherited sharing class TriggerHandlerTest {
 			when 'setBypass type null value' {
 				TriggerHandler.setBypass(TriggerHandlerTest.TestHandler.class, null);
 			}
+			when else {
+				callLoopCountWithNullArgument(scenario);
+			}
+		}
+	}
+
+	/**
+	 * Make 1 loop count call with a null argument. `callWithNullArgument()` passes the loop count scenarios here.
+	 * @param scenario Which call to make.
+	 */
+	private static void callLoopCountWithNullArgument(String scenario) {
+		switch on scenario {
 			when 'setMaxLoopCount null' {
 				newHandler(System.TriggerOperation.AFTER_UPDATE).setMaxLoopCount(null);
 			}
 			when 'getLoopCount null' {
 				TriggerHandler.getLoopCount(null);
+			}
+			when 'setMaxLoopCount null operation' {
+				newHandler(System.TriggerOperation.AFTER_UPDATE).setMaxLoopCount(null, 1);
+			}
+			when 'setMaxLoopCount operation null value' {
+				newHandler(System.TriggerOperation.AFTER_UPDATE).setMaxLoopCount(System.TriggerOperation.AFTER_UPDATE, null);
+			}
+			when 'getLoopCount null operation' {
+				TriggerHandler.getLoopCount(HANDLER_NAME, null);
+			}
+			when 'getLoopCount operation null name' {
+				TriggerHandler.getLoopCount(null, System.TriggerOperation.AFTER_UPDATE);
 			}
 			when else {
 				Assert.fail('unknown scenario: ' + scenario);
