@@ -1,10 +1,10 @@
 <link href="assets/styling.css" rel="stylesheet" />
-<h1>Installing the app using a Scratch Org</h1>
+<h1>Install the framework in a scratch org</h1>
 <ol>
 	<li>
-		Set up your environment. Follow the steps in the
-		<a href="https://trailhead.salesforce.com/content/learn/projects/quick-start-lightning-web-components/">Quick Start: Lightning Web Components</a>
-		Trailhead project. The steps include:
+		Set up your environment. The
+		<a href="https://trailhead.salesforce.com/content/learn/projects/quick-start-salesforce-dx">Quick Start: Salesforce DX</a> Trailhead project walks
+		through these steps:
 	</li>
 </ol>
 <ul>
@@ -24,39 +24,46 @@
 		>
 	</li>
 </ul>
-
 <ol>
 	<li>
-		<p>If you haven&#39;t already done so, authorize your hub org and provide it with an alias (<strong>myhuborg</strong> in the command below):</p>
+		<p>If you haven&#39;t already done so, authorize your Dev Hub org and give it an alias (<strong>myhuborg</strong> in the command below):</p>
 		<pre><code class="language-bash">sf org login web --set-default-dev-hub --alias myhuborg
 </code></pre>
 	</li>
 	<li>
-		<p>Clone the duplicatehandling repository:</p>
+		<p>Clone the salesforce-trigger-framework repository:</p>
 		<pre><code class="language-bash">git clone https://github.com/dschach/salesforce-trigger-framework
 cd salesforce-trigger-framework
 </code></pre>
 	</li>
 	<li>
-		<p>Create your scratch org</p>
+		<p>Create your scratch org.</p>
 		<ul>
 			<li>
-				<p>Using the included script From the VSCode command line/terminal, run <a href="scripts/orginit.sh">orginit script</a></p>
-				<pre><code class="language-bash">. scripts/orginit.sh
+				<p>Using the included script</p>
+				<p>
+					<strong>Note:</strong> the script first deletes the scratch org with the alias <strong>TriggerFramework</strong>, if there is one, and then
+					creates a new one with that alias. It deploys the framework and the sample handler, and opens the org.
+				</p>
+				<p>From the Visual Studio Code terminal, run the <a href="scripts/orginit.sh">orginit script</a>:</p>
+				<pre><code class="language-bash">bash scripts/orginit.sh
 </code></pre>
 			</li>
 			<li>
-				<p>Using CLI manually</p>
+				<p>Using the Salesforce CLI</p>
 				<ol>
 					<li>
-						<p>Create a scratch org and provide it with an alias (<strong>triggerHandler</strong> in the command below):</p>
+						<p>
+							Create a scratch org and give it an alias (<strong>triggerHandler</strong> in the command below). This creates an empty scratch org:
+						</p>
 						<pre><code class="language-bash">sf org create scratch --set-default --definition-file config/project-scratch-def.json --alias triggerHandler
 </code></pre>
-						<p>This will create a new scratch org and install all metadata in this repository</p>
 					</li>
 					<li>
-						<p>Push the app to your scratch org:</p>
-						<pre><code class="language-bash">sf project deploy start
+						<p>
+							Deploy the framework to your scratch org. Add <code>--source-dir sample-handler</code> to deploy the sample handler and trigger too:
+						</p>
+						<pre><code class="language-bash">sf project deploy start --source-dir force-app
 </code></pre>
 					</li>
 					<li>
