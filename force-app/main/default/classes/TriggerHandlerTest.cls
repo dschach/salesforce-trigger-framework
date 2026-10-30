@@ -380,6 +380,16 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
+	 * A maximum loop count of 0 stops every run, `andFinally()` included.
+	 */
+	@IsTest
+	private static void maxLoopCountOfZeroStopsEveryRun() {
+		newHandler(System.TriggerOperation.BEFORE_INSERT).setMaxLoopCount(0).run();
+		Assert.isTrue(calls.isEmpty(), 'a maximum of 0 should stop the first run');
+		Assert.areEqual(1, TriggerHandler.getLoopCount(HANDLER_NAME), 'the stopped run should still count');
+	}
+
+	/**
 	 * `clearMaxLoopCount()` removes the limit, so the handler runs again.
 	 */
 	@IsTest

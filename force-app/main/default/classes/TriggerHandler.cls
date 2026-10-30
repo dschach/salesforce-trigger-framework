@@ -78,6 +78,16 @@ public inherited sharing virtual class TriggerHandler {
 	private static final Integer DEFAULT_MAX_LOOP_COUNT = 5;
 
 	/**
+	 * The maximum loop count that `clearMaxLoopCount()` sets. Any negative maximum means no limit.
+	 */
+	private static final Integer NO_LOOP_LIMIT = -1;
+
+	/**
+	 * The character that ends the class name in the `toString()` text of an Apex object.
+	 */
+	private static final String CLASS_NAME_END = ':';
+
+	/**
 	 * Error text for a run outside a trigger. English only.
 	 */
 	@TestVisible
@@ -230,7 +240,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * <br>When the limit is exceeded, `run()` logs a warning and returns without calling the context method or `andFinally()`.
 	 * <br>Returning `TriggerHandler` enables method chaining when used in a trigger.
 	 * @author {@link [David Schach](https://github.com/dschach)}
-	 * @param  max Maximum number of times. A negative value removes the limit.
+	 * @param  max Maximum number of times. 0 means the handler never runs, and a negative value removes the limit.
 	 * @exception TriggerHandlerException when the value is null.
 	 * @throws TriggerHandlerException when the value is null.
 	 * @return      `TriggerHandler` This instance, which enables method chaining.
@@ -258,7 +268,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * this.clearMaxLoopCount(); // in the handler
 	 */
 	public void clearMaxLoopCount() {
-		this.setMaxLoopCount(-1);
+		this.setMaxLoopCount(NO_LOOP_LIMIT);
 	}
 
 	/**
@@ -722,7 +732,7 @@ public inherited sharing virtual class TriggerHandler {
 	@TestVisible
 	protected String getHandlerName() {
 		if (String.isBlank(this.handlerName)) {
-			this.handlerName = this.toString().substringBefore(':');
+			this.handlerName = this.toString().substringBefore(CLASS_NAME_END);
 		}
 		return this.handlerName;
 	}
