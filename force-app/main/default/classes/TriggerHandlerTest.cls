@@ -1,5 +1,5 @@
 /**
- * @description Test class for base TriggerHandler class.
+ * Test class for base TriggerHandler class.
  * <br>Each test builds its own handler with `newHandler()` and proves 1 behavior through the call log.
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @since 2013
@@ -40,7 +40,7 @@ private inherited sharing class TriggerHandlerTest {
 	// dispatch and andFinally
 
 	/**
-	 * @description `run()` calls the context method for each operation, and then `andFinally()`.
+	 * `run()` calls the context method for each operation, and then `andFinally()`.
 	 */
 	@IsTest
 	private static void runDispatchesEachOperationToItsMethod() {
@@ -61,7 +61,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description A subclass can read its own trigger event and handler name through the protected accessors.
+	 * A subclass can read its own trigger event and handler name through the protected accessors.
 	 */
 	@IsTest
 	private static void subclassReadsItsEventAndName() {
@@ -71,7 +71,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description When a context method throws, the exception reaches the caller and `andFinally()` does not run.
+	 * When a context method throws, the exception reaches the caller and `andFinally()` does not run.
 	 */
 	@IsTest
 	private static void andFinallyDoesNotRunWhenContextMethodThrows() {
@@ -85,7 +85,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description The base class runs every operation without an override, and each run counts against the loop limit.
+	 * The base class runs every operation without an override, and each run counts against the loop limit.
 	 */
 	@IsTest
 	private static void baseClassRunsEveryOperationWithoutOverrides() {
@@ -101,7 +101,7 @@ private inherited sharing class TriggerHandlerTest {
 	// trigger context
 
 	/**
-	 * @description `run()` outside a trigger throws and calls no method.
+	 * `run()` outside a trigger throws and calls no method.
 	 */
 	@IsTest
 	private static void runOutsideTriggerThrows() {
@@ -117,7 +117,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description A null operation clears the trigger context, and `run()` then throws.
+	 * A null operation clears the trigger context, and `run()` then throws.
 	 */
 	@IsTest
 	private static void nullOperationClearsTriggerContext() {
@@ -136,7 +136,7 @@ private inherited sharing class TriggerHandlerTest {
 	// handler name
 
 	/**
-	 * @description The String constructor registers the name it is given.
+	 * The String constructor registers the name it is given.
 	 */
 	@IsTest
 	private static void stringConstructorSetsHandlerName() {
@@ -145,7 +145,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description A blank name given to the String constructor falls back to the runtime class name.
+	 * A blank name given to the String constructor falls back to the runtime class name.
 	 * <br>For an inner class the fallback is the short name, which differs from `Type.getName()`. That is why the fixture passes `HANDLER_NAME`.
 	 */
 	@IsTest
@@ -158,7 +158,7 @@ private inherited sharing class TriggerHandlerTest {
 	// bypass by name, list, and type
 
 	/**
-	 * @description A handler bypassed by name does not run, and neither does its `andFinally()`.
+	 * A handler bypassed by name does not run, and neither does its `andFinally()`.
 	 */
 	@IsTest
 	private static void bypassByNameSkipsRun() {
@@ -171,7 +171,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description Clearing a bypass by name lets the handler run again. Clearing a name that is not bypassed changes nothing.
+	 * Clearing a bypass by name lets the handler run again. Clearing a name that is not bypassed changes nothing.
 	 */
 	@IsTest
 	private static void clearBypassByNameLetsHandlerRun() {
@@ -187,7 +187,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description A bypass of another handler does not stop this handler.
+	 * A bypass of another handler does not stop this handler.
 	 */
 	@IsTest
 	private static void bypassOfAnotherHandlerDoesNotSkipRun() {
@@ -198,7 +198,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description A list of names bypasses each handler in it, and clearing the list lets them run.
+	 * A list of names bypasses each handler in it, and clearing the list lets them run.
 	 */
 	@IsTest
 	private static void bypassByListSkipsRunUntilCleared() {
@@ -214,7 +214,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description A bypass by type uses `Type.getName()`, and clearing it by type lets the handler run.
+	 * A bypass by type uses `Type.getName()`, and clearing it by type lets the handler run.
 	 */
 	@IsTest
 	private static void bypassByTypeSkipsRunUntilCleared() {
@@ -231,7 +231,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description Bypass names match regardless of case, while the list keeps the caller's spelling.
+	 * Bypass names match regardless of case, while the list keeps the caller's spelling.
 	 */
 	@IsTest
 	private static void bypassIsCaseInsensitive() {
@@ -250,7 +250,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description The bypass list is sorted, and the global alias comes after the names.
+	 * The bypass list is sorted, and the global alias comes after the names.
 	 */
 	@IsTest
 	private static void bypassListIsSortedWithAliasLast() {
@@ -263,7 +263,7 @@ private inherited sharing class TriggerHandlerTest {
 	// global bypass
 
 	/**
-	 * @description `bypassAll()` stops every handler, including its `andFinally()`.
+	 * `bypassAll()` stops every handler, including its `andFinally()`.
 	 */
 	@IsTest
 	private static void bypassAllSkipsRun() {
@@ -277,7 +277,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description `bypassAll()` clears the named bypasses, so a later `clearGlobalBypass()` leaves no handler bypassed.
+	 * `bypassAll()` clears the named bypasses, so a later `clearGlobalBypass()` leaves no handler bypassed.
 	 */
 	@IsTest
 	private static void bypassAllClearsNamedBypasses() {
@@ -289,7 +289,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description `clearAllBypasses()` clears the global bypass and every named bypass.
+	 * `clearAllBypasses()` clears the global bypass and every named bypass.
 	 */
 	@IsTest
 	private static void clearAllBypassesLetsHandlerRun() {
@@ -302,7 +302,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description `clearGlobalBypass()` keeps the named bypasses.
+	 * `clearGlobalBypass()` keeps the named bypasses.
 	 */
 	@IsTest
 	private static void clearGlobalBypassKeepsNamedBypasses() {
@@ -317,7 +317,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description `clearBypassList()` keeps the global bypass.
+	 * `clearBypassList()` keeps the global bypass.
 	 */
 	@IsTest
 	private static void clearBypassListKeepsGlobalBypass() {
@@ -333,7 +333,7 @@ private inherited sharing class TriggerHandlerTest {
 	// setBypass
 
 	/**
-	 * @description `setBypass(name, true)` bypasses the handler and keeps an active global bypass.
+	 * `setBypass(name, true)` bypasses the handler and keeps an active global bypass.
 	 */
 	@IsTest
 	private static void setBypassTrueBypassesHandler() {
@@ -347,7 +347,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description `setBypass(name, false)` clears the named bypass and also the global bypass.
+	 * `setBypass(name, false)` clears the named bypass and also the global bypass.
 	 */
 	@IsTest
 	private static void setBypassFalseClearsNamedAndGlobalBypass() {
@@ -363,7 +363,7 @@ private inherited sharing class TriggerHandlerTest {
 	// loop count
 
 	/**
-	 * @description Once the loop limit is exceeded, `run()` calls neither the context method nor `andFinally()`.
+	 * Once the loop limit is exceeded, `run()` calls neither the context method nor `andFinally()`.
 	 */
 	@IsTest
 	private static void loopCountStopsRunAfterMax() {
@@ -380,7 +380,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description `clearMaxLoopCount()` removes the limit, so the handler runs again.
+	 * `clearMaxLoopCount()` removes the limit, so the handler runs again.
 	 */
 	@IsTest
 	private static void clearMaxLoopCountRemovesLimit() {
@@ -396,7 +396,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description A second `setMaxLoopCount()` changes the limit and keeps the count.
+	 * A second `setMaxLoopCount()` changes the limit and keeps the count.
 	 */
 	@IsTest
 	private static void setMaxLoopCountAgainChangesLimit() {
@@ -408,7 +408,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description Without a loop limit, runs are not counted. A handler that was never limited has a count of 0.
+	 * Without a loop limit, runs are not counted. A handler that was never limited has a count of 0.
 	 */
 	@IsTest
 	private static void loopCountIsZeroWithoutLimit() {
@@ -418,7 +418,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description The `LoopCount` class counts up and reports when the count passes the maximum.
+	 * The `LoopCount` class counts up and reports when the count passes the maximum.
 	 */
 	@IsTest
 	private static void loopCountClassCountsAndReportsExceeded() {
@@ -445,7 +445,7 @@ private inherited sharing class TriggerHandlerTest {
 	// debug and limits
 
 	/**
-	 * @description The static switches turn the debug and limits logs on and off, and `run()` works with both on.
+	 * The static switches turn the debug and limits logs on and off, and `run()` works with both on.
 	 */
 	@IsTest
 	private static void staticSwitchesSetDebugAndLimits() {
@@ -466,7 +466,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description The instance switches return the same handler, so they chain into `run()`.
+	 * The instance switches return the same handler, so they chain into `run()`.
 	 */
 	@IsTest
 	private static void instanceSwitchesChainAndSetFlags() {
@@ -492,7 +492,7 @@ private inherited sharing class TriggerHandlerTest {
 	// test seam and log hook
 
 	/**
-	 * @description `setTestContext()` makes a handler run as if a trigger fired the operation, and it returns the handler for chaining.
+	 * `setTestContext()` makes a handler run as if a trigger fired the operation, and it returns the handler for chaining.
 	 */
 	@IsTest
 	private static void setTestContextLetsTestRunHandler() {
@@ -504,7 +504,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description With debug on, `run()` sends its entry and exit lines through the `log` hook.
+	 * With debug on, `run()` sends its entry and exit lines through the `log` hook.
 	 */
 	@IsTest
 	private static void debugOnLogsEntryAndExitThroughHook() {
@@ -518,7 +518,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description With debug and limits off, `run()` logs nothing.
+	 * With debug and limits off, `run()` logs nothing.
 	 */
 	@IsTest
 	private static void debugOffLogsNothing() {
@@ -527,7 +527,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description With limits on, `run()` sends 1 limits line through the `log` hook.
+	 * With limits on, `run()` sends 1 limits line through the `log` hook.
 	 */
 	@IsTest
 	private static void limitsOnLogsLimitsLine() {
@@ -538,7 +538,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description An exceeded loop limit sends a warning through the `log` hook, also with debug off.
+	 * An exceeded loop limit sends a warning through the `log` hook, also with debug off.
 	 */
 	@IsTest
 	private static void exceededLoopLimitLogsWarning() {
@@ -553,7 +553,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description The default `log` hook of the base class writes the debug and limits lines without an error.
+	 * The default `log` hook of the base class writes the debug and limits lines without an error.
 	 */
 	@IsTest
 	private static void baseLogHookWritesWithoutError() {
@@ -568,7 +568,7 @@ private inherited sharing class TriggerHandlerTest {
 	// argument checks
 
 	/**
-	 * @description Null and blank arguments throw `TriggerHandlerException` with a message that names what is missing.
+	 * Null and blank arguments throw `TriggerHandlerException` with a message that names what is missing.
 	 */
 	@IsTest
 	private static void nullAndBlankArgumentsThrow() {
@@ -601,7 +601,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description Make 1 framework call with a null or blank argument.
+	 * Make 1 framework call with a null or blank argument.
 	 * @param scenario Which call to make.
 	 */
 	private static void callWithNullArgument(String scenario) {
@@ -654,7 +654,7 @@ private inherited sharing class TriggerHandlerTest {
 	// testing utilities
 
 	/**
-	 * @description Build a test handler that runs as if a trigger fired the given operation.
+	 * Build a test handler that runs as if a trigger fired the given operation.
 	 * @param operation The trigger operation to simulate.
 	 * @return `TriggerHandlerTest.TestHandler` A handler registered as `HANDLER_NAME`.
 	 */
@@ -665,7 +665,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description Add a method to the call log, and throw when the test asked that method to throw.
+	 * Add a method to the call log, and throw when the test asked that method to throw.
 	 * @param methodName The method that ran.
 	 * @exception TestHandlerException when `throwIn` names the method.
 	 * @throws TestHandlerException when `throwIn` names the method.
@@ -678,24 +678,24 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * @description The exception a context method throws when `throwIn` names it.
+	 * The exception a context method throws when `throwIn` names it.
 	 */
 	private class TestHandlerException extends Exception {
 	}
 
 	/**
-	 * @description Test implementation of the TriggerHandler. Every override writes to the call log.
+	 * Test implementation of the TriggerHandler. Every override writes to the call log.
 	 */
 	private class TestHandler extends TriggerHandler {
 		/**
-		 * @description Register the handler as `HANDLER_NAME`.
+		 * Register the handler as `HANDLER_NAME`.
 		 */
 		public TestHandler() {
 			super(HANDLER_NAME);
 		}
 
 		/**
-		 * @description Register the handler with the given name.
+		 * Register the handler with the given name.
 		 * @param handlerName The handler name to register.
 		 */
 		public TestHandler(String handlerName) {

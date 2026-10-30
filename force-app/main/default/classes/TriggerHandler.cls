@@ -1,5 +1,5 @@
 /**
- * @description Trigger handler virtual class, the base for every trigger handler.
+ * Trigger handler virtual class, the base for every trigger handler.
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @since 2013
  * @author {@link [David Schach](https://github.com/dschach)}
@@ -83,7 +83,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Basic constructor. The handler name is resolved from the runtime class name the first time a bypass or a loop count needs it.
+	 * Basic constructor. The handler name is resolved from the runtime class name the first time a bypass or a loop count needs it.
 	 * <br>That lookup serializes every field of the handler, so pass the name to the other constructor to avoid it.
 	 * @see TriggerHandler.TriggerHandler[1]
 	 * @example
@@ -102,7 +102,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Constructor with handler name. Skips the runtime class name lookup.
+	 * Constructor with handler name. Skips the runtime class name lookup.
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2021
 	 * @param  handlerName The name of the handler. Pass the class name exactly as `Type.getName()` returns it, so that `bypass(Type)` matches.
@@ -123,7 +123,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Main method, called from the trigger. It dispatches to the context method and then to `andFinally()`.
+	 * Main method, called from the trigger. It dispatches to the context method and then to `andFinally()`.
 	 * <br>See the sample trigger for the best way to set up your handler.
 	 * <br>The switch names all 7 trigger operations, and `validateRun()` rejects a null operation, so `SwitchWithoutWhenElse` is suppressed for this method.
 	 * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
@@ -194,7 +194,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Limit the number of times `run()` executes this handler's context methods.
+	 * Limit the number of times `run()` executes this handler's context methods.
 	 * <br>The count is kept per handler name. Every trigger context and every 200-record chunk consumes 1 count.
 	 * <br>When the limit is exceeded, `run()` logs a warning and returns without calling the context method or `andFinally()`.
 	 * <br>Returning `TriggerHandler` enables method chaining when used in a trigger.
@@ -222,7 +222,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Remove the limit on the number of times this handler can run.
+	 * Remove the limit on the number of times this handler can run.
 	 * @example
 	 * this.clearMaxLoopCount(); // in the handler
 	 */
@@ -231,7 +231,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Bypass a handler by name. The name matches regardless of case.
+	 * Bypass a handler by name. The name matches regardless of case.
 	 *
 	 * @param handlerName Name of the handler to be bypassed.
 	 * @exception TriggerHandlerException when the name is null or blank.
@@ -246,7 +246,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Bypass a handler by type, which avoids typos in the name.
+	 * Bypass a handler by type, which avoids typos in the name.
 	 *
 	 * @param handlerType The class to be bypassed, written as `ClassName.class`.
 	 * @exception TriggerHandlerException when the type is null.
@@ -261,7 +261,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Bypass a list of handlers by name. Every name is checked before any is bypassed.
+	 * Bypass a list of handlers by name. Every name is checked before any is bypassed.
 	 *
 	 * @param handlerNames List of handler names.
 	 * @exception TriggerHandlerException when the list is null, or a name in it is null or blank.
@@ -277,7 +277,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Bypass all handlers. The list of named bypasses is cleared too.
+	 * Bypass all handlers. The list of named bypasses is cleared too.
 	 * @example
 	 * TriggerHandler.bypassAll();
 	 */
@@ -287,7 +287,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Clear the bypass of a handler by name. The name matches regardless of case.
+	 * Clear the bypass of a handler by name. The name matches regardless of case.
 	 *
 	 * @param handlerName The class name whose bypass is cleared.
 	 * @exception TriggerHandlerException when the name is null or blank.
@@ -309,7 +309,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Clear the bypass of a handler by type.
+	 * Clear the bypass of a handler by type.
 	 *
 	 * @param handlerType The class whose bypass is cleared, written as `ClassName.class`.
 	 * @exception TriggerHandlerException when the type is null.
@@ -323,7 +323,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Clear the bypass of a list of handlers by name. Every name is checked before any is cleared.
+	 * Clear the bypass of a list of handlers by name. Every name is checked before any is cleared.
 	 *
 	 * @param handlerNames List of handler names whose bypass is cleared.
 	 * @exception TriggerHandlerException when the list is null, or a name in it is null or blank.
@@ -340,7 +340,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description A handler is bypassed when it was bypassed by name or type, or when all handlers are bypassed.
+	 * A handler is bypassed when it was bypassed by name or type, or when all handlers are bypassed.
 	 *
 	 * @param handlerName The class name of the handler to check. It matches regardless of case.
 	 * @return            `Boolean` Is this handler bypassed?
@@ -357,7 +357,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description A handler is bypassed when it was bypassed by name or type, or when all handlers are bypassed.
+	 * A handler is bypassed when it was bypassed by name or type, or when all handlers are bypassed.
 	 *
 	 * @since 2021
 	 * @param handlerType The handler class to check, written as `ClassName.class`.
@@ -375,7 +375,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Return a sorted list of the bypassed handlers, as the caller spelled them.
+	 * Return a sorted list of the bypassed handlers, as the caller spelled them.
 	 * <br>When all handlers are bypassed, the list holds the alias `BypassAll`, after any named bypasses.
 	 * <br>Both `Set` and `List` support `contains(value)`, so this method and `bypassSet()` differ only in the return type.
 	 *
@@ -395,7 +395,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Return a set of the bypassed handlers, as the caller spelled them.
+	 * Return a set of the bypassed handlers, as the caller spelled them.
 	 * <br>When all handlers are bypassed, the set holds the alias `BypassAll`.
 	 * <br>Both `Set` and `List` support `contains(value)`, so this method and `bypassList()` differ only in the return type.
 	 *
@@ -418,7 +418,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Clear all bypasses, the global bypass and the list of bypassed handlers.
+	 * Clear all bypasses, the global bypass and the list of bypassed handlers.
 	 * @example
 	 * TriggerHandler.clearAllBypasses();
 	 */
@@ -428,7 +428,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Clear only the global bypass, and keep the list of bypassed handlers.
+	 * Clear only the global bypass, and keep the list of bypassed handlers.
 	 * <br>Use it to keep a base set of bypassed handlers for a whole operation.
 	 * @example
 	 * TriggerHandler.clearGlobalBypass();
@@ -438,7 +438,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Clear the list of bypassed handlers, and keep the global bypass.
+	 * Clear the list of bypassed handlers, and keep the global bypass.
 	 * <br>Use it to reset the named bypasses while everything stays bypassed.
 	 * @example
 	 * TriggerHandler.clearBypassList();
@@ -449,7 +449,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Set bypass status to a specific value. Eliminates the need to know the current bypass status.
+	 * Set bypass status to a specific value. Eliminates the need to know the current bypass status.
 	 * <br>`false` also clears the global bypass, so that this handler runs. Every other handler then runs too, because a global bypass cannot exclude 1 handler.
 	 * <br>So the save-and-restore idiom below restores the named bypass only, not a global bypass that was active before.
 	 * @since 2021
@@ -482,7 +482,7 @@ public inherited sharing virtual class TriggerHandler {
 	// handle limits
 
 	/**
-	 * @description Instance method that turns on the limits debug output, allowing method chaining in the trigger.
+	 * Instance method that turns on the limits debug output, allowing method chaining in the trigger.
 	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction.
 	 * @since 2023
 	 * @see TriggerHandler.showLimits[0]
@@ -497,7 +497,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Instance method that turns the limits debug output on or off, allowing method chaining in the trigger.
+	 * Instance method that turns the limits debug output on or off, allowing method chaining in the trigger.
 	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction.
 	 * @since 2023
 	 * @see TriggerHandler.showLimits[1]
@@ -513,7 +513,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Turn on the limits debug output for every handler that runs later in the transaction.
+	 * Turn on the limits debug output for every handler that runs later in the transaction.
 	 * <br>Use this in the trigger or handler.
 	 * @see TriggerHandler.showLimits[1]
 	 * @example
@@ -527,7 +527,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Turn the limits debug output on or off for every handler that runs later in the transaction.
+	 * Turn the limits debug output on or off for every handler that runs later in the transaction.
 	 * <br>Use this in the trigger or handler.
 	 *
 	 * @param enabled `true` to enable, `false` or null to disable.
@@ -540,7 +540,7 @@ public inherited sharing virtual class TriggerHandler {
 	// handle debugs
 
 	/**
-	 * @description Instance method that turns on the entry and exit debug output, allowing method chaining in the trigger.
+	 * Instance method that turns on the entry and exit debug output, allowing method chaining in the trigger.
 	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction.
 	 * @since 2023
 	 * @see TriggerHandler.showDebug[0]
@@ -555,7 +555,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Instance method that turns the entry and exit debug output on or off, allowing method chaining in the trigger.
+	 * Instance method that turns the entry and exit debug output on or off, allowing method chaining in the trigger.
 	 * <br>The flag is static, so it applies to every handler that runs later in the same transaction.
 	 * @since 2023
 	 * @param enabled `true` to enable, `false` or null to disable.
@@ -570,7 +570,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Turn on the entry and exit debug output for every handler that runs later in the transaction.
+	 * Turn on the entry and exit debug output for every handler that runs later in the transaction.
 	 * <br>Use this in the trigger or handler.
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2021
@@ -586,7 +586,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Turn the entry and exit debug output on or off for every handler that runs later in the transaction.
+	 * Turn the entry and exit debug output on or off for every handler that runs later in the transaction.
 	 *
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2021
@@ -598,7 +598,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Return the current loop count of a handler.
+	 * Return the current loop count of a handler.
 	 * @param handlerName The handler name to check.
 	 * @return            `Integer` The count, or 0 when `setMaxLoopCount()` was never called for the handler.
 	 * @exception TriggerHandlerException when the name is null or blank.
@@ -612,7 +612,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Set the current context from `Trigger.operationType`. Called by both constructors.
+	 * Set the current context from `Trigger.operationType`. Called by both constructors.
 	 */
 	@TestVisible
 	private void setTriggerContext() {
@@ -620,7 +620,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description    Set the current trigger context from a `System.TriggerOperation`.
+	 * Set the current trigger context from a `System.TriggerOperation`.
 	 * <br>Outside a trigger, and in a test that does not force a context, `isTriggerExecuting` is false.
 	 *
 	 * @param opType   The operation type, which the platform sets.
@@ -634,7 +634,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Increment the loop count and check whether the limit is exceeded.
+	 * Increment the loop count and check whether the limit is exceeded.
 	 * <br>When it is exceeded, log a warning and tell `run()` to return without calling the context method.
 	 *
 	 * @author {@link [David Schach](https://github.com/dschach)}
@@ -654,7 +654,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Decide whether this run continues.
+	 * Decide whether this run continues.
 	 * <br>`false` makes `run()` return before the context method.
 	 *
 	 * @return      `Boolean` `true` when the handler runs, `false` when it is bypassed.
@@ -674,12 +674,12 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description The name of this handler. Set by the String constructor, or resolved by `getHandlerName()` the first time it is needed.
+	 * The name of this handler. Set by the String constructor, or resolved by `getHandlerName()` the first time it is needed.
 	 */
 	private String handlerName;
 
 	/**
-	 * @description The trigger operation this handler is running for. Also set under the test seam, where `Trigger.operationType` is null.
+	 * The trigger operation this handler is running for. Also set under the test seam, where `Trigger.operationType` is null.
 	 * @return `System.TriggerOperation` The current operation, or null outside a trigger.
 	 */
 	protected System.TriggerOperation getTriggerEvent() {
@@ -687,7 +687,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description The name of this handler, as given to the String constructor or resolved from the runtime class name.
+	 * The name of this handler, as given to the String constructor or resolved from the runtime class name.
 	 * <br>Available to subclasses, for example for a log line or a `bypass()` call.
 	 *
 	 * @return      `String` Name of the current handler.
@@ -702,7 +702,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Make this handler run as if a trigger fired the given operation, so that a test can call `run()` without DML.
+	 * Make this handler run as if a trigger fired the given operation, so that a test can call `run()` without DML.
 	 * <br>Set the records that the handler reads before you call `run()`, for example through `@TestVisible` fields of the handler.
 	 * <br>Outside a test it changes nothing: the handler keeps the context of the real trigger.
 	 * @param operation The trigger operation to simulate.
@@ -720,7 +720,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Write a message from the framework: the entry, exit, and limits lines when they are turned on, and the warning when the loop limit is exceeded.
+	 * Write a message from the framework: the entry, exit, and limits lines when they are turned on, and the warning when the loop limit is exceeded.
 	 * <br>The default writes to the debug log. Override it to send the messages to the logging framework of your org, such as {@link [Nebula Logger](https://github.com/jongpie/NebulaLogger)}. The README has an example.
 	 * @param level The logging level of the message.
 	 * @param message The message.
@@ -738,56 +738,56 @@ public inherited sharing virtual class TriggerHandler {
 	//triggerEvent methods
 
 	/**
-	 * @description Virtual method for the implementing class to override.
+	 * Virtual method for the implementing class to override.
 	 */
 	@TestVisible
 	protected virtual void beforeInsert() {
 	}
 
 	/**
-	 * @description Virtual method for the implementing class to override.
+	 * Virtual method for the implementing class to override.
 	 */
 	@TestVisible
 	protected virtual void beforeUpdate() {
 	}
 
 	/**
-	 * @description Virtual method for the implementing class to override.
+	 * Virtual method for the implementing class to override.
 	 */
 	@TestVisible
 	protected virtual void beforeDelete() {
 	}
 
 	/**
-	 * @description Virtual method for the implementing class to override.
+	 * Virtual method for the implementing class to override.
 	 */
 	@TestVisible
 	protected virtual void afterInsert() {
 	}
 
 	/**
-	 * @description Virtual method for the implementing class to override.
+	 * Virtual method for the implementing class to override.
 	 */
 	@TestVisible
 	protected virtual void afterUpdate() {
 	}
 
 	/**
-	 * @description Virtual method for the implementing class to override.
+	 * Virtual method for the implementing class to override.
 	 */
 	@TestVisible
 	protected virtual void afterDelete() {
 	}
 
 	/**
-	 * @description Virtual method for the implementing class to override.
+	 * Virtual method for the implementing class to override.
 	 */
 	@TestVisible
 	protected virtual void afterUndelete() {
 	}
 
 	/**
-	 * @description `andFinally()` runs after the context method, in every trigger context.
+	 * `andFinally()` runs after the context method, in every trigger context.
 	 * <br>It does not run when the handler is bypassed, when the loop limit is exceeded, or when the context method throws an exception.
 	 * <br>Credit to James Simone for this idea.
 	 * @see [The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/)
@@ -801,7 +801,7 @@ public inherited sharing virtual class TriggerHandler {
 	// inner classes
 
 	/**
-	 * @description Inner class that keeps the loop count of 1 handler.
+	 * Inner class that keeps the loop count of 1 handler.
 	 */
 	@TestVisible
 	private inherited sharing class LoopCount {
@@ -823,7 +823,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * @description Constructor with specified max loops.
+		 * Constructor with specified max loops.
 		 *
 		 * @param max   Max number of loops allowed.
 		 */
@@ -833,7 +833,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * @description Increment the internal counter and return `exceeded()`.
+		 * Increment the internal counter and return `exceeded()`.
 		 * @return     `Boolean` true when the new count is greater than a max of 0 or more. A negative max never exceeds.
 		 */
 		public Boolean increment() {
@@ -842,7 +842,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * @description Whether the count has passed the limit.
+		 * Whether the count has passed the limit.
 		 * @return     `Boolean` true when max is 0 or more and count is greater than max. A negative max means no limit.
 		 */
 		public Boolean exceeded() {
@@ -850,7 +850,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * @description Returns the max loop count.
+		 * Returns the max loop count.
 		 * @return     `Integer` Max loop count.
 		 */
 		public Integer getMax() {
@@ -858,7 +858,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * @description Returns the current loop count.
+		 * Returns the current loop count.
 		 * @return     `Integer` Current loop count.
 		 */
 		public Integer getCount() {
@@ -866,7 +866,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * @description Sets the max loop count.
+		 * Sets the max loop count.
 		 * @param max   The new maximum. A negative value means no limit.
 		 */
 		public void setMax(Integer max) {
@@ -875,7 +875,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Reject a null or blank handler name.
+	 * Reject a null or blank handler name.
 	 * @param handlerName The name to check.
 	 * @exception TriggerHandlerException when the name is null or blank.
 	 * @throws TriggerHandlerException when the name is null or blank.
@@ -887,7 +887,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Reject a null handler type.
+	 * Reject a null handler type.
 	 * @param handlerType The type to check.
 	 * @exception TriggerHandlerException when the type is null.
 	 * @throws TriggerHandlerException when the type is null.
@@ -899,7 +899,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Reject a null list, or a list with a null or blank name, before any name is used.
+	 * Reject a null list, or a list with a null or blank name, before any name is used.
 	 * @param handlerNames The names to check.
 	 * @exception TriggerHandlerException when the list is null or holds a null or blank name.
 	 * @throws TriggerHandlerException when the list is null or holds a null or blank name.
@@ -914,43 +914,43 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * @description Exception thrown by the framework for a wrong call.
+	 * Exception thrown by the framework for a wrong call.
 	 */
 	public class TriggerHandlerException extends Exception {
 	}
 
 	/**
-	 * @description Error text for a run outside a trigger. English only.
+	 * Error text for a run outside a trigger. English only.
 	 */
 	@TestVisible
 	private static final String ERROR_TRIGGERCONTEXT = 'Trigger handler called outside of Trigger execution'; //NOPMD
 
 	/**
-	 * @description Error text when a handler name is null or blank.
+	 * Error text when a handler name is null or blank.
 	 */
 	@TestVisible
 	private static final String ERROR_HANDLER_NAME = 'A handler name is required';
 
 	/**
-	 * @description Error text when a handler type is null.
+	 * Error text when a handler type is null.
 	 */
 	@TestVisible
 	private static final String ERROR_HANDLER_TYPE = 'A handler type is required';
 
 	/**
-	 * @description Error text when a list of handler names is null.
+	 * Error text when a list of handler names is null.
 	 */
 	@TestVisible
 	private static final String ERROR_HANDLER_NAMES = 'A list of handler names is required';
 
 	/**
-	 * @description Error text when the maximum loop count is null.
+	 * Error text when the maximum loop count is null.
 	 */
 	@TestVisible
 	private static final String ERROR_LOOP_COUNT = 'A maximum loop count is required';
 
 	/**
-	 * @description Error text when the desired bypass value is null.
+	 * Error text when the desired bypass value is null.
 	 */
 	@TestVisible
 	private static final String ERROR_BYPASS_VALUE = 'A bypass value is required';

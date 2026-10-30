@@ -1,5 +1,5 @@
 /**
- * @description Tests for the sample handler and the sample trigger. Each test proves 1 behavior through real DML.
+ * Tests for the sample handler and the sample trigger. Each test proves 1 behavior through real DML.
  * <br>`AccountSampleTriggerHandler.finishedOperations` is the call log: `andFinally()` adds each operation that the handler finished.
  * <br>The test DML and the queries that read the results back run in system mode, so `FlagSystemMode` is suppressed for the class. The tests set up and check data directly: the access under test is the handler's own, which states system mode on purpose.
  * @author David Schach
@@ -14,7 +14,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	private static final String HANDLER_NAME = AccountSampleTriggerHandler.class.getName();
 
 	/**
-	 * @description An insert removes the extra spaces from the Account name.
+	 * An insert removes the extra spaces from the Account name.
 	 */
 	@IsTest
 	private static void insertNormalizesName() {
@@ -24,7 +24,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description An update that changes the name removes the extra spaces from the new name.
+	 * An update that changes the name removes the extra spaces from the new name.
 	 */
 	@IsTest
 	private static void updateNormalizesChangedName() {
@@ -35,7 +35,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description An update that does not change the name leaves it as it is.
+	 * An update that does not change the name leaves it as it is.
 	 */
 	@IsTest
 	private static void updateLeavesUnchangedNameAlone() {
@@ -50,7 +50,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description A changed phone number is copied to the child Accounts.
+	 * A changed phone number is copied to the child Accounts.
 	 */
 	@IsTest
 	private static void phoneChangeCopiesToChildAccounts() {
@@ -63,7 +63,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description A child Account in the same update as its parent keeps the phone number of its own update, because a trigger cannot update the records it is running for.
+	 * A child Account in the same update as its parent keeps the phone number of its own update, because a trigger cannot update the records it is running for.
 	 */
 	@IsTest
 	private static void childInSameUpdateKeepsItsOwnPhone() {
@@ -77,7 +77,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description The update of the child Accounts does not run the handler again, because the handler bypasses itself for it.
+	 * The update of the child Accounts does not run the handler again, because the handler bypasses itself for it.
 	 */
 	@IsTest
 	private static void childUpdateDoesNotRunHandlerAgain() {
@@ -97,7 +97,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description The handler clears its own bypass after it updates the child Accounts.
+	 * The handler clears its own bypass after it updates the child Accounts.
 	 */
 	@IsTest
 	private static void bypassIsClearedAfterChildUpdate() {
@@ -110,7 +110,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description `andFinally()` runs after all 7 contexts, also the contexts that the handler does not override.
+	 * `andFinally()` runs after all 7 contexts, also the contexts that the handler does not override.
 	 */
 	@IsTest
 	private static void andFinallyRunsAfterEveryContext() {
@@ -148,7 +148,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description A bulk insert of more than 200 records runs in chunks, and the loop limit does not stop any chunk.
+	 * A bulk insert of more than 200 records runs in chunks, and the loop limit does not stop any chunk.
 	 */
 	@IsTest
 	private static void bulkInsertStaysInsideLoopLimit() {
@@ -162,7 +162,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description The no-arg constructor registers the class name, and the String constructor forwards the name it is given.
+	 * The no-arg constructor registers the class name, and the String constructor forwards the name it is given.
 	 */
 	@IsTest
 	private static void constructorsRegisterTheHandlerName() {
@@ -171,7 +171,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description Insert an Account with the given name.
+	 * Insert an Account with the given name.
 	 * @param name The Account name.
 	 * @return `Account` The inserted Account.
 	 */
@@ -182,7 +182,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description Insert a child Account of the given parent.
+	 * Insert a child Account of the given parent.
 	 * @param parentId The Id of the parent Account.
 	 * @return `Account` The inserted child Account.
 	 */
@@ -193,7 +193,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * @description Read the stored name of an Account.
+	 * Read the stored name of an Account.
 	 * @param accountId The Account Id.
 	 * @return `String` The name in the database.
 	 */
