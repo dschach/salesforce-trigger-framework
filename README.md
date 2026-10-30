@@ -294,9 +294,77 @@ trigger OpportunityTrigger on Opportunity (before insert, before update, before 
 }
 ```
 
+### Send the Messages to Your Logging Framework
+
+The framework writes every message, the entry, exit, and limits lines and the loop limit warning, through 1 protected method, `log(LoggingLevel level, String message)`. By default it writes to the debug log. Override it in a handler to send the messages to the logging framework of your org:
+
+```apex
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+  protected override void log(LoggingLevel level, String message) {
+    /* send the message to your logging framework here */
+    super.log(level, message);
+  }
+}
+```
+
+#### Example: Nebula Logger
+
+With [Nebula Logger](https://github.com/jongpie/NebulaLogger) installed, this handler sends every framework message to Nebula Logger, with a tag that shows where the message came from:
+
+```apex
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+  protected override void log(LoggingLevel level, String message) {
+    Logger.newEntry(level, message).addTag('TriggerHandler');
+    if (level == LoggingLevel.WARN) {
+      Logger.saveLog();
+    }
+  }
+}
+```
+
+Nebula Logger keeps entries in memory until `Logger.saveLog()` runs. The `DEBUG` entries are saved by the next `Logger.saveLog()` call in the transaction, for example at the end of your own code. The loop limit warning comes when `run()` stops early, and `andFinally()` does not run then, so the example saves each `WARN` entry at once. Each `Logger.saveLog()` call publishes a platform event, so do not save every `DEBUG` entry at once. With the managed package of Nebula Logger, write `Nebula.Logger` instead of `Logger`.
+
 ### Universal Action
 
 Version 1.1 added a new method/context: `andFinally()` can contain actions that should happen in every trigger context, after all other actions. It does not run when the handler is bypassed, when the loop limit is exceeded, or when the context method throws an exception. Credit to James Simone for this idea. As he writes, "runs after every context - can be used to easily implement something like apex-rollup!" ([The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/))
+
+## Test a Handler Without DML
+
+A test can run a handler without inserting records. `setTestContext(System.TriggerOperation operation)` makes the handler run as if a trigger fired the operation, and it returns the handler, so that `run()` can follow. Give the handler its records first, for example through a `@TestVisible` field:
+
+```apex
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+  @TestVisible
+  private List<Opportunity> newRecords;
+
+  public OpportunityTriggerHandler() {
+    super('OpportunityTriggerHandler');
+    this.newRecords = (List<Opportunity>) Trigger.new;
+  }
+
+  public override void beforeInsert() {
+    for (Opportunity opp : newRecords) {
+      opp.StageName = 'Prospecting';
+    }
+  }
+}
+```
+
+```apex
+@IsTest
+private inherited sharing class OpportunityTriggerHandlerTest {
+  @IsTest
+  private static void beforeInsertSetsStage() {
+    Opportunity opp = new Opportunity(Name = 'Test');
+    OpportunityTriggerHandler handler = new OpportunityTriggerHandler();
+    handler.newRecords = new List<Opportunity>{ opp };
+    handler.setTestContext(System.TriggerOperation.BEFORE_INSERT).run();
+    Assert.areEqual('Prospecting', opp.StageName, 'before insert did not set the stage');
+  }
+}
+```
+
+Outside a test, `setTestContext()` changes nothing: the handler keeps the context of the real trigger. A test that needs the whole trigger, the sharing, or the database still inserts records.
 
 ## Overridable Methods
 
@@ -310,8 +378,9 @@ Here are all of the methods that you can override. All of the context possibilit
 - `afterDelete()`
 - `afterUndelete()`
 - `andFinally()`
+- `log(LoggingLevel level, String message)`, to send the framework's messages to your logging framework
 
-A handler can also call 2 protected methods: `getTriggerEvent()` returns the current `System.TriggerOperation`, and `getHandlerName()` returns the handler's name.
+A handler can also call 3 protected methods: `getTriggerEvent()` returns the current `System.TriggerOperation`, `getHandlerName()` returns the handler's name, and a test can call `setTestContext(System.TriggerOperation operation)` to run the handler without DML.
 
 ## API Reference
 
