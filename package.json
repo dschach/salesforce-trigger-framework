@@ -8,7 +8,7 @@
   },
   "scripts": {
     "codeanalyzer:run": "mkdir -p sfca && sf code-analyzer run --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)' --output-file sfca/sfca_results.json --include-suggestions --include-fixes --output-file sfca/sfca_results.html",
-    "codeanalyzer:setup": "echo y | sf code-analyzer config --output-file code-analyzer.yml --config-file code-analyzer.yml --include-unmodified-rules --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)'",
+    "codeanalyzer:setup": "echo y | sf code-analyzer config --output-file code-analyzer.yml --config-file code-analyzer.yml --include-unmodified-rules --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)' && sh scripts/strip-config-paths.sh code-analyzer.yml && prettier --write code-analyzer.yml",
     "orginit": "bash scripts/orginit.sh",
     "prepare": "husky",
     "prettier": "prettier --write .",
@@ -25,6 +25,9 @@
     "prettier": "^3.9.10"
   },
   "lint-staged": {
+    "code-analyzer.yml": [
+      "sh scripts/strip-config-paths.sh"
+    ],
     "*": [
       "prettier --write --ignore-unknown"
     ]

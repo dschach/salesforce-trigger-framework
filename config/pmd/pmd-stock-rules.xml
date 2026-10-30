@@ -27,14 +27,11 @@
 		- violationSuppressXPath entries are evaluated with the violation node as the
 		  context, in PMD's legacy XPath form.
 		- Defaults were read from PMD 7.26.0, the version Code Analyzer 5.16.0 bundles.
-		- Every Apex, HTML, and Visualforce rule in that PMD version is here, and every JavaScript
-		  rule is in pmd-stock-rules-javascript.xml. The JavaScript rules have a file of their own
-		  because PMD ships the four brace rules under one name for Apex and for JavaScript, and
-		  Code Analyzer runs only the first of two rules that share a name in one file. A rule
+		- Every Apex, HTML, and Visualforce rule in that PMD version is here. A rule
 		  this reference does not recommend enforcing is commented out, on one line and with
 		  no priority, so that it is seen to be left out on purpose: ExcessivePublicCount;
-		  ApexCRUDViolation and ApexSharingViolations, whose ground the custom rules cover
-		  (RequireAccessMode, FlagSystemMode, and RequireExplicitSharing); and four that PMD
+		  ApexCRUDViolation and ApexSharingViolations, which the custom rules
+		  (RequireAccessMode, FlagSystemMode, and RequireExplicitSharing) cover; and four that PMD
 		  has deprecated in favour of NcssCount (ExcessiveClassLength, NcssConstructorCount,
 		  NcssMethodCount, and NcssTypeCount). To enforce one, take it out of its comment and
 		  give it a priority.
