@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/dschach/salesforce-trigger-framework/compare/v2.0.0...v2.0.1) (2026-10-30)
+
+
+### Documentation
+
+* **readme:** Add what is new in version 2.0 ([2f3ceae](https://github.com/dschach/salesforce-trigger-framework/commit/2f3ceaea6de515d159d65749cfaac7d70cb0dbb8))
+
 ## [2.0.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.5.1...v2.0.0) (2026-10-30)
 
 

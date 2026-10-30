@@ -22,7 +22,7 @@ body:
     attributes:
       label: Framework version
       description: The release you installed, from the changelog or the releases page.
-      placeholder: "2.0.0" # x-release-please-version
+      placeholder: "2.0.1" # x-release-please-version
     validations:
       required: true
 
