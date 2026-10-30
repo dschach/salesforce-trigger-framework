@@ -76,8 +76,9 @@ jobs:
         run: | # shell
           sf code-analyzer run --workspace . --view detail --output-file sfca/sfca_results.html --output-file sfca/sfca_results.json --output-file sfca/sfca-report.sarif --rule-selector "(pmd,cpd,sfge,regex):(Recommended,Custom)"
 
-      # The action writes the counts and the tables to the job summary, and it never
-      # fails the job. The fail step below reads the counts and fails the job.
+      # The action writes the counts and the tables to the job summary. A violation
+      # never fails the action: the fail step below reads the counts and fails the job.
+      # The action fails only when the results file is missing.
       - name: "Report SFCA violations"
         if: always()
         id: sfca-report
@@ -94,8 +95,8 @@ jobs:
           path: sfca
           if-no-files-found: warn
 
-      - name: "Fail on priority 1 and 2 SFCA violations"
+      - name: "Fail on severity 1 and 2 SFCA violations"
         if: ${{ steps.sfca-report.outputs.sev1-count != 0 || steps.sfca-report.outputs.sev2-count != 0 }}
         run: |
-          echo "SFCA found ${{ steps.sfca-report.outputs.sev1-count }} priority 1 and ${{ steps.sfca-report.outputs.sev2-count }} priority 2 violation(s). See the job summary and the SFCA Report artifact."
+          echo "SFCA found ${{ steps.sfca-report.outputs.sev1-count }} severity 1 and ${{ steps.sfca-report.outputs.sev2-count }} severity 2 violation(s). See the job summary and the SFCA Report artifact."
           exit 1

@@ -1,16 +1,19 @@
 /**
- * Tests for the sample handler and the sample trigger. Each test proves 1 behavior through real DML.
+ * Tests for the sample handler and the sample trigger. Each test proves 1 behavior. All tests but the constructor test use real DML.
  * <br>`AccountSampleTriggerHandler.finishedOperations` is the call log. `andFinally()` adds each operation that the handler finished.
  * <br>The test DML and the queries that read the results run in system mode, so the class suppresses `FlagSystemMode`. The tests set up and check the data directly. The access under test is the access of the handler, which uses system mode on purpose.
  * @author David Schach
  * @since 2021
- * @since 2026-10-30 1 test per behavior, with the finished operations as the call log
+ * @since 2026-10 Rewrite with 1 test for each behavior, and the finished operations as the call log
  * @group SampleTriggerHandler
  * @see AccountSampleTriggerHandler
  */
 @SuppressWarnings('PMD.FlagSystemMode')
 @IsTest(isParallel=true testFor='ApexClass:AccountSampleTriggerHandler,ApexTrigger:AccountSampleTrigger')
 private inherited sharing class AccountSampleTriggerHandlerTest {
+	/**
+	 * The name of the sample handler, from `Type.getName()`.
+	 */
 	private static final String HANDLER_NAME = AccountSampleTriggerHandler.class.getName();
 
 	/**

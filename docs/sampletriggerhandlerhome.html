@@ -105,110 +105,127 @@
 				<td class="doc-page">
 					<h2 class="section-title">SampleTriggerHandler</h2>
 					<link href="assets/styling.css" rel="stylesheet" />
-					<h1>Sample trigger handler</h1>
+					<h1>Sample Trigger Handler</h1>
 					<p>
-						This folder holds a sample trigger, trigger handler, and test for the <a href="index.html">Salesforce Trigger Framework</a>. It is not a
-						package directory, so a deploy of the framework does not install it.
+						This folder holds a sample trigger, a sample trigger handler, and a test for the <a href="index.html">Salesforce Trigger Framework</a>. It
+						is not a package directory, so a deploy of the framework does not install it.
 					</p>
-					<h2>What it contains</h2>
+					<h2>Design</h2>
 					<ul>
-						<li>
-							<p>
-								<code>main/default/triggers/AccountSampleTrigger.trigger</code> has no logic: it creates the handler and calls <code>run()</code>. It
-								lists all 7 contexts, even the ones the handler does not override, so the trigger is written once and never edited again. A new
-								override in the handler runs without a change to the trigger:
-							</p>
-							<pre><code class="language-apex">trigger AccountSampleTrigger on Account(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
-  new AccountSampleTriggerHandler().run();
-</code></pre>
-						</li>
+						<li>Each object has 1 trigger.</li>
+						<li>Each trigger has 1 handler.</li>
 					</ul>
-					<p>}</p>
-					<pre><code>
-- `main/default/classes/AccountSampleTriggerHandler.cls` extends `TriggerHandler` and shows these parts of the framework:
-- The constructor passes the class name to `super()`, casts the trigger collections that the handler uses, and sets a loop limit with `setMaxLoopCount()`. The limit is high enough that a bulk update does not reach it.
-- Before insert, it removes extra spaces from each Account name. Before update, it does the same only for the names that changed, which it finds with the old records.
-- After update, it copies a changed phone number to the child Accounts. It bypasses itself with `TriggerHandler.bypass(AccountSampleTriggerHandler.class)` for that update, so the update does not run the handler again, and it clears the bypass in a `finally` block.
-- `andFinally()` runs after each of the 7 contexts, also the ones the handler does not override. The sample records the finished operation, which the test reads.
-- The handler is `inherited sharing`, and its query and DML statement name `SYSTEM_MODE`. A trigger runs without sharing, so the handler can update child Accounts that the running user cannot edit. Code Analyzer reports system mode with `FlagSystemMode`, so the method suppresses that rule and its ApexDoc gives the reason. The test class does the same for its own setup and checks.
-- `main/default/classes/AccountSampleTriggerHandlerTest.cls` proves each of these behaviors with real DML, 1 test per behavior. It also shows how a test bypasses a handler to set up data.
-
-## Try it in a scratch org
-
-Deploy the framework and the sample together, and run the sample test:
-
-```bash
-sf project deploy start --source-dir force-app --source-dir sample-handler --target-org &lt;alias&gt;
-sf apex run test --class-names AccountSampleTriggerHandlerTest --target-org &lt;alias&gt; --wait 10
-</code></pre>
-					<h2>General Theme</h2>
-					<p>Each object has a single trigger</p>
-					<p>Each trigger has a single handler</p>
-					<h2><a href="index.html#usage">Handler Documentation</a></h2>
-					<hr />
-					<h2>Sample Trigger</h2>
-					<pre><code class="language-apex">trigger AccountSampleTrigger on Account(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+					<h2>What It Contains</h2>
+					<h3>The Trigger</h3>
+					<p>
+						<a
+							href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger"
+							><code>main/default/triggers/AccountSampleTrigger.trigger</code></a
+						>
+						has no logic: it creates the handler and calls <code>run()</code>. It lists all 7 contexts, also the contexts that the handler does not
+						override. So you write the trigger once and do not change it again. A new override in the handler runs with no change to the trigger.
+					</p>
+					<!-- START sample-code main/default/triggers/AccountSampleTrigger.trigger -->
+					<pre><code class="language-apex">/**
+ * The sample trigger for the sample handler. It has no logic: it creates the handler and calls `run()`.
+ * &lt;br&gt;It lists all 7 contexts. So you write it once and do not change it again: a new override in the handler runs with no change to the trigger.
+ * &lt;br&gt;A context that the handler does not override costs little. `run()` calls the empty base method and then `andFinally()`.
+ * @group SampleTriggerHandler
+ */
+trigger AccountSampleTrigger on Account(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new AccountSampleTriggerHandler().run();
 }
 </code></pre>
-					<h2>Sample Handler</h2>
+					<!-- END sample-code -->
+					<h3>The Handler</h3>
+					<p>
+						<a
+							href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls"
+							><code>main/default/classes/AccountSampleTriggerHandler.cls</code></a
+						>
+						extends <code>TriggerHandler</code> and shows these parts of the framework:
+					</p>
+					<ul>
+						<li>
+							The constructor passes the class to <code>super()</code>, casts the trigger collections that the handler uses, and sets a loop limit
+							with <code>setMaxLoopCount()</code>. The limit is high, so a bulk update does not reach it.
+						</li>
+						<li>
+							Before insert, the handler removes extra spaces from each Account name. Before update, it does the same only for the names that changed.
+							It finds them with the old records.
+						</li>
+						<li>
+							After update, the handler copies a changed phone number to the child Accounts. For that update, it bypasses itself with
+							<code>TriggerHandler.bypass(AccountSampleTriggerHandler.class)</code>, so the update does not run the handler again. It clears the
+							bypass in a <code>finally</code> block.
+						</li>
+						<li>
+							<code>andFinally()</code> runs after each of the 7 contexts, also the contexts that the handler does not override. The sample records
+							the finished operation, and the test reads it.
+						</li>
+						<li>
+							The handler is <code>inherited sharing</code>, and its query and DML statement name <code>SYSTEM_MODE</code>. A trigger runs without
+							sharing, so the handler can update child Accounts that the running user cannot edit. Code Analyzer reports system mode with
+							<code>FlagSystemMode</code>, so the method suppresses that rule, and its ApexDoc gives the reason.
+						</li>
+					</ul>
+					<!-- START sample-code main/default/classes/AccountSampleTriggerHandler.cls -->
 					<pre><code class="language-apex">/**
- * A sample Account trigger handler that shows the framework in use.
+ * A sample Account trigger handler that shows how to use the framework.
  * &lt;br&gt;Before insert and before update, it removes extra spaces from each new or changed Account name.
  * &lt;br&gt;After update, it copies a changed phone number to the child Accounts. It bypasses itself for that update, so the update does not run this handler again.
- * &lt;br&gt;A loop limit protects against recursion that the bypass does not stop, and `andFinally()` runs after each context.
- * &lt;br&gt;A trigger runs without sharing, so this `inherited sharing` handler does too. Every query and DML statement names `SYSTEM_MODE`, so the handler can update child Accounts that the running user cannot edit.
+ * &lt;br&gt;A loop limit stops recursion that the bypass does not stop. `andFinally()` runs after each context.
+ * &lt;br&gt;A trigger runs without sharing, so this `inherited sharing` handler does too. Each query and DML statement names `SYSTEM_MODE`, so the handler can update child Accounts that the running user cannot edit.
  * @author David Schach
  * @since 2021
+ * @since 2026-10 Rewrite the sample to show the framework in use
  * @group SampleTriggerHandler
  * @group-content doc-assets/files/sampletriggerhandlerhome.html
  * @see AccountSampleTriggerHandlerTest
  */
 public inherited sharing class AccountSampleTriggerHandler extends TriggerHandler {
   /**
-   * The maximum number of runs of this handler in 1 transaction. Each trigger context and each chunk of 200 records uses 1 run, so 100 allows an update of 10,000 records, which runs before update and after update 50 times each.
+   * The maximum number of runs of each trigger operation of this handler in 1 transaction. Each chunk of 200 records uses 1 run. So 50 allows an update of 10,000 records, which runs before update and after update 50 times each.
    */
-  private static final Integer MAX_LOOP_COUNT = 100;
+  private static final Integer MAX_LOOP_COUNT = 50;
 
   /**
-   * The trigger operations this handler finished in the transaction, in order. `andFinally()` adds each one.
+   * The trigger operations that this handler finished in the transaction, in order. `andFinally()` adds each one.
    */
   @TestVisible
   private static List&lt;System.TriggerOperation&gt; finishedOperations = new List&lt;System.TriggerOperation&gt;();
 
+  /**
+   * The new Accounts of the trigger, cast from `Trigger.new`.
+   */
   private List&lt;Account&gt; newRecords;
+
+  /**
+   * The old Accounts of the trigger by Id, cast from `Trigger.oldMap`. It is null in an insert.
+   */
   private Map&lt;Id, Account&gt; oldRecordsMap;
 
   /**
-   * Constructor for the trigger. It passes the class name, so the base class never resolves it at runtime.
-   * @see AccountSampleTriggerHandler.AccountSampleTriggerHandler[1]
+   * Creates the handler for the trigger. It passes its class to the base class, so the base class does no name lookup. It casts the trigger collections that the handler uses, and it sets the loop limit.
    * @example
    * new AccountSampleTriggerHandler().run();
    */
   public AccountSampleTriggerHandler() {
-    this(AccountSampleTriggerHandler.class.getName());
-  }
-
-  /**
-   * Constructor with the handler name. It casts the trigger collections that the handler uses, and it sets the loop limit.
-   * @param className The name of this class, exactly as `Type.getName()` returns it.
-   */
-  public AccountSampleTriggerHandler(String className) {
-    super(className);
+    super(AccountSampleTriggerHandler.class);
     this.newRecords = (List&lt;Account&gt;) Trigger.new;
     this.oldRecordsMap = (Map&lt;Id, Account&gt;) Trigger.oldMap;
     this.setMaxLoopCount(MAX_LOOP_COUNT);
   }
 
   /**
-   * Remove extra spaces from the name of each new Account.
+   * Removes extra spaces from the name of each new Account.
    */
   public override void beforeInsert() {
     normalizeNames(newRecords);
   }
 
   /**
-   * Remove extra spaces from each Account name that changed.
+   * Removes extra spaces from each Account name that changed.
    */
   public override void beforeUpdate() {
     List&lt;Account&gt; renamedAccounts = new List&lt;Account&gt;();
@@ -221,7 +238,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
   }
 
   /**
-   * Copy each changed phone number to the child Accounts.
+   * Copies each changed phone number to the child Accounts.
    */
   public override void afterUpdate() {
     Map&lt;Id, String&gt; phoneByParentId = new Map&lt;Id, String&gt;();
@@ -237,15 +254,27 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
   }
 
   /**
-   * Record the finished operation. A real handler puts work here that must follow every context, such as a rollup or 1 platform event for the whole trigger.
+   * Records the finished operation. A real handler puts work here that must follow each context, for example a rollup.
+   * &lt;br&gt;`andFinally()` runs after each context. For an insert, an update, or a delete, it runs 2 times for each chunk of 200 records. It runs after the before context and again after the after context.
+   * &lt;br&gt;Some work must run only once for each chunk, for example the publication of 1 platform event. Put that work in an `if` block that checks `getTriggerEvent()` for an after context.
+   * @since 2026-10
+   * @example
+   * // andFinally() runs after the before context and again after the after context.
+   * // This example runs only once for each chunk of 200 records, after the after context.
+   * public override void andFinally() {
+   *   if (getTriggerEvent() == System.TriggerOperation.AFTER_UPDATE) {
+   *     EventBus.publish(new Account_Change__e(Record_Count__c = Trigger.size));
+   *   }
+   * }
    */
   public override void andFinally() {
     finishedOperations.add(getTriggerEvent());
   }
 
   /**
-   * Replace each run of spaces in the Account names with 1 space, and remove the spaces at the start and the end.
+   * Replaces each group of spaces in the Account names with 1 space, and removes the spaces at the start and the end.
    * @param accounts The Accounts to change.
+   * @since 2026-10
    */
   private static void normalizeNames(List&lt;Account&gt; accounts) {
     for (Account changedAccount : accounts) {
@@ -254,10 +283,11 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
   }
 
   /**
-   * Update the phone number of the child Accounts, with this handler bypassed for that update.
-   * &lt;br&gt;A child Account that is in the same trigger run is left out, because a trigger cannot update the records it is running for.
-   * &lt;br&gt;The query and the update run in system mode, so `FlagSystemMode` is suppressed for this method. The phone number must reach every child Account, also a child Account that the running user cannot see or edit.
+   * Updates the phone number of the child Accounts. The handler is bypassed for that update.
+   * &lt;br&gt;It leaves out a child Account that is in the same trigger run, because a trigger cannot update the records that it runs for.
+   * &lt;br&gt;The query and the update run in system mode, so this method suppresses `FlagSystemMode`. The phone number must reach all child Accounts, also the ones that the running user cannot see or edit.
    * @param phoneByParentId The new phone number of each parent Account, by Id.
+   * @since 2026-10
    */
   @SuppressWarnings(&#39;PMD.FlagSystemMode&#39;)
   private void copyPhoneToChildAccounts(Map&lt;Id, String&gt; phoneByParentId) {
@@ -282,12 +312,27 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
   }
 }
 </code></pre>
+					<!-- END sample-code -->
+					<h3>The Test</h3>
+					<p>
+						<a
+							href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls"
+							><code>main/default/classes/AccountSampleTriggerHandlerTest.cls</code></a
+						>
+						proves each of these behaviors with real DML, with 1 test for each behavior. It also shows how a test bypasses a handler to set up data.
+						The test class suppresses <code>FlagSystemMode</code> for its own setup and checks.
+					</p>
+					<h2>Try It in a Scratch Org</h2>
+					<p>Deploy the framework and the sample together, and run the sample test:</p>
+					<pre><code class="language-bash">sf project deploy start --source-dir force-app --source-dir sample-handler --target-org &lt;alias&gt;
+sf apex run test --class-names AccountSampleTriggerHandlerTest --target-org &lt;alias&gt; --wait 10
+</code></pre>
+					<h2>More Information</h2>
+					<p>The <a href="index.html#usage">Usage section of the framework README</a> tells how to write a handler and a trigger.</p>
 					<h2>Credits</h2>
 					<p>
-						This trigger framework is from
-						<a href="https://github.com/dschach/sfdc-trigger-framework">https://github.com/dschach/sfdc-trigger-framework</a> which is based on Kevin
-						O&#39;Hara&#39;s framework
-						<a href="https://github.com/kevinohara80/sfdc-trigger-framework">https://github.com/kevinohara80/sfdc-trigger-framework</a>
+						This sample is part of <a href="https://github.com/dschach/salesforce-trigger-framework">salesforce-trigger-framework</a>, which is based
+						on <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a> by Kevin O&#39;Hara.
 					</p>
 				</td>
 			</tr>

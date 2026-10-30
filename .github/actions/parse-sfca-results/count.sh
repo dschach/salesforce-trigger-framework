@@ -8,8 +8,9 @@
 # Code Analyzer writes when it finds nothing on a pull request with no analyzable
 # files.
 #
-# The report's violationCounts object holds the count for each severity, 1 to 5,
-# where severity is the priority the ruleset gave the rule.
+# The report's violationCounts object holds the count for each severity, 1 to 5.
+# code-analyzer.yml sets the severity of each rule, so it can differ from the priority
+# in the ruleset. The output names say priority, but each count is of a severity.
 
 set -euo pipefail
 

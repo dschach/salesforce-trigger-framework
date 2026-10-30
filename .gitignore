@@ -24,7 +24,6 @@ $RECYCLE.BIN/
 
 # PMD
 .pmdCache
-config/pmd/pmd.csv
 
 # Apex test results, written by sf apex run test --output-dir
 tests/

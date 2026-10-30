@@ -5,8 +5,10 @@
  * @since 2013
  * @author {@link [David Schach](https://github.com/dschach)}
  * @since 2021
- * @since 2023-02-24 add andFinally method
- * @since 2023-09 method chaining
+ * @since 2023-02-24 Add `andFinally()`
+ * @since 2023-10 Add method chaining to `setMaxLoopCount()`, `limits()`, and `debug()`
+ * @since 2026-10 Add a constructor with the handler type, a loop limit for each trigger operation, and the debug settings of 1 handler
+ * @since 2026-10 Keep the named bypasses and the global bypass independent
  * @group Trigger Handler
  * @see [License](https://github.com/dschach/salesforce-trigger-framework/blob/main/LICENSE)
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
@@ -15,7 +17,7 @@
 @SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.EmptyStatementBlock')
 public inherited sharing abstract class TriggerHandler {
 	/**
-	 * The loop counters of all handlers in the transaction. A trigger operation has a counter only after a limit is set for it. Without a counter, `getLoopCount()` returns `NOT_COUNTED`.
+	 * The loop counters of all handlers in the transaction. A trigger operation has a counter after the first call of `setMaxLoopCount()` for it, also with 0 or a negative value. Without a counter, `getLoopCount()` returns `NOT_COUNTED`.
 	 */
 	private static LoopCounterRegistry loopCounters = new LoopCounterRegistry();
 
@@ -25,13 +27,13 @@ public inherited sharing abstract class TriggerHandler {
 	private static BypassRegistry bypasses = new BypassRegistry();
 
 	/**
-	 * `true` when all handlers write the limits line after a run. `showLimits()` and `showLimits(Boolean)` set it.
+	 * `true` when all handlers write the limits line after a run. `showLimits()` and `showLimits(Boolean)` set it, and so do the deprecated `limits()` and `limits(Boolean)`.
 	 */
 	@TestVisible
 	private static Boolean doShowLimits = false;
 
 	/**
-	 * `true` when all handlers write the entry and exit lines of a run. `showDebug()` and `showDebug(Boolean)` set it.
+	 * `true` when all handlers write the entry and exit lines of a run. `showDebug()` and `showDebug(Boolean)` set it, and so do the deprecated `debug()` and `debug(Boolean)`.
 	 */
 	@TestVisible
 	private static Boolean doShowDebug = false;
@@ -70,7 +72,7 @@ public inherited sharing abstract class TriggerHandler {
 	private static final Integer NO_LOOP_LIMIT = -1;
 
 	/**
-	 * The value that `getLoopCount()` returns when no limit was set. The framework does not count those runs.
+	 * The value that `getLoopCount()` returns when `setMaxLoopCount()` was never called for the operation. The framework does not count those runs.
 	 */
 	@TestVisible
 	private static final Integer NOT_COUNTED = -1;
@@ -146,6 +148,8 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param  handlerType The handler class, written as `ClassName.class`.
 	 * @exception TriggerHandlerException when the type is null.
 	 * @throws TriggerHandlerException when the type is null.
+	 * @see TriggerHandler.TriggerHandler[0]
+	 * @since 2026-10
 	 * @example
 	 * // in the trigger
 	 * new AccountSampleTriggerHandler().run();
@@ -168,7 +172,7 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Runs the handler. Call it from the trigger. It calls the context method of the current trigger operation, and then `andFinally()`.
-	 * <br>It does nothing when the handler is bypassed or when the loop limit stops the run.
+	 * <br>It does nothing when the handler is bypassed. When the loop limit stops the run, it only sends a warning to `log()`.
 	 * <br>The switch names all 7 trigger operations, and `validateRun()` rejects a null operation. So this method suppresses `SwitchWithoutWhenElse`.
 	 * @exception TriggerHandlerException when `run()` is called outside a trigger.
 	 * @throws TriggerHandlerException when `run()` is called outside a trigger.
@@ -185,7 +189,7 @@ public inherited sharing abstract class TriggerHandler {
 			return;
 		}
 
-		// Do not throw an exception if we exceed the loop count - just stop executing
+		// Past the loop limit, return with no exception. The counter already sent a warning to log().
 		if (!incrementCheckLoopCount()) {
 			return;
 		}
@@ -194,7 +198,7 @@ public inherited sharing abstract class TriggerHandler {
 			log(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), triggerEvent.name() }));
 		}
 
-		// dispatch to the correct handler method
+		// Call the context method of the current operation.
 		switch on triggerEvent {
 			when BEFORE_INSERT {
 				beforeInsert();
@@ -243,14 +247,13 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Limits how many times `run()` runs this handler. Each trigger operation gets the same limit.
-	 * <br>Each operation has its own count for the transaction. The count starts when a limit is first set for the operation. Each chunk of 200 records counts as 1 run. A bypassed run does not count. A run that the limit stops counts.
-	 * <br>When an operation passes its limit, `run()` writes a warning and returns. It does not call the context method or `andFinally()`.
+	 * <br>Each operation has its own count for the transaction. The count starts at the first call of `setMaxLoopCount()`, also with 0 or a negative value. Each chunk of 200 records counts as 1 run. A bypassed run does not count. A run that the limit stops counts.
+	 * <br>When an operation passes its limit, `run()` sends a warning to `log()` and returns. It does not call the context method or `andFinally()`.
 	 * @param  max The maximum number of runs of each operation. 0 or a negative value removes the limit.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @exception TriggerHandlerException when the value is null.
 	 * @throws TriggerHandlerException when the value is null.
 	 * @see TriggerHandler.setMaxLoopCount[1]
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @example
 	 * this.setMaxLoopCount(5); // in the handler constructor
 	 * // or in the trigger
@@ -269,12 +272,14 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Limits how many times `run()` runs this handler for 1 trigger operation. The other operations keep their limits.
-	 * <br>The count of the operation starts when a limit is first set for it. Each chunk of 200 records counts as 1 run. A bypassed run does not count. A run that the limit stops counts.
+	 * <br>The count of the operation starts at the first call of `setMaxLoopCount()` for it, also with 0 or a negative value. Each chunk of 200 records counts as 1 run. A bypassed run does not count. A run that the limit stops counts.
 	 * @param  operation The trigger operation to limit.
 	 * @param  max The maximum number of runs of the operation. 0 or a negative value removes the limit.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @exception TriggerHandlerException when the operation or the value is null.
 	 * @throws TriggerHandlerException when the operation or the value is null.
+	 * @see TriggerHandler.setMaxLoopCount[0]
+	 * @since 2026-10
 	 * @example
 	 * this.setMaxLoopCount(System.TriggerOperation.AFTER_UPDATE, 1); // in the handler constructor
 	 */
@@ -415,7 +420,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @exception TriggerHandlerException when the type is null.
 	 * @throws TriggerHandlerException when the type is null.
 	 * @see TriggerHandler.isSkipped[1]
-	 * @since 2021
+	 * @since 2022
 	 * @example
 	 * if (TriggerHandler.isBypassed(AccountSampleTriggerHandler.class)) {
 	 *   // the handler is bypassed by name or by type
@@ -429,6 +434,7 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Tells if all handlers are bypassed, after `bypassAll()`.
 	 * @return `Boolean` `true` when the global bypass is on.
+	 * @since 2026-10
 	 * @example
 	 * if (TriggerHandler.isGlobalBypassed()) {
 	 *   // no handler runs
@@ -439,11 +445,12 @@ public inherited sharing abstract class TriggerHandler {
 	}
 
 	/**
-	 * Tells if a handler does not run. A handler does not run when it is bypassed by name or by type, or when all handlers are bypassed.
+	 * Tells if a handler does not run. A handler does not run when it is bypassed by name or by type, or when all handlers are bypassed. The result does not include the loop limit.
 	 * @param handlerName The name of the handler. It matches in any case.
 	 * @return `Boolean` `true` when the handler does not run.
 	 * @exception TriggerHandlerException when the name is null or blank.
 	 * @throws TriggerHandlerException when the name is null or blank.
+	 * @since 2026-10
 	 * @example
 	 * if (TriggerHandler.isSkipped('AccountSampleTriggerHandler')) {
 	 *   // the handler does not run
@@ -454,11 +461,12 @@ public inherited sharing abstract class TriggerHandler {
 	}
 
 	/**
-	 * Tells if a handler does not run. A handler does not run when it is bypassed by name or by type, or when all handlers are bypassed.
+	 * Tells if a handler does not run. A handler does not run when it is bypassed by name or by type, or when all handlers are bypassed. The result does not include the loop limit.
 	 * @param handlerType The handler class, written as `ClassName.class`.
 	 * @return `Boolean` `true` when the handler does not run.
 	 * @exception TriggerHandlerException when the type is null.
 	 * @throws TriggerHandlerException when the type is null.
+	 * @since 2026-10
 	 * @example
 	 * if (TriggerHandler.isSkipped(AccountSampleTriggerHandler.class)) {
 	 *   // the handler does not run
@@ -487,6 +495,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * <br>The set does not include the global bypass. For the global bypass, use `isGlobalBypassed()`.
 	 * @deprecated Use `bypassList()`, which holds the same names in sorted order. A later major release removes this method.
 	 * @return `Set<String>` The bypassed handlers.
+	 * @see TriggerHandler.bypassList
 	 * @author David Schach
 	 * @since 2022
 	 * @example
@@ -537,6 +546,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param  desiredValue `true` to bypass the handler, `false` to clear its named bypass.
 	 * @exception TriggerHandlerException when the name is null or blank, or the value is null.
 	 * @throws TriggerHandlerException when the name is null or blank, or the value is null.
+	 * @see TriggerHandler.setBypass[1]
 	 * @since 2021
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @example
@@ -566,6 +576,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @exception TriggerHandlerException when the type is null, or the value is null.
 	 * @throws TriggerHandlerException when the type is null, or the value is null.
 	 * @see TriggerHandler.setBypass[0]
+	 * @since 2026-10
 	 * @example
 	 * Boolean wasBypassed = TriggerHandler.isBypassed(AccountSampleTriggerHandler.class);
 	 * TriggerHandler.bypass(AccountSampleTriggerHandler.class);
@@ -577,7 +588,7 @@ public inherited sharing abstract class TriggerHandler {
 		TriggerHandler.setBypass(handlerType.getName(), desiredValue);
 	}
 
-	// handle limits
+	// limits line
 
 	/**
 	 * Makes all handlers that run later in the transaction write the limits line. You can chain this method.
@@ -585,6 +596,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @deprecated Use `showHandlerLimits()` for this handler only, or the static `showLimits()` for all handlers. A later major release removes this method.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showLimits[0]
+	 * @see TriggerHandler.showHandlerLimits[0]
 	 * @since 2023
 	 * @example
 	 * // before
@@ -604,6 +616,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param enabled `true` to write the line, `false` or null to stop it.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showLimits[1]
+	 * @see TriggerHandler.showHandlerLimits[1]
 	 * @since 2023
 	 * @example
 	 * // before
@@ -639,7 +652,7 @@ public inherited sharing abstract class TriggerHandler {
 		doShowLimits = enabled ?? false;
 	}
 
-	// handle debugs
+	// entry and exit lines
 
 	/**
 	 * Makes all handlers that run later in the transaction write the entry and exit lines. You can chain this method.
@@ -647,6 +660,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @deprecated Use `showHandlerDebug()` for this handler only, or the static `showDebug()` for all handlers. A later major release removes this method.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showDebug[0]
+	 * @see TriggerHandler.showHandlerDebug[0]
 	 * @since 2023
 	 * @example
 	 * // before
@@ -666,6 +680,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param enabled `true` to write the lines, `false` or null to stop them.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showDebug[1]
+	 * @see TriggerHandler.showHandlerDebug[1]
 	 * @since 2023
 	 * @example
 	 * // before
@@ -709,6 +724,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * Makes this handler write the limits line. Other handlers keep their own setting or the static setting.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showHandlerLimits[1]
+	 * @since 2026-10
 	 * @example
 	 * new AccountSampleTriggerHandler().showHandlerLimits().run();
 	 */
@@ -721,6 +737,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param enabled `true` to write the line, `false` to stop it for this handler, or null to use the static setting again.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showHandlerLimits[0]
+	 * @since 2026-10
 	 * @example
 	 * new AccountSampleTriggerHandler().showHandlerLimits(false).run();
 	 */
@@ -733,6 +750,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * Makes this handler write the entry and exit lines. Other handlers keep their own setting or the static setting.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showHandlerDebug[1]
+	 * @since 2026-10
 	 * @example
 	 * new AccountSampleTriggerHandler().showHandlerDebug().run();
 	 */
@@ -745,6 +763,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param enabled `true` to write the lines, `false` to stop them for this handler, or null to use the static setting again.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showHandlerDebug[0]
+	 * @since 2026-10
 	 * @example
 	 * new AccountSampleTriggerHandler().showHandlerDebug(false).run();
 	 */
@@ -756,6 +775,7 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Tells if this handler writes the limits line. It uses the setting of the handler, or the static setting when the handler has none.
 	 * @return `Boolean` `true` when this handler writes the limits line.
+	 * @since 2026-10
 	 */
 	private Boolean isLimitsOn() {
 		return handlerShowLimits ?? doShowLimits;
@@ -764,6 +784,7 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Tells if this handler writes the entry and exit lines. It uses the setting of the handler, or the static setting when the handler has none.
 	 * @return `Boolean` `true` when this handler writes the entry and exit lines.
+	 * @since 2026-10
 	 */
 	private Boolean isDebugOn() {
 		return handlerShowDebug ?? doShowDebug;
@@ -771,11 +792,13 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Returns the number of runs of a handler in this transaction, for all trigger operations together. The count includes the runs that the loop limit stopped.
+	 * <br>The name must be the handler name in the same case, as `getHandlerName()` returns it. Unlike a bypass name, it does not match in any case.
 	 * @deprecated Use `getLoopCount(String, System.TriggerOperation)` for the count of 1 trigger operation. A later major release removes this method.
 	 * @param handlerName The name of the handler.
-	 * @return `Integer` The total count, or -1 when no limit was set for the handler.
+	 * @return `Integer` The total count, or -1 when `setMaxLoopCount()` was never called for the handler.
 	 * @exception TriggerHandlerException when the name is null or blank.
 	 * @throws TriggerHandlerException when the name is null or blank.
+	 * @see TriggerHandler.getLoopCount[1]
 	 * @example
 	 * Integer runs = TriggerHandler.getLoopCount('AccountSampleTriggerHandler');
 	 */
@@ -786,11 +809,13 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Returns the number of runs of 1 trigger operation of a handler in this transaction. The count includes the runs that the loop limit stopped.
+	 * <br>The name must be the handler name in the same case, as `getHandlerName()` returns it. Unlike a bypass name, it does not match in any case.
 	 * @param handlerName The name of the handler.
 	 * @param operation The trigger operation.
-	 * @return `Integer` The count, or -1 when no limit was set for the operation.
+	 * @return `Integer` The count, or -1 when `setMaxLoopCount()` was never called for the operation.
 	 * @exception TriggerHandlerException when the name is null or blank, or the operation is null.
 	 * @throws TriggerHandlerException when the name is null or blank, or the operation is null.
+	 * @since 2026-10
 	 * @example
 	 * Integer runs = TriggerHandler.getLoopCount('AccountSampleTriggerHandler', System.TriggerOperation.AFTER_UPDATE);
 	 */
@@ -805,7 +830,6 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Sets the current context from `Trigger.operationType`. Both constructors call it.
 	 * <br>Outside a trigger, `isTriggerExecuting` is false. A test sets its own context with `setTestContext()`.
-	 * @see TriggerHandler.isTriggerExecuting
 	 */
 	private void setTriggerContext() {
 		triggerEvent = Trigger.operationType;
@@ -827,7 +851,7 @@ public inherited sharing abstract class TriggerHandler {
 		if (counter == null || !counter.increment()) {
 			return true;
 		}
-		log(LoggingLevel.WARN, 'Maximum loop count of ' + counter.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + triggerEvent.name());
+		log(LoggingLevel.WARN, 'Maximum loop count of ' + counter.getMax() + ' exceeded in ' + getHandlerName() + ', so run() stopped ' + triggerEvent.name());
 		return false;
 	}
 
@@ -850,8 +874,9 @@ public inherited sharing abstract class TriggerHandler {
 	}
 
 	/**
-	 * Returns the trigger operation of the current run. In a test, `setTestContext()` sets it, because `Trigger.operationType` is null there.
+	 * Returns the trigger operation of the current run. In a test that runs the handler without DML, `setTestContext()` sets it, because `Trigger.operationType` is null there.
 	 * @return `System.TriggerOperation` The current operation, or null outside a trigger.
+	 * @since 2026-10
 	 */
 	protected System.TriggerOperation getTriggerEvent() {
 		return triggerEvent;
@@ -862,7 +887,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * <br>A subclass can use it, for example in a log line or in a `bypass()` call.
 	 * <br>The runtime lookup reads the start of `toString()`. For an inner class, it gives only the short name. A handler that is an inner class, or that overrides `toString()`, must pass its type to the Type constructor.
 	 * @return `String` The name of this handler.
-	 * @see TriggerHandler.handlerName
+	 * @since 2026-10
 	 */
 	@TestVisible
 	protected String getHandlerName() {
@@ -879,6 +904,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * <br>A null operation clears the context. `run()` then throws, as it does outside a trigger.
 	 * @param operation The trigger operation to simulate.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
+	 * @since 2026-10
 	 * @example
 	 * AccountSampleTriggerHandler handler = new AccountSampleTriggerHandler();
 	 * // set the records that the handler reads, and then:
@@ -898,6 +924,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * <br>The default writes to the debug log. Override it to send the messages to the logging framework of your org, such as {@link [Nebula Logger](https://github.com/jongpie/NebulaLogger)}. The README has an example.
 	 * @param level The logging level of the message.
 	 * @param message The message.
+	 * @since 2026-10
 	 * @example
 	 * // in the handler class
 	 * protected override void log(LoggingLevel level, String message) {
@@ -909,7 +936,7 @@ public inherited sharing abstract class TriggerHandler {
 		System.debug(level, message); // NOPMD
 	}
 
-	//triggerEvent methods
+	// context methods
 
 	/**
 	 * Runs in the before insert context. Override it in the handler. The base method does nothing.
@@ -955,7 +982,8 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Runs after the context method returns, in all trigger contexts. It also runs in a context that the handler does not override.
-	 * <br>It does not run when the handler is bypassed or when the loop limit stops the run. Then nothing in the handler runs.
+	 * <br>It does not run when the handler is bypassed. Then nothing in the handler runs.
+	 * <br>It does not run when the loop limit stops the run. Then only `log()` runs, with the loop limit warning.
 	 * <br>It does not run when the context method throws an exception that it does not catch.
 	 * <br>It runs when the context method catches its own exception or calls `addError()`.
 	 * <br>After a run starts its context method, a bypass cannot stop the `andFinally()` of that run. For example, the context method bypasses this handler and updates records of the same object. The handler skips the run for that update, and the `andFinally()` of the first run comes last.
@@ -963,7 +991,15 @@ public inherited sharing abstract class TriggerHandler {
 	 * <br>Credit to James Simone for this idea.
 	 * @see [The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/)
 	 * @author James Simone
-	 * @since 2022
+	 * @since 2023-02-24
+	 * @example
+	 * // andFinally() runs after the before context and again after the after context.
+	 * // This example runs only once for each chunk of 200 records, after the after context.
+	 * public override void andFinally() {
+	 *   if (getTriggerEvent() == System.TriggerOperation.AFTER_UPDATE) {
+	 *     EventBus.publish(new Account_Change__e(Record_Count__c = Trigger.size));
+	 *   }
+	 * }
 	 */
 	protected virtual void andFinally() {
 	}
@@ -973,6 +1009,7 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Holds the bypasses of the transaction: the named bypasses and the global bypass. The 2 are independent.
 	 * <br>`TriggerHandler` keeps 1 instance in `bypasses`, because an inner class cannot have static members. The public static methods check their arguments and then call it.
+	 * @since 2026-10
 	 */
 	@TestVisible
 	private inherited sharing class BypassRegistry {
@@ -1023,7 +1060,7 @@ public inherited sharing abstract class TriggerHandler {
 		}
 
 		/**
-		 * Tells if a handler is bypassed by name.
+		 * Tells if 1 or more handlers are bypassed by name.
 		 * @return `Boolean` `true` when 1 or more names are bypassed.
 		 */
 		public Boolean hasNames() {
@@ -1076,6 +1113,7 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Holds the loop counters of the transaction, by handler name and then by trigger operation.
 	 * <br>`TriggerHandler` keeps 1 instance in `loopCounters`, because an inner class cannot have static members. The public methods check their arguments and then call it.
+	 * @since 2026-10
 	 */
 	@TestVisible
 	private inherited sharing class LoopCounterRegistry {
@@ -1086,7 +1124,7 @@ public inherited sharing abstract class TriggerHandler {
 
 		/**
 		 * Tells if no handler has a counter. Then `run()` does not look up the handler name.
-		 * @return `Boolean` `true` when no limit was set in the transaction.
+		 * @return `Boolean` `true` when no handler called `setMaxLoopCount()` in the transaction.
 		 */
 		public Boolean isEmpty() {
 			return counters.isEmpty();
@@ -1096,7 +1134,7 @@ public inherited sharing abstract class TriggerHandler {
 		 * Returns the counter of 1 trigger operation of a handler.
 		 * @param handlerName The name of the handler.
 		 * @param operation The trigger operation.
-		 * @return `LoopCounter` The counter, or null when no limit was set for the operation.
+		 * @return `LoopCounter` The counter, or null when `setMaxLoopCount()` was never called for the operation.
 		 */
 		public LoopCounter get(String handlerName, System.TriggerOperation operation) {
 			return counters.get(handlerName)?.get(operation);
@@ -1136,7 +1174,7 @@ public inherited sharing abstract class TriggerHandler {
 		 * Returns the count of 1 trigger operation of a handler.
 		 * @param handlerName The name of the handler.
 		 * @param operation The trigger operation.
-		 * @return `Integer` The count, or `NOT_COUNTED` when no limit was set for the operation.
+		 * @return `Integer` The count, or `NOT_COUNTED` when `setMaxLoopCount()` was never called for the operation.
 		 */
 		public Integer count(String handlerName, System.TriggerOperation operation) {
 			return get(handlerName, operation)?.getCount() ?? NOT_COUNTED;
@@ -1145,7 +1183,7 @@ public inherited sharing abstract class TriggerHandler {
 		/**
 		 * Returns the total count of all trigger operations of a handler.
 		 * @param handlerName The name of the handler.
-		 * @return `Integer` The total, or `NOT_COUNTED` when no limit was set for the handler.
+		 * @return `Integer` The total, or `NOT_COUNTED` when `setMaxLoopCount()` was never called for the handler.
 		 */
 		public Integer total(String handlerName) {
 			Map<System.TriggerOperation, LoopCounter> handlerCounters = counters.get(handlerName);
@@ -1230,6 +1268,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param handlerName The name to check.
 	 * @exception TriggerHandlerException when the name is null or blank.
 	 * @throws TriggerHandlerException when the name is null or blank.
+	 * @since 2026-10
 	 */
 	private static void requireHandlerName(String handlerName) {
 		if (String.isBlank(handlerName)) {
@@ -1242,6 +1281,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param handlerType The type to check.
 	 * @exception TriggerHandlerException when the type is null.
 	 * @throws TriggerHandlerException when the type is null.
+	 * @since 2026-10
 	 */
 	private static void requireHandlerType(Type handlerType) {
 		if (handlerType == null) {
@@ -1254,6 +1294,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * @param handlerNames The names to check.
 	 * @exception TriggerHandlerException when the list is null or has a null or blank name.
 	 * @throws TriggerHandlerException when the list is null or has a null or blank name.
+	 * @since 2026-10
 	 */
 	private static void requireHandlerNames(List<String> handlerNames) {
 		if (handlerNames == null) {

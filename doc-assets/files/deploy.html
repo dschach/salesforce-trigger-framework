@@ -1,32 +1,27 @@
 <link href="assets/styling.css" rel="stylesheet" />
-<h1>Install the framework in a scratch org</h1>
+<h1>Install the Framework in a Scratch Org</h1>
 <ol>
 	<li>
-		Set up your environment. The
-		<a href="https://trailhead.salesforce.com/content/learn/projects/quick-start-salesforce-dx">Quick Start: Salesforce DX</a> Trailhead project walks
-		through these steps:
+		<p>
+			Set up your environment. The Trailhead project
+			<a href="https://trailhead.salesforce.com/content/learn/projects/quick-start-salesforce-dx">Quick Start: Salesforce DX</a> shows these steps:
+		</p>
+		<ul>
+			<li>Enable Dev Hub in your org or Trailhead Playground.</li>
+			<li>Install <a href="https://developer.salesforce.com/tools/vscode/en/getting-started/install/#visual-studio-code">Visual Studio Code</a>.</li>
+			<li>
+				Install the <a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm">Salesforce CLI</a>.
+			</li>
+			<li>
+				Install the
+				<a href="https://developer.salesforce.com/tools/vscode/en/getting-started/install/#salesforce-extensions-for-visual-studio-code"
+					>Salesforce extensions for Visual Studio Code</a
+				>.
+			</li>
+		</ul>
 	</li>
-</ol>
-<ul>
-	<li>Enable Dev Hub in your org or Trailhead Playground</li>
 	<li>
-		Install
-		<a href="https://developer.salesforce.com/tools/vscode/en/getting-started/install/#visual-studio-code" target="_blank">Visual Studio Code</a>
-	</li>
-	<li>
-		Install
-		<a href="https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm" target="_blank">Salesforce CLI</a>
-	</li>
-	<li>
-		Install the
-		<a href="https://developer.salesforce.com/tools/vscode/en/getting-started/install/#salesforce-extensions-for-visual-studio-code" target="_blank"
-			>Visual Studio Code Salesforce extensions</a
-		>
-	</li>
-</ul>
-<ol>
-	<li>
-		<p>If you haven&#39;t already done so, authorize your Dev Hub org and give it an alias (<strong>myhuborg</strong> in the command below):</p>
+		<p>Authorize your Dev Hub org, if you did not do it before, and give it an alias (<strong>myhuborg</strong> in this command):</p>
 		<pre><code class="language-bash">sf org login web --set-default-dev-hub --alias myhuborg
 </code></pre>
 	</li>
@@ -37,31 +32,32 @@ cd salesforce-trigger-framework
 </code></pre>
 	</li>
 	<li>
-		<p>Create your scratch org.</p>
+		<p>Create your scratch org. Use the script or the Salesforce CLI.</p>
 		<ul>
 			<li>
-				<p>Using the included script</p>
+				<p>With the script:</p>
 				<p>
-					<strong>Note:</strong> the script first deletes the scratch org with the alias <strong>TriggerFramework</strong>, if there is one, and then
-					creates a new one with that alias. It deploys the framework and the sample handler, and opens the org.
+					<strong>Note:</strong> The script first deletes the scratch org with the alias <strong>TriggerFramework</strong>, if there is one. Then it
+					creates a new scratch org with that alias, deploys the framework and the sample handler, and opens the org.
 				</p>
-				<p>From the Visual Studio Code terminal, run the <a href="scripts/orginit.sh">orginit script</a>:</p>
+				<p>
+					In the terminal of Visual Studio Code, run the
+					<a href="https://github.com/dschach/salesforce-trigger-framework/tree/main/scripts/orginit.sh" target="_blank">orginit script</a>:
+				</p>
 				<pre><code class="language-bash">bash scripts/orginit.sh
 </code></pre>
 			</li>
 			<li>
-				<p>Using the Salesforce CLI</p>
+				<p>With the Salesforce CLI:</p>
 				<ol>
 					<li>
-						<p>
-							Create a scratch org and give it an alias (<strong>triggerHandler</strong> in the command below). This creates an empty scratch org:
-						</p>
+						<p>Create an empty scratch org and give it an alias (<strong>triggerHandler</strong> in this command):</p>
 						<pre><code class="language-bash">sf org create scratch --set-default --definition-file config/project-scratch-def.json --alias triggerHandler
 </code></pre>
 					</li>
 					<li>
 						<p>
-							Deploy the framework to your scratch org. Add <code>--source-dir sample-handler</code> to deploy the sample handler and trigger too:
+							Deploy the framework to your scratch org. To deploy the sample handler and trigger too, add <code>--source-dir sample-handler</code>:
 						</p>
 						<pre><code class="language-bash">sf project deploy start --source-dir force-app
 </code></pre>

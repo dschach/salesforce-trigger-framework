@@ -45,14 +45,14 @@ With a cutoff, the job summary has 2 tables. The first table is "Violations at S
     results-path: "sfca/sfca_results.json"
     severity-cutoff: "2"
 
-- name: "Fail on priority 1 and 2 SFCA violations"
+- name: "Fail on severity 1 and 2 SFCA violations"
   if: ${{ steps.sfca-report.outputs.sev1-count != 0 || steps.sfca-report.outputs.sev2-count != 0 }}
   run: exit 1
 ```
 
 ## Notes
 
-- The counts come from `violationCounts` in the report, which holds the count for each severity. A severity is the priority that the ruleset gave the rule.
+- The counts come from `violationCounts` in the report, which holds the count for each severity. `code-analyzer.yml` sets the severity of each rule. It can differ from the priority of the rule in the ruleset.
 - The File cell leaves out the folders that all files in the report start with. So `delta/force-app/main/default/classes/Foo.cls` shows as `classes/Foo.cls`. A report of 1 file shows only its name.
 - The example expects that the job installed the Salesforce CLI and the `code-analyzer` plugin, as the `sfca-analysis` job in `ci.yml` does. `if: always()` writes the summary also when the scan step fails.
 - The action needs `jq`, and each GitHub-hosted runner has it.

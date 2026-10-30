@@ -1,13 +1,14 @@
 /**
  * Tests for the `TriggerHandler` base class.
- * <br>Each test creates its own handler with `newHandler()` and proves 1 behavior through the call log.
+ * <br>Each test proves 1 behavior. Most tests create their handler with `newHandler()` and read the call log.
+ * <br>No real trigger runs in these tests: `setTestContext()` gives each handler its trigger operation. The sample tests, which are outside the package directory, run the real trigger.
  * <br>`NcssCount` is suppressed. The class has 1 test for each behavior of the framework, the bypass and loop counter registries too, so it is large by design.
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @since 2013
  * @author {@link [David Schach](https://github.com/dschach)}
- * @since 2021 Update, add new methods
- * @since 2023-02-08 Update assert methods to Assert class
- * @since 2026-10-30 1 test per behavior, with a call log that records `andFinally()`
+ * @since 2021 Add tests for the new methods
+ * @since 2023-02-08 Use the `Assert` class
+ * @since 2026-10 Rewrite with 1 test for each behavior, and a call log that records `andFinally()`
  * @group Trigger Handler
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
  * @see TriggerHandler
@@ -27,7 +28,13 @@ private inherited sharing class TriggerHandlerTest {
 	 * The messages that the `log` override of the test handler received. Each entry is the level, a colon, and the message.
 	 */
 	private static List<String> logs = new List<String>();
+	/**
+	 * The value of `getTriggerEvent()` that the test handler saw in its last run.
+	 */
 	private static System.TriggerOperation lastEventSeen;
+	/**
+	 * The value of `getHandlerName()` that the test handler saw in its last run.
+	 */
 	private static String lastNameSeen;
 	/**
 	 * The name that the test handler gets from the Type constructor: `Type.getName()` of the inner class. It matches `bypass(Type)`.
@@ -369,7 +376,7 @@ private inherited sharing class TriggerHandlerTest {
 	// setBypass
 
 	/**
-	 * `setBypass(name, true)` bypasses the handler and keeps an active global bypass.
+	 * `setBypass(name, true)` bypasses the handler by name, also during a global bypass. The named bypass stays after the global bypass is cleared.
 	 */
 	@IsTest
 	private static void setBypassTrueBypassesHandler() {
@@ -466,7 +473,7 @@ private inherited sharing class TriggerHandlerTest {
 		calls.clear();
 		limited.run();
 		Assert.isTrue(calls.isEmpty(), 'the third run should call no method');
-		Assert.areEqual(3, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the skipped run should still count');
+		Assert.areEqual(3, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the stopped run should still count');
 	}
 
 	/**
@@ -489,7 +496,7 @@ private inherited sharing class TriggerHandlerTest {
 		TriggerHandlerTest.TestHandler limited = newHandler(System.TriggerOperation.BEFORE_INSERT);
 		limited.setMaxLoopCount(1).run();
 		limited.run();
-		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally' }, calls, 'the second run should be skipped');
+		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally' }, calls, 'the second run should be stopped');
 
 		calls.clear();
 		limited.clearMaxLoopCount();
@@ -828,7 +835,7 @@ private inherited sharing class TriggerHandlerTest {
 		limited.setMaxLoopCount(1).run();
 		limited.run();
 		Assert.areEqual(
-			new List<String>{ 'WARN: Maximum loop count of 1 exceeded in ' + HANDLER_NAME + ', so run() skipped BEFORE_INSERT' },
+			new List<String>{ 'WARN: Maximum loop count of 1 exceeded in ' + HANDLER_NAME + ', so run() stopped BEFORE_INSERT' },
 			logs,
 			'the loop limit warning should reach the log hook'
 		);

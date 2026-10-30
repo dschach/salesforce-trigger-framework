@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!--
-	Every ruleset of the reference in one file, for a run of PMD by itself: give
-	pmd check this file as its only ruleset, from the root of the repository.
+	All XML rulesets of this project in one file, for a run of PMD by itself: give
+	pmd check this file as its only ruleset, from the root of the repository. It
+	does not include the Java rules in pmd-java-rules-1.0.0.jar, such as
+	FlagSystemMode, because a run of PMD alone does not load the jar.
 
 	Each line below imports a whole ruleset file, with the priorities and the
 	properties set there. The paths are read from the folder PMD runs in, the

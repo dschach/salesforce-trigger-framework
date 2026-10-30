@@ -5,13 +5,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 	<description>
-		Custom PMD rules for Apex, written in XPath. The other custom rules are in
-		pmd-custom-rules-markup.xml, pmd-custom-rules-metadata.xml,
-		pmd-custom-rules-flow.xml, and, for JavaScript,
-		pmd-custom-rules-javascript.xml. The stock PMD rules this reference adopts
-		are in pmd-stock-rules.xml and, for JavaScript, in
-		pmd-stock-rules-javascript.xml. Adjust priorities and suppressions to
-		match your organisation's risk posture and coding standards.
+		Custom PMD rules for Apex, written in XPath. The custom Java rules are in
+		pmd-java-rules-1.0.0.jar, and the stock PMD rules that this project uses
+		are in pmd-stock-rules.xml. code-analyzer.yml sets the severity of each
+		rule.
 	</description>
 
 	<!--
@@ -29,7 +26,7 @@
 	<!-- ============================================================ -->
 
 	<!--
-		Requires every Apex method, test methods included, to declare an explicit
+		Requires every Apex method that is not a test method to declare an explicit
 		access modifier. The body of a trigger is exempt: PMD models it as a method,
 		and it cannot carry a modifier.
 		Methods without an explicit access modifier default to private in Apex.
@@ -54,14 +51,13 @@
 
 	<!--
 		Flags use of without sharing on any class.
-		Classes using without sharing should include a comment explaining
-		the business justification. The rule applies to all classes including
-		test classes - the requirement for documented justification is not
-		relaxed in a test context.
+		The rule reports every class that uses without sharing, test classes
+		included. To accept one, suppress the rule on the class with
+		@SuppressWarnings and give the business reason in a comment.
 	-->
 	<rule
 		name="DoNotUseWithoutSharing"
-		message="Use with sharing or inherited sharing, or document the justification for without sharing"
+		message="Use with sharing or inherited sharing. To keep without sharing, suppress this rule and give the reason"
 		class="net.sourceforge.pmd.lang.rule.xpath.XPathRule"
 		language="apex">
 		<description>Flags any class declared as without sharing.</description>

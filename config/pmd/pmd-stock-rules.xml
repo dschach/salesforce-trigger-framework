@@ -5,23 +5,22 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
 	<description>
-		The stock PMD rules this reference adopts for Apex, HTML, Visualforce, and
-		XML metadata, each with an explicit priority and, where a rule's behaviour
-		is changed, the property overrides. The stock PMD rules for JavaScript are
-		in pmd-stock-rules-javascript.xml, and the custom rules are in
-		pmd-custom-rules-apex.xml, pmd-custom-rules-markup.xml,
-		pmd-custom-rules-metadata.xml, pmd-custom-rules-flow.xml, and, for
-		JavaScript, pmd-custom-rules-javascript.xml; all seven files are listed
-		under engines.pmd.custom_rulesets in code-analyzer.yml.
+		The stock PMD rules that this project uses for Apex, HTML, and Visualforce,
+		each with an explicit priority and, where a rule's behaviour is changed, the
+		property overrides. The custom XPath rules are in pmd-custom-rules-apex.xml,
+		and the custom Java rules are in pmd-java-rules-1.0.0.jar. code-analyzer.yml
+		lists this file, pmd-custom-rules-apex.xml, and the ruleset in the jar under
+		engines.pmd.custom_rulesets.
 	</description>
 
 	<!--
 		How to read this file.
 		- Every rule carries an explicit priority. Code Analyzer derives its own severity
-		  from the priority (1 becomes 2, 2 and 3 become 3, 4 and 5 become 4), so
-		  code-analyzer.yml overrides each rule's severity with the same number as its
-		  priority; priorities 1 and 2 then block the pull request. Where the priority differs from the one
-		  PMD ships, the comment names the PMD default.
+		  from the priority (1 becomes 2, 2 and 3 become 3, 4 and 5 become 4), and
+		  code-analyzer.yml holds the severity of each rule. So a severity can differ
+		  from the priority here. Severities 1 and 2 block the pull request, not
+		  priorities. Where the priority differs from the one PMD ships, the comment
+		  names the PMD default.
 		- A property is listed only when its value differs from PMD's default, and the
 		  comment on it names that default. Properties left unset keep their defaults.
 		- violationSuppressXPath entries are evaluated with the violation node as the
@@ -34,7 +33,9 @@
 		  (RequireAccessMode, FlagSystemMode, and RequireExplicitSharing) cover; and four that PMD
 		  has deprecated in favour of NcssCount (ExcessiveClassLength, NcssConstructorCount,
 		  NcssMethodCount, and NcssTypeCount). To enforce one, take it out of its comment and
-		  give it a priority.
+		  give it a priority. This applies to a run of PMD alone. Code Analyzer still runs
+		  ApexCRUDViolation, ApexSharingViolations, and ExcessivePublicCount as built-in
+		  Recommended rules, with the severities in code-analyzer.yml.
 	-->
 
 	<exclude-pattern>.*/.sfdx/.*</exclude-pattern>
