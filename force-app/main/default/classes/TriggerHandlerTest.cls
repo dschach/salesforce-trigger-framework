@@ -623,18 +623,18 @@ private inherited sharing class TriggerHandlerTest {
 	private static void staticSwitchesSetDebugAndLimits() {
 		TriggerHandler.showLimits(false);
 		TriggerHandler.showDebug(false);
-		Assert.isFalse(TriggerHandler.showLimits, 'showLimits(false) should turn limits off'); //NOPMD
-		Assert.isFalse(TriggerHandler.showDebug, 'showDebug(false) should turn debug off'); //NOPMD
+		Assert.isFalse(TriggerHandler.doShowLimits, 'showLimits(false) should turn limits off');
+		Assert.isFalse(TriggerHandler.doShowDebug, 'showDebug(false) should turn debug off');
 
 		TriggerHandler.showLimits();
 		TriggerHandler.showDebug();
 		newHandler(System.TriggerOperation.BEFORE_INSERT).run();
-		Assert.isTrue(TriggerHandler.showLimits, 'showLimits() should turn limits on'); //NOPMD
-		Assert.isTrue(TriggerHandler.showDebug, 'showDebug() should turn debug on'); //NOPMD
+		Assert.isTrue(TriggerHandler.doShowLimits, 'showLimits() should turn limits on');
+		Assert.isTrue(TriggerHandler.doShowDebug, 'showDebug() should turn debug on');
 		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally' }, calls, 'the handler should run with debug and limits on');
 
 		TriggerHandler.showDebug(null);
-		Assert.isFalse(TriggerHandler.showDebug, 'showDebug(null) should turn debug off'); //NOPMD
+		Assert.isFalse(TriggerHandler.doShowDebug, 'showDebug(null) should turn debug off');
 	}
 
 	/**
@@ -647,18 +647,18 @@ private inherited sharing class TriggerHandlerTest {
 		Assert.isTrue(chained === chained.debug(), 'debug() should return the same handler');
 		Assert.isTrue(chained === chained.setMaxLoopCount(5), 'setMaxLoopCount() should return the same handler');
 		chained.limits().debug().run();
-		Assert.isTrue(TriggerHandler.showLimits, 'limits() should turn limits on'); //NOPMD
-		Assert.isTrue(TriggerHandler.showDebug, 'debug() should turn debug on'); //NOPMD
+		Assert.isTrue(TriggerHandler.doShowLimits, 'limits() should turn limits on');
+		Assert.isTrue(TriggerHandler.doShowDebug, 'debug() should turn debug on');
 		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally' }, calls, 'the chained run should call the context method');
 
 		chained.limits(null).debug(null);
-		Assert.isFalse(TriggerHandler.showLimits, 'limits(null) should turn limits off'); //NOPMD
-		Assert.isFalse(TriggerHandler.showDebug, 'debug(null) should turn debug off'); //NOPMD
+		Assert.isFalse(TriggerHandler.doShowLimits, 'limits(null) should turn limits off');
+		Assert.isFalse(TriggerHandler.doShowDebug, 'debug(null) should turn debug off');
 
 		chained.limits(true).debug(true);
 		chained.limits(false).debug(false);
-		Assert.isFalse(TriggerHandler.showLimits, 'limits(false) should turn limits off'); //NOPMD
-		Assert.isFalse(TriggerHandler.showDebug, 'debug(false) should turn debug off'); //NOPMD
+		Assert.isFalse(TriggerHandler.doShowLimits, 'limits(false) should turn limits off');
+		Assert.isFalse(TriggerHandler.doShowDebug, 'debug(false) should turn debug off');
 	}
 
 	// test seam and log hook

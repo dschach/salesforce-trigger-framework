@@ -37,16 +37,16 @@ public inherited sharing virtual class TriggerHandler {
 	private static Boolean globalBypass = false;
 
 	/**
-	 * `true` if we include a debug statement for limits.
+	 * `true` when every handler writes the limits line after its run. `showLimits()` and `showLimits(Boolean)` set it.
 	 */
 	@TestVisible
-	private static Boolean showLimits = false;
+	private static Boolean doShowLimits = false;
 
 	/**
-	 * `true` if we include a debug statement for trigger entry and exit.
+	 * `true` when every handler writes the entry and exit lines of its run. `showDebug()` and `showDebug(Boolean)` set it.
 	 */
 	@TestVisible
-	private static Boolean showDebug = false;
+	private static Boolean doShowDebug = false;
 
 	/**
 	 * The current operation of the trigger. Tests can set it.
@@ -196,7 +196,7 @@ public inherited sharing virtual class TriggerHandler {
 			return;
 		}
 
-		if (showDebug) {
+		if (doShowDebug) {
 			log(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), triggerEvent.name() }));
 		}
 
@@ -226,7 +226,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 		andFinally();
 
-		if (showLimits) {
+		if (doShowLimits) {
 			log(
 				LoggingLevel.DEBUG,
 				String.format(
@@ -242,7 +242,7 @@ public inherited sharing virtual class TriggerHandler {
 				)
 			);
 		}
-		if (showDebug) {
+		if (doShowDebug) {
 			log(LoggingLevel.DEBUG, String.format('Exiting {0}, fired {1}', new List<String>{ getHandlerName(), triggerEvent.name() }));
 		}
 	}
@@ -687,7 +687,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @see TriggerHandler.showLimits[0]
 	 */
 	public static void showLimits(Boolean enabled) {
-		showLimits = enabled ?? false;
+		doShowLimits = enabled ?? false;
 	}
 
 	// handle debugs
@@ -747,7 +747,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @see TriggerHandler.showDebug[0]
 	 */
 	public static void showDebug(Boolean enabled) {
-		showDebug = enabled ?? false;
+		doShowDebug = enabled ?? false;
 	}
 
 	/**
