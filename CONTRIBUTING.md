@@ -15,6 +15,7 @@ You need:
 - Node.js at the version in the `engines` field of `package.json`
 - The [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli) and its `code-analyzer` plugin
 - A Dev Hub org, for scratch orgs
+- A Java runtime, at version 11 or later, for the PMD and graph engines of Code Analyzer
 
 Then run:
 
@@ -61,7 +62,10 @@ sf plugins install code-analyzer
    ```bash
    npm run prettier:verify
    npm run codeanalyzer:run
+   node scripts/sync-sample-code.mjs --check
    ```
+
+   The last command checks that `sample-handler/README.md` shows the current sample code. The commit hook keeps it current, so it fails only after a commit without the hook.
 
    CI fails a pull request on each Code Analyzer violation at severity 1 or 2.
 
@@ -80,7 +84,7 @@ sf plugins install code-analyzer
 - Write commit messages and pull request titles as [Conventional Commits](https://www.conventionalcommits.org/) with a scope, and start them with a lower-case verb: `fix(handler): guard null arguments`.
 - Pull requests merge by squash only. The pull request title becomes the commit message on `main`, and the description becomes its body. So fill in each section of the pull request template.
 - Do not put version numbers in titles or descriptions. Release Please sets the version and writes the changelog from the commit messages.
-- 2 checks must pass before a merge: `format-lint` (Prettier) and `sfca-analysis` (Code Analyzer). The `scratch-org-test` check runs the Apex tests when Apex or project metadata changes. It needs the Dev Hub secret of the project, so it does not run on a pull request from a fork.
+- 2 checks must pass before a merge: `format-lint` (Prettier and the sample code check) and `sfca-analysis` (Code Analyzer). The `scratch-org-test` check runs the Apex tests when a file in `force-app/` or `sample-handler/` changes, except a markdown file. It needs the Dev Hub secret of the project, so it does not run on a pull request from a fork.
 
 ## npm Scripts
 

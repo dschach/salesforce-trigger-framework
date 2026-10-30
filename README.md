@@ -31,12 +31,14 @@
   - [Changes for Tests](#changes-for-tests)
   - [Deprecated Members](#deprecated-members)
 - [API Reference](#api-reference)
+- [Contributing](#contributing)
+- [License](#license)
 
 <!-- END doctoc -->
 
 ## Credit
 
-This framework is based on [sfdc-trigger-framework](https://github.com/kevinohara80/sfdc-trigger-framework) by Kevin O'Hara. Its MIT license notice is in [NOTICE](NOTICE).
+This framework is based on [sfdc-trigger-framework](https://github.com/kevinohara80/sfdc-trigger-framework) by Kevin O'Hara. Its MIT license notice is in [NOTICE](https://github.com/dschach/salesforce-trigger-framework/blob/main/NOTICE).
 
 ## Documentation
 
@@ -54,7 +56,7 @@ A trigger should have no logic. Logic in a trigger is difficult to test and to m
 
 This framework has 1 base class, **TriggerHandler**. Each of your trigger handlers extends it. The base class has a method for each trigger context, and it calls the correct method when the trigger fires.
 
-The base class also controls how the triggers run. It counts the runs of each handler, and it has methods that bypass handlers, limit recursion, and write debug lines.
+The base class also controls how the triggers run. It has methods that bypass handlers, count and limit the runs of each handler, and write debug lines.
 
 Most important, the framework is small and simple to use.
 
@@ -110,7 +112,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
 
 The class in `super()` is optional, but it makes the handler faster. Without it, the framework finds the name from the running class when a bypass or a loop count first needs it. That lookup serializes all fields of the handler, also the record lists. With the class, the handler name is `Type.getName()`, so `TriggerHandler.bypass(OpportunityTriggerHandler.class)` always matches. A handler that is an inner class must pass its class, because the lookup gives only the short name of an inner class. [Pass the Handler Class to super()](#pass-the-handler-class-to-super) has more examples.
 
-This repository has a sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes) class and a sample [trigger](https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger). The sample is not a package directory, so the Deploy to Salesforce button and `sf project deploy start` install only the framework. To try the sample in a scratch org, run `sf project deploy start --source-dir sample-handler`. The [sample README](sample-handler/README.md) tells what the sample shows.
+This repository has a sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes) class and a sample [trigger](https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger). The sample is not a package directory, so the Deploy to Salesforce button and `sf project deploy start` install only the framework. To try the sample in a scratch org, run `sf project deploy start --source-dir force-app --source-dir sample-handler`. The [sample README](sample-handler/README.md) tells what the sample shows.
 
 ### Pass the Handler Class to super()
 
@@ -296,7 +298,7 @@ To limit recursion, set a maximum loop count for a handler. Each trigger operati
 - `setMaxLoopCount(System.TriggerOperation.AFTER_UPDATE, max)` sets the limit of 1 operation.
 - A maximum of 0 or a negative value means no limit.
 
-A DML statement on more than 200 records runs the trigger once for each chunk of 200 records. Each chunk uses 1 run of its operation. A bypassed run does not count. A run that the limit stops counts. When the count of an operation passes its maximum, `run()` writes a warning to the debug log and returns. It does not call the context method or `andFinally()`.
+A DML statement on more than 200 records runs the trigger once for each chunk of 200 records. Each chunk uses 1 run of its operation. A bypassed run does not count. A run that the limit stops counts. When the count of an operation passes its maximum, `run()` sends a warning to `log()` and returns. By default, `log()` writes it to the debug log. It does not call the context method or `andFinally()`.
 
 This handler runs its update logic once for an update of up to 200 records. The update in `afterUpdate()` fires the trigger again, and the handler skips those runs.
 
@@ -317,7 +319,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
 }
 ```
 
-`clearMaxLoopCount()` removes the limit of all operations, and the counts continue. `TriggerHandler.getLoopCount('OpportunityTriggerHandler', System.TriggerOperation.AFTER_UPDATE)` returns the current count of 1 operation. The count is -1 for an operation that never had a limit, because the framework does not count its runs.
+`clearMaxLoopCount()` removes the limit of all operations, and the counts continue. `TriggerHandler.getLoopCount('OpportunityTriggerHandler', System.TriggerOperation.AFTER_UPDATE)` returns the current count of 1 operation. The count is -1 for an operation with no call of `setMaxLoopCount()`, because the framework does not count its runs. After a call with 0 or a negative value, the framework counts the runs but does not stop any.
 
 You can also set the limit in the trigger, before `run()`:
 
@@ -411,7 +413,7 @@ Nebula Logger keeps the entries in memory until `Logger.saveLog()` runs. The nex
 It does not run in these cases:
 
 - The handler is bypassed by name or by type, or all handlers are bypassed. Then nothing in the handler runs.
-- The loop limit of the trigger operation stops the run. Then nothing in the handler runs.
+- The loop limit of the trigger operation stops the run. Then only `log()` runs, with the loop limit warning.
 - The context method throws an exception that it does not catch. The exception reaches the caller and stops all processing.
 
 After a run of the handler starts its context method, a bypass cannot stop the `andFinally()` of that run. For example, the `afterUpdate()` method of an Account handler bypasses the Account handler, updates other Accounts, and clears the bypass:
@@ -484,6 +486,8 @@ A handler can also call 3 protected methods:
 
 Version 2.0 has breaking changes. Before you upgrade, check your handlers, your triggers, and your tests for the items below.
 
+The classes now use API version 67.0, not 58.0. The target org must support API version 67.0.
+
 ### Changes for Handlers and Triggers
 
 - **The String constructor is removed.** Replace the name in quotes with the class:
@@ -537,8 +541,8 @@ This table lists all public members of `TriggerHandler`. The [class documentatio
 | `setMaxLoopCount(Integer max)`                                               | Limits how many times this handler runs, with the same limit for each trigger operation. 0 or a negative value removes the limit. Returns the handler, so you can chain calls.                    |
 | `setMaxLoopCount(System.TriggerOperation operation, Integer max)`            | Limits how many times this handler runs for 1 trigger operation. 0 or a negative value removes the limit. Returns the handler, so you can chain calls.                                            |
 | `clearMaxLoopCount()`                                                        | Removes the limit of all trigger operations of this handler. The counts continue.                                                                                                                 |
-| `static getLoopCount(String handlerName)`                                    | Deprecated: use the form with the operation. Returns the total count of all operations of a handler, or -1 when no limit was set for it. A later major release removes it.                        |
-| `static getLoopCount(String handlerName, System.TriggerOperation operation)` | Returns the count of 1 trigger operation of a handler, or -1 when no limit was set for it.                                                                                                        |
+| `static getLoopCount(String handlerName)`                                    | Deprecated: use the form with the operation. Returns the total count of all operations of a handler, or -1 when `setMaxLoopCount()` was never called for it. A later major release removes it.    |
+| `static getLoopCount(String handlerName, System.TriggerOperation operation)` | Returns the count of 1 trigger operation of a handler, or -1 when `setMaxLoopCount()` was never called for it.                                                                                    |
 | `static bypass(String handlerName)`                                          | Bypasses a handler by name. The name matches in any case.                                                                                                                                         |
 | `static bypass(Type handlerType)`                                            | Bypasses a handler by type, for example `bypass(AccountTriggerHandler.class)`.                                                                                                                    |
 | `static bypass(List<String> handlerNames)`                                   | Bypasses a list of handlers by name.                                                                                                                                                              |
@@ -565,3 +569,11 @@ This table lists all public members of `TriggerHandler`. The [class documentatio
 | `static showDebug()`, `static showDebug(Boolean enabled)`                    | Sets whether all handlers that run later in the transaction write the entry and exit lines.                                                                                                       |
 | `showHandlerDebug()`, `showHandlerDebug(Boolean enabled)`                    | Sets whether this handler writes the entry and exit lines. With null, the handler uses the setting for all handlers. Returns the handler, so you can chain calls.                                 |
 | `TriggerHandler.TriggerHandlerException`                                     | The framework throws it when `run()` is called outside a trigger, and when a bypass or loop count method gets a null or blank argument.                                                           |
+
+## Contributing
+
+[CONTRIBUTING.md](https://github.com/dschach/salesforce-trigger-framework/blob/main/CONTRIBUTING.md) tells how to set up the project, test a change, and open a pull request. Each contributor follows the [Code of Conduct](https://github.com/dschach/salesforce-trigger-framework/blob/main/CODE_OF_CONDUCT.md).
+
+## License
+
+The framework uses the BSD 3-Clause license in [LICENSE](https://github.com/dschach/salesforce-trigger-framework/blob/main/LICENSE). [NOTICE](https://github.com/dschach/salesforce-trigger-framework/blob/main/NOTICE) holds the MIT license notice of the original code by Kevin O'Hara.
