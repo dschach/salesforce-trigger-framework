@@ -1,6 +1,7 @@
 /**
  * Test class for base TriggerHandler class.
  * <br>Each test builds its own handler with `newHandler()` and proves 1 behavior through the call log.
+ * <br>`NcssCount` is suppressed: the class holds 1 test for each behavior of the whole framework, its bypass and loop counter registries included, so it is large by design.
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @since 2013
  * @author {@link [David Schach](https://github.com/dschach)}
@@ -11,7 +12,7 @@
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
  * @see TriggerHandler
  */
-@SuppressWarnings('PMD.CyclomaticComplexity')
+@SuppressWarnings('PMD.CyclomaticComplexity, PMD.NcssCount')
 @IsTest(isParallel=true testFor='ApexClass:TriggerHandler')
 private inherited sharing class TriggerHandlerTest {
 	/**
