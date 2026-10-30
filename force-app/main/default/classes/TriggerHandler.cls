@@ -830,7 +830,7 @@ public inherited sharing abstract class TriggerHandler {
 		if (counter == null || !counter.increment()) {
 			return true;
 		}
-		log(LoggingLevel.WARN, 'Maximum loop count of ' + counter.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + triggerEvent.name());
+		log(LoggingLevel.WARN, 'Maximum loop count of ' + counter.getMax() + ' exceeded in ' + getHandlerName() + ', so run() stopped ' + triggerEvent.name());
 		return false;
 	}
 
@@ -969,7 +969,8 @@ public inherited sharing abstract class TriggerHandler {
 	 * @author James Simone
 	 * @since 2023-02-24
 	 * @example
-	 * // andFinally() runs after each context. Check the operation for work that must happen once for each DML statement.
+	 * // andFinally() runs after the before context and again after the after context.
+	 * // This work runs only once for each chunk of 200 records, in the after context.
 	 * public override void andFinally() {
 	 *   if (getTriggerEvent() == System.TriggerOperation.AFTER_UPDATE) {
 	 *     publishChangeEvent();

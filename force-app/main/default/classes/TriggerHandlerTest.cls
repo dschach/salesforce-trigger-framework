@@ -473,7 +473,7 @@ private inherited sharing class TriggerHandlerTest {
 		calls.clear();
 		limited.run();
 		Assert.isTrue(calls.isEmpty(), 'the third run should call no method');
-		Assert.areEqual(3, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the skipped run should still count');
+		Assert.areEqual(3, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the stopped run should still count');
 	}
 
 	/**
@@ -496,7 +496,7 @@ private inherited sharing class TriggerHandlerTest {
 		TriggerHandlerTest.TestHandler limited = newHandler(System.TriggerOperation.BEFORE_INSERT);
 		limited.setMaxLoopCount(1).run();
 		limited.run();
-		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally' }, calls, 'the second run should be skipped');
+		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally' }, calls, 'the second run should be stopped');
 
 		calls.clear();
 		limited.clearMaxLoopCount();
@@ -835,7 +835,7 @@ private inherited sharing class TriggerHandlerTest {
 		limited.setMaxLoopCount(1).run();
 		limited.run();
 		Assert.areEqual(
-			new List<String>{ 'WARN: Maximum loop count of 1 exceeded in ' + HANDLER_NAME + ', so run() skipped BEFORE_INSERT' },
+			new List<String>{ 'WARN: Maximum loop count of 1 exceeded in ' + HANDLER_NAME + ', so run() stopped BEFORE_INSERT' },
 			logs,
 			'the loop limit warning should reach the log hook'
 		);
