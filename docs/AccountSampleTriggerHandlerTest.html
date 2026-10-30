@@ -116,12 +116,11 @@
 						</h2>
 						<div class="class-container">
 							<div class="class-description">
-								Tests for the sample handler and the sample trigger. Each test proves 1 behavior through real DML. <br /><code class="code-inline"
-									>AccountSampleTriggerHandler.finishedOperations</code
-								>
-								is the call log: <code class="code-inline">andFinally()</code> adds each operation that the handler finished. <br />The test DML and
-								the queries that read the results back run in system mode, so <code class="code-inline">FlagSystemMode</code> is suppressed for the
-								class. The tests set up and check data directly: the access under test is the handler&#39;s own, which states system mode on purpose.
+								Tests for the sample handler and the sample trigger. Each test proves 1 behavior. All tests but the constructor test use real DML.
+								<br /><code class="code-inline">AccountSampleTriggerHandler.finishedOperations</code> is the call log.
+								<code class="code-inline">andFinally()</code> adds each operation that the handler finished. <br />The test DML and the queries that
+								read the results run in system mode, so the class suppresses <code class="code-inline">FlagSystemMode</code>. The tests set up and
+								check the data directly. The access under test is the access of the handler, which uses system mode on purpose.
 							</div>
 							<div class="class-subtitle">Signature</div>
 
@@ -135,7 +134,7 @@
 							<div class="class-subtitle">Since</div>
 							<div class="class-subtitle-description">
 								<li>2021</li>
-								<li>2026-10-30 1 test per behavior, with the finished operations as the call log</li>
+								<li>2026-10 Rewrite with 1 test for each behavior, and the finished operations as the call log</li>
 							</div>
 						</div>
 						<div class="subsection properties AccountSampleTriggerHandlerTest">
@@ -144,12 +143,14 @@
 								<tr>
 									<th>Name</th>
 									<th>Signature</th>
+
+									<th>Description</th>
 								</tr>
 								<tr class="property private">
 									<td class="attribute-name">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L14"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L17"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -159,6 +160,8 @@
 									<td>
 										<div class="attribute-signature">private static final String HANDLER_NAME</div>
 									</td>
+
+									<td class="attribute-description">The name of the sample handler, from <code class="code-inline">Type.getName()</code>.</td>
 								</tr>
 							</table>
 						</div>
@@ -181,7 +184,7 @@
 										</a>
 
 										<div class="methods-toc__description">
-											A bulk insert of more than 200 records runs in chunks, and the loop limit does not stop any chunk.
+											A bulk insert of more than 200 records runs in chunks, and the loop limit does not stop a chunk.
 										</div>
 									</li>
 									<li class="method testmethod">
@@ -197,8 +200,8 @@
 										</a>
 
 										<div class="methods-toc__description">
-											A child Account in the same update as its parent keeps the phone number of its own update, because a trigger cannot update the
-											records it is running for.
+											A child Account in the same update as its parent keeps the phone number of its own update. A trigger cannot update the records
+											that it runs for.
 										</div>
 									</li>
 									<li class="method testmethod">
@@ -211,23 +214,21 @@
 										</div>
 									</li>
 									<li class="method testmethod">
-										<a class="methods-toc__entry" href="#AccountSampleTriggerHandlerTest.constructorsRegisterTheHandlerName">
-											constructorsRegisterTheHandlerName ()
+										<a class="methods-toc__entry" href="#AccountSampleTriggerHandlerTest.constructorRegistersTheHandlerName">
+											constructorRegistersTheHandlerName ()
 										</a>
 
-										<div class="methods-toc__description">
-											The no-arg constructor registers the class name, and the String constructor forwards the name it is given.
-										</div>
+										<div class="methods-toc__description">The constructor sets the class name through the Type constructor of the base class.</div>
 									</li>
 									<li class="method private">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandlerTest.insertAccount"> insertAccount (name) </a>
 
-										<div class="methods-toc__description">Insert an Account with the given name.</div>
+										<div class="methods-toc__description">Inserts an Account with the name.</div>
 									</li>
 									<li class="method private">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandlerTest.insertChildAccount"> insertChildAccount (parentId) </a>
 
-										<div class="methods-toc__description">Insert a child Account of the given parent.</div>
+										<div class="methods-toc__description">Inserts a child Account of the parent.</div>
 									</li>
 									<li class="method testmethod">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandlerTest.insertNormalizesName"> insertNormalizesName () </a>
@@ -237,21 +238,21 @@
 									<li class="method private">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandlerTest.nameOf"> nameOf (accountId) </a>
 
-										<div class="methods-toc__description">Read the stored name of an Account.</div>
+										<div class="methods-toc__description">Reads the stored name of an Account.</div>
 									</li>
 									<li class="method testmethod">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandlerTest.phoneChangeCopiesToChildAccounts">
 											phoneChangeCopiesToChildAccounts ()
 										</a>
 
-										<div class="methods-toc__description">A changed phone number is copied to the child Accounts.</div>
+										<div class="methods-toc__description">A changed phone number goes to the child Accounts.</div>
 									</li>
 									<li class="method testmethod">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandlerTest.updateLeavesUnchangedNameAlone">
 											updateLeavesUnchangedNameAlone ()
 										</a>
 
-										<div class="methods-toc__description">An update that does not change the name leaves it as it is.</div>
+										<div class="methods-toc__description">An update that does not change the name keeps the name as it is.</div>
 									</li>
 									<li class="method testmethod">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandlerTest.updateNormalizesChangedName">
@@ -265,7 +266,7 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.andFinallyRunsAfterEveryContext">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L116"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L129"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -283,7 +284,7 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.bulkInsertStaysInsideLoopLimit">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L154"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L167"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -291,7 +292,7 @@
 										</a>
 									</h4>
 									<div class="method-description">
-										A bulk insert of more than 200 records runs in chunks, and the loop limit does not stop any chunk.
+										A bulk insert of more than 200 records runs in chunks, and the loop limit does not stop a chunk.
 									</div>
 									<div class="method-subtitle">Signature</div>
 									<div class="method-annotations">@IsTest</div>
@@ -301,7 +302,7 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.bypassIsClearedAfterChildUpdate">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L103"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L116"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -317,7 +318,7 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.childInSameUpdateKeepsItsOwnPhone">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L69"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L72"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -325,8 +326,8 @@
 										</a>
 									</h4>
 									<div class="method-description">
-										A child Account in the same update as its parent keeps the phone number of its own update, because a trigger cannot update the
-										records it is running for.
+										A child Account in the same update as its parent keeps the phone number of its own update. A trigger cannot update the records
+										that it runs for.
 									</div>
 									<div class="method-subtitle">Signature</div>
 									<div class="method-annotations">@IsTest</div>
@@ -336,7 +337,7 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.childUpdateDoesNotRunHandlerAgain">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L83"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L86"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -351,35 +352,33 @@
 									<div class="method-signature">private static void childUpdateDoesNotRunHandlerAgain()</div>
 								</div>
 								<div class="method testmethod">
-									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.constructorsRegisterTheHandlerName">
+									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.constructorRegistersTheHandlerName">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L168"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L182"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
-											constructorsRegisterTheHandlerName()
+											constructorRegistersTheHandlerName()
 										</a>
 									</h4>
-									<div class="method-description">
-										The no-arg constructor registers the class name, and the String constructor forwards the name it is given.
-									</div>
+									<div class="method-description">The constructor sets the class name through the Type constructor of the base class.</div>
 									<div class="method-subtitle">Signature</div>
 									<div class="method-annotations">@IsTest</div>
-									<div class="method-signature">private static void constructorsRegisterTheHandlerName()</div>
+									<div class="method-signature">private static void constructorRegistersTheHandlerName()</div>
 								</div>
 								<div class="method private">
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.insertAccount">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L178"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L191"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
 											insertAccount(name)
 										</a>
 									</h4>
-									<div class="method-description">Insert an Account with the given name.</div>
+									<div class="method-description">Inserts an Account with the name.</div>
 									<div class="method-subtitle">Signature</div>
 
 									<div class="method-signature">private static Account insertAccount(String name)</div>
@@ -388,20 +387,20 @@
 									<div class="param-type">Type: <code class="code-inline">String</code></div>
 									<div class="param-description">The Account name.</div>
 									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description"><code class="code-inline">Account</code> The inserted Account.</div>
+									<div class="method-subtitle-description"><code class="code-inline">Account</code> The new Account.</div>
 								</div>
 								<div class="method private">
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.insertChildAccount">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L189"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L202"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
 											insertChildAccount(parentId)
 										</a>
 									</h4>
-									<div class="method-description">Insert a child Account of the given parent.</div>
+									<div class="method-description">Inserts a child Account of the parent.</div>
 									<div class="method-subtitle">Signature</div>
 
 									<div class="method-signature">private static Account insertChildAccount(Id parentId)</div>
@@ -410,13 +409,13 @@
 									<div class="param-type">Type: <code class="code-inline">Id</code></div>
 									<div class="param-description">The Id of the parent Account.</div>
 									<div class="method-subtitle">Returns</div>
-									<div class="method-subtitle-description"><code class="code-inline">Account</code> The inserted child Account.</div>
+									<div class="method-subtitle-description"><code class="code-inline">Account</code> The new child Account.</div>
 								</div>
 								<div class="method testmethod">
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.insertNormalizesName">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L20"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L23"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -432,14 +431,14 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.nameOf">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L200"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L213"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
 											nameOf(accountId)
 										</a>
 									</h4>
-									<div class="method-description">Read the stored name of an Account.</div>
+									<div class="method-description">Reads the stored name of an Account.</div>
 									<div class="method-subtitle">Signature</div>
 
 									<div class="method-signature">private static String nameOf(Id accountId)</div>
@@ -454,14 +453,14 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.phoneChangeCopiesToChildAccounts">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L56"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L59"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
 											phoneChangeCopiesToChildAccounts()
 										</a>
 									</h4>
-									<div class="method-description">A changed phone number is copied to the child Accounts.</div>
+									<div class="method-description">A changed phone number goes to the child Accounts.</div>
 									<div class="method-subtitle">Signature</div>
 									<div class="method-annotations">@IsTest</div>
 									<div class="method-signature">private static void phoneChangeCopiesToChildAccounts()</div>
@@ -470,14 +469,14 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.updateLeavesUnchangedNameAlone">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L41"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L44"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
 											updateLeavesUnchangedNameAlone()
 										</a>
 									</h4>
-									<div class="method-description">An update that does not change the name leaves it as it is.</div>
+									<div class="method-description">An update that does not change the name keeps the name as it is.</div>
 									<div class="method-subtitle">Signature</div>
 									<div class="method-annotations">@IsTest</div>
 									<div class="method-signature">private static void updateLeavesUnchangedNameAlone()</div>
@@ -486,7 +485,7 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandlerTest.updateNormalizesChangedName">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L30"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls#L33"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">

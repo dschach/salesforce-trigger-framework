@@ -107,7 +107,7 @@
 						<h2 class="class-title top-level-type" id="AccountSampleTriggerHandler">
 							<a
 								class="source-link"
-								href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L13"
+								href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L14"
 								title="Go to source"
 								target="_blank"
 								rel="noopener noreferrer">
@@ -116,11 +116,11 @@
 						</h2>
 						<div class="class-container">
 							<div class="class-description">
-								A sample Account trigger handler that shows the framework in use. <br />Before insert and before update, it removes extra spaces from
-								each new or changed Account name. <br />After update, it copies a changed phone number to the child Accounts. It bypasses itself for
-								that update, so the update does not run this handler again. <br />A loop limit protects against recursion that the bypass does not
-								stop, and <code class="code-inline">andFinally()</code> runs after each context. <br />A trigger runs without sharing, so this
-								<code class="code-inline">inherited sharing</code> handler does too. Every query and DML statement names
+								A sample Account trigger handler that shows how to use the framework. <br />Before insert and before update, it removes extra spaces
+								from each new or changed Account name. <br />After update, it copies a changed phone number to the child Accounts. It bypasses itself
+								for that update, so the update does not run this handler again. <br />A loop limit stops recursion that the bypass does not stop.
+								<code class="code-inline">andFinally()</code> runs after each context. <br />A trigger runs without sharing, so this
+								<code class="code-inline">inherited sharing</code> handler does too. Each query and DML statement names
 								<code class="code-inline">SYSTEM_MODE</code>, so the handler can update child Accounts that the running user cannot edit.
 							</div>
 							<div class="class-subtitle">Signature</div>
@@ -135,6 +135,7 @@
 							<div class="class-subtitle">Since</div>
 							<div class="class-subtitle-description">
 								<li>2021</li>
+								<li>2026-10 Rewrite the sample to show the framework in use</li>
 							</div>
 						</div>
 						<div class="subsection properties AccountSampleTriggerHandler">
@@ -150,7 +151,7 @@
 									<td class="attribute-name">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L23"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L24"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -165,15 +166,15 @@
 									</td>
 
 									<td class="attribute-description">
-										The trigger operations this handler finished in the transaction, in order. <code class="code-inline">andFinally()</code> adds each
-										one.
+										The trigger operations that this handler finished in the transaction, in order. <code class="code-inline">andFinally()</code> adds
+										each one.
 									</td>
 								</tr>
 								<tr class="property private">
 									<td class="attribute-name">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L17"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L18"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -186,7 +187,7 @@
 									<td></td>
 
 									<td class="attribute-description">
-										The maximum number of runs of this handler in 1 transaction. Each trigger context and each chunk of 200 records uses 1 run, so 100
+										The maximum number of runs of each trigger operation of this handler in 1 transaction. Each chunk of 200 records uses 1 run. So 50
 										allows an update of 10,000 records, which runs before update and after update 50 times each.
 									</td>
 								</tr>
@@ -194,7 +195,7 @@
 									<td class="attribute-name">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L25"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L29"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -206,13 +207,13 @@
 									</td>
 									<td></td>
 
-									<td class="attribute-description"></td>
+									<td class="attribute-description">The new Accounts of the trigger, cast from <code class="code-inline">Trigger.new</code>.</td>
 								</tr>
 								<tr class="property private">
 									<td class="attribute-name">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L26"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L34"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -224,7 +225,9 @@
 									</td>
 									<td></td>
 
-									<td class="attribute-description"></td>
+									<td class="attribute-description">
+										The old Accounts of the trigger by Id, cast from <code class="code-inline">Trigger.oldMap</code>. It is null in an insert.
+									</td>
 								</tr>
 							</table>
 						</div>
@@ -236,16 +239,8 @@
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandler.AccountSampleTriggerHandler"> AccountSampleTriggerHandler () </a>
 
 										<div class="methods-toc__description">
-											Constructor for the trigger. It passes the class name, so the base class never resolves it at runtime.
-										</div>
-									</li>
-									<li class="method public">
-										<a class="methods-toc__entry" href="#AccountSampleTriggerHandler.AccountSampleTriggerHandler_1">
-											AccountSampleTriggerHandler (className)
-										</a>
-
-										<div class="methods-toc__description">
-											Constructor with the handler name. It casts the trigger collections that the handler uses, and it sets the loop limit.
+											Creates the handler for the trigger. It passes its class to the base class, so the base class does no name lookup. It casts the
+											trigger collections that the handler uses, and it sets the loop limit.
 										</div>
 									</li>
 								</ul>
@@ -253,7 +248,7 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandler.AccountSampleTriggerHandler">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L34"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L41"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -261,43 +256,14 @@
 										</a>
 									</h4>
 									<div class="method-description">
-										Constructor for the trigger. It passes the class name, so the base class never resolves it at runtime.
+										Creates the handler for the trigger. It passes its class to the base class, so the base class does no name lookup. It casts the
+										trigger collections that the handler uses, and it sets the loop limit.
 									</div>
 									<div class="method-subtitle">Signature</div>
 
 									<div class="method-signature">public AccountSampleTriggerHandler()</div>
-									<div class="method-subtitle">See</div>
-									<div class="method-subtitle-description">
-										<a
-											href="javascript:void(0)"
-											onclick="goToLocation('AccountSampleTriggerHandler.html#AccountSampleTriggerHandler.AccountSampleTriggerHandler_1')"
-											>AccountSampleTriggerHandler.AccountSampleTriggerHandler</a
-										>
-									</div>
 									<div class="method-subtitle">Example</div>
 									<pre class="code-example"><code> new AccountSampleTriggerHandler().run();</code></pre>
-								</div>
-								<div class="method public">
-									<h4 class="method-title" id="AccountSampleTriggerHandler.AccountSampleTriggerHandler_1">
-										<a
-											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L42"
-											title="Go to source"
-											target="_blank"
-											rel="noopener noreferrer">
-											AccountSampleTriggerHandler(className)
-										</a>
-									</h4>
-									<div class="method-description">
-										Constructor with the handler name. It casts the trigger collections that the handler uses, and it sets the loop limit.
-									</div>
-									<div class="method-subtitle">Signature</div>
-
-									<div class="method-signature">public AccountSampleTriggerHandler(String className)</div>
-									<div class="method-subtitle">Parameters</div>
-									<div class="param-name">className</div>
-									<div class="param-type">Type: <code class="code-inline">String</code></div>
-									<div class="param-description">The name of this class, exactly as <code class="code-inline">Type.getName()</code> returns it.</div>
 								</div>
 							</div>
 						</div>
@@ -308,25 +274,31 @@
 									<li class="method public">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandler.afterUpdate"> afterUpdate () </a>
 
-										<div class="methods-toc__description">Copy each changed phone number to the child Accounts.</div>
+										<div class="methods-toc__description">Copies each changed phone number to the child Accounts.</div>
 									</li>
 									<li class="method public">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandler.andFinally"> andFinally () </a>
 
 										<div class="methods-toc__description">
-											Record the finished operation. A real handler puts work here that must follow every context, such as a rollup or 1 platform
-											event for the whole trigger.
+											Records the finished operation. A real handler puts work here that must follow each context, for example a rollup. <br /><code
+												class="code-inline"
+												>andFinally()</code
+											>
+											runs after each context. For an insert, an update, or a delete, it runs 2 times for each chunk of 200 records. It runs after the
+											before context and again after the after context. <br />Some work must run only once for each chunk, for example the publication
+											of 1 platform event. Put that work in an <code class="code-inline">if</code> block that checks
+											<code class="code-inline">getTriggerEvent()</code> for an after context.
 										</div>
 									</li>
 									<li class="method public">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandler.beforeInsert"> beforeInsert () </a>
 
-										<div class="methods-toc__description">Remove extra spaces from the name of each new Account.</div>
+										<div class="methods-toc__description">Removes extra spaces from the name of each new Account.</div>
 									</li>
 									<li class="method public">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandler.beforeUpdate"> beforeUpdate () </a>
 
-										<div class="methods-toc__description">Remove extra spaces from each Account name that changed.</div>
+										<div class="methods-toc__description">Removes extra spaces from each Account name that changed.</div>
 									</li>
 									<li class="method private">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandler.copyPhoneToChildAccounts">
@@ -334,17 +306,17 @@
 										</a>
 
 										<div class="methods-toc__description">
-											Update the phone number of the child Accounts, with this handler bypassed for that update. <br />A child Account that is in the
-											same trigger run is left out, because a trigger cannot update the records it is running for. <br />The query and the update run
-											in system mode, so <code class="code-inline">FlagSystemMode</code> is suppressed for this method. The phone number must reach
-											every child Account, also a child Account that the running user cannot see or edit.
+											Updates the phone number of the child Accounts. The handler is bypassed for that update. <br />It leaves out a child Account
+											that is in the same trigger run, because a trigger cannot update the records that it runs for. <br />The query and the update
+											run in system mode, so this method suppresses <code class="code-inline">FlagSystemMode</code>. The phone number must reach all
+											child Accounts, also the ones that the running user cannot see or edit.
 										</div>
 									</li>
 									<li class="method private">
 										<a class="methods-toc__entry" href="#AccountSampleTriggerHandler.normalizeNames"> normalizeNames (accounts) </a>
 
 										<div class="methods-toc__description">
-											Replace each run of spaces in the Account names with 1 space, and remove the spaces at the start and the end.
+											Replaces each group of spaces in the Account names with 1 space, and removes the spaces at the start and the end.
 										</div>
 									</li>
 								</ul>
@@ -352,14 +324,14 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandler.afterUpdate">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L72"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L71"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
 											afterUpdate()
 										</a>
 									</h4>
-									<div class="method-description">Copy each changed phone number to the child Accounts.</div>
+									<div class="method-description">Copies each changed phone number to the child Accounts.</div>
 									<div class="method-subtitle">Signature</div>
 
 									<div class="method-signature">public override void afterUpdate()</div>
@@ -368,7 +340,7 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandler.andFinally">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L88"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L98"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -376,25 +348,43 @@
 										</a>
 									</h4>
 									<div class="method-description">
-										Record the finished operation. A real handler puts work here that must follow every context, such as a rollup or 1 platform event
-										for the whole trigger.
+										Records the finished operation. A real handler puts work here that must follow each context, for example a rollup. <br /><code
+											class="code-inline"
+											>andFinally()</code
+										>
+										runs after each context. For an insert, an update, or a delete, it runs 2 times for each chunk of 200 records. It runs after the
+										before context and again after the after context. <br />Some work must run only once for each chunk, for example the publication
+										of 1 platform event. Put that work in an <code class="code-inline">if</code> block that checks
+										<code class="code-inline">getTriggerEvent()</code> for an after context.
 									</div>
 									<div class="method-subtitle">Signature</div>
 
 									<div class="method-signature">public override void andFinally()</div>
+									<div class="method-subtitle">Since</div>
+									<div class="method-subtitle-description">
+										<li>2026-10</li>
+									</div>
+									<div class="method-subtitle">Example</div>
+									<pre class="code-example"><code> // andFinally() runs after the before context and again after the after context. 
+ // This example runs only once for each chunk of 200 records, after the after context. 
+ public override void andFinally() { 
+   if (getTriggerEvent() == System.TriggerOperation.AFTER_UPDATE) { 
+     EventBus.publish(new Account_Change__e(Record_Count__c = Trigger.size)); 
+   } 
+ }</code></pre>
 								</div>
 								<div class="method public">
 									<h4 class="method-title" id="AccountSampleTriggerHandler.beforeInsert">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L52"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L51"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
 											beforeInsert()
 										</a>
 									</h4>
-									<div class="method-description">Remove extra spaces from the name of each new Account.</div>
+									<div class="method-description">Removes extra spaces from the name of each new Account.</div>
 									<div class="method-subtitle">Signature</div>
 
 									<div class="method-signature">public override void beforeInsert()</div>
@@ -403,14 +393,14 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandler.beforeUpdate">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L59"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L58"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
 											beforeUpdate()
 										</a>
 									</h4>
-									<div class="method-description">Remove extra spaces from each Account name that changed.</div>
+									<div class="method-description">Removes extra spaces from each Account name that changed.</div>
 									<div class="method-subtitle">Signature</div>
 
 									<div class="method-signature">public override void beforeUpdate()</div>
@@ -419,7 +409,7 @@
 									<h4 class="method-title" id="AccountSampleTriggerHandler.copyPhoneToChildAccounts">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L109"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L121"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -427,10 +417,10 @@
 										</a>
 									</h4>
 									<div class="method-description">
-										Update the phone number of the child Accounts, with this handler bypassed for that update. <br />A child Account that is in the
-										same trigger run is left out, because a trigger cannot update the records it is running for. <br />The query and the update run in
-										system mode, so <code class="code-inline">FlagSystemMode</code> is suppressed for this method. The phone number must reach every
-										child Account, also a child Account that the running user cannot see or edit.
+										Updates the phone number of the child Accounts. The handler is bypassed for that update. <br />It leaves out a child Account that
+										is in the same trigger run, because a trigger cannot update the records that it runs for. <br />The query and the update run in
+										system mode, so this method suppresses <code class="code-inline">FlagSystemMode</code>. The phone number must reach all child
+										Accounts, also the ones that the running user cannot see or edit.
 									</div>
 									<div class="method-subtitle">Signature</div>
 									<div class="method-annotations">@SuppressWarnings('PMD.FlagSystemMode')</div>
@@ -439,12 +429,16 @@
 									<div class="param-name">phoneByParentId</div>
 									<div class="param-type">Type: <code class="code-inline">Map&lt;Id, String&gt;</code></div>
 									<div class="param-description">The new phone number of each parent Account, by Id.</div>
+									<div class="method-subtitle">Since</div>
+									<div class="method-subtitle-description">
+										<li>2026-10</li>
+									</div>
 								</div>
 								<div class="method private">
 									<h4 class="method-title" id="AccountSampleTriggerHandler.normalizeNames">
 										<a
 											class="source-link"
-											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L96"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls#L107"
 											title="Go to source"
 											target="_blank"
 											rel="noopener noreferrer">
@@ -452,7 +446,7 @@
 										</a>
 									</h4>
 									<div class="method-description">
-										Replace each run of spaces in the Account names with 1 space, and remove the spaces at the start and the end.
+										Replaces each group of spaces in the Account names with 1 space, and removes the spaces at the start and the end.
 									</div>
 									<div class="method-subtitle">Signature</div>
 
@@ -461,6 +455,10 @@
 									<div class="param-name">accounts</div>
 									<div class="param-type">Type: <code class="code-inline">List&lt;Account&gt;</code></div>
 									<div class="param-description">The Accounts to change.</div>
+									<div class="method-subtitle">Since</div>
+									<div class="method-subtitle-description">
+										<li>2026-10</li>
+									</div>
 								</div>
 							</div>
 						</div>
