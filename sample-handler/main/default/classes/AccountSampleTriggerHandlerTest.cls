@@ -162,12 +162,11 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	}
 
 	/**
-	 * The no-arg constructor registers the class name, and the String constructor forwards the name it is given.
+	 * The constructor registers the class name through the Type constructor of the base class.
 	 */
 	@IsTest
-	private static void constructorsRegisterTheHandlerName() {
-		Assert.areEqual(HANDLER_NAME, new AccountSampleTriggerHandler().getHandlerName(), 'the no-arg constructor should register the class name');
-		Assert.areEqual('CustomName', new AccountSampleTriggerHandler('CustomName').getHandlerName(), 'the String constructor should forward the name it is given');
+	private static void constructorRegistersTheHandlerName() {
+		Assert.areEqual(HANDLER_NAME, new AccountSampleTriggerHandler().getHandlerName(), 'the constructor should register the class name');
 	}
 
 	/**

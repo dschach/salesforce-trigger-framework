@@ -12,6 +12,7 @@
 - [Overview](#overview)
 - [Usage](#usage)
   - [Trigger Handler](#trigger-handler)
+  - [Pass the Handler Class to super()](#pass-the-handler-class-to-super)
   - [Trigger](#trigger)
   - [Data access](#data-access)
 - [Cool Stuff](#cool-stuff)
@@ -82,7 +83,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
   private Map<Id, Opportunity> oldRecordsMap;
 
   public OpportunityTriggerHandler() {
-    super('OpportunityTriggerHandler');
+    super(OpportunityTriggerHandler.class);
     this.newRecords = (List<Opportunity>) Trigger.new;
     this.oldRecords = (List<Opportunity>) Trigger.old;
     this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
@@ -103,9 +104,79 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
 }
 ```
 
-Passing the class name to `super()` is optional, and it makes the handler faster. Without it, the framework works out the name from the running class the first time a bypass or a loop count needs it, and that lookup serializes every field of the handler, including the record lists. Pass the name exactly as `Type.getName()` returns it, so that `TriggerHandler.bypass(OpportunityTriggerHandler.class)` matches. For a top-level class, that is the class name.
+Passing the class to `super()` is optional, and it makes the handler faster. Without it, the framework works out the name from the running class the first time a bypass or a loop count needs it, and that lookup serializes every field of the handler, including the record lists. With the class, the handler name is `Type.getName()`, so `TriggerHandler.bypass(OpportunityTriggerHandler.class)` always matches. A handler that is an inner class must pass its class, because the lookup gives only the short name of an inner class. [Pass the Handler Class to super()](#pass-the-handler-class-to-super) has more examples.
 
 A sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes) class has been included in this repository, as well as a sample [trigger](https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger). The sample is not a package directory, so the Deploy to Salesforce button and `sf project deploy start` install only the framework. To try the sample in a scratch org, run `sf project deploy start --source-dir sample-handler`. The [sample README](sample-handler/README.md) describes what it shows.
+
+### Pass the Handler Class to super()
+
+The value to pass is the name of your handler class, followed by `.class`. In Apex, `ClassName.class` is the `Type` of that class. The framework uses `Type.getName()` as the handler name, so a bypass by type always matches the handler.
+
+```apex
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+  private List<Opportunity> newRecords;
+  private List<Opportunity> oldRecords;
+
+  public OpportunityTriggerHandler() {
+    super(OpportunityTriggerHandler.class);
+    this.newRecords = (List<Opportunity>) Trigger.new;
+    this.oldRecords = (List<Opportunity>) Trigger.old;
+  }
+}
+```
+
+Call `super()` first, and then cast the trigger collections that the handler uses.
+
+For a handler that is an inner class, write the outer class name, a dot, and the inner class name. The handler name is then `SalesHandlers.OpportunityTriggerHandler`, and `TriggerHandler.bypass(SalesHandlers.OpportunityTriggerHandler.class)` matches it. An inner-class handler must pass its class, because without it the framework finds only the short name, `OpportunityTriggerHandler`.
+
+```apex
+public inherited sharing class SalesHandlers {
+  public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+    private List<Opportunity> newRecords;
+    private List<Opportunity> oldRecords;
+
+    public OpportunityTriggerHandler() {
+      super(SalesHandlers.OpportunityTriggerHandler.class);
+      this.newRecords = (List<Opportunity>) Trigger.new;
+      this.oldRecords = (List<Opportunity>) Trigger.old;
+    }
+  }
+}
+```
+
+A handler with more than 1 constructor passes the class in the constructor that calls `super()`. The other constructors call that constructor with `this()`. In this example, the trigger uses the first constructor, which passes `Trigger.new` and `Trigger.old` to the second. A test can call the second constructor with its own records.
+
+```apex
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+  private List<Opportunity> newRecords;
+  private List<Opportunity> oldRecords;
+
+  public OpportunityTriggerHandler() {
+    this((List<Opportunity>) Trigger.new, (List<Opportunity>) Trigger.old);
+  }
+
+  public OpportunityTriggerHandler(List<Opportunity> newRecords, List<Opportunity> oldRecords) {
+    super(OpportunityTriggerHandler.class);
+    this.newRecords = newRecords;
+    this.oldRecords = oldRecords;
+  }
+}
+```
+
+To see the name that the framework uses, call `getHandlerName()` in the handler, or `OpportunityTriggerHandler.class.getName()` anywhere.
+
+#### Upgrade From the String Constructor
+
+Version 2.0 removes the constructor that takes the handler name as a String. Replace the name in quotes with the class:
+
+```apex
+// before 2.0
+super('OpportunityTriggerHandler');
+// 2.0 and later
+super(OpportunityTriggerHandler.class);
+```
+
+If you passed a name that is not the class name, for example a short name, a bypass or a loop count that uses that name no longer matches. Change each bypass call to use the class, for example `TriggerHandler.bypass(OpportunityTriggerHandler.class)`, and pass `OpportunityTriggerHandler.class.getName()` to `getLoopCount()`.
 
 ### Trigger
 
@@ -136,7 +207,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
   private Map<Id, Opportunity> newRecordsMap;
 
   public OpportunityTriggerHandler() {
-    super('OpportunityTriggerHandler');
+    super(OpportunityTriggerHandler.class);
     this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
   }
 
@@ -232,7 +303,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
   private Map<Id, Opportunity> newRecordsMap;
 
   public OpportunityTriggerHandler() {
-    super('OpportunityTriggerHandler');
+    super(OpportunityTriggerHandler.class);
     this.newRecordsMap = (Map<Id, Opportunity>) Trigger.newMap;
     this.setMaxLoopCount(2); /* 1 count for before update, 1 for after update */
   }
@@ -344,7 +415,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
   private List<Opportunity> newRecords;
 
   public OpportunityTriggerHandler() {
-    super('OpportunityTriggerHandler');
+    super(OpportunityTriggerHandler.class);
     this.newRecords = (List<Opportunity>) Trigger.new;
   }
 
@@ -392,31 +463,31 @@ A handler can also call 3 protected methods: `getTriggerEvent()` returns the cur
 
 Every public member of `TriggerHandler`. The [class documentation](https://davidschach.com/salesforce-trigger-framework/TriggerHandler.html) has the full details and examples.
 
-| Member                                                       | What it does                                                                                                                                        |
-| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `TriggerHandler()`                                           | Constructor. The handler name is worked out from the running class when it is first needed.                                                         |
-| `TriggerHandler(String handlerName)`                         | Constructor with the handler name, which skips the runtime name lookup.                                                                             |
-| `run()`                                                      | Called from the trigger. Runs the context method for the current operation, then `andFinally()`.                                                    |
-| `setMaxLoopCount(Integer max)`                               | Limits how many times this handler runs. 0 means the handler never runs, and a negative value removes the limit. Returns the handler, for chaining. |
-| `clearMaxLoopCount()`                                        | Removes the limit on how many times this handler runs.                                                                                              |
-| `static getLoopCount(String handlerName)`                    | Returns the loop count of a handler, or 0 when no maximum was set for it.                                                                           |
-| `static bypass(String handlerName)`                          | Bypasses a handler by name. The name matches regardless of case.                                                                                    |
-| `static bypass(Type handlerType)`                            | Bypasses a handler by type, for example `bypass(AccountTriggerHandler.class)`.                                                                      |
-| `static bypass(List<String> handlerNames)`                   | Bypasses a list of handlers by name.                                                                                                                |
-| `static bypassAll()`                                         | Bypasses every handler, and clears the list of named bypasses.                                                                                      |
-| `static clearBypass(String handlerName)`                     | Clears the bypass of a handler by name.                                                                                                             |
-| `static clearBypass(Type handlerType)`                       | Clears the bypass of a handler by type.                                                                                                             |
-| `static clearBypass(List<String> handlerNames)`              | Clears the bypass of a list of handlers by name.                                                                                                    |
-| `static isBypassed(String handlerName)`                      | Returns `true` when the handler is bypassed by name or type, or when all handlers are bypassed.                                                     |
-| `static isBypassed(Type handlerType)`                        | The same check, by type.                                                                                                                            |
-| `static bypassList()`                                        | Returns a sorted list of the bypassed handlers, with `BypassAll` when all handlers are bypassed.                                                    |
-| `static bypassSet()`                                         | Returns a set of the bypassed handlers, with `BypassAll` when all handlers are bypassed.                                                            |
-| `static setBypass(String handlerName, Boolean desiredValue)` | Bypasses the handler for `true`. For `false`, clears its bypass and the global bypass.                                                              |
-| `static clearAllBypasses()`                                  | Clears the global bypass and the list of named bypasses.                                                                                            |
-| `static clearGlobalBypass()`                                 | Clears only the global bypass.                                                                                                                      |
-| `static clearBypassList()`                                   | Clears only the list of named bypasses.                                                                                                             |
-| `limits()`, `limits(Boolean enabled)`                        | Turns the limits debug output on, or on and off. Returns the handler, for chaining.                                                                 |
-| `static showLimits()`, `static showLimits(Boolean enabled)`  | The same, without chaining.                                                                                                                         |
-| `debug()`, `debug(Boolean enabled)`                          | Turns the entry and exit debug output on, or on and off. Returns the handler, for chaining.                                                         |
-| `static showDebug()`, `static showDebug(Boolean enabled)`    | The same, without chaining.                                                                                                                         |
-| `TriggerHandler.TriggerHandlerException`                     | Thrown when `run()` is called outside a trigger, and when a bypass or loop count method gets a null or blank argument.                              |
+| Member                                                       | What it does                                                                                                                                             |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TriggerHandler()`                                           | Constructor. The handler name is worked out from the running class when it is first needed.                                                              |
+| `protected TriggerHandler(Type handlerType)`                 | Constructor for a subclass, with the handler type. The handler name is `Type.getName()`, which matches `bypass(Type)` and skips the runtime name lookup. |
+| `run()`                                                      | Called from the trigger. Runs the context method for the current operation, then `andFinally()`.                                                         |
+| `setMaxLoopCount(Integer max)`                               | Limits how many times this handler runs. 0 means the handler never runs, and a negative value removes the limit. Returns the handler, for chaining.      |
+| `clearMaxLoopCount()`                                        | Removes the limit on how many times this handler runs.                                                                                                   |
+| `static getLoopCount(String handlerName)`                    | Returns the loop count of a handler, or 0 when no maximum was set for it.                                                                                |
+| `static bypass(String handlerName)`                          | Bypasses a handler by name. The name matches regardless of case.                                                                                         |
+| `static bypass(Type handlerType)`                            | Bypasses a handler by type, for example `bypass(AccountTriggerHandler.class)`.                                                                           |
+| `static bypass(List<String> handlerNames)`                   | Bypasses a list of handlers by name.                                                                                                                     |
+| `static bypassAll()`                                         | Bypasses every handler, and clears the list of named bypasses.                                                                                           |
+| `static clearBypass(String handlerName)`                     | Clears the bypass of a handler by name.                                                                                                                  |
+| `static clearBypass(Type handlerType)`                       | Clears the bypass of a handler by type.                                                                                                                  |
+| `static clearBypass(List<String> handlerNames)`              | Clears the bypass of a list of handlers by name.                                                                                                         |
+| `static isBypassed(String handlerName)`                      | Returns `true` when the handler is bypassed by name or type, or when all handlers are bypassed.                                                          |
+| `static isBypassed(Type handlerType)`                        | The same check, by type.                                                                                                                                 |
+| `static bypassList()`                                        | Returns a sorted list of the bypassed handlers, with `BypassAll` when all handlers are bypassed.                                                         |
+| `static bypassSet()`                                         | Returns a set of the bypassed handlers, with `BypassAll` when all handlers are bypassed.                                                                 |
+| `static setBypass(String handlerName, Boolean desiredValue)` | Bypasses the handler for `true`. For `false`, clears its bypass and the global bypass.                                                                   |
+| `static clearAllBypasses()`                                  | Clears the global bypass and the list of named bypasses.                                                                                                 |
+| `static clearGlobalBypass()`                                 | Clears only the global bypass.                                                                                                                           |
+| `static clearBypassList()`                                   | Clears only the list of named bypasses.                                                                                                                  |
+| `limits()`, `limits(Boolean enabled)`                        | Turns the limits debug output on, or on and off. Returns the handler, for chaining.                                                                      |
+| `static showLimits()`, `static showLimits(Boolean enabled)`  | The same, without chaining.                                                                                                                              |
+| `debug()`, `debug(Boolean enabled)`                          | Turns the entry and exit debug output on, or on and off. Returns the handler, for chaining.                                                              |
+| `static showDebug()`, `static showDebug(Boolean enabled)`    | The same, without chaining.                                                                                                                              |
+| `TriggerHandler.TriggerHandlerException`                     | Thrown when `run()` is called outside a trigger, and when a bypass or loop count method gets a null or blank argument.                                   |

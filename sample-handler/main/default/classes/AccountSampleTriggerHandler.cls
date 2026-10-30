@@ -26,21 +26,12 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	private Map<Id, Account> oldRecordsMap;
 
 	/**
-	 * Constructor for the trigger. It passes the class name, so the base class never resolves it at runtime.
-	 * @see AccountSampleTriggerHandler.AccountSampleTriggerHandler[1]
+	 * Constructor for the trigger. It passes the class to the base class, so the base class never resolves the name at runtime. It casts the trigger collections that the handler uses, and it sets the loop limit.
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
 	 */
 	public AccountSampleTriggerHandler() {
-		this(AccountSampleTriggerHandler.class.getName());
-	}
-
-	/**
-	 * Constructor with the handler name. It casts the trigger collections that the handler uses, and it sets the loop limit.
-	 * @param className The name of this class, exactly as `Type.getName()` returns it.
-	 */
-	public AccountSampleTriggerHandler(String className) {
-		super(className);
+		super(AccountSampleTriggerHandler.class);
 		this.newRecords = (List<Account>) Trigger.new;
 		this.oldRecordsMap = (Map<Id, Account>) Trigger.oldMap;
 		this.setMaxLoopCount(MAX_LOOP_COUNT);

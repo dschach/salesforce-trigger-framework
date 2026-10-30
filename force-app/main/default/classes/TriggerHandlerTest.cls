@@ -29,7 +29,7 @@ private inherited sharing class TriggerHandlerTest {
 	private static System.TriggerOperation lastEventSeen;
 	private static String lastNameSeen;
 	/**
-	 * The name the fixture registers with the base class: the same string `Type.getName()` returns, so that `bypass(Type)` matches.
+	 * The name the fixture registers with the base class through the Type constructor: `Type.getName()` of the inner class, so that `bypass(Type)` matches.
 	 */
 	private static final String HANDLER_NAME = TriggerHandlerTest.TestHandler.class.getName();
 	/**
@@ -89,13 +89,13 @@ private inherited sharing class TriggerHandlerTest {
 	 */
 	@IsTest
 	private static void baseClassRunsEveryOperationWithoutOverrides() {
-		TriggerHandler baseHandler = new TriggerHandler('BaseHandler');
+		TriggerHandler baseHandler = new TriggerHandler();
 		baseHandler.setMaxLoopCount(10);
 		for (System.TriggerOperation operation : System.TriggerOperation.values()) {
 			baseHandler.setTriggerContext(operation, true);
 			baseHandler.run();
 		}
-		Assert.areEqual(System.TriggerOperation.values().size(), TriggerHandler.getLoopCount('BaseHandler'), 'the base class should complete 1 run for each operation');
+		Assert.areEqual(System.TriggerOperation.values().size(), TriggerHandler.getLoopCount('TriggerHandler'), 'the base class should complete 1 run for each operation');
 	}
 
 	// trigger context
@@ -136,32 +136,36 @@ private inherited sharing class TriggerHandlerTest {
 	// handler name
 
 	/**
-	 * The String constructor registers the name it is given.
+	 * The Type constructor registers `Type.getName()`, which for an inner class includes the outer class name.
 	 */
 	@IsTest
-	private static void stringConstructorSetsHandlerName() {
-		TriggerHandlerTest.TestHandler named = new TriggerHandlerTest.TestHandler('NamedHandler');
-		Assert.areEqual('NamedHandler', named.getHandlerName(), 'the handler name should be the constructor argument');
+	private static void typeConstructorSetsFullHandlerName() {
+		TriggerHandlerTest.TestHandler typed = new TriggerHandlerTest.TestHandler();
+		Assert.areEqual('TriggerHandlerTest.TestHandler', typed.getHandlerName(), 'the handler name should be Type.getName() of the inner class');
 	}
 
 	/**
-	 * The String constructor removes the spaces at the start and the end of the name.
+	 * The Type constructor rejects a null type.
 	 */
 	@IsTest
-	private static void stringConstructorTrimsHandlerName() {
-		TriggerHandlerTest.TestHandler padded = new TriggerHandlerTest.TestHandler('  NamedHandler  ');
-		Assert.areEqual('NamedHandler', padded.getHandlerName(), 'the handler name should have no spaces at the start or the end');
+	private static void typeConstructorRejectsNullType() {
+		try {
+			new TriggerHandlerTest.TestHandler((Type) null);
+			Assert.fail('a null type should throw TriggerHandlerException');
+		} catch (TriggerHandler.TriggerHandlerException e) {
+			Assert.areEqual(TriggerHandler.ERROR_HANDLER_TYPE, e.getMessage(), 'the exception should say that a handler type is required');
+		}
 	}
 
 	/**
-	 * A blank name given to the String constructor falls back to the runtime class name.
-	 * <br>For an inner class the fallback is the short name, which differs from `Type.getName()`. That is why the fixture passes `HANDLER_NAME`.
+	 * Without the Type constructor, the name of an inner-class handler is resolved from the runtime class name.
+	 * <br>That is only the short name, which differs from `Type.getName()`. That is why an inner-class handler must use the Type constructor.
 	 */
 	@IsTest
-	private static void blankConstructorNameFallsBackToClassName() {
-		TriggerHandlerTest.TestHandler blankNamed = new TriggerHandlerTest.TestHandler('');
-		Assert.areEqual('TestHandler', blankNamed.getHandlerName(), 'a blank constructor name should resolve to the short runtime class name');
-		Assert.areNotEqual(HANDLER_NAME, blankNamed.getHandlerName(), 'for an inner class the fallback name differs from Type.getName()');
+	private static void noArgConstructorResolvesShortInnerClassName() {
+		TriggerHandlerTest.UntypedHandler untyped = new TriggerHandlerTest.UntypedHandler();
+		Assert.areEqual('UntypedHandler', untyped.getHandlerName(), 'the no-arg constructor should resolve the short runtime class name');
+		Assert.areNotEqual(TriggerHandlerTest.UntypedHandler.class.getName(), untyped.getHandlerName(), 'for an inner class the resolved name differs from Type.getName()');
 	}
 
 	// bypass by name, list, and type
@@ -576,12 +580,12 @@ private inherited sharing class TriggerHandlerTest {
 	 */
 	@IsTest
 	private static void baseLogHookWritesWithoutError() {
-		TriggerHandler baseHandler = new TriggerHandler('BaseHandler');
+		TriggerHandler baseHandler = new TriggerHandler();
 		baseHandler.setTestContext(System.TriggerOperation.BEFORE_INSERT);
 		TriggerHandler.showDebug();
 		TriggerHandler.showLimits();
 		baseHandler.setMaxLoopCount(5).run();
-		Assert.areEqual(1, TriggerHandler.getLoopCount('BaseHandler'), 'the base handler should complete its run with logging on');
+		Assert.areEqual(1, TriggerHandler.getLoopCount('TriggerHandler'), 'the base handler should complete its run with logging on');
 	}
 
 	// argument checks
@@ -707,18 +711,18 @@ private inherited sharing class TriggerHandlerTest {
 	 */
 	private class TestHandler extends TriggerHandler {
 		/**
-		 * Register the handler as `HANDLER_NAME`.
+		 * Register the handler with its type, so that its name is `HANDLER_NAME`.
 		 */
 		public TestHandler() {
-			super(HANDLER_NAME);
+			super(TriggerHandlerTest.TestHandler.class);
 		}
 
 		/**
-		 * Register the handler with the given name.
-		 * @param handlerName The handler name to register.
+		 * Register the handler with the given type.
+		 * @param handlerType The handler type to register.
 		 */
-		public TestHandler(String handlerName) {
-			super(handlerName);
+		public TestHandler(Type handlerType) {
+			super(handlerType);
 		}
 
 		public override void beforeInsert() {
@@ -758,5 +762,11 @@ private inherited sharing class TriggerHandlerTest {
 		public override void andFinally() {
 			record('andFinally');
 		}
+	}
+
+	/**
+	 * A handler with no constructor of its own, so the base class resolves its name at runtime.
+	 */
+	private class UntypedHandler extends TriggerHandler {
 	}
 }
