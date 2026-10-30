@@ -10,6 +10,7 @@
 - [Documentation](#documentation)
   - [Changelog](#changelog)
 - [Overview](#overview)
+- [What Is New in Version 2.0](#what-is-new-in-version-20)
 - [Usage](#usage)
   - [Trigger Handler](#trigger-handler)
   - [Pass the Handler Class to super()](#pass-the-handler-class-to-super)
@@ -65,6 +66,18 @@ Most important, the framework is small and simple to use.
 
 **Deploy to a Salesforce org:**
 [![Deploy](https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png)](https://githubsfdeploy.herokuapp.com/?owner=dschach&repo=salesforce-trigger-framework)
+
+## What Is New in Version 2.0
+
+- **13 breaking changes.** [Upgrade From Version 1](#upgrade-from-version-1) tells what to change in your handlers, triggers, and tests. The [changelog](CHANGELOG.md) has an upgrade note for each change.
+- **New features:**
+  - A constructor that takes the handler type: `super(OpportunityTriggerHandler.class)`.
+  - A loop limit for each trigger operation.
+  - Named bypasses and a global bypass that are independent, with `isSkipped()` and `isGlobalBypassed()`.
+  - Debug and limits settings for 1 handler: `showHandlerDebug()` and `showHandlerLimits()`.
+  - `setTestContext()`, to test a handler without DML, and an overridable `log()`, to send the framework messages to your logging framework.
+- **Quality:** 100 percent test coverage of `TriggerHandler`, and no Salesforce Code Analyzer findings.
+- **Documentation:** the ApexDoc, the README, and the project guides are rewritten in plain English. The [sample README](sample-handler/README.md) shows the real sample code, and a script keeps it current. The project has a [security policy](https://github.com/dschach/salesforce-trigger-framework/blob/main/SECURITY.md).
 
 ## Usage
 

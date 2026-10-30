@@ -19,6 +19,7 @@
 		</ul>
 	</li>
 	<li><a href="#overview">Overview</a></li>
+	<li><a href="#what-is-new-in-version-20">What Is New in Version 2.0</a></li>
 	<li>
 		<a href="#usage">Usage</a>
 		<ul>
@@ -87,6 +88,32 @@
 		><img src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png" alt="Deploy"
 	/></a>
 </p>
+<h2>What Is New in Version 2.0</h2>
+<ul>
+	<li>
+		<strong>13 breaking changes.</strong> <a href="#upgrade-from-version-1">Upgrade From Version 1</a> tells what to change in your handlers,
+		triggers, and tests. The <a href="changelog.html">changelog</a> has an upgrade note for each change.
+	</li>
+	<li>
+		<strong>New features:</strong>
+		<ul>
+			<li>A constructor that takes the handler type: <code>super(OpportunityTriggerHandler.class)</code>.</li>
+			<li>A loop limit for each trigger operation.</li>
+			<li>Named bypasses and a global bypass that are independent, with <code>isSkipped()</code> and <code>isGlobalBypassed()</code>.</li>
+			<li>Debug and limits settings for 1 handler: <code>showHandlerDebug()</code> and <code>showHandlerLimits()</code>.</li>
+			<li>
+				<code>setTestContext()</code>, to test a handler without DML, and an overridable <code>log()</code>, to send the framework messages to your
+				logging framework.
+			</li>
+		</ul>
+	</li>
+	<li><strong>Quality:</strong> 100 percent test coverage of <code>TriggerHandler</code>, and no Salesforce Code Analyzer findings.</li>
+	<li>
+		<strong>Documentation:</strong> the ApexDoc, the README, and the project guides are rewritten in plain English. The
+		<a href="sampletriggerhandlerhome.html">sample README</a> shows the real sample code, and a script keeps it current. The project has a
+		<a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/SECURITY.md">security policy</a>.
+	</li>
+</ul>
 <h2>Usage</h2>
 <h3>Trigger Handler</h3>
 <p>

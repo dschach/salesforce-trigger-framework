@@ -1,5 +1,356 @@
 <link href="assets/styling.css" rel="stylesheet" />
 <h1>Changelog</h1>
+<h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.5.1...v2.0.0">2.0.0</a> (2026-10-30)</h2>
+<h3>⚠ BREAKING CHANGES</h3>
+<ul>
+	<li>
+		<strong>handler:</strong> The test-visible no-arg constructor TriggerHandler.LoopCounter() is removed, and setTriggerContext() and validateRun()
+		are no longer test-visible. A test that used them must build the counter with a maximum, or run the handler with setTestContext() and run().
+	</li>
+	<li>
+		<strong>handler:</strong> The test-visible static fields TriggerHandler.loopCountMap, TriggerHandler.bypassedHandlers, and
+		TriggerHandler.globalBypass are removed. A test that read them must use the public methods instead: getLoopCount(), bypassList(), and
+		isGlobalBypassed().
+	</li>
+	<li>
+		<strong>handler:</strong> TriggerHandler is now an abstract class, so new TriggerHandler() no longer compiles. Code that built the base class
+		directly must build a class that extends it.
+	</li>
+	<li>
+		<strong>handler:</strong> The test-visible method setTriggerContext(System.TriggerOperation, Boolean) is removed. A test that called it to force a
+		trigger context must call setTestContext(operation) on the handler instead.
+	</li>
+	<li>
+		<strong>handler:</strong> beforeInsert(), beforeUpdate(), beforeDelete(), afterInsert(), afterUpdate(), afterDelete(), afterUndelete(), and
+		andFinally() are no longer test-visible. A test that called 1 of them through a TriggerHandler reference must run the handler with
+		setTestContext() and run(), or call the handler&#39;s own public override.
+	</li>
+	<li>
+		<strong>handler:</strong> The test-visible fields TriggerHandler.showDebug and TriggerHandler.showLimits are renamed to TriggerHandler.doShowDebug
+		and TriggerHandler.doShowLimits. A test that read the old names must read the new ones; no code outside tests can see these fields.
+	</li>
+	<li>
+		<strong>handler:</strong> A maximum loop count now applies to each trigger operation separately, so 1 operation no longer uses up the count of the
+		others. A handler that called setMaxLoopCount(2) to allow 1 run of before update and after update together must call setMaxLoopCount(1). To read
+		the count of 1 operation, call getLoopCount(String, System.TriggerOperation).
+	</li>
+	<li>
+		<strong>handler:</strong> getLoopCount() returns -1, not 0, for a handler or trigger operation with no call of setMaxLoopCount(). After a call
+		with 0 or a negative value, the framework counts the runs but sets no limit. Code that compared the count with 0 to find a handler that is not
+		counted must compare it with -1.
+	</li>
+	<li>
+		<strong>handler:</strong> setMaxLoopCount(0) no longer stops every run of a handler; it removes the limit. To keep a handler from running, bypass
+		it with TriggerHandler.bypass().
+	</li>
+	<li>
+		<strong>handler:</strong> setBypass(name, false) no longer clears the global bypass, and isBypassed() no longer returns true for a handler that
+		only the global bypass stops. To ask whether a handler will run, call isSkipped(), and to ask about the global bypass, call isGlobalBypassed().
+	</li>
+	<li>
+		<strong>handler:</strong> bypassAll() no longer clears the named bypasses. After bypassAll() and clearGlobalBypass(), a handler that was bypassed
+		by name before is still bypassed. To clear every bypass, call clearAllBypasses().
+	</li>
+	<li>
+		<strong>handler:</strong> A global bypass no longer adds the entry BypassAll to bypassList() or bypassSet(). To check whether all handlers are
+		bypassed, call isGlobalBypassed(). A test that read TriggerHandler.BYPASS_ALL_ALIAS must stop using it.
+	</li>
+	<li>
+		<strong>handler:</strong> The constructor TriggerHandler(String handlerName) is removed. A handler that calls super(&#39;HandlerName&#39;) must
+		call super(HandlerName.class) instead, which sets the handler name to Type.getName(). A handler that passed a name other than its class name must
+		also change the bypass calls and getLoopCount() calls that use that name.
+	</li>
+</ul>
+<h3>Features</h3>
+<ul>
+	<li>
+		<strong>handler:</strong> Add isGlobalBypassed() and isSkipped() to check bypasses (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/33c852d9117d8bfec7c89162f9a39f883bf616c2"
+			>33c852d</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Name a handler by its type with a Type constructor (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/9b47bba5e22ed7c4158f398622b30ee60e7ab230"
+			>9b47bba</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Set a bypass by type with setBypass(Type, Boolean) (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/33c852d9117d8bfec7c89162f9a39f883bf616c2"
+			>33c852d</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Set and read the loop limit of 1 trigger operation (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/931d336a590847c152e25243265180e5dd809ecc"
+			>931d336</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Turn on debug and limits lines for 1 handler (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/79d39642afa204cb72b207fa8cf4012d2d53d5aa"
+			>79d3964</a
+		>)
+	</li>
+</ul>
+<h3>Bug Fixes</h3>
+<ul>
+	<li>
+		<strong>handler:</strong> Count the loop of each trigger operation separately (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/issues/381"
+			>#381</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/931d336a590847c152e25243265180e5dd809ecc">931d336</a>)
+	</li>
+	<li>
+		<strong>handler:</strong> Keep the named and global bypasses independent (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/issues/380"
+			>#380</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/33c852d9117d8bfec7c89162f9a39f883bf616c2">33c852d</a>)
+	</li>
+	<li>
+		<strong>handler:</strong> Keep the named bypasses when all handlers are bypassed (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/33c852d9117d8bfec7c89162f9a39f883bf616c2"
+			>33c852d</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Read a maximum loop count of 0 as no limit (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/931d336a590847c152e25243265180e5dd809ecc"
+			>931d336</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Return -1 from getLoopCount for an operation not counted (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/931d336a590847c152e25243265180e5dd809ecc"
+			>931d336</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Say that the loop limit stopped the run in its warning (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/f844349350b9fc2d81686bc854699af94b457707"
+			>f844349</a
+		>)
+	</li>
+</ul>
+<h3>Tests</h3>
+<ul>
+	<li>
+		<strong>handler:</strong> Suppress NcssCount on the large test class (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/ef55c41c9b58940d1737089e2a8c22743fa0e938"
+			>ef55c41</a
+		>)
+	</li>
+</ul>
+<h3>Code Refactoring</h3>
+<ul>
+	<li>
+		<strong>handler:</strong> Drop the BypassAll alias from the bypass list (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/33c852d9117d8bfec7c89162f9a39f883bf616c2"
+			>33c852d</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Hold the bypasses and loop counters in inner classes (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/issues/384"
+			>#384</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ef55c41c9b58940d1737089e2a8c22743fa0e938">ef55c41</a>)
+	</li>
+	<li>
+		<strong>handler:</strong> Make TriggerHandler an abstract class (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/383"
+			>#383</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8845dc6b291d344e2766bc3b46da88d168f20b20">8845dc6</a>)
+	</li>
+	<li>
+		<strong>handler:</strong> Name each handler by its type and remove the String constructor (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/issues/378"
+			>#378</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/9b47bba5e22ed7c4158f398622b30ee60e7ab230">9b47bba</a>)
+	</li>
+	<li>
+		<strong>handler:</strong> Remove TestVisible from the overridable methods (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/8845dc6b291d344e2766bc3b46da88d168f20b20"
+			>8845dc6</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Remove the testMode parameter from setTriggerContext (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/8845dc6b291d344e2766bc3b46da88d168f20b20"
+			>8845dc6</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Remove the unused LoopCounter default and test-visible members (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/issues/385"
+			>#385</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/0f0256512edd85c355b73974ef886c391a9b15f3">0f02565</a>)
+	</li>
+	<li>
+		<strong>handler:</strong> Rename the debug flags to doShowDebug and doShowLimits (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/issues/382"
+			>#382</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/79d39642afa204cb72b207fa8cf4012d2d53d5aa">79d3964</a>)
+	</li>
+</ul>
+<h3>Documentation</h3>
+<ul>
+	<li>
+		<strong>changelog:</strong> Remove the duplicate lines of an older release (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/f844349350b9fc2d81686bc854699af94b457707"
+			>f844349</a
+		>)
+	</li>
+	<li>
+		<strong>contributing:</strong> Say that the site is updated before each release (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/fecb28bd4a0aa1c28965fb3a91d64fb201c0e4c9"
+			>fecb28b</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Add since dates and fix the see links (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/f844349350b9fc2d81686bc854699af94b457707"
+			>f844349</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Correct the loop count, loop limit, and andFinally docs (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/f844349350b9fc2d81686bc854699af94b457707"
+			>f844349</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Deprecate bypassSet() in favor of bypassList() (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/33c852d9117d8bfec7c89162f9a39f883bf616c2"
+			>33c852d</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Deprecate debug() and limits() for the show methods (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/79d39642afa204cb72b207fa8cf4012d2d53d5aa"
+			>79d3964</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Deprecate getLoopCount(String) for the per-operation form (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/931d336a590847c152e25243265180e5dd809ecc"
+			>931d336</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Rewrite the ApexDoc and the markdown files in simplified technical English (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/issues/386"
+			>#386</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/fecb28bd4a0aa1c28965fb3a91d64fb201c0e4c9">fecb28b</a>)
+	</li>
+	<li>
+		<strong>handler:</strong> Say that TriggerHandler(Type) replaces the String one (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/33c852d9117d8bfec7c89162f9a39f883bf616c2"
+			>33c852d</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Say when andFinally() runs and when it does not (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/931d336a590847c152e25243265180e5dd809ecc"
+			>931d336</a
+		>)
+	</li>
+	<li>
+		<strong>handler:</strong> Say why TriggerHandler suppresses EmptyStatementBlock (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/0f0256512edd85c355b73974ef886c391a9b15f3"
+			>0f02565</a
+		>)
+	</li>
+	<li>
+		<strong>readme:</strong> Add the upgrade steps for handlers, triggers, and tests (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/fecb28bd4a0aa1c28965fb3a91d64fb201c0e4c9"
+			>fecb28b</a
+		>)
+	</li>
+	<li>
+		<strong>readme:</strong> Fix the site links and add contributing and license (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/f844349350b9fc2d81686bc854699af94b457707"
+			>f844349</a
+		>)
+	</li>
+	<li>
+		<strong>readme:</strong> Show how to pass the handler class to super() (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/9b47bba5e22ed7c4158f398622b30ee60e7ab230"
+			>9b47bba</a
+		>)
+	</li>
+	<li>
+		<strong>repo:</strong> Correct the documentation and comments after a prose review (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/issues/388"
+			>#388</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f844349350b9fc2d81686bc854699af94b457707">f844349</a>)
+	</li>
+	<li>
+		<strong>repo:</strong> Rewrite DEPLOY, the internal READMEs, and the PR template (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/fecb28bd4a0aa1c28965fb3a91d64fb201c0e4c9"
+			>fecb28b</a
+		>)
+	</li>
+	<li>
+		<strong>sample:</strong> Copy the sample trigger and handler into the sample README (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/issues/387"
+			>#387</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/1c7851f49b03773a7b4dc253141db908533d4f11">1c7851f</a>)
+	</li>
+	<li>
+		<strong>sample:</strong> Remove the br tags from the sample code in the README (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/issues/389"
+			>#389</a
+		>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/99cdcb458852332d86e4044a03baaffcfbe0e2e4">99cdcb4</a>)
+	</li>
+	<li>
+		<strong>sample:</strong> Rewrite the sample ApexDoc and README (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/fecb28bd4a0aa1c28965fb3a91d64fb201c0e4c9"
+			>fecb28b</a
+		>)
+	</li>
+	<li>
+		<strong>security:</strong> Add a security policy and the issue form links (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/f844349350b9fc2d81686bc854699af94b457707"
+			>f844349</a
+		>)
+	</li>
+	<li>
+		<strong>site:</strong> Regenerate the documentation site (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/99cdcb458852332d86e4044a03baaffcfbe0e2e4"
+			>99cdcb4</a
+		>)
+	</li>
+	<li>
+		<strong>site:</strong> Regenerate the documentation site (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/f844349350b9fc2d81686bc854699af94b457707"
+			>f844349</a
+		>)
+	</li>
+</ul>
+<h3>Build System</h3>
+<ul>
+	<li>
+		<strong>hooks:</strong> Copy the sample code into the sample README on commit (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/1c7851f49b03773a7b4dc253141db908533d4f11"
+			>1c7851f</a
+		>)
+	</li>
+	<li>
+		<strong>release:</strong> Keep the version placeholder of the bug form current (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/f844349350b9fc2d81686bc854699af94b457707"
+			>f844349</a
+		>)
+	</li>
+</ul>
+<h3>Continuous Integration</h3>
+<ul>
+	<li>
+		<strong>format:</strong> Check that the sample README shows the current sample code (<a
+			href="https://github.com/dschach/salesforce-trigger-framework/commit/1c7851f49b03773a7b4dc253141db908533d4f11"
+			>1c7851f</a
+		>)
+	</li>
+</ul>
 <h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.5.0...v1.5.1">1.5.1</a> (2026-10-30)</h2>
 <h3>Bug Fixes</h3>
 <ul>
