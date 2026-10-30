@@ -534,7 +534,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @since 2021
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @param  handlerName  The name of the TriggerHandler class.
-	 * @param  desiredValue `true` to bypass the handler, `false` to clear its bypass so that it runs.
+	 * @param  desiredValue `true` to bypass the handler, `false` to clear its named bypass.
 	 * @exception TriggerHandlerException when the name is null or blank, or the value is null.
 	 * @throws TriggerHandlerException when the name is null or blank, or the value is null.
 	 * @example
@@ -555,6 +555,24 @@ public inherited sharing virtual class TriggerHandler {
 			return;
 		}
 		TriggerHandler.clearBypass(handlerName);
+	}
+
+	/**
+	 * Set the named bypass of a handler, given by type, to a specific value. It works as the String form does, with `Type.getName()` as the name.
+	 * @param  handlerType  The handler class, written as `ClassName.class`.
+	 * @param  desiredValue `true` to bypass the handler, `false` to clear its named bypass.
+	 * @exception TriggerHandlerException when the type is null, or the value is null.
+	 * @throws TriggerHandlerException when the type is null, or the value is null.
+	 * @see TriggerHandler.setBypass[0]
+	 * @example
+	 * Boolean wasBypassed = TriggerHandler.isBypassed(AccountSampleTriggerHandler.class);
+	 * TriggerHandler.bypass(AccountSampleTriggerHandler.class);
+	 * // do something here
+	 * TriggerHandler.setBypass(AccountSampleTriggerHandler.class, wasBypassed);
+	 */
+	public static void setBypass(Type handlerType, Boolean desiredValue) {
+		requireHandlerType(handlerType);
+		TriggerHandler.setBypass(handlerType.getName(), desiredValue);
 	}
 
 	// handle limits

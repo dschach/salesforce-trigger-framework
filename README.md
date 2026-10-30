@@ -280,7 +280,7 @@ TriggerHandler.bypass('AccountTriggerHandler');
 TriggerHandler.setBypass('AccountTriggerHandler', isBypassed);
 ```
 
-`setBypass(name, false)` clears only the named bypass, and `isBypassed()` answers only the named bypass. So this idiom gives back exactly the state before it. A global bypass stays on through it.
+`setBypass(name, false)` clears only the named bypass, and `isBypassed()` answers only the named bypass. So this idiom gives back exactly the state before it. A global bypass stays on through it. `setBypass()` also takes a type, as in `TriggerHandler.setBypass(AccountTriggerHandler.class, isBypassed)`, so the compiler checks the name.
 
 To bypass all handlers for a while, and then go back to the handlers that were bypassed by name before, call `bypassAll()` and then `clearGlobalBypass()`. The named bypasses stay during the global bypass, so you do not need to store them:
 
@@ -491,6 +491,7 @@ Every public member of `TriggerHandler`. The [class documentation](https://david
 | `static bypassList()`                                        | Returns a sorted list of the handlers that are bypassed by name or type.                                                                                 |
 | `static bypassSet()`                                         | Deprecated: use `bypassList()`. Returns a set of the handlers that are bypassed by name or type. A later major release removes it.                       |
 | `static setBypass(String handlerName, Boolean desiredValue)` | Bypasses the handler for `true`. For `false`, clears only its named bypass.                                                                              |
+| `static setBypass(Type handlerType, Boolean desiredValue)`   | The same, by type.                                                                                                                                       |
 | `static clearAllBypasses()`                                  | Clears the global bypass and the list of named bypasses.                                                                                                 |
 | `static clearGlobalBypass()`                                 | Clears only the global bypass.                                                                                                                           |
 | `static clearBypassList()`                                   | Clears only the list of named bypasses.                                                                                                                  |

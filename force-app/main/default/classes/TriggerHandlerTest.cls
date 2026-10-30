@@ -414,6 +414,22 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
+	 * `setBypass()` by type sets and clears the named bypass of the handler, as the String form does.
+	 */
+	@IsTest
+	private static void setBypassByTypeSetsAndClearsNamedBypass() {
+		TriggerHandler.setBypass(TriggerHandlerTest.TestHandler.class, true);
+		Assert.isTrue(TriggerHandler.isBypassed(HANDLER_NAME), 'setBypass true by type should bypass the handler name');
+		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
+		Assert.isTrue(calls.isEmpty(), 'the handler bypassed by type should call no method');
+
+		TriggerHandler.setBypass(TriggerHandlerTest.TestHandler.class, false);
+		Assert.isFalse(TriggerHandler.isBypassed(TriggerHandlerTest.TestHandler.class), 'setBypass false by type should clear the bypass');
+		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
+		Assert.areEqual(new List<String>{ 'afterUpdate', 'andFinally' }, calls, 'the handler should run after its bypass is cleared');
+	}
+
+	/**
 	 * `isSkipped()` is true for a named bypass or a global bypass, by name and by type.
 	 */
 	@IsTest
@@ -666,6 +682,8 @@ private inherited sharing class TriggerHandlerTest {
 			'isSkipped null string' => TriggerHandler.ERROR_HANDLER_NAME,
 			'isSkipped null type' => TriggerHandler.ERROR_HANDLER_TYPE,
 			'setBypass null value' => TriggerHandler.ERROR_BYPASS_VALUE,
+			'setBypass null type' => TriggerHandler.ERROR_HANDLER_TYPE,
+			'setBypass type null value' => TriggerHandler.ERROR_BYPASS_VALUE,
 			'setMaxLoopCount null' => TriggerHandler.ERROR_LOOP_COUNT,
 			'getLoopCount null' => TriggerHandler.ERROR_HANDLER_NAME
 		};
@@ -726,6 +744,12 @@ private inherited sharing class TriggerHandlerTest {
 			}
 			when 'setBypass null value' {
 				TriggerHandler.setBypass(HANDLER_NAME, null);
+			}
+			when 'setBypass null type' {
+				TriggerHandler.setBypass((Type) null, true);
+			}
+			when 'setBypass type null value' {
+				TriggerHandler.setBypass(TriggerHandlerTest.TestHandler.class, null);
 			}
 			when 'setMaxLoopCount null' {
 				newHandler(System.TriggerOperation.AFTER_UPDATE).setMaxLoopCount(null);
