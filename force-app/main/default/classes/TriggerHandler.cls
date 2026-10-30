@@ -145,6 +145,7 @@ public inherited sharing virtual class TriggerHandler {
 
 	/**
 	 * Constructor with the handler type. The handler name is `Type.getName()`, so it always matches `bypass(Type)`, also for an inner class, and no runtime lookup is needed.
+	 * <br>It replaces the String constructor `TriggerHandler(String handlerName)`, which version 2.0 removed. To upgrade a handler, change `super('ClassName')` to `super(ClassName.class)`.
 	 * @param  handlerType The class of the handler, written as `ClassName.class`.
 	 * @exception TriggerHandlerException when the type is null.
 	 * @throws TriggerHandlerException when the type is null.
