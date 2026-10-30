@@ -1,33 +1,33 @@
-# Salesforce Code Analyzer report
+# Salesforce Code Analyzer Report
 
-A composite action that reads the JSON report that the Salesforce Code Analyzer wrote, counts the violations by severity, and writes the counts and Markdown tables to the job summary. A workflow that wants to fail on high-priority violations and tolerate the rest needs these counts and the tables that show them.
+This composite action reads the JSON report of Salesforce Code Analyzer and counts the violations by severity. It writes the counts and Markdown tables to the job summary. A workflow needs these counts and tables to fail on high-priority violations and to accept the other violations.
 
-The action never fails the job because of a violation. The caller's next step reads the counts and fails the job, as the `sfca-analysis` job in `ci.yml` does.
+The action never fails the job because of a violation. The next step of the caller reads the counts and fails the job, as the `sfca-analysis` job in `ci.yml` does.
 
 ## Inputs
 
-| Input             | Required | Default | Description                                                                                                                                                                                                                             |
-| ----------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `results-path`    | Yes      |         | Path to the Salesforce Code Analyzer results JSON file, for example `sfca_results.json`. The action fails if the file does not exist.                                                                                                   |
-| `severity-cutoff` | No       |         | Violations with a severity at or below this value go in the first (high-priority) table. The remaining severities go in the second table. When it is empty, null, or 5, every violation goes in one table and there is no second table. |
-| `write-summary`   | No       | `true`  | `true` writes the counts and the tables to the job summary. `false` writes nothing there and gives the tables as outputs only, for a caller that writes its own summary.                                                                |
+| Input             | Required | Default | Description                                                                                                                                                                                                                                |
+| ----------------- | -------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `results-path`    | Yes      |         | The path to the JSON results file of Salesforce Code Analyzer, for example `sfca_results.json`. The action fails if the file does not exist.                                                                                               |
+| `severity-cutoff` | No       |         | The violations with a severity at or below this value go in the first (high-priority) table. The other severities go in the second table. When the value is empty, null, or 5, all violations go in 1 table, and there is no second table. |
+| `write-summary`   | No       | `true`  | `true` writes the counts and the tables to the job summary. `false` writes nothing there and gives the tables only as outputs, for a caller that writes its own summary.                                                                   |
 
 ## Outputs
 
-| Output                   | Description                                                                              |
-| ------------------------ | ---------------------------------------------------------------------------------------- |
-| `total-violations`       | Total number of violations found                                                         |
-| `sev1-count`             | Number of severity 1 violations                                                          |
-| `sev2-count`             | Number of severity 2 violations                                                          |
-| `sev3-count`             | Number of severity 3 violations                                                          |
-| `sev4-count`             | Number of severity 4 violations                                                          |
-| `sev5-count`             | Number of severity 5 violations                                                          |
-| `high-priority-markdown` | Markdown table from severity 1 to the cutoff, or every violation when there is no cutoff |
-| `low-priority-markdown`  | Markdown table from the cutoff plus 1 to severity 5, empty when there is no cutoff       |
+| Output                   | Description                                                                                  |
+| ------------------------ | -------------------------------------------------------------------------------------------- |
+| `total-violations`       | The total number of violations                                                               |
+| `sev1-count`             | The number of severity 1 violations                                                          |
+| `sev2-count`             | The number of severity 2 violations                                                          |
+| `sev3-count`             | The number of severity 3 violations                                                          |
+| `sev4-count`             | The number of severity 4 violations                                                          |
+| `sev5-count`             | The number of severity 5 violations                                                          |
+| `high-priority-markdown` | A Markdown table from severity 1 to the cutoff, or of all violations when there is no cutoff |
+| `low-priority-markdown`  | A Markdown table from the cutoff plus 1 to severity 5. It is empty when there is no cutoff.  |
 
 Each table has the columns File, Line, Rule, Description, Severity, and Engine. A File cell links to the file at the commit that ran, on the line of the violation, and opens in a new tab. A table with no violations shows a line that says so.
 
-With a cutoff, the job summary has two tables, "Violations at Severity 1 to" the cutoff and "Violations at Severity" the cutoff plus 1 "to 5". With no cutoff, it has one table, "All Violations".
+With a cutoff, the job summary has 2 tables. The first table is "Violations at Severity 1 to" the cutoff. The second table is "Violations at Severity" the cutoff plus 1 "to 5". With no cutoff, the job summary has 1 table, "All Violations".
 
 ## Example
 
@@ -52,8 +52,8 @@ With a cutoff, the job summary has two tables, "Violations at Severity 1 to" the
 
 ## Notes
 
-- The counts come from the report's `violationCounts`, which holds the count for each severity. A severity is the priority the ruleset gave the rule.
-- The File cell drops the folders that every file in the report starts with, so `delta/force-app/main/default/classes/Foo.cls` shows as `classes/Foo.cls`. A report of one file shows only its name.
-- The example assumes that the job installed the Salesforce CLI and the `code-analyzer` plugin, as the `sfca-analysis` job in `ci.yml` does. `if: always()` writes the summary even when the scan step fails.
-- The action needs `jq`, which is on every GitHub-hosted runner.
-- Set `write-summary` to `false` when the caller writes its own summary, and use the `high-priority-markdown` and `low-priority-markdown` outputs instead.
+- The counts come from `violationCounts` in the report, which holds the count for each severity. A severity is the priority that the ruleset gave the rule.
+- The File cell leaves out the folders that all files in the report start with. So `delta/force-app/main/default/classes/Foo.cls` shows as `classes/Foo.cls`. A report of 1 file shows only its name.
+- The example expects that the job installed the Salesforce CLI and the `code-analyzer` plugin, as the `sfca-analysis` job in `ci.yml` does. `if: always()` writes the summary also when the scan step fails.
+- The action needs `jq`, and each GitHub-hosted runner has it.
+- When the caller writes its own summary, set `write-summary` to `false`, and use the `high-priority-markdown` and `low-priority-markdown` outputs.
