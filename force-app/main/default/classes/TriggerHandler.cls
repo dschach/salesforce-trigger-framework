@@ -184,7 +184,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		if (showDebug) {
-			this.log(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent + '' }));
+			this.log(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent.name() }));
 		}
 
 		// dispatch to the correct handler method
@@ -219,7 +219,7 @@ public inherited sharing virtual class TriggerHandler {
 				String.format(
 					'{0} on {1} ({2}/{3} queries) and ({4}/{5} DML calls)',
 					new List<String>{
-						this.triggerEvent + '',
+						this.triggerEvent.name(),
 						getHandlerName(),
 						Limits.getQueries() + '',
 						Limits.getLimitQueries() + '',
@@ -230,7 +230,7 @@ public inherited sharing virtual class TriggerHandler {
 			);
 		}
 		if (showDebug) {
-			this.log(LoggingLevel.DEBUG, String.format('Exiting {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent + '' }));
+			this.log(LoggingLevel.DEBUG, String.format('Exiting {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent.name() }));
 		}
 	}
 
@@ -691,7 +691,7 @@ public inherited sharing virtual class TriggerHandler {
 		if (loopCount == null || !loopCount.increment()) {
 			return true;
 		}
-		this.log(LoggingLevel.WARN, 'Maximum loop count of ' + loopCount.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + this.triggerEvent);
+		this.log(LoggingLevel.WARN, 'Maximum loop count of ' + loopCount.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + this.triggerEvent.name());
 		return false;
 	}
 
