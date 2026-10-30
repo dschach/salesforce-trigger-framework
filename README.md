@@ -391,7 +391,7 @@ Every public member of `TriggerHandler`. The [class documentation](https://david
 | `TriggerHandler()` | Constructor. The handler name is worked out from the running class when it is first needed. |
 | `TriggerHandler(String handlerName)` | Constructor with the handler name, which skips the runtime name lookup. |
 | `run()` | Called from the trigger. Runs the context method for the current operation, then `andFinally()`. |
-| `setMaxLoopCount(Integer max)` | Limits how many times this handler runs. A negative value removes the limit. Returns the handler, for chaining. |
+| `setMaxLoopCount(Integer max)` | Limits how many times this handler runs. 0 means the handler never runs, and a negative value removes the limit. Returns the handler, for chaining. |
 | `clearMaxLoopCount()` | Removes the limit on how many times this handler runs. |
 | `static getLoopCount(String handlerName)` | Returns the loop count of a handler, or 0 when no maximum was set for it. |
 | `static bypass(String handlerName)` | Bypasses a handler by name. The name matches regardless of case. |

@@ -1,5 +1,5 @@
 /**
- * @description A sample Account trigger handler that shows the framework in use.
+ * A sample Account trigger handler that shows the framework in use.
  * <br>Before insert and before update, it removes extra spaces from each new or changed Account name.
  * <br>After update, it copies a changed phone number to the child Accounts. It bypasses itself for that update, so the update does not run this handler again.
  * <br>A loop limit protects against recursion that the bypass does not stop, and `andFinally()` runs after each context.
@@ -26,7 +26,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	private Map<Id, Account> oldRecordsMap;
 
 	/**
-	 * @description Constructor for the trigger. It passes the class name, so the base class never resolves it at runtime.
+	 * Constructor for the trigger. It passes the class name, so the base class never resolves it at runtime.
 	 * @see AccountSampleTriggerHandler.AccountSampleTriggerHandler[1]
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
@@ -36,7 +36,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	}
 
 	/**
-	 * @description Constructor with the handler name. It casts the trigger collections that the handler uses, and it sets the loop limit.
+	 * Constructor with the handler name. It casts the trigger collections that the handler uses, and it sets the loop limit.
 	 * @param className The name of this class, exactly as `Type.getName()` returns it.
 	 */
 	public AccountSampleTriggerHandler(String className) {
@@ -47,19 +47,19 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	}
 
 	/**
-	 * @description Remove extra spaces from the name of each new Account.
+	 * Remove extra spaces from the name of each new Account.
 	 */
 	public override void beforeInsert() {
-		normalizeNames(this.newRecords);
+		normalizeNames(newRecords);
 	}
 
 	/**
-	 * @description Remove extra spaces from each Account name that changed.
+	 * Remove extra spaces from each Account name that changed.
 	 */
 	public override void beforeUpdate() {
 		List<Account> renamedAccounts = new List<Account>();
-		for (Account updatedAccount : this.newRecords) {
-			if (updatedAccount.Name != this.oldRecordsMap.get(updatedAccount.Id).Name) {
+		for (Account updatedAccount : newRecords) {
+			if (updatedAccount.Name != oldRecordsMap.get(updatedAccount.Id).Name) {
 				renamedAccounts.add(updatedAccount);
 			}
 		}
@@ -67,12 +67,12 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	}
 
 	/**
-	 * @description Copy each changed phone number to the child Accounts.
+	 * Copy each changed phone number to the child Accounts.
 	 */
 	public override void afterUpdate() {
 		Map<Id, String> phoneByParentId = new Map<Id, String>();
-		for (Account updatedAccount : this.newRecords) {
-			if (updatedAccount.Phone != this.oldRecordsMap.get(updatedAccount.Id).Phone) {
+		for (Account updatedAccount : newRecords) {
+			if (updatedAccount.Phone != oldRecordsMap.get(updatedAccount.Id).Phone) {
 				phoneByParentId.put(updatedAccount.Id, updatedAccount.Phone);
 			}
 		}
@@ -83,14 +83,14 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	}
 
 	/**
-	 * @description Record the finished operation. A real handler puts work here that must follow every context, such as a rollup or 1 platform event for the whole trigger.
+	 * Record the finished operation. A real handler puts work here that must follow every context, such as a rollup or 1 platform event for the whole trigger.
 	 */
 	public override void andFinally() {
-		finishedOperations.add(this.getTriggerEvent());
+		finishedOperations.add(getTriggerEvent());
 	}
 
 	/**
-	 * @description Replace each run of spaces in the Account names with 1 space, and remove the spaces at the start and the end.
+	 * Replace each run of spaces in the Account names with 1 space, and remove the spaces at the start and the end.
 	 * @param accounts The Accounts to change.
 	 */
 	private static void normalizeNames(List<Account> accounts) {
@@ -100,7 +100,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	}
 
 	/**
-	 * @description Update the phone number of the child Accounts, with this handler bypassed for that update.
+	 * Update the phone number of the child Accounts, with this handler bypassed for that update.
 	 * <br>A child Account that is in the same trigger run is left out, because a trigger cannot update the records it is running for.
 	 * <br>The query and the update run in system mode, so `FlagSystemMode` is suppressed for this method. The phone number must reach every child Account, also a child Account that the running user cannot see or edit.
 	 * @param phoneByParentId The new phone number of each parent Account, by Id.
@@ -110,7 +110,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 		Set<Id> parentIds = phoneByParentId.keySet();
 		List<Account> childAccounts = new List<Account>();
 		for (Account childAccount : [SELECT Id, ParentId FROM Account WHERE ParentId IN :parentIds WITH SYSTEM_MODE]) {
-			if (!this.oldRecordsMap.containsKey(childAccount.Id)) {
+			if (!oldRecordsMap.containsKey(childAccount.Id)) {
 				childAccount.Phone = phoneByParentId.get(childAccount.ParentId);
 				childAccounts.add(childAccount);
 			}
