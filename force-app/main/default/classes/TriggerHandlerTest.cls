@@ -22,6 +22,10 @@ private inherited sharing class TriggerHandlerTest {
 	 * The context method that throws, or null when no method throws.
 	 */
 	private static String throwIn;
+	/**
+	 * The messages the test handler's `log` override received, each as the level, a colon, and the message.
+	 */
+	private static List<String> logs = new List<String>();
 	private static System.TriggerOperation lastEventSeen;
 	private static String lastNameSeen;
 	/**
@@ -485,6 +489,82 @@ private inherited sharing class TriggerHandlerTest {
 		Assert.isFalse(TriggerHandler.showDebug, 'debug(false) should turn debug off'); //NOPMD
 	}
 
+	// test seam and log hook
+
+	/**
+	 * @description `setTestContext()` makes a handler run as if a trigger fired the operation, and it returns the handler for chaining.
+	 */
+	@IsTest
+	private static void setTestContextLetsTestRunHandler() {
+		TriggerHandlerTest.TestHandler seamHandler = new TriggerHandlerTest.TestHandler();
+		Assert.isTrue(seamHandler === seamHandler.setTestContext(System.TriggerOperation.AFTER_INSERT), 'setTestContext() should return the same handler');
+		Assert.isTrue(seamHandler.isTriggerExecuting, 'the handler should run as if a trigger fired');
+		seamHandler.run();
+		Assert.areEqual(new List<String>{ 'afterInsert', 'andFinally' }, calls, 'the handler should run the simulated operation');
+	}
+
+	/**
+	 * @description With debug on, `run()` sends its entry and exit lines through the `log` hook.
+	 */
+	@IsTest
+	private static void debugOnLogsEntryAndExitThroughHook() {
+		TriggerHandler.showDebug();
+		newHandler(System.TriggerOperation.BEFORE_UPDATE).run();
+		Assert.areEqual(
+			new List<String>{ 'DEBUG: Entering ' + HANDLER_NAME + ', fired BEFORE_UPDATE', 'DEBUG: Exiting ' + HANDLER_NAME + ', fired BEFORE_UPDATE' },
+			logs,
+			'the entry and exit lines should reach the log hook'
+		);
+	}
+
+	/**
+	 * @description With debug and limits off, `run()` logs nothing.
+	 */
+	@IsTest
+	private static void debugOffLogsNothing() {
+		newHandler(System.TriggerOperation.BEFORE_UPDATE).run();
+		Assert.isTrue(logs.isEmpty(), 'nothing should be logged with debug and limits off');
+	}
+
+	/**
+	 * @description With limits on, `run()` sends 1 limits line through the `log` hook.
+	 */
+	@IsTest
+	private static void limitsOnLogsLimitsLine() {
+		TriggerHandler.showLimits();
+		newHandler(System.TriggerOperation.BEFORE_UPDATE).run();
+		Assert.areEqual(1, logs.size(), 'the limits line should be the only message');
+		Assert.isTrue(logs[0].startsWith('DEBUG: BEFORE_UPDATE on ' + HANDLER_NAME + ' ('), 'the limits line should name the operation and the handler');
+	}
+
+	/**
+	 * @description An exceeded loop limit sends a warning through the `log` hook, also with debug off.
+	 */
+	@IsTest
+	private static void exceededLoopLimitLogsWarning() {
+		TriggerHandlerTest.TestHandler limited = newHandler(System.TriggerOperation.BEFORE_INSERT);
+		limited.setMaxLoopCount(1).run();
+		limited.run();
+		Assert.areEqual(
+			new List<String>{ 'WARN: Maximum loop count of 1 exceeded in ' + HANDLER_NAME + ', so run() skipped BEFORE_INSERT' },
+			logs,
+			'the loop limit warning should reach the log hook'
+		);
+	}
+
+	/**
+	 * @description The default `log` hook of the base class writes the debug and limits lines without an error.
+	 */
+	@IsTest
+	private static void baseLogHookWritesWithoutError() {
+		TriggerHandler baseHandler = new TriggerHandler('BaseHandler');
+		baseHandler.setTestContext(System.TriggerOperation.BEFORE_INSERT);
+		TriggerHandler.showDebug();
+		TriggerHandler.showLimits();
+		baseHandler.setMaxLoopCount(5).run();
+		Assert.areEqual(1, TriggerHandler.getLoopCount('BaseHandler'), 'the base handler should complete its run with logging on');
+	}
+
 	// argument checks
 
 	/**
@@ -580,7 +660,7 @@ private inherited sharing class TriggerHandlerTest {
 	 */
 	private static TriggerHandlerTest.TestHandler newHandler(System.TriggerOperation operation) {
 		TriggerHandlerTest.TestHandler fixture = new TriggerHandlerTest.TestHandler();
-		fixture.setTriggerContext(operation, true);
+		fixture.setTestContext(operation);
 		return fixture;
 	}
 
@@ -650,6 +730,10 @@ private inherited sharing class TriggerHandlerTest {
 
 		public override void afterUndelete() {
 			record('afterUndelete');
+		}
+
+		public override void log(LoggingLevel level, String message) {
+			TriggerHandlerTest.logs.add(level + ': ' + message);
 		}
 
 		public override void andFinally() {

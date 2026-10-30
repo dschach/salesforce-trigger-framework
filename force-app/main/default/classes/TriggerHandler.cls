@@ -136,7 +136,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		if (showDebug) {
-			System.debug(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent + '' })); // NOPMD
+			this.log(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent + '' }));
 		}
 
 		// dispatch to the correct handler method
@@ -166,7 +166,7 @@ public inherited sharing virtual class TriggerHandler {
 		this.andFinally();
 
 		if (showLimits) {
-			System.debug( // NOPMD
+			this.log(
 				LoggingLevel.DEBUG,
 				String.format(
 					'{0} on {1} ({2}/{3} queries) and ({4}/{5} DML calls)',
@@ -182,7 +182,7 @@ public inherited sharing virtual class TriggerHandler {
 			);
 		}
 		if (showDebug) {
-			System.debug(LoggingLevel.DEBUG, String.format('Exiting {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent + '' })); // NOPMD
+			this.log(LoggingLevel.DEBUG, String.format('Exiting {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent + '' }));
 		}
 	}
 
@@ -642,7 +642,7 @@ public inherited sharing virtual class TriggerHandler {
 		if (loopCount == null || !loopCount.increment()) {
 			return true;
 		}
-		System.debug(LoggingLevel.WARN, 'Maximum loop count of ' + loopCount.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + this.triggerEvent); // NOPMD
+		this.log(LoggingLevel.WARN, 'Maximum loop count of ' + loopCount.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + this.triggerEvent);
 		return false;
 	}
 
@@ -692,6 +692,40 @@ public inherited sharing virtual class TriggerHandler {
 			this.handlerName = this.toString().substringBefore(':');
 		}
 		return this.handlerName;
+	}
+
+	/**
+	 * @description Make this handler run as if a trigger fired the given operation, so that a test can call `run()` without DML.
+	 * <br>Set the records that the handler reads before you call `run()`, for example through `@TestVisible` fields of the handler.
+	 * <br>Outside a test it changes nothing: the handler keeps the context of the real trigger.
+	 * @param operation The trigger operation to simulate.
+	 * @return `TriggerHandler` This instance, which enables method chaining.
+	 * @example
+	 * AccountSampleTriggerHandler handler = new AccountSampleTriggerHandler();
+	 * // set the records that the handler reads, and then:
+	 * handler.setTestContext(System.TriggerOperation.BEFORE_INSERT).run();
+	 */
+	@TestVisible
+	protected TriggerHandler setTestContext(System.TriggerOperation operation) {
+		Boolean inTest = Test.isRunningTest();
+		this.setTriggerContext(inTest ? operation : Trigger.operationType, inTest);
+		return this;
+	}
+
+	/**
+	 * @description Write a message from the framework: the entry, exit, and limits lines when they are turned on, and the warning when the loop limit is exceeded.
+	 * <br>The default writes to the debug log. Override it to send the messages to the logging framework of your org, such as {@link [Nebula Logger](https://github.com/jongpie/NebulaLogger)}. The README has an example.
+	 * @param level The logging level of the message.
+	 * @param message The message.
+	 * @example
+	 * // in the handler class
+	 * protected override void log(LoggingLevel level, String message) {
+	 *   // send the message to the logging framework here
+	 *   super.log(level, message);
+	 * }
+	 */
+	protected virtual void log(LoggingLevel level, String message) {
+		System.debug(level, message); // NOPMD
 	}
 
 	//triggerEvent methods
