@@ -989,49 +989,42 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void beforeInsert() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void beforeUpdate() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void beforeDelete() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void afterInsert() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void afterUpdate() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void afterDelete() {
 	}
 
 	/**
 	 * Virtual method for the implementing class to override.
 	 */
-	@TestVisible
 	protected virtual void afterUndelete() {
 	}
 
@@ -1046,7 +1039,6 @@ public inherited sharing abstract class TriggerHandler {
 	 * @author James Simone
 	 * @since 2022
 	 */
-	@TestVisible
 	protected virtual void andFinally() {
 	}
 
