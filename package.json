@@ -11,11 +11,11 @@
     "codeanalyzer:setup": "echo y | sf code-analyzer config --output-file code-analyzer.yml --config-file code-analyzer.yml --include-unmodified-rules --rule-selector '(pmd,cpd,sfge,regex):(Recommended,Custom)' && sh scripts/strip-config-paths.sh code-analyzer.yml && prettier --write code-analyzer.yml",
     "orginit": "bash scripts/orginit.sh",
     "prepare": "husky",
+    "prepareApexDox": "sh scripts/prepareApexDox.sh",
     "prettier": "prettier --write .",
     "prettier:docs": "prettier --ignore-path .gitignore --write \"docs/**/*.html\"",
     "prettier:verify": "prettier --check .",
-    "prune": "bash scripts/prune-branches.sh",
-    "updateHighlight": "sh scripts/updateHighlight.sh"
+    "prune": "bash scripts/prune-branches.sh"
   },
   "devDependencies": {
     "@x2od/prettier-config": "^0.7.0",

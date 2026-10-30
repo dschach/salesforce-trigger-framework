@@ -1,8 +1,9 @@
 #!/bin/sh
-# Refresh the highlight.js bundle and the HTML pages that the ApexDox site builds from
-# the README, the changelog, and the deploy instructions.
+# Prepare the input of the ApexDox site: refresh the highlight.js bundle, and build the
+# HTML pages that the site uses from the README, the changelog, the deploy instructions,
+# and the sample handler README.
 #
-# Run from the repository root: npm run updateHighlight
+# Run from the repository root: npm run prepareApexDox
 
 set -eu
 
@@ -35,3 +36,11 @@ printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/files
 echo >> "doc-assets/files/deploy.html"
 npx marked -i DEPLOY.md --gfm >> "doc-assets/files/deploy.html"
 replace_in_file 's|href="./|target="_blank" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/|g' "doc-assets/files/deploy.html"
+
+# Sample handler README to the page of the sample group, which the @group-content tag of
+# AccountSampleTriggerHandler names. The README links to the main README, which is the
+# site's index page.
+printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/files/sampletriggerhandlerhome.html"
+echo >> "doc-assets/files/sampletriggerhandlerhome.html"
+npx marked -i sample-handler/README.md --gfm >> "doc-assets/files/sampletriggerhandlerhome.html"
+replace_in_file 's|\.\./README\.md|index.html|g' "doc-assets/files/sampletriggerhandlerhome.html"
