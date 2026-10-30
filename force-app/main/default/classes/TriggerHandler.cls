@@ -62,7 +62,7 @@ public inherited sharing virtual class TriggerHandler {
 	private Boolean isTriggerExecuting;
 
 	/**
-	 * The name of this handler. Set by the Type constructor or the String constructor, or resolved by `getHandlerName()` the first time it is needed.
+	 * The name of this handler. Set by the Type constructor, or resolved by `getHandlerName()` the first time it is needed.
 	 */
 	private String handlerName;
 
@@ -162,27 +162,6 @@ public inherited sharing virtual class TriggerHandler {
 	protected TriggerHandler(Type handlerType) {
 		requireHandlerType(handlerType);
 		this.handlerName = handlerType.getName();
-		this.setTriggerContext();
-	}
-
-	/**
-	 * Constructor with handler name. Skips the runtime class name lookup.
-	 * @author {@link [David Schach](https://github.com/dschach)}
-	 * @since 2021
-	 * @param  handlerName The name of the handler. Pass the class name exactly as `Type.getName()` returns it, so that `bypass(Type)` matches. Spaces at the start and the end are removed.
-	 * @example
-	 * new AccountSampleTriggerHandler('AccountSampleTriggerHandler').run();
-	 * // in the trigger handler class
-	 * public AccountSampleTriggerHandler(String className) {
-	 *   super(className);
-	 *   this.newRecords = (List<Account>) Trigger.new;
-	 *   this.oldRecords = (List<Account>) Trigger.old;
-	 *   this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;
-	 *   this.oldRecordsMap = (Map<Id, Account>) Trigger.oldMap;
-	 * }
-	 */
-	public TriggerHandler(String handlerName) {
-		this.handlerName = handlerName?.trim();
 		this.setTriggerContext();
 	}
 
@@ -747,7 +726,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * The name of this handler: `Type.getName()` from the Type constructor, the name given to the String constructor, or the name resolved from the runtime class name.
+	 * The name of this handler: `Type.getName()` from the Type constructor, or the name resolved from the runtime class name.
 	 * <br>Available to subclasses, for example for a log line or a `bypass()` call.
 	 * <br>The runtime lookup reads the start of `toString()`, which gives only the short name of an inner class. A handler that is an inner class, or that overrides `toString()`, must pass its type to the Type constructor.
 	 *

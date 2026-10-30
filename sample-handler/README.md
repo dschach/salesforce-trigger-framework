@@ -16,7 +16,7 @@ This folder holds a sample trigger, trigger handler, and test for the [Salesforc
 ````
 
 - `main/default/classes/AccountSampleTriggerHandler.cls` extends `TriggerHandler` and shows these parts of the framework:
-- The constructor passes the class name to `super()`, casts the trigger collections that the handler uses, and sets a loop limit with `setMaxLoopCount()`. The limit is high enough that a bulk update does not reach it.
+- The constructor passes the class to `super()`, casts the trigger collections that the handler uses, and sets a loop limit with `setMaxLoopCount()`. The limit is high enough that a bulk update does not reach it.
 - Before insert, it removes extra spaces from each Account name. Before update, it does the same only for the names that changed, which it finds with the old records.
 - After update, it copies a changed phone number to the child Accounts. It bypasses itself with `TriggerHandler.bypass(AccountSampleTriggerHandler.class)` for that update, so the update does not run the handler again, and it clears the bypass in a `finally` block.
 - `andFinally()` runs after each of the 7 contexts, also the ones the handler does not override. The sample records the finished operation, which the test reads.
@@ -81,21 +81,12 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
   private Map<Id, Account> oldRecordsMap;
 
   /**
-   * Constructor for the trigger. It passes the class name, so the base class never resolves it at runtime.
-   * @see AccountSampleTriggerHandler.AccountSampleTriggerHandler[1]
+   * Constructor for the trigger. It passes the class to the base class, so the base class never resolves the name at runtime. It casts the trigger collections that the handler uses, and it sets the loop limit.
    * @example
    * new AccountSampleTriggerHandler().run();
    */
   public AccountSampleTriggerHandler() {
-    this(AccountSampleTriggerHandler.class.getName());
-  }
-
-  /**
-   * Constructor with the handler name. It casts the trigger collections that the handler uses, and it sets the loop limit.
-   * @param className The name of this class, exactly as `Type.getName()` returns it.
-   */
-  public AccountSampleTriggerHandler(String className) {
-    super(className);
+    super(AccountSampleTriggerHandler.class);
     this.newRecords = (List<Account>) Trigger.new;
     this.oldRecordsMap = (Map<Id, Account>) Trigger.oldMap;
     this.setMaxLoopCount(MAX_LOOP_COUNT);
