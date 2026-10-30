@@ -39,7 +39,8 @@ replace_in_file 's|href="./|target="_blank" href="https://github.com/dschach/sal
 
 # Sample handler README to the page of the sample group, which the @group-content tag of
 # AccountSampleTriggerHandler names. The README links to the main README, which is the
-# site's index page.
+# site's index page. First copy the current sample code into the README.
+node scripts/sync-sample-code.mjs
 printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/files/sampletriggerhandlerhome.html"
 echo >> "doc-assets/files/sampletriggerhandlerhome.html"
 npx marked -i sample-handler/README.md --gfm >> "doc-assets/files/sampletriggerhandlerhome.html"
