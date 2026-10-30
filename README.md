@@ -4,28 +4,31 @@
 
 # Salesforce Trigger Framework
 
-- [Salesforce Trigger Framework](#salesforce-trigger-framework)
-  - [Credit](#credit)
-  - [Documentation](#documentation)
-    - [Changelog](#changelog)
-  - [Overview](#overview)
-  - [Usage](#usage)
-    - [Trigger Handler](#trigger-handler)
-    - [Trigger](#trigger)
-    - [Data access](#data-access)
-  - [Cool Stuff](#cool-stuff)
-    - [Bypass API](#bypass-api)
-    - [Check Bypass Status](#check-bypass-status)
-    - [Global Bypass](#global-bypass)
-    - [Set Bypass](#set-bypass)
-    - [Max Loop Count](#max-loop-count)
-    - [Debug Statements](#debug-statements)
-    - [Send the Messages to Your Logging Framework](#send-the-messages-to-your-logging-framework)
-      - [Example: Nebula Logger](#example-nebula-logger)
-    - [Universal Action](#universal-action)
-  - [Test a Handler Without DML](#test-a-handler-without-dml)
-  - [Overridable Methods](#overridable-methods)
-  - [API Reference](#api-reference)
+<!-- toc -->
+
+- [Credit](#credit)
+- [Documentation](#documentation)
+  - [Changelog](#changelog)
+- [Overview](#overview)
+- [Usage](#usage)
+  - [Trigger Handler](#trigger-handler)
+  - [Trigger](#trigger)
+  - [Data access](#data-access)
+- [Cool Stuff](#cool-stuff)
+  - [Bypass API](#bypass-api)
+  - [Check Bypass Status](#check-bypass-status)
+  - [Global Bypass](#global-bypass)
+  - [Set Bypass](#set-bypass)
+  - [Max Loop Count](#max-loop-count)
+  - [Debug Statements](#debug-statements)
+  - [Send the Messages to Your Logging Framework](#send-the-messages-to-your-logging-framework)
+    - [Example: Nebula Logger](#example-nebula-logger)
+  - [Universal Action](#universal-action)
+- [Test a Handler Without DML](#test-a-handler-without-dml)
+- [Overridable Methods](#overridable-methods)
+- [API Reference](#api-reference)
+
+<!-- tocstop -->
 
 ## Credit
 
@@ -112,7 +115,7 @@ To use the trigger handler, you only need to construct an instance of your trigg
 This is the way to write a trigger that will run the trigger handler above. List all 7 contexts, even the ones the handler does not override yet. Then you write the trigger once and never edit it again: a new override in the handler runs without a change to the trigger. A context that the handler does not override costs little, because `run()` calls the empty base method and then `andFinally()`. Some objects do not support every context, for example an object that cannot be undeleted. For such an object, leave out the contexts that it does not support.
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().run();
 }
 ```
@@ -247,7 +250,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
 In version 1.2, the ability to chain methods was added. Now, you can set the max loop count in a single line in your trigger:
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().setMaxLoopCount(5).run();
 }
 ```
@@ -260,7 +263,7 @@ There are two methods that will show additional information.
 
 `TriggerHandler.showDebug()` will show trigger entry and exit in debug logs. Use sparingly, as it will decrease org performance.
 
-Both flags are static, so they apply to every handler that runs later in the transaction. To use one or both of these, either add them to the *trigger*
+Both flags are static, so they apply to every handler that runs later in the transaction. To use one or both of these, either add them to the _trigger_
 
 ```apex
 TriggerHandler.showLimits();
@@ -270,7 +273,7 @@ TriggerHandler.showLimits(false);
 TriggerHandler.showDebug(false);
 ```
 
-or put them in your Apex *trigger handler* code before and after DML statements.
+or put them in your Apex _trigger handler_ code before and after DML statements.
 
 ```apex
 TriggerHandler.showLimits();
@@ -282,10 +285,10 @@ TriggerHandler.showLimits(false);
 TriggerHandler.showDebug(false);
 ```
 
-In version 1.2, the ability to chain methods *in triggers* was added. Now, you can specify showing debug messages and limits in a single line in your trigger:
+In version 1.2, the ability to chain methods _in triggers_ was added. Now, you can specify showing debug messages and limits in a single line in your trigger:
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().debug().limits().run(); // debug() is the same as debug(true)
 }
 ```
@@ -293,7 +296,7 @@ trigger OpportunityTrigger on Opportunity (before insert, before update, before 
 Or stop showing them.
 
 ```apex
-trigger OpportunityTrigger on Opportunity (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
+trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().debug(false).limits(false).run();
 }
 ```
@@ -390,31 +393,31 @@ A handler can also call 3 protected methods: `getTriggerEvent()` returns the cur
 
 Every public member of `TriggerHandler`. The [class documentation](https://davidschach.com/salesforce-trigger-framework/TriggerHandler.html) has the full details and examples.
 
-| Member | What it does |
-| --- | --- |
-| `TriggerHandler()` | Constructor. The handler name is worked out from the running class when it is first needed. |
-| `TriggerHandler(String handlerName)` | Constructor with the handler name, which skips the runtime name lookup. |
-| `run()` | Called from the trigger. Runs the context method for the current operation, then `andFinally()`. |
-| `setMaxLoopCount(Integer max)` | Limits how many times this handler runs. 0 means the handler never runs, and a negative value removes the limit. Returns the handler, for chaining. |
-| `clearMaxLoopCount()` | Removes the limit on how many times this handler runs. |
-| `static getLoopCount(String handlerName)` | Returns the loop count of a handler, or 0 when no maximum was set for it. |
-| `static bypass(String handlerName)` | Bypasses a handler by name. The name matches regardless of case. |
-| `static bypass(Type handlerType)` | Bypasses a handler by type, for example `bypass(AccountTriggerHandler.class)`. |
-| `static bypass(List<String> handlerNames)` | Bypasses a list of handlers by name. |
-| `static bypassAll()` | Bypasses every handler, and clears the list of named bypasses. |
-| `static clearBypass(String handlerName)` | Clears the bypass of a handler by name. |
-| `static clearBypass(Type handlerType)` | Clears the bypass of a handler by type. |
-| `static clearBypass(List<String> handlerNames)` | Clears the bypass of a list of handlers by name. |
-| `static isBypassed(String handlerName)` | Returns `true` when the handler is bypassed by name or type, or when all handlers are bypassed. |
-| `static isBypassed(Type handlerType)` | The same check, by type. |
-| `static bypassList()` | Returns a sorted list of the bypassed handlers, with `BypassAll` when all handlers are bypassed. |
-| `static bypassSet()` | Returns a set of the bypassed handlers, with `BypassAll` when all handlers are bypassed. |
-| `static setBypass(String handlerName, Boolean desiredValue)` | Bypasses the handler for `true`. For `false`, clears its bypass and the global bypass. |
-| `static clearAllBypasses()` | Clears the global bypass and the list of named bypasses. |
-| `static clearGlobalBypass()` | Clears only the global bypass. |
-| `static clearBypassList()` | Clears only the list of named bypasses. |
-| `limits()`, `limits(Boolean enabled)` | Turns the limits debug output on, or on and off. Returns the handler, for chaining. |
-| `static showLimits()`, `static showLimits(Boolean enabled)` | The same, without chaining. |
-| `debug()`, `debug(Boolean enabled)` | Turns the entry and exit debug output on, or on and off. Returns the handler, for chaining. |
-| `static showDebug()`, `static showDebug(Boolean enabled)` | The same, without chaining. |
-| `TriggerHandler.TriggerHandlerException` | Thrown when `run()` is called outside a trigger, and when a bypass or loop count method gets a null or blank argument. |
+| Member                                                       | What it does                                                                                                                                        |
+| ------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `TriggerHandler()`                                           | Constructor. The handler name is worked out from the running class when it is first needed.                                                         |
+| `TriggerHandler(String handlerName)`                         | Constructor with the handler name, which skips the runtime name lookup.                                                                             |
+| `run()`                                                      | Called from the trigger. Runs the context method for the current operation, then `andFinally()`.                                                    |
+| `setMaxLoopCount(Integer max)`                               | Limits how many times this handler runs. 0 means the handler never runs, and a negative value removes the limit. Returns the handler, for chaining. |
+| `clearMaxLoopCount()`                                        | Removes the limit on how many times this handler runs.                                                                                              |
+| `static getLoopCount(String handlerName)`                    | Returns the loop count of a handler, or 0 when no maximum was set for it.                                                                           |
+| `static bypass(String handlerName)`                          | Bypasses a handler by name. The name matches regardless of case.                                                                                    |
+| `static bypass(Type handlerType)`                            | Bypasses a handler by type, for example `bypass(AccountTriggerHandler.class)`.                                                                      |
+| `static bypass(List<String> handlerNames)`                   | Bypasses a list of handlers by name.                                                                                                                |
+| `static bypassAll()`                                         | Bypasses every handler, and clears the list of named bypasses.                                                                                      |
+| `static clearBypass(String handlerName)`                     | Clears the bypass of a handler by name.                                                                                                             |
+| `static clearBypass(Type handlerType)`                       | Clears the bypass of a handler by type.                                                                                                             |
+| `static clearBypass(List<String> handlerNames)`              | Clears the bypass of a list of handlers by name.                                                                                                    |
+| `static isBypassed(String handlerName)`                      | Returns `true` when the handler is bypassed by name or type, or when all handlers are bypassed.                                                     |
+| `static isBypassed(Type handlerType)`                        | The same check, by type.                                                                                                                            |
+| `static bypassList()`                                        | Returns a sorted list of the bypassed handlers, with `BypassAll` when all handlers are bypassed.                                                    |
+| `static bypassSet()`                                         | Returns a set of the bypassed handlers, with `BypassAll` when all handlers are bypassed.                                                            |
+| `static setBypass(String handlerName, Boolean desiredValue)` | Bypasses the handler for `true`. For `false`, clears its bypass and the global bypass.                                                              |
+| `static clearAllBypasses()`                                  | Clears the global bypass and the list of named bypasses.                                                                                            |
+| `static clearGlobalBypass()`                                 | Clears only the global bypass.                                                                                                                      |
+| `static clearBypassList()`                                   | Clears only the list of named bypasses.                                                                                                             |
+| `limits()`, `limits(Boolean enabled)`                        | Turns the limits debug output on, or on and off. Returns the handler, for chaining.                                                                 |
+| `static showLimits()`, `static showLimits(Boolean enabled)`  | The same, without chaining.                                                                                                                         |
+| `debug()`, `debug(Boolean enabled)`                          | Turns the entry and exit debug output on, or on and off. Returns the handler, for chaining.                                                         |
+| `static showDebug()`, `static showDebug(Boolean enabled)`    | The same, without chaining.                                                                                                                         |
+| `TriggerHandler.TriggerHandlerException`                     | Thrown when `run()` is called outside a trigger, and when a bypass or loop count method gets a null or blank argument.                              |
