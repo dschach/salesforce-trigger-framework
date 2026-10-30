@@ -16,4 +16,11 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
+      # A release PR opened with the default GITHUB_TOKEN belongs to github-actions[bot],
+      # and GitHub holds its workflow runs until someone approves them. With this
+      # fine-grained token the release PR belongs to the token's owner, so its required
+      # checks run without approval. The token needs Contents, Pull requests, and Issues
+      # (read and write) on this repository, and it expires: renew it before then.
       - uses: googleapis/release-please-action@v5
+        with:
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
