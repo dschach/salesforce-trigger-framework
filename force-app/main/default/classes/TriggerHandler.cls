@@ -970,10 +970,10 @@ public inherited sharing abstract class TriggerHandler {
 	 * @since 2023-02-24
 	 * @example
 	 * // andFinally() runs after the before context and again after the after context.
-	 * // This work runs only once for each chunk of 200 records, in the after context.
+	 * // This example runs only once for each chunk of 200 records, after the after context.
 	 * public override void andFinally() {
 	 *   if (getTriggerEvent() == System.TriggerOperation.AFTER_UPDATE) {
-	 *     publishChangeEvent();
+	 *     EventBus.publish(new Account_Change__e(Record_Count__c = Trigger.size));
 	 *   }
 	 * }
 	 */

@@ -84,6 +84,14 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	 * Records the finished operation. A real handler puts work here that must follow each context, for example a rollup.
 	 * <br>`andFinally()` runs after each context. For an insert, an update, or a delete, it runs 2 times for each chunk of 200 records: after the before context and after the after context.
 	 * <br>Some work must run only once for each chunk, for example the publication of 1 platform event. Put that work in an `if` block that checks `getTriggerEvent()` for an after context.
+	 * @example
+	 * // andFinally() runs after the before context and again after the after context.
+	 * // This example runs only once for each chunk of 200 records, after the after context.
+	 * public override void andFinally() {
+	 *   if (getTriggerEvent() == System.TriggerOperation.AFTER_UPDATE) {
+	 *     EventBus.publish(new Account_Change__e(Record_Count__c = Trigger.size));
+	 *   }
+	 * }
 	 */
 	public override void andFinally() {
 		finishedOperations.add(getTriggerEvent());
