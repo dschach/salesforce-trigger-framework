@@ -29,7 +29,7 @@ private inherited sharing class TriggerHandlerTest {
 	private static System.TriggerOperation lastEventSeen;
 	private static String lastNameSeen;
 	/**
-	 * The name the fixture registers with the base class: the same string `Type.getName()` returns, so that `bypass(Type)` matches.
+	 * The name the fixture registers with the base class through the Type constructor: `Type.getName()` of the inner class, so that `bypass(Type)` matches.
 	 */
 	private static final String HANDLER_NAME = TriggerHandlerTest.TestHandler.class.getName();
 	/**
@@ -134,6 +134,28 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	// handler name
+
+	/**
+	 * The Type constructor registers `Type.getName()`, which for an inner class includes the outer class name.
+	 */
+	@IsTest
+	private static void typeConstructorSetsFullHandlerName() {
+		TriggerHandlerTest.TestHandler typed = new TriggerHandlerTest.TestHandler();
+		Assert.areEqual('TriggerHandlerTest.TestHandler', typed.getHandlerName(), 'the handler name should be Type.getName() of the inner class');
+	}
+
+	/**
+	 * The Type constructor rejects a null type.
+	 */
+	@IsTest
+	private static void typeConstructorRejectsNullType() {
+		try {
+			new TriggerHandlerTest.TestHandler((Type) null);
+			Assert.fail('a null type should throw TriggerHandlerException');
+		} catch (TriggerHandler.TriggerHandlerException e) {
+			Assert.areEqual(TriggerHandler.ERROR_HANDLER_TYPE, e.getMessage(), 'the exception should say that a handler type is required');
+		}
+	}
 
 	/**
 	 * The String constructor registers the name it is given.
@@ -707,10 +729,18 @@ private inherited sharing class TriggerHandlerTest {
 	 */
 	private class TestHandler extends TriggerHandler {
 		/**
-		 * Register the handler as `HANDLER_NAME`.
+		 * Register the handler with its type, so that its name is `HANDLER_NAME`.
 		 */
 		public TestHandler() {
-			super(HANDLER_NAME);
+			super(TriggerHandlerTest.TestHandler.class);
+		}
+
+		/**
+		 * Register the handler with the given type.
+		 * @param handlerType The handler type to register.
+		 */
+		public TestHandler(Type handlerType) {
+			super(handlerType);
 		}
 
 		/**

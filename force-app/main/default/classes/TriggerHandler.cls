@@ -62,7 +62,7 @@ public inherited sharing virtual class TriggerHandler {
 	private Boolean isTriggerExecuting;
 
 	/**
-	 * The name of this handler. Set by the String constructor, or resolved by `getHandlerName()` the first time it is needed.
+	 * The name of this handler. Set by the Type constructor or the String constructor, or resolved by `getHandlerName()` the first time it is needed.
 	 */
 	private String handlerName;
 
@@ -125,7 +125,8 @@ public inherited sharing virtual class TriggerHandler {
 
 	/**
 	 * Basic constructor. The handler name is resolved from the runtime class name the first time a bypass, a loop count, or a debug line needs it.
-	 * <br>That lookup serializes every field of the handler, so pass the name to the other constructor to avoid it.
+	 * <br>That lookup serializes every field of the handler, so pass the handler's type to the Type constructor to avoid it.
+	 * <br>The lookup gives only the short name of an inner class, which does not match `bypass(Type)`, so an inner-class handler must use the Type constructor.
 	 * @see TriggerHandler.TriggerHandler[1]
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
@@ -139,6 +140,28 @@ public inherited sharing virtual class TriggerHandler {
 	 * }
 	 */
 	public TriggerHandler() {
+		this.setTriggerContext();
+	}
+
+	/**
+	 * Constructor with the handler type. The handler name is `Type.getName()`, so it always matches `bypass(Type)`, also for an inner class, and no runtime lookup is needed.
+	 * @param  handlerType The class of the handler, written as `ClassName.class`.
+	 * @exception TriggerHandlerException when the type is null.
+	 * @throws TriggerHandlerException when the type is null.
+	 * @example
+	 * new AccountSampleTriggerHandler().run();
+	 * // in the trigger handler class
+	 * public AccountSampleTriggerHandler() {
+	 *   super(AccountSampleTriggerHandler.class);
+	 *   this.newRecords = (List<Account>) Trigger.new;
+	 *   this.oldRecords = (List<Account>) Trigger.old;
+	 *   this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;
+	 *   this.oldRecordsMap = (Map<Id, Account>) Trigger.oldMap;
+	 * }
+	 */
+	protected TriggerHandler(Type handlerType) {
+		requireHandlerType(handlerType);
+		this.handlerName = handlerType.getName();
 		this.setTriggerContext();
 	}
 
@@ -724,9 +747,9 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * The name of this handler, as given to the String constructor or resolved from the runtime class name.
+	 * The name of this handler: `Type.getName()` from the Type constructor, the name given to the String constructor, or the name resolved from the runtime class name.
 	 * <br>Available to subclasses, for example for a log line or a `bypass()` call.
-	 * <br>The runtime lookup reads the start of `toString()`. A handler that overrides `toString()` must pass its name to the String constructor.
+	 * <br>The runtime lookup reads the start of `toString()`, which gives only the short name of an inner class. A handler that is an inner class, or that overrides `toString()`, must pass its type to the Type constructor.
 	 *
 	 * @return      `String` Name of the current handler.
 	 * @see         TriggerHandler.handlerName
