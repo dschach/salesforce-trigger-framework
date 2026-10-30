@@ -12,9 +12,9 @@
  */
 public inherited sharing class AccountSampleTriggerHandler extends TriggerHandler {
 	/**
-	 * The maximum number of runs of this handler in 1 transaction. Each trigger context and each chunk of 200 records uses 1 run, so 100 allows an update of 10,000 records, which runs before update and after update 50 times each.
+	 * The maximum number of runs of each trigger operation of this handler in 1 transaction. Each chunk of 200 records uses 1 run of its operation, so 50 allows an update of 10,000 records, which runs before update and after update 50 times each.
 	 */
-	private static final Integer MAX_LOOP_COUNT = 100;
+	private static final Integer MAX_LOOP_COUNT = 50;
 
 	/**
 	 * The trigger operations this handler finished in the transaction, in order. `andFinally()` adds each one.
