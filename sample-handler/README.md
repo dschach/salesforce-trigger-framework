@@ -126,7 +126,8 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 
   /**
    * Records the finished operation. A real handler puts work here that must follow each context, for example a rollup.
-   * <br>`andFinally()` runs after each context and each chunk of 200 records. For work that must happen only once for a DML statement, such as 1 platform event, check `getTriggerEvent()` first.
+   * <br>`andFinally()` runs after each context. For an insert, an update, or a delete, it runs 2 times for each chunk of 200 records: after the before context and after the after context.
+   * <br>Some work must run only once for each chunk, for example the publication of 1 platform event. Put that work in an `if` block that checks `getTriggerEvent()` for an after context.
    */
   public override void andFinally() {
     finishedOperations.add(getTriggerEvent());

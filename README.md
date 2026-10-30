@@ -300,7 +300,7 @@ To limit recursion, set a maximum loop count for a handler. Each trigger operati
 
 A DML statement on more than 200 records runs the trigger once for each chunk of 200 records. Each chunk uses 1 run of its operation. A bypassed run does not count. A run that the limit stops counts. When the count of an operation passes its maximum, `run()` sends a warning to `log()` and returns. By default, `log()` writes it to the debug log. It does not call the context method or `andFinally()`.
 
-This handler runs its update logic once for an update of up to 200 records. The update in `afterUpdate()` fires the trigger again, and the handler skips those runs.
+This handler runs its update logic once for an update of up to 200 records. The update in `afterUpdate()` fires the trigger again, and the loop limit stops those runs.
 
 ```apex
 public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
