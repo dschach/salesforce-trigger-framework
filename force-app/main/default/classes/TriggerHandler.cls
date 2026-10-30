@@ -11,7 +11,7 @@
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
  * @see TriggerHandlerTest
  */
-@SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.FieldDeclarationsShouldBeAtStart, PMD.EmptyStatementBlock')
+@SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.FieldDeclarationsShouldBeAtStart, PMD.EmptyStatementBlock')
 public inherited sharing virtual class TriggerHandler {
 	/**
 	 * Loop counter per handler name. A handler has an entry only after `setMaxLoopCount()` was called for it, so `getLoopCount()` is 0 for a handler with no limit.
@@ -67,6 +67,11 @@ public inherited sharing virtual class TriggerHandler {
 	@TestVisible
 	private static final String BYPASS_ALL_ALIAS = 'BypassAll';
 
+	/**
+	 * The maximum loop count of a `LoopCount` created with no maximum. `setMaxLoopCount()` always gives its own maximum.
+	 */
+	private static final Integer DEFAULT_MAX_LOOP_COUNT = 5;
+
 	// static initialization variables
 	static {
 		loopCountMap = new Map<String, LoopCount>();
@@ -120,11 +125,13 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * @description Main method, called from the trigger. It dispatches to the context method and then to `andFinally()`.
 	 * <br>See the sample trigger for the best way to set up your handler.
+	 * <br>The switch names all 7 trigger operations, and `validateRun()` rejects a null operation, so `SwitchWithoutWhenElse` is suppressed for this method.
 	 * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
 	 */
+	@SuppressWarnings('PMD.SwitchWithoutWhenElse')
 	public void run() {
 		if (!validateRun()) {
 			return;
@@ -797,7 +804,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @description Inner class that keeps the loop count of 1 handler.
 	 */
 	@TestVisible
-	private class LoopCount {
+	private inherited sharing class LoopCount {
 		/**
 		 * Maximum number of times this handler should be run.
 		 */
@@ -808,10 +815,10 @@ public inherited sharing virtual class TriggerHandler {
 		private Integer count;
 
 		/**
-		 * Standard constructor. The max is 5 and the count is 0.
+		 * Standard constructor. The max is `DEFAULT_MAX_LOOP_COUNT`, 5, and the count is 0.
 		 */
 		public LoopCount() {
-			this.max = 5;
+			this.max = DEFAULT_MAX_LOOP_COUNT;
 			this.count = 0;
 		}
 
