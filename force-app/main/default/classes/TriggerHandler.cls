@@ -125,11 +125,13 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * @description Main method, called from the trigger. It dispatches to the context method and then to `andFinally()`.
 	 * <br>See the sample trigger for the best way to set up your handler.
+	 * <br>The switch names all 7 trigger operations, and `validateRun()` rejects a null operation, so `SwitchWithoutWhenElse` is suppressed for this method.
 	 * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @example
 	 * new AccountSampleTriggerHandler().run();
 	 */
+	@SuppressWarnings('PMD.SwitchWithoutWhenElse')
 	public void run() {
 		if (!validateRun()) {
 			return;
@@ -166,9 +168,6 @@ public inherited sharing virtual class TriggerHandler {
 			}
 			when AFTER_UNDELETE {
 				this.afterUndelete();
-			}
-			when else {
-				// No other value exists: the 7 operations above are every System.TriggerOperation, and validateRun() rejects a null operation.
 			}
 		}
 		this.andFinally();
