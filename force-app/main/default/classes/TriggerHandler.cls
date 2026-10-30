@@ -873,24 +873,13 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Set the current context from `Trigger.operationType`. Called by both constructors.
-	 */
-	@TestVisible
-	private void setTriggerContext() {
-		setTriggerContext(Trigger.operationType, false);
-	}
-
-	/**
-	 * Set the current trigger context from a `System.TriggerOperation`.
-	 * <br>Outside a trigger, and in a test that does not force a context, `isTriggerExecuting` is false.
-	 *
-	 * @param opType   The operation type, which the platform sets.
-	 * @param testMode Only used in test methods to force a context.
+	 * <br>Outside a trigger, `isTriggerExecuting` is false. A test sets its own context with `setTestContext()`.
 	 * @see TriggerHandler.isTriggerExecuting
 	 */
 	@TestVisible
-	private void setTriggerContext(System.TriggerOperation opType, Boolean testMode) {
-		isTriggerExecuting = (Trigger.isExecuting || testMode == true) && opType != null;
-		triggerEvent = opType;
+	private void setTriggerContext() {
+		triggerEvent = Trigger.operationType;
+		isTriggerExecuting = Trigger.isExecuting && triggerEvent != null;
 	}
 
 	/**
@@ -962,6 +951,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * Make this handler run as if a trigger fired the given operation, so that a test can call `run()` without DML.
 	 * <br>Set the records that the handler reads before you call `run()`, for example through `@TestVisible` fields of the handler.
 	 * <br>Outside a test it changes nothing: the handler keeps the context of the real trigger.
+	 * <br>A null operation clears the context, so that `run()` throws as it does outside a trigger.
 	 * @param operation The trigger operation to simulate.
 	 * @return `TriggerHandler` This instance, which enables method chaining.
 	 * @example
@@ -971,8 +961,10 @@ public inherited sharing abstract class TriggerHandler {
 	 */
 	@TestVisible
 	protected TriggerHandler setTestContext(System.TriggerOperation operation) {
-		Boolean inTest = Test.isRunningTest();
-		setTriggerContext(inTest ? operation : Trigger.operationType, inTest);
+		if (Test.isRunningTest()) {
+			triggerEvent = operation;
+			isTriggerExecuting = operation != null;
+		}
 		return this;
 	}
 

@@ -92,7 +92,7 @@ private inherited sharing class TriggerHandlerTest {
 		TriggerHandlerTest.UntypedHandler baseHandler = new TriggerHandlerTest.UntypedHandler();
 		baseHandler.setMaxLoopCount(10);
 		for (System.TriggerOperation operation : System.TriggerOperation.values()) {
-			baseHandler.setTriggerContext(operation, true);
+			baseHandler.setTestContext(operation);
 			baseHandler.run();
 		}
 		for (System.TriggerOperation operation : System.TriggerOperation.values()) {
@@ -125,7 +125,7 @@ private inherited sharing class TriggerHandlerTest {
 	@IsTest
 	private static void nullOperationClearsTriggerContext() {
 		TriggerHandlerTest.UntypedHandler baseHandler = new TriggerHandlerTest.UntypedHandler();
-		baseHandler.setTriggerContext(null, true);
+		baseHandler.setTestContext(null);
 		Assert.isFalse(baseHandler.isTriggerExecuting, 'a null operation should leave the handler outside a trigger');
 		Assert.isNull(baseHandler.triggerEvent, 'a null operation should clear the trigger event');
 		try {
