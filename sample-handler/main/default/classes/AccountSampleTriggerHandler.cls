@@ -50,7 +50,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	 * Remove extra spaces from the name of each new Account.
 	 */
 	public override void beforeInsert() {
-		normalizeNames(this.newRecords);
+		normalizeNames(newRecords);
 	}
 
 	/**
@@ -58,8 +58,8 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	 */
 	public override void beforeUpdate() {
 		List<Account> renamedAccounts = new List<Account>();
-		for (Account updatedAccount : this.newRecords) {
-			if (updatedAccount.Name != this.oldRecordsMap.get(updatedAccount.Id).Name) {
+		for (Account updatedAccount : newRecords) {
+			if (updatedAccount.Name != oldRecordsMap.get(updatedAccount.Id).Name) {
 				renamedAccounts.add(updatedAccount);
 			}
 		}
@@ -71,8 +71,8 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	 */
 	public override void afterUpdate() {
 		Map<Id, String> phoneByParentId = new Map<Id, String>();
-		for (Account updatedAccount : this.newRecords) {
-			if (updatedAccount.Phone != this.oldRecordsMap.get(updatedAccount.Id).Phone) {
+		for (Account updatedAccount : newRecords) {
+			if (updatedAccount.Phone != oldRecordsMap.get(updatedAccount.Id).Phone) {
 				phoneByParentId.put(updatedAccount.Id, updatedAccount.Phone);
 			}
 		}
@@ -86,7 +86,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 	 * Record the finished operation. A real handler puts work here that must follow every context, such as a rollup or 1 platform event for the whole trigger.
 	 */
 	public override void andFinally() {
-		finishedOperations.add(this.getTriggerEvent());
+		finishedOperations.add(getTriggerEvent());
 	}
 
 	/**
@@ -110,7 +110,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 		Set<Id> parentIds = phoneByParentId.keySet();
 		List<Account> childAccounts = new List<Account>();
 		for (Account childAccount : [SELECT Id, ParentId FROM Account WHERE ParentId IN :parentIds WITH SYSTEM_MODE]) {
-			if (!this.oldRecordsMap.containsKey(childAccount.Id)) {
+			if (!oldRecordsMap.containsKey(childAccount.Id)) {
 				childAccount.Phone = phoneByParentId.get(childAccount.ParentId);
 				childAccounts.add(childAccount);
 			}

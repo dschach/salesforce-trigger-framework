@@ -184,42 +184,42 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		if (showDebug) {
-			this.log(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent.name() }));
+			log(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), triggerEvent.name() }));
 		}
 
 		// dispatch to the correct handler method
-		switch on this.triggerEvent {
+		switch on triggerEvent {
 			when BEFORE_INSERT {
-				this.beforeInsert();
+				beforeInsert();
 			}
 			when BEFORE_UPDATE {
-				this.beforeUpdate();
+				beforeUpdate();
 			}
 			when BEFORE_DELETE {
-				this.beforeDelete();
+				beforeDelete();
 			}
 			when AFTER_INSERT {
-				this.afterInsert();
+				afterInsert();
 			}
 			when AFTER_UPDATE {
-				this.afterUpdate();
+				afterUpdate();
 			}
 			when AFTER_DELETE {
-				this.afterDelete();
+				afterDelete();
 			}
 			when AFTER_UNDELETE {
-				this.afterUndelete();
+				afterUndelete();
 			}
 		}
-		this.andFinally();
+		andFinally();
 
 		if (showLimits) {
-			this.log(
+			log(
 				LoggingLevel.DEBUG,
 				String.format(
 					'{0} on {1} ({2}/{3} queries) and ({4}/{5} DML calls)',
 					new List<String>{
-						this.triggerEvent.name(),
+						triggerEvent.name(),
 						getHandlerName(),
 						Limits.getQueries() + '',
 						Limits.getLimitQueries() + '',
@@ -230,7 +230,7 @@ public inherited sharing virtual class TriggerHandler {
 			);
 		}
 		if (showDebug) {
-			this.log(LoggingLevel.DEBUG, String.format('Exiting {0}, fired {1}', new List<String>{ getHandlerName(), this.triggerEvent.name() }));
+			log(LoggingLevel.DEBUG, String.format('Exiting {0}, fired {1}', new List<String>{ getHandlerName(), triggerEvent.name() }));
 		}
 	}
 
@@ -266,10 +266,10 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * Remove the limit on the number of times this handler can run.
 	 * @example
-	 * this.clearMaxLoopCount(); // in the handler
+	 * clearMaxLoopCount(); // in the handler
 	 */
 	public void clearMaxLoopCount() {
-		this.setMaxLoopCount(NO_LOOP_LIMIT);
+		setMaxLoopCount(NO_LOOP_LIMIT);
 	}
 
 	/**
@@ -658,7 +658,7 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	@TestVisible
 	private void setTriggerContext() {
-		this.setTriggerContext(Trigger.operationType, false);
+		setTriggerContext(Trigger.operationType, false);
 	}
 
 	/**
@@ -671,8 +671,8 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	@TestVisible
 	private void setTriggerContext(System.TriggerOperation opType, Boolean testMode) {
-		this.isTriggerExecuting = (Trigger.isExecuting || testMode == true) && opType != null;
-		this.triggerEvent = opType;
+		isTriggerExecuting = (Trigger.isExecuting || testMode == true) && opType != null;
+		triggerEvent = opType;
 	}
 
 	/**
@@ -691,7 +691,7 @@ public inherited sharing virtual class TriggerHandler {
 		if (counter == null || !counter.increment()) {
 			return true;
 		}
-		this.log(LoggingLevel.WARN, 'Maximum loop count of ' + counter.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + this.triggerEvent.name());
+		log(LoggingLevel.WARN, 'Maximum loop count of ' + counter.getMax() + ' exceeded in ' + getHandlerName() + ', so run() skipped ' + triggerEvent.name());
 		return false;
 	}
 
@@ -706,7 +706,7 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	@TestVisible
 	private Boolean validateRun() {
-		if (!this.isTriggerExecuting || this.triggerEvent == null) {
+		if (!isTriggerExecuting || triggerEvent == null) {
 			throw new TriggerHandlerException(ERROR_TRIGGERCONTEXT);
 		}
 		if (globalBypass) {
@@ -720,7 +720,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * @return `System.TriggerOperation` The current operation, or null outside a trigger.
 	 */
 	protected System.TriggerOperation getTriggerEvent() {
-		return this.triggerEvent;
+		return triggerEvent;
 	}
 
 	/**
@@ -733,10 +733,10 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	@TestVisible
 	protected String getHandlerName() {
-		if (String.isBlank(this.handlerName)) {
-			this.handlerName = this.toString().substringBefore(CLASS_NAME_END);
+		if (String.isBlank(handlerName)) {
+			handlerName = toString().substringBefore(CLASS_NAME_END);
 		}
-		return this.handlerName;
+		return handlerName;
 	}
 
 	/**
@@ -753,7 +753,7 @@ public inherited sharing virtual class TriggerHandler {
 	@TestVisible
 	protected TriggerHandler setTestContext(System.TriggerOperation operation) {
 		Boolean inTest = Test.isRunningTest();
-		this.setTriggerContext(inTest ? operation : Trigger.operationType, inTest);
+		setTriggerContext(inTest ? operation : Trigger.operationType, inTest);
 		return this;
 	}
 
@@ -874,8 +874,8 @@ public inherited sharing virtual class TriggerHandler {
 		 * @return     `Boolean` true when the new count is greater than a max of 0 or more. A negative max never exceeds.
 		 */
 		public Boolean increment() {
-			this.loopCount++;
-			return this.exceeded();
+			loopCount++;
+			return exceeded();
 		}
 
 		/**
@@ -883,7 +883,7 @@ public inherited sharing virtual class TriggerHandler {
 		 * @return     `Boolean` true when max is 0 or more and count is greater than max. A negative max means no limit.
 		 */
 		public Boolean exceeded() {
-			return this.max >= 0 && this.loopCount > this.max;
+			return max >= 0 && loopCount > max;
 		}
 
 		/**
@@ -891,7 +891,7 @@ public inherited sharing virtual class TriggerHandler {
 		 * @return     `Integer` Max loop count.
 		 */
 		public Integer getMax() {
-			return this.max;
+			return max;
 		}
 
 		/**
@@ -899,7 +899,7 @@ public inherited sharing virtual class TriggerHandler {
 		 * @return     `Integer` Current loop count.
 		 */
 		public Integer getCount() {
-			return this.loopCount;
+			return loopCount;
 		}
 
 		/**
