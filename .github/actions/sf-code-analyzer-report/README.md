@@ -6,24 +6,24 @@ The action never fails the job because of a violation. The caller's next step re
 
 ## Inputs
 
-| Input             | Required | Default | Description                                                                                                                                                                                                                       |
-| ----------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `results-path`    | Yes      |         | Path to the Salesforce Code Analyzer results JSON file, for example `sfca_results.json`. The action fails if the file does not exist.                                                                                            |
+| Input             | Required | Default | Description                                                                                                                                                                                                                             |
+| ----------------- | -------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `results-path`    | Yes      |         | Path to the Salesforce Code Analyzer results JSON file, for example `sfca_results.json`. The action fails if the file does not exist.                                                                                                   |
 | `severity-cutoff` | No       |         | Violations with a severity at or below this value go in the first (high-priority) table. The remaining severities go in the second table. When it is empty, null, or 5, every violation goes in one table and there is no second table. |
-| `write-summary`   | No       | `true`  | `true` writes the counts and the tables to the job summary. `false` writes nothing there and gives the tables as outputs only, for a caller that writes its own summary.                                                         |
+| `write-summary`   | No       | `true`  | `true` writes the counts and the tables to the job summary. `false` writes nothing there and gives the tables as outputs only, for a caller that writes its own summary.                                                                |
 
 ## Outputs
 
-| Output                   | Description                                                                                           |
-| ------------------------ | ----------------------------------------------------------------------------------------------------- |
-| `total-violations`       | Total number of violations found                                                                      |
-| `sev1-count`             | Number of severity 1 violations                                                                       |
-| `sev2-count`             | Number of severity 2 violations                                                                       |
-| `sev3-count`             | Number of severity 3 violations                                                                       |
-| `sev4-count`             | Number of severity 4 violations                                                                       |
-| `sev5-count`             | Number of severity 5 violations                                                                       |
-| `high-priority-markdown` | Markdown table from severity 1 to the cutoff, or every violation when there is no cutoff              |
-| `low-priority-markdown`  | Markdown table from the cutoff plus 1 to severity 5, empty when there is no cutoff                    |
+| Output                   | Description                                                                              |
+| ------------------------ | ---------------------------------------------------------------------------------------- |
+| `total-violations`       | Total number of violations found                                                         |
+| `sev1-count`             | Number of severity 1 violations                                                          |
+| `sev2-count`             | Number of severity 2 violations                                                          |
+| `sev3-count`             | Number of severity 3 violations                                                          |
+| `sev4-count`             | Number of severity 4 violations                                                          |
+| `sev5-count`             | Number of severity 5 violations                                                          |
+| `high-priority-markdown` | Markdown table from severity 1 to the cutoff, or every violation when there is no cutoff |
+| `low-priority-markdown`  | Markdown table from the cutoff plus 1 to severity 5, empty when there is no cutoff       |
 
 Each table has the columns File, Line, Rule, Description, Severity, and Engine. A File cell links to the file at the commit that ran, on the line of the violation, and opens in a new tab. A table with no violations shows a line that says so.
 

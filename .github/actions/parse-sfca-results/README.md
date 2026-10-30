@@ -6,20 +6,20 @@ CI in this repository does not call this action. It calls [`sf-code-analyzer-rep
 
 ## Inputs
 
-| Input          | Default            | Description                                         |
-| -------------- | ------------------ | --------------------------------------------------- |
+| Input          | Default             | Description                                           |
+| -------------- | ------------------- | ----------------------------------------------------- |
 | `results-file` | `sfca_results.json` | Path to the JSON report that the Code Analyzer wrote. |
 
 ## Outputs
 
-| Output      | Description                                       |
-| ----------- | ------------------------------------------------- |
-| `priority1` | Violations whose rule has priority 1 in the ruleset |
-| `priority2` | Violations whose rule has priority 2              |
-| `priority3` | Violations whose rule has priority 3              |
-| `priority4` | Violations whose rule has priority 4              |
-| `priority5` | Violations whose rule has priority 5              |
-| `total`     | All violations in the report                      |
+| Output             | Description                                                                                                     |
+| ------------------ | --------------------------------------------------------------------------------------------------------------- |
+| `priority1`        | Violations whose rule has priority 1 in the ruleset                                                             |
+| `priority2`        | Violations whose rule has priority 2                                                                            |
+| `priority3`        | Violations whose rule has priority 3                                                                            |
+| `priority4`        | Violations whose rule has priority 4                                                                            |
+| `priority5`        | Violations whose rule has priority 5                                                                            |
+| `total`            | All violations in the report                                                                                    |
 | `violations-table` | Markdown table of the violations with file, line, rule, severity, and message, ordered by file and then by line |
 
 A missing report counts as 0 violations.

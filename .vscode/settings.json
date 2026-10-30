@@ -13,7 +13,7 @@
   ],
   "force.showApexJavadocTrailingCloseComment": false,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "xml.preferences.showSchemaDocumentationType": "all",
   "codeAnalyzer.includeFixes": true,
   "codeAnalyzer.ruleSelectors": "(pmd,cpd,sfge,regex):(Recommended,Custom)",

@@ -1,619 +1,3412 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <title>Salesforce Trigger Handler code documentation</title>
-    <meta charset="UTF-8" />
-    <script type="module" src="./assets/index.js"></script>
-    <script type="module" src="./assets/search-idx.js"></script>
-    <script type="module" src="./assets/search.js"></script>
-    <script charset="UTF-8" src="./assets/highlight.js"></script>
-    <script charset="UTF-8" src="./assets/mark.js"></script>
-    <script charset="UTF-8" src="./assets/lunr.js"></script>
-    <link rel="stylesheet" href="./assets/highlight.css" />
-    <link rel="stylesheet" type="text/css" href="./assets/index.css" />
-    <link rel="shortcut icon" type="image/png" href="./assets/favicon.png" />
-  </head>
+	<head>
+		<title>Salesforce Trigger Handler code documentation</title>
+		<meta charset="UTF-8" />
+		<script src="./assets/index.js" type="module"></script>
+		<script src="./assets/search-idx.js" type="module"></script>
+		<script src="./assets/search.js" type="module"></script>
+		<script src="./assets/highlight.js" charset="UTF-8"></script>
+		<script src="./assets/mark.js" charset="UTF-8"></script>
+		<script src="./assets/lunr.js" charset="UTF-8"></script>
+		<link href="./assets/highlight.css" rel="stylesheet" />
+		<link type="text/css" href="./assets/index.css" rel="stylesheet" />
+		<link type="image/png" href="./assets/favicon.png" rel="shortcut icon" />
+	</head>
 
-  <body>
-    <div id="side-bar">
-      <div id="logo-container">
-        <div class="title">Salesforce Trigger Handler code documentation</div>
-        <img src="assets/logo.png" />
-        <div class="subtitle">
-          Documentation for <a target="_blank" rel="noopener noreferrer" href="https://github.com/dschach/salesforce-trigger-framework">Trigger Framework</a>
-        </div>
-      </div>
-      <div id="search-wrapper">
-        <div class="search-icon"></div>
-        <input id="search-input" type="text" autocomplete="off" placeholder="Search..." />
-      </div>
-      <ul id="search-results" class=""></ul>
-      <div class="navbar">
-        <nav role="navigation">
-          <a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html');"> Home </a>
-          <details id="SampleTriggerHandler" class="group-name">
-            <summary id="header-SampleTriggerHandler" class="nav-header">
-              <a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('sampletriggerhandlerhome.html');">SampleTriggerHandler</a>
-            </summary>
-            <ul>
-              <!-- menu items -->
-              <li
-                title="AccountSampleTriggerHandler"
-                id="item-AccountSampleTriggerHandler"
-                class="nav-item class public"
-                onclick="goToLocation('AccountSampleTriggerHandler.html');">
-                <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandler</a>
-              </li>
-              <li
-                title="AccountSampleTriggerHandlerTest"
-                id="item-AccountSampleTriggerHandlerTest"
-                class="nav-item class private"
-                onclick="goToLocation('AccountSampleTriggerHandlerTest.html');">
-                <a tabindex="1" href="javascript:void(0)">AccountSampleTriggerHandlerTest</a>
-              </li>
-            </ul>
-          </details>
-          <details id="Trigger_Handler" class="group-name">
-            <summary id="header-Trigger_Handler" class="nav-header">
-              <span>Trigger Handler</span>
-            </summary>
-            <ul>
-              <!-- menu items -->
-              <li title="TriggerHandler" id="item-TriggerHandler" class="nav-item class public" onclick="goToLocation('TriggerHandler.html');">
-                <a tabindex="1" href="javascript:void(0)">TriggerHandler</a>
-              </li>
-              <li title="TriggerHandlerTest" id="item-TriggerHandlerTest" class="nav-item class private" onclick="goToLocation('TriggerHandlerTest.html');">
-                <a tabindex="1" href="javascript:void(0)">TriggerHandlerTest</a>
-              </li>
-            </ul>
-          </details>
-        </nav>
-      </div>
-    </div>
-    <table id="content">
-      <tr>
-        <td class="scoping-panel">
-          Show: <input type="checkbox" checked="true" id="cbx-all" onclick="toggleAllScopes(this.checked);" /> <label for="cbx-all">All</label>&nbsp;&nbsp;
-          <input type="checkbox" checked="true" id="cbx-public" onclick="toggleScope('public', this.checked);" />
-          <label for="cbx-public"> public </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-private" onclick="toggleScope('private', this.checked);" />
-          <label for="cbx-private"> private </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-protected" onclick="toggleScope('protected', this.checked);" />
-          <label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input type="checkbox" checked="true" id="cbx-testmethod" onclick="toggleScope('testmethod', this.checked);" />
-          <label for="cbx-testmethod"> testMethod </label>
-        </td>
-      </tr>
-      <tr>
-        <td class="doc-page">
-          <link href="assets/styling.css" rel="stylesheet" />
-          <h1>Changelog</h1>
-          <h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.1.0...v1.1.1">1.1.1</a> (2023-09-21)</h2>
-          <h3>Bug Fixes</h3>
-          <ul>
-            <li>
-              <strong>docs:</strong> Fix link to andFinally reference (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/2c055b0605320c89e7e371dbe8c3bcc4894dd769"
-                >2c055b0</a
-              >)
-            </li>
-            <li>
-              <strong>pmd:</strong> Update PMD run to v7 syntax (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/dee76611729a35a903e3d545cd06f98413c2d649"
-                >dee7661</a
-              >)
-            </li>
-          </ul>
-          <h3>Performance Improvements</h3>
-          <ul>
-            <li>
-              Get handler name faster (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/105">#105</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/2954f3335f402befccb930ab318ca08407269562"
-                >2954f33</a
-              >)
-            </li>
-          </ul>
-          <h3>Documentation</h3>
-          <ul>
-            <li>Sample handler docs cleanup (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/af0292e704da7bcc0fab60e4651a983961dfe85a">af0292e</a>)</li>
-          </ul>
-          <h3>Build System</h3>
-          <ul>
-            <li>
-              <strong>deps-dev:</strong> Bump @prettier/plugin-xml from 2.2.0 to 3.1.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/81">#81</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/56be29f3124e4ded24f68df879c5be7a4e4df3f0"
-                >56be29f</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump @prettier/plugin-xml from 3.1.0 to 3.1.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/82">#82</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/d8d052ee8591ef29f88feca8604d4335df287713"
-                >d8d052e</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump @prettier/plugin-xml from 3.1.1 to 3.2.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/88">#88</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/f91b6be642dfa5c707c1db3e39774190ed03d22e"
-                >f91b6be</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump @prettier/plugin-xml from 3.2.0 to 3.2.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/102">#102</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/50f9740c868ef80ff1b2b4f57452da95064584e1"
-                >50f9740</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump lint-staged from 13.1.2 to 13.2.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/57">#57</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/27b52a5feb5e4d534e5c3ebbbc8c575c329f6bf9"
-                >27b52a5</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump lint-staged from 13.2.0 to 13.2.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/63">#63</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/f47f458674636ee4a3fb5e567b7d58e8a33d4d4b"
-                >f47f458</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump lint-staged from 13.2.1 to 13.2.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/67">#67</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/9035084aeb1880e5932d1690dadedeb6a50a1f6a"
-                >9035084</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump lint-staged from 13.2.2 to 13.2.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/77">#77</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/236af4dc9cd192f9280e29b5d289861d97c15c24"
-                >236af4d</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump lint-staged from 13.2.3 to 14.0.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/91">#91</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/bf85a7688bd58bff1d68ac58d79180b99b6653bc"
-                >bf85a76</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump lint-staged from 14.0.0 to 14.0.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/95">#95</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/c560abdb15cd402dca4f9508e5f83ba931f0e774"
-                >c560abd</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 4.2.12 to 4.3.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/60">#60</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/2269ea33b1824a1204feda6f6cb3d33b1f7ed350"
-                >2269ea3</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 4.3.0 to 5.0.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/70">#70</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/9bb44fc9591124a1737115f77490f86d5baf8cd1"
-                >9bb44fc</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 5.0.2 to 5.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/71">#71</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/f2449416138183f0ddf4d152e996dfc1fd60c8a5"
-                >f244941</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 5.0.3 to 5.0.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/72">#72</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/a54039247f2f9dadcf32bbf51cdbc3f342a6ffe9"
-                >a540392</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 5.0.4 to 5.0.5 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/75">#75</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/8bccc6bd67a7b5a8a7e5ce8c7e8d85567a537202"
-                >8bccc6b</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 5.0.5 to 5.1.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/76">#76</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/7085fc799667780a6d5421a0cf6bbe3882d7e565"
-                >7085fc7</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 5.1.0 to 5.1.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/80">#80</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/bc2ae45a904c2d63f45dc4693fc06712325485ad"
-                >bc2ae45</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 5.1.1 to 5.1.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/83">#83</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/dbb73bd6ec440530c40d480091f52cd5689b07e9"
-                >dbb73bd</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 5.1.2 to 7.0.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/89">#89</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/218b1ecbd0e9d3bc1a506a9e8def74648b10ae52"
-                >218b1ec</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 7.0.2 to 7.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/92">#92</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/f0d2089e598c19db8e1e809d66767999aa530df9"
-                >f0d2089</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 7.0.3 to 7.0.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/94">#94</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/951b4ed5ae00e333dfa5451b2fff715f4cb89a2c"
-                >951b4ed</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 7.0.4 to 7.0.5 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/96">#96</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/c9523eb2d72a9c0da53da09617ec2df16cba98c9"
-                >c9523eb</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 7.0.5 to 8.0.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/98">#98</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/53b4352aebcdf270fba2ce3b1aea555b83007cd9"
-                >53b4352</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 8.0.0 to 8.0.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/100">#100</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/0b5665705984aa909af87b8a53ce896ed4e7439d"
-                >0b56657</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 8.0.1 to 9.0.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/101">#101</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/c5b158dce06a9cd93a4f37361672fcd993c1b0d3"
-                >c5b158d</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 9.0.0 to 9.0.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/103">#103</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/4686d7078e02fdbbef70e03a9aa89691b069daeb"
-                >4686d70</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump marked from 9.0.2 to 9.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/104">#104</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/b851d16f7b89165bb3d04717369622a22dd93500"
-                >b851d16</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump prettier and prettier-plugin-apex (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/78">#78</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/cecc98bdc368b4edb0082fcd59d6cc7d54735d33"
-                >cecc98b</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump prettier from 2.8.4 to 2.8.5 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/58">#58</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/c12857e418e26eafdf444bf7885bb59a4796e598"
-                >c12857e</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump prettier from 2.8.5 to 2.8.6 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/59">#59</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/5771666389c3361800669c1bbaecf278ab14211b"
-                >5771666</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump prettier from 2.8.6 to 2.8.7 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/61">#61</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/40da91b46d76e1f7dbd9aab70d05d42df9b18df2"
-                >40da91b</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump prettier from 2.8.7 to 2.8.8 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/65">#65</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/8b7158026f01747a30875c3a603b1cd35d5c776f"
-                >8b71580</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump prettier from 3.0.0 to 3.0.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/85">#85</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/4dc9b895d5aa3a8114a18fec679c7cc78152ada7"
-                >4dc9b89</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump prettier from 3.0.1 to 3.0.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/93">#93</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/6cca639228ff6dfec265712e52a7601ffb959c4f"
-                >6cca639</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump prettier from 3.0.2 to 3.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/97">#97</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/ce2b5fe4e2e8f4cb577badd229e33bc8a67d7264"
-                >ce2b5fe</a
-              >)
-            </li>
-            <li>
-              <strong>deps-dev:</strong> Bump prettier-plugin-apex from 1.12.0 to 1.13.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/64">#64</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/588668609d51fb4357465bb763689f4da64f515c"
-                >5886686</a
-              >)
-            </li>
-            <li>
-              <strong>deps:</strong> Bump yaml from 2.2.1 to 2.2.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/66">#66</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/57e44775ef981e9a054f089a65609895056f7648"
-                >57e4477</a
-              >)
-            </li>
-          </ul>
-          <h3>Continuous Integration</h3>
-          <ul>
-            <li>
-              <strong>deps:</strong> Bump actions/checkout from 3 to 4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/99">#99</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/af3e99da6b57a8e52ea03b8fc30396aecede906c"
-                >af3e99d</a
-              >)
-            </li>
-            <li>
-              <strong>PMD:</strong> Update download link for zip (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/74">#74</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/f70822f468cb6444db12d2471dcfbd40f2f81e70"
-                >f70822f</a
-              >)
-            </li>
-            <li>
-              <strong>PMD:</strong> Upgrade to PMD v7 RC (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/300fd7ccbdf3a48be77a94f0e5ebf3d9c356e55b"
-                >300fd7c</a
-              >)
-            </li>
-          </ul>
-          <h3>Miscellaneous Chores</h3>
-          <ul>
-            <li>
-              <strong>GitHub Linguist:</strong> Exclude ApexDox from GH linguist stats (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/73">#73</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/8e632fdea4b0b4012b91229f48dc16ef76733cb8"
-                >8e632fd</a
-              >)
-            </li>
-            <li>
-              <strong>prettier:</strong> Update config for Prettier v3 update (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/90">#90</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/082d38ec9b3a794fc588f61cca1e592c90e7a41e"
-                >082d38e</a
-              >)
-            </li>
-          </ul>
-          <h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.0.0...v1.1.0">1.1.0</a> (2023-02-27)</h2>
-          <h3>Features</h3>
-          <ul>
-            <li>
-              Add universal andFinally method (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/55">#55</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/098873264371d811ebd6183ee9991e63b1064e9c"
-                >0988732</a
-              >)
-            </li>
-            <li>
-              AndFinally handler method (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/53">#53</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/a888ced9a19a5a8bc9f503cad0a1dd7947b5fc28"
-                >a888ced</a
-              >)
-            </li>
-            <li>Include andfinally method (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e6caed1e282f5ab0488a92c049258f7eaa342c27">e6caed1</a>)</li>
-          </ul>
-          <h3>Reverts</h3>
-          <ul>
-            <li>
-              &quot;feat: andFinally handler method&quot; (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/54">#54</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/a2862753d6a239d62012553c8620a19fc135add4"
-                >a286275</a
-              >)
-            </li>
-          </ul>
-          <h3>Miscellaneous Chores</h3>
-          <ul>
-            <li>
-              Issue templates (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/50">#50</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/90d3cdbeec35c513991eca61de198697615ded85"
-                >90d3cdb</a
-              >)
-            </li>
-          </ul>
-          <h3>Continuous Integration</h3>
-          <ul>
-            <li>
-              <strong>sfdx:</strong> Upgrade sfdx to sf commands (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/d026a9189accc95ef03f32c3defd6ebd2e27582f"
-                >d026a91</a
-              >)
-            </li>
-          </ul>
-          <h3>Documentation</h3>
-          <ul>
-            <li>
-              <strong>ApexDox:</strong> AndFinally documentation (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/b4ce9d89af91a7724e9e971af1a1a40b85b6b85a"
-                >b4ce9d8</a
-              >)
-            </li>
-          </ul>
-          <h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.0.0...v1.0.0">1.0.0</a> (2023-02-25)</h2>
-          <h3>Features</h3>
-          <ul>
-            <li>
-              <strong>ApexDox:</strong> Auto-convert README to ApexDox homepage (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/1ca388486f9c93208f4d36c0aebc786cc9008ce4"
-                >1ca3884</a
-              >)
-            </li>
-            <li>Debug additions (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c">faf8c80</a>)</li>
-            <li>
-              <strong>docs:</strong> Add ApexDox site (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e312487d38aa1d0e50723a67d0fdc9e3bbaebdbe">e312487</a
-              >)
-            </li>
-            <li>
-              <strong>docs:</strong> Sample Code (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c">faf8c80</a>)
-            </li>
-            <li>Release-please to main (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/fbccc98070ded120ce7ee15635611cefba5f7d65">fbccc98</a>)</li>
-            <li>
-              <strong>releases:</strong> GitHub actions config (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/1dc68fb7ad798a9e3704d9b790ad82753edbc2db"
-                >1dc68fb</a
-              >)
-            </li>
-            <li>Update API version to 53.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c">faf8c80</a>)</li>
-            <li>Update API version to 53.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/fb8047966dd711aba5f51240d3a1819d0f05abe9">fb80479</a>)</li>
-            <li>
-              Upgrade assert methods to Assert class (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c60a6fa52df1716bf45cfc310a72edfaa95fd2c7">c60a6fa</a>)
-            </li>
-          </ul>
-          <h3>Bug Fixes</h3>
-          <ul>
-            <li>
-              <strong>ci:</strong> Stop using local Prettier server (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/48">#48</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/cb7c62a4ef063707496abb67d0a62b985d4fa39b"
-                >cb7c62a</a
-              >)
-            </li>
-            <li>Dependabot PR prefix (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/345d390b757c349deaa3c03d33ac28e7206726cb">345d390</a>)</li>
-            <li>
-              PR testing only on SFDC metadata (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/815cb0e884068dd0d877847e493207267a847d32">815cb0e</a>)
-            </li>
-            <li>
-              <strong>utils:</strong> PMD set up, ApexDox set up (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c"
-                >faf8c80</a
-              >)
-            </li>
-          </ul>
-          <h3>Reverts</h3>
-          <ul>
-            <li>
-              <strong>release-please:</strong> Remove signoff from changelog (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/51">#51</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/b2c04b1c33aa27498e550cfd20065f0e4dd8ae07"
-                >b2c04b1</a
-              >)
-            </li>
-          </ul>
-          <h3>Code Refactoring</h3>
-          <ul>
-            <li>
-              <strong>style:</strong> Prettier formatting fixes (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a6582453d700511efe027affd2a9e453c261f65a"
-                >a658245</a
-              >)
-            </li>
-          </ul>
-          <h3>Documentation</h3>
-          <ul>
-            <li>
-              <strong>ApexDox:</strong> Update ApexDox (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a6582453d700511efe027affd2a9e453c261f65a">a658245</a
-              >)
-            </li>
-            <li>Comment updates (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ac5257cfd922560ae2714a810875c60ab24a7c5e">ac5257c</a>)</li>
-            <li>
-              <strong>style:</strong> ApexDox styling (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ac5257cfd922560ae2714a810875c60ab24a7c5e">ac5257c</a
-              >)
-            </li>
-          </ul>
-          <h3>Miscellaneous Chores</h3>
-          <ul>
-            <li>API version bump (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c52075744ab7b585e7e3db66d210445fa73a5bbf">c520757</a>)</li>
-            <li>Initial commit (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/9889b14e4083400a741940691261a410bc5b419f">9889b14</a>)</li>
-            <li>Version 1.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c">faf8c80</a>)</li>
-          </ul>
-          <h3>Build System</h3>
-          <ul>
-            <li>
-              <strong>ApexDox:</strong> Highlight.js to 11.7 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/bb66fe60b4da2da7a34c5ad9865867efc335aa8e"
-                >bb66fe6</a
-              >)
-            </li>
-            <li>
-              <strong>ApexDox:</strong> Version updated; makes better class headers (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/c52075744ab7b585e7e3db66d210445fa73a5bbf"
-                >c520757</a
-              >)
-            </li>
-            <li>
-              Bump @sideway/formula from 3.0.0 to 3.0.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ef2916956c64b79b4c94c985ec1d40d80e267e9c"
-                >ef29169</a
-              >)
-            </li>
-            <li>Bump husky from 8.0.1 to 8.0.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/cc182c4ae08eaa2c072ca982f239e1c81402a7e6">cc182c4</a>)</li>
-            <li>Bump husky from 8.0.2 to 8.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/4debae91c11280ac2229fd6058842343638eae8a">4debae9</a>)</li>
-            <li>
-              Bump lint-staged from 13.0.2 to 13.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ab58d4a10c046aee145e021256a6bf49c45ad91c">ab58d4a</a>)
-            </li>
-            <li>
-              Bump lint-staged from 13.0.4 to 13.1.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a38dee3a66bd470fd74d2768eff1e7917e1d2b36">a38dee3</a>)
-            </li>
-            <li>
-              Bump lint-staged from 13.1.0 to 13.1.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a20d2b66682c24732ac01a3cb08a72df995fb71b">a20d2b6</a>)
-            </li>
-            <li>
-              Bump lint-staged from 13.1.1 to 13.1.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/9872a02c812a340267b85863629459cf3f4fec78">9872a02</a>)
-            </li>
-            <li>
-              Bump marked from 4.0.17 to 4.1.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c447fbe6e02b003c580b0fc78102cbc9e143d457">c447fbe</a>)
-            </li>
-            <li>Bump marked from 4.1.0 to 4.1.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/4f8a9372eb395abcb5000e18119c0b4728b877eb">4f8a937</a>)</li>
-            <li>Bump marked from 4.2.3 to 4.2.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/9659d1d16393f938f864ff15f6fb1b769f53478f">9659d1d</a>)</li>
-            <li>Bump marked from 4.2.4 to 4.2.5 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/d5493e47a75f318310243823c8d3df4cff467adc">d5493e4</a>)</li>
-            <li>
-              Bump marked from 4.2.5 to 4.2.12 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/6be4e27b7239cd5111709d7a382b557a302b764a">6be4e27</a>)
-            </li>
-            <li>
-              Bump prettier from 2.8.0 to 2.8.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ed2895990e3c25be2a8cca2adcb0bfa5b6042847">ed28959</a>)
-            </li>
-            <li>
-              Bump prettier from 2.8.1 to 2.8.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/2a794a932e5e0659b731738f1da498f93d2be68c">2a794a9</a>)
-            </li>
-            <li>
-              Bump prettier from 2.8.2 to 2.8.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/9daabc5c14c4d71f182e23c03d5a13c9700b229c">9daabc5</a>)
-            </li>
-            <li>
-              Bump prettier from 2.8.3 to 2.8.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/fc1a31d42d37b9c778dcd3bbd65d7ebb8bf62c97">fc1a31d</a>)
-            </li>
-            <li>
-              Bump prettier-plugin-apex from 1.11.0 to 1.12.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/78712528e467a602cd8d350a6e57cd63ab47c97b"
-                >7871252</a
-              >)
-            </li>
-            <li>Change Dependabot auto-prefix (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/1c94916f99ad15035dc6837a4bd79751a801df03">1c94916</a>)</li>
-            <li>
-              <strong>prettier:</strong> Update Prettier rules (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ac5257cfd922560ae2714a810875c60ab24a7c5e"
-                >ac5257c</a
-              >)
-            </li>
-            <li>
-              <strong>release-please:</strong> Remove prerelease flag (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/7dd48f7ce27699bf9ee2d3ad790125a51c4ec4e0"
-                >7dd48f7</a
-              >)
-            </li>
-            <li>
-              <strong>release-please:</strong> Update config (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/16ae4df1bd021ddb9f5b417fea438bd40efa3ffa"
-                >16ae4df</a
-              >)
-            </li>
-          </ul>
-          <h3>Continuous Integration</h3>
-          <ul>
-            <li>Bump actions/cache from 1 to 3 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/42bd34bf23acf5c5744720e2651f5b5c9e83c428">42bd34b</a>)</li>
-            <li>
-              <strong>dependabot:</strong> Include scope automatically (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/553a5c9548bd03b8bed4e719e5adef11efdf27c5"
-                >553a5c9</a
-              >)
-            </li>
-            <li>
-              <strong>dependabot:</strong> Set github-actions to ci scope (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/38827f6f5ff730ebd834dfa29a8c612e8811ea70"
-                >38827f6</a
-              >)
-            </li>
-            <li>
-              <strong>release-please:</strong> Add signoff to action (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/49">#49</a>) (<a
-                href="https://github.com/dschach/salesforce-trigger-framework/commit/7e9d689f2ffeff9b0604cb1e49d8dbbdaf865fa1"
-                >7e9d689</a
-              >)
-            </li>
-            <li>Set up Codecov (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c">faf8c80</a>)</li>
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <td class="footer">
-          <div>
-            <a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer"> Powered By ApexDox VS Code </a>
-          </div>
-        </td>
-      </tr>
-    </table>
-  </body>
+	<body>
+		<div id="side-bar">
+			<div id="logo-container">
+				<div class="title">Salesforce Trigger Handler code documentation</div>
+				<img src="assets/logo.png" />
+				<div class="subtitle">
+					Documentation for
+					<a href="https://github.com/dschach/salesforce-trigger-framework" target="_blank" rel="noopener noreferrer">Trigger Framework</a>
+				</div>
+			</div>
+			<div id="search-wrapper">
+				<div class="search-icon"></div>
+				<input id="search-input" type="text" autocomplete="off" placeholder="Search..." />
+			</div>
+			<ul class="" id="search-results"></ul>
+			<div class="navbar">
+				<nav role="navigation">
+					<a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html')"> Home </a>
+					<details class="group-name" id="SampleTriggerHandler">
+						<summary class="nav-header" id="header-SampleTriggerHandler">
+							<a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('sampletriggerhandlerhome.html')"
+								>SampleTriggerHandler</a
+							>
+						</summary>
+						<ul>
+							<!-- menu items -->
+							<li
+								class="nav-item class public"
+								id="item-AccountSampleTriggerHandler"
+								title="AccountSampleTriggerHandler"
+								onclick="goToLocation('AccountSampleTriggerHandler.html')">
+								<a href="javascript:void(0)" tabindex="1">AccountSampleTriggerHandler</a>
+							</li>
+							<li
+								class="nav-item class private"
+								id="item-AccountSampleTriggerHandlerTest"
+								title="AccountSampleTriggerHandlerTest"
+								onclick="goToLocation('AccountSampleTriggerHandlerTest.html')">
+								<a href="javascript:void(0)" tabindex="1">AccountSampleTriggerHandlerTest</a>
+							</li>
+						</ul>
+					</details>
+					<details class="group-name" id="Trigger_Handler">
+						<summary class="nav-header" id="header-Trigger_Handler">
+							<span>Trigger Handler</span>
+						</summary>
+						<ul>
+							<!-- menu items -->
+							<li class="nav-item class public" id="item-TriggerHandler" title="TriggerHandler" onclick="goToLocation('TriggerHandler.html')">
+								<a href="javascript:void(0)" tabindex="1">TriggerHandler</a>
+							</li>
+							<li
+								class="nav-item class private"
+								id="item-TriggerHandlerTest"
+								title="TriggerHandlerTest"
+								onclick="goToLocation('TriggerHandlerTest.html')">
+								<a href="javascript:void(0)" tabindex="1">TriggerHandlerTest</a>
+							</li>
+						</ul>
+					</details>
+				</nav>
+			</div>
+		</div>
+		<table id="content">
+			<tr>
+				<td class="scoping-panel">
+					Show: <input id="cbx-all" type="checkbox" checked="true" onclick="toggleAllScopes(this.checked)" />
+					<label for="cbx-all">All</label>&nbsp;&nbsp;
+					<input id="cbx-public" type="checkbox" checked="true" onclick="toggleScope('public', this.checked)" />
+					<label for="cbx-public"> public </label>&nbsp;&nbsp;<input
+						id="cbx-private"
+						type="checkbox"
+						checked="true"
+						onclick="toggleScope('private', this.checked)" />
+					<label for="cbx-private"> private </label>&nbsp;&nbsp;<input
+						id="cbx-protected"
+						type="checkbox"
+						checked="true"
+						onclick="toggleScope('protected', this.checked)" />
+					<label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input
+						id="cbx-testmethod"
+						type="checkbox"
+						checked="true"
+						onclick="toggleScope('testmethod', this.checked)" />
+					<label for="cbx-testmethod"> testMethod </label>
+				</td>
+			</tr>
+			<tr>
+				<td class="doc-page">
+					<link href="assets/styling.css" rel="stylesheet" />
+					<h1>Changelog</h1>
+					<h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.4.2...v1.5.0">1.5.0</a> (2026-10-30)</h2>
+					<h3>Features</h3>
+					<ul>
+						<li>
+							<strong>handler:</strong> Let a test run a handler without DML (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/312e121e4a5f17471212e555d8748e278bf43ea8"
+								>312e121</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Route the framework messages through a log hook (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/372"
+								>#372</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/312e121e4a5f17471212e555d8748e278bf43ea8">312e121</a>)
+						</li>
+					</ul>
+					<h3>Code Refactoring</h3>
+					<ul>
+						<li>
+							<strong>handler:</strong> Clear 4 Code Analyzer findings in TriggerHandler (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/373"
+								>#373</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/3cc05e4dee1a3119cb64ed561369a94129e031a2">3cc05e4</a>)
+						</li>
+					</ul>
+					<h3>Continuous Integration</h3>
+					<ul>
+						<li>
+							<strong>apex-tests:</strong> Run the Apex tests on pushes to main that change a class (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/368"
+								>#368</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e9a4ed3f8aa4167e16669e1860ba049cf847c750">e9a4ed3</a>)
+						</li>
+						<li>
+							<strong>apex-tests:</strong> Stop project config changes from starting a run (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e9a4ed3f8aa4167e16669e1860ba049cf847c750"
+								>e9a4ed3</a
+							>)
+						</li>
+						<li>
+							<strong>release-please:</strong> Open release PRs with a token of their own (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/371"
+								>#371</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/94e1de0ef8a4da4a52d498f14308633197cedc17">94e1de0</a>)
+						</li>
+					</ul>
+					<h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.4.1...v1.4.2">1.4.2</a> (2026-10-30)</h2>
+					<h3>Tests</h3>
+					<ul>
+						<li>
+							<strong>handler:</strong> Assert through the public API with correct messages (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5359db1a6f4982f99600be52ad4b33488d53fd0a"
+								>5359db1</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Cover the bypass clears and run outside a trigger (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5359db1a6f4982f99600be52ad4b33488d53fd0a"
+								>5359db1</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Prove that bypasses and the loop limit stop andFinally (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5359db1a6f4982f99600be52ad4b33488d53fd0a"
+								>5359db1</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Rewrite the TriggerHandler tests with 1 test per behavior (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/365"
+								>#365</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/5359db1a6f4982f99600be52ad4b33488d53fd0a">5359db1</a>)
+						</li>
+						<li>
+							<strong>handler:</strong> Split the handler tests into 1 test per behavior (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5359db1a6f4982f99600be52ad4b33488d53fd0a"
+								>5359db1</a
+							>)
+						</li>
+					</ul>
+					<h3>Miscellaneous Chores</h3>
+					<ul>
+						<li>
+							<strong>hooks:</strong> Strip the config machine paths in the staged file (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/65276b01694043ff29725a9fd724eec79d491e4a"
+								>65276b0</a
+							>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Add the DevSecOps Java rules to Code Analyzer (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/73b70a44ebec81ab12a65b5fa46612359479d9d6"
+								>73b70a4</a
+							>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Add the DevSecOps Java rules to Code Analyzer (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/367"
+								>#367</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/73b70a44ebec81ab12a65b5fa46612359479d9d6">73b70a4</a>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Regenerate code-analyzer.yml and correct the ruleset notes (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/65276b01694043ff29725a9fd724eec79d491e4a"
+								>65276b0</a
+							>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Turn off a rule and keep machine paths out of the config (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/369"
+								>#369</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/65276b01694043ff29725a9fd724eec79d491e4a">65276b0</a>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Turn off AvoidTrivialPropertyGetters (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/65276b01694043ff29725a9fd724eec79d491e4a"
+								>65276b0</a
+							>)
+						</li>
+						<li>
+							<strong>sample:</strong> Suppress FlagSystemMode where system mode is deliberate (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/73b70a44ebec81ab12a65b5fa46612359479d9d6"
+								>73b70a4</a
+							>)
+						</li>
+						<li>
+							<strong>scripts:</strong> Write the Code Analyzer results to the sfca folder (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/73b70a44ebec81ab12a65b5fa46612359479d9d6"
+								>73b70a4</a
+							>)
+						</li>
+					</ul>
+					<h3>Code Refactoring</h3>
+					<ul>
+						<li>
+							<strong>sample:</strong> Rewrite the sample to show the framework in use (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/149de0cbb14769b5699d570cc6868301852d8a55"
+								>149de0c</a
+							>)
+						</li>
+						<li>
+							<strong>sample:</strong> Rewrite the sample to show the framework in use (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/366"
+								>#366</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/149de0cbb14769b5699d570cc6868301852d8a55">149de0c</a>)
+						</li>
+					</ul>
+					<h3>Documentation</h3>
+					<ul>
+						<li>
+							<strong>contributing:</strong> Explain how to mark a deliberate system mode (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/73b70a44ebec81ab12a65b5fa46612359479d9d6"
+								>73b70a4</a
+							>)
+						</li>
+						<li>
+							<strong>readme:</strong> List all 7 contexts in every trigger example (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/149de0cbb14769b5699d570cc6868301852d8a55"
+								>149de0c</a
+							>)
+						</li>
+						<li>
+							<strong>readme:</strong> Use system mode in the handler examples (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/149de0cbb14769b5699d570cc6868301852d8a55"
+								>149de0c</a
+							>)
+						</li>
+						<li>
+							<strong>sample:</strong> Describe the new sample in its README and docs page (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/149de0cbb14769b5699d570cc6868301852d8a55"
+								>149de0c</a
+							>)
+						</li>
+					</ul>
+					<h3>Continuous Integration</h3>
+					<ul>
+						<li>
+							<strong>apex-tests:</strong> Delete the scratch org after a cancelled run (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/0890448ea91ef566f01311ab89e8b96f7b259dd2"
+								>0890448</a
+							>)
+						</li>
+						<li>
+							<strong>ci:</strong> Give each push to main its own concurrency group (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/0890448ea91ef566f01311ab89e8b96f7b259dd2"
+								>0890448</a
+							>)
+						</li>
+						<li>
+							<strong>dependabot:</strong> Run the update workflow once per pull request at a time (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/0890448ea91ef566f01311ab89e8b96f7b259dd2"
+								>0890448</a
+							>)
+						</li>
+						<li>
+							<strong>release-please:</strong> Queue runs instead of running them at once (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/0890448ea91ef566f01311ab89e8b96f7b259dd2"
+								>0890448</a
+							>)
+						</li>
+						<li>
+							<strong>workflows:</strong> Add concurrency groups so runs do not cancel each other (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/363"
+								>#363</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/0890448ea91ef566f01311ab89e8b96f7b259dd2">0890448</a>)
+						</li>
+					</ul>
+					<h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.4.0...v1.4.1">1.4.1</a> (2026-10-29)</h2>
+					<h3>Build System</h3>
+					<ul>
+						<li>
+							<strong>node:</strong> Update Node.js from v22.22.1 to v24.22.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/361"
+								>#361</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/905728c2394e16727571f918e979a53ff75f3c38">905728c</a>)
+						</li>
+					</ul>
+					<h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.3.0...v1.4.0">1.4.0</a> (2026-10-29)</h2>
+					<h3>Features</h3>
+					<ul>
+						<li>
+							<strong>ci:</strong> Add a job summary report for Code Analyzer results (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4"
+								>437f453</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Add protected accessors and correct the ApexDoc (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/349"
+								>#349</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4">d3c42d2</a>)
+						</li>
+						<li>
+							<strong>handler:</strong> Add protected getTriggerEvent and getHandlerName (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4"
+								>d3c42d2</a
+							>)
+						</li>
+					</ul>
+					<h3>Bug Fixes</h3>
+					<ul>
+						<li>
+							<strong>handler:</strong> Log a warning when the loop limit is exceeded (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4"
+								>d3c42d2</a
+							>)
+						</li>
+						<li>
+							<strong>scripts:</strong> Write highlight.js to doc-assets with portable sed (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56"
+								>032a7b9</a
+							>)
+						</li>
+					</ul>
+					<h3>Miscellaneous Chores</h3>
+					<ul>
+						<li>
+							<strong>apexdox:</strong> Correct 2 stale comments in the ApexDox config (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805"
+								>a15667e</a
+							>)
+						</li>
+						<li>
+							<strong>code-analyzer:</strong> Install Salesforce Code Analyzer config (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/01b0bae951c0a39deca9107370bb7cda6beb637b"
+								>01b0bae</a
+							>)
+						</li>
+						<li>
+							<strong>code-analyzer:</strong> Remove machine paths from the config on commit (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4"
+								>437f453</a
+							>)
+						</li>
+						<li>
+							<strong>codecov:</strong> Drop the LWC flag that nothing uploads (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b"
+								>6bd4946</a
+							>)
+						</li>
+						<li>
+							<strong>git:</strong> Ignore the Code Analyzer report folder (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4"
+								>437f453</a
+							>)
+						</li>
+						<li>
+							<strong>ignore:</strong> Skip the husky hooks and the LWC config files (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0"
+								>7ec40cd</a
+							>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Move the PMD rulesets to config and add Code Analyzer (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/351"
+								>#351</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/01b0bae951c0a39deca9107370bb7cda6beb637b">01b0bae</a>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Move the PMD rulesets under config/pmd (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/01b0bae951c0a39deca9107370bb7cda6beb637b"
+								>01b0bae</a
+							>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Adopt the shared x2od prettier config (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/359"
+								>#359</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0">7ec40cd</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Correct the comment on the XML print width override (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0"
+								>7ec40cd</a
+							>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Extend the shared x2od Prettier configuration (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0"
+								>7ec40cd</a
+							>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Ignore only what Prettier should skip (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56"
+								>032a7b9</a
+							>)
+						</li>
+						<li>
+							<strong>project:</strong> Clean up the tooling scripts, ignore files, and READMEs (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/353"
+								>#353</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56">032a7b9</a>)
+						</li>
+						<li>
+							<strong>project:</strong> Remove template leftovers from the ignore files (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56"
+								>032a7b9</a
+							>)
+						</li>
+						<li>
+							<strong>release:</strong> Drop the 2 pre-major release-please flags (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b"
+								>6bd4946</a
+							>)
+						</li>
+						<li>
+							<strong>vscode:</strong> Recommend better-comments-next instead of better-comments (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4"
+								>d3c42d2</a
+							>)
+						</li>
+					</ul>
+					<h3>Code Refactoring</h3>
+					<ul>
+						<li>
+							<strong>ci:</strong> Read Code Analyzer results from JSON, not SARIF (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4"
+								>437f453</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Simplify setBypass to 4 statements (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4"
+								>d3c42d2</a
+							>)
+						</li>
+					</ul>
+					<h3>Styles</h3>
+					<ul>
+						<li>
+							<strong>docs:</strong> Reformat the documentation assets to the shared style (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0"
+								>7ec40cd</a
+							>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Rewrap the PMD rulesets at 80 characters (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0"
+								>7ec40cd</a
+							>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Reformat the config and scripts to the shared style (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0"
+								>7ec40cd</a
+							>)
+						</li>
+					</ul>
+					<h3>Documentation</h3>
+					<ul>
+						<li>
+							<strong>actions:</strong> Show the Code Analyzer CLI in the action examples (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56"
+								>032a7b9</a
+							>)
+						</li>
+						<li>
+							<strong>ApexDoc:</strong> Add throws tags to TriggerHandler headers (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/01b0bae951c0a39deca9107370bb7cda6beb637b"
+								>01b0bae</a
+							>)
+						</li>
+						<li>
+							<strong>changelog:</strong> Link the first release to its release page (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805"
+								>a15667e</a
+							>)
+						</li>
+						<li>
+							<strong>contributing:</strong> Add a contributing guide for this repository (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805"
+								>a15667e</a
+							>)
+						</li>
+						<li>
+							<strong>deploy:</strong> Correct the scratch org instructions (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805"
+								>a15667e</a
+							>)
+						</li>
+						<li>
+							<strong>github:</strong> Add a pull request template (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805"
+								>a15667e</a
+							>)
+						</li>
+						<li>
+							<strong>github:</strong> Add the code of conduct to this repository (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/f1ff40be0918486511599adb2b7e1b2dbe06cd93"
+								>f1ff40b</a
+							>)
+						</li>
+						<li>
+							<strong>github:</strong> Replace the issue templates with framework issue forms (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805"
+								>a15667e</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Correct the ApexDoc statements and examples (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4"
+								>d3c42d2</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Say when andFinally does not run (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4"
+								>d3c42d2</a
+							>)
+						</li>
+						<li>
+							<strong>license:</strong> Keep the BSD text alone and credit the original in NOTICE (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805"
+								>a15667e</a
+							>)
+						</li>
+						<li>
+							<strong>project:</strong> Add community files and fix the license and deploy docs (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/355"
+								>#355</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a15667e972ae26cfc2a3315998f87fd586931805">a15667e</a>)
+						</li>
+						<li>
+							<strong>readme:</strong> Add an API reference and fix the documentation links (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56"
+								>032a7b9</a
+							>)
+						</li>
+						<li>
+							<strong>readme:</strong> Correct the bypass, loop count, and handler examples (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56"
+								>032a7b9</a
+							>)
+						</li>
+						<li>
+							<strong>sample:</strong> Move the sample README and describe the sample (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56"
+								>032a7b9</a
+							>)
+						</li>
+					</ul>
+					<h3>Build System</h3>
+					<ul>
+						<li>
+							<strong>@x2od/prettier-config:</strong> Update devDependency @x2od/prettier-config from 0.6.1 to 0.7.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/360"
+								>#360</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a4585f7cc436031bec82616a3c12a63e4955a4c4">a4585f7</a>)
+						</li>
+						<li>
+							<strong>node:</strong> Update Node.js from v22.22.1 to v24.22.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/356"
+								>#356</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f522648f2d374f9654ac91bb6c0afc5bc367732f">f522648</a>)
+						</li>
+						<li>
+							<strong>npm:</strong> Call lint-staged from the hook and prune gone branches (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56"
+								>032a7b9</a
+							>)
+						</li>
+						<li>
+							<strong>npm:</strong> Get the Prettier plugins through the shared x2od config (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0"
+								>7ec40cd</a
+							>)
+						</li>
+						<li>
+							<strong>npm:</strong> Remove the local Apex Prettier server scripts (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7ec40cdbce99f4e81b33ed7e4a2f812df2b19eb0"
+								>7ec40cd</a
+							>)
+						</li>
+						<li>
+							<strong>npm:</strong> Run the Prettier scripts on the whole tree (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/032a7b903b1d727520a8a65d3dd6ef3e18884e56"
+								>032a7b9</a
+							>)
+						</li>
+					</ul>
+					<h3>Continuous Integration</h3>
+					<ul>
+						<li>
+							<strong>actions/setup-java:</strong> Update actions/setup-java action from v5 to v6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/357"
+								>#357</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/34c15969886676ea47f69fd68e95deec16446a89">34c1596</a>)
+						</li>
+						<li>
+							<strong>apex-tests:</strong> Fetch 2 commits and give Codecov the pull request base (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d3c42d2d70364e620148b523650b2ce5e30e0ce4"
+								>d3c42d2</a
+							>)
+						</li>
+						<li>
+							<strong>apex-tests:</strong> Pass the Dev Hub secret through stdin (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b"
+								>6bd4946</a
+							>)
+						</li>
+						<li>
+							<strong>apex-tests:</strong> Put the stdin flag last so the alias is kept (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b"
+								>6bd4946</a
+							>)
+						</li>
+						<li>
+							<strong>code-analyzer:</strong> Report Code Analyzer results from JSON (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/352"
+								>#352</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4">437f453</a>)
+						</li>
+						<li>
+							<strong>codecov:</strong> Troubleshoot Codecov base commit error (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/350"
+								>#350</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/d0f4621a091e97e46b9ee39074b31590cf46bfa2">d0f4621</a>)
+						</li>
+						<li>
+							<strong>java-jdk:</strong> Update dependency java-jdk from v21 to v25 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/358"
+								>#358</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/83abc662ce03128ffa1273547dd2aa074a270317">83abc66</a>)
+						</li>
+						<li>
+							<strong>workflows:</strong> Give the workflow tokens read-only permissions (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b"
+								>6bd4946</a
+							>)
+						</li>
+						<li>
+							<strong>workflows:</strong> Harden the CI workflows and run the checks for every author (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/347"
+								>#347</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b">6bd4946</a>)
+						</li>
+						<li>
+							<strong>workflows:</strong> Run the Code Analyzer CLI and write results to sfca (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/437f453ede78b6e7ddcef037a48f48467fb3c3a4"
+								>437f453</a
+							>)
+						</li>
+						<li>
+							<strong>workflows:</strong> Run the formatting and PMD checks for every author (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b"
+								>6bd4946</a
+							>)
+						</li>
+						<li>
+							<strong>workflows:</strong> Split the Apex tests from CI and drop the residue (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6bd4946b01845b42b65eb410f23fd1e01a32fd9b"
+								>6bd4946</a
+							>)
+						</li>
+					</ul>
+					<h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.2.1...v1.3.0">1.3.0</a> (2026-10-29)</h2>
+					<h3>Features</h3>
+					<ul>
+						<li>
+							<strong>api:</strong> Raise the API version to 67.0 and declare sharing everywhere (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/345"
+								>#345</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a">5aec525</a>)
+						</li>
+						<li>
+							<strong>metadata:</strong> Raise the API version to 67.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a"
+								>5aec525</a
+							>)
+						</li>
+					</ul>
+					<h3>Bug Fixes</h3>
+					<ul>
+						<li>
+							<strong>handler:</strong> Declare inherited sharing on the base class and tests (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a"
+								>5aec525</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Match bypass names regardless of case (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043"
+								>3e3ed59</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Reject null and blank bypass and loop count arguments (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043"
+								>3e3ed59</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Skip the name lookup, match bypass case, and reject null arguments (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/342"
+								>#342</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043">3e3ed59</a>)
+						</li>
+						<li>
+							<strong>sample:</strong> Forward the class name to the base constructor (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043"
+								>3e3ed59</a
+							>)
+						</li>
+						<li>
+							<strong>sample:</strong> Use inherited sharing and user mode in the sample handler (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a"
+								>5aec525</a
+							>)
+						</li>
+					</ul>
+					<h3>Tests</h3>
+					<ul>
+						<li>
+							<strong>handler:</strong> Assert bypass by Type and register the fixture name (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043"
+								>3e3ed59</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Mark the test classes parallel and name what they test (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a"
+								>5aec525</a
+							>)
+						</li>
+					</ul>
+					<h3>Performance Improvements</h3>
+					<ul>
+						<li>
+							<strong>handler:</strong> Skip the handler name lookup when nothing needs it (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043"
+								>3e3ed59</a
+							>)
+						</li>
+					</ul>
+					<h3>Miscellaneous Chores</h3>
+					<ul>
+						<li>
+							<strong>pmd:</strong> Drop the message attributes from the ruleset rules (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8"
+								>dd1e950</a
+							>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Replace the 4 rules that PMD 8 removes with NcssCount (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8"
+								>dd1e950</a
+							>)
+						</li>
+					</ul>
+					<h3>Code Refactoring</h3>
+					<ul>
+						<li>
+							<strong>handler:</strong> Delete the identity switch in setTriggerContext (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/3e3ed598706d61a7cf3bc897516920552dca8043"
+								>3e3ed59</a
+							>)
+						</li>
+						<li>
+							<strong>handler:</strong> Move 2 PMD suppressions to the lines PMD reads (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8"
+								>dd1e950</a
+							>)
+						</li>
+					</ul>
+					<h3>Build System</h3>
+					<ul>
+						<li>
+							<strong>husky:</strong> Remove the deprecated postinstall husky install script (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/344"
+								>#344</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/72a2ab89b8962185dc11fc15da112cf25dde40a1">72a2ab8</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Update devDependency marked from 18.1.1 to 18.1.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/341"
+								>#341</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/962a06793872487c05e25a1ff9632a0a7aa268b7">962a067</a>)
+						</li>
+						<li>
+							<strong>project:</strong> Keep the sample trigger out of the deploy button (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a"
+								>5aec525</a
+							>)
+						</li>
+					</ul>
+					<h3>Continuous Integration</h3>
+					<ul>
+						<li>
+							<strong>actions:</strong> Add an action that counts PMD violations by priority (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8"
+								>dd1e950</a
+							>)
+						</li>
+						<li>
+							<strong>deploy:</strong> Replace the deprecated sf deploy metadata command (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5aec525c93c51feccd249f03cd4f3ab2fc4a252a"
+								>5aec525</a
+							>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Run PMD through its GitHub action and fail on priority 1 and 2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/346"
+								>#346</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8">dd1e950</a>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Run PMD through pmd/pmd-github-action (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/dd1e9507660ef1d987a6b7f8803cd4515b4b74e8"
+								>dd1e950</a
+							>)
+						</li>
+					</ul>
+					<h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.2.0...v1.2.1">1.2.1</a> (2026-10-29)</h2>
+					<h3>Miscellaneous Chores</h3>
+					<ul>
+						<li>
+							<strong>claude:</strong> Enable local Claude work (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/59a936029166be3ba47766aab8d579771c7d9626"
+								>59a9360</a
+							>)
+						</li>
+						<li>
+							<strong>GitHub Linguist:</strong> Update .gitattributes (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/154"
+								>#154</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/dfd65f09ad2880c4d2210c59c120371e78263d35">dfd65f0</a>)
+						</li>
+						<li>
+							<strong>renovate:</strong> Use the shared Renovate preset (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/1b0964673b3e9009da82037be8bf6cb89c3c25be"
+								>1b09646</a
+							>)
+						</li>
+						<li>
+							<strong>vs code:</strong> Remove unnecessary extension recommendations (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a7676bf6e95bd30f792dfda3b3192d1461aad3d2"
+								>a7676bf</a
+							>)
+						</li>
+					</ul>
+					<h3>Documentation</h3>
+					<ul>
+						<li>
+							Include Dependencies in changelog (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6bebd88e9f7f9375f8f7451615b9eb6c51b69134"
+								>6bebd88</a
+							>)
+						</li>
+					</ul>
+					<h3>Dependencies</h3>
+					<ul>
+						<li>
+							<strong>axios, wait-on:</strong> Bump axios and wait-on (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/130"
+								>#130</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/9b04edb484dac02c9eb88272541baf1c684dc2bb">9b04edb</a>)
+						</li>
+					</ul>
+					<h3>Build System</h3>
+					<ul>
+						<li>
+							<strong>@prettier/plugin-xml:</strong> Bump @prettier/plugin-xml from 3.2.2 to 3.3.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/147"
+								>#147</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/0f934faf1251cf76adc325b038608a4b1a379845">0f934fa</a>)
+						</li>
+						<li>
+							<strong>@prettier/plugin-xml:</strong> Bump @prettier/plugin-xml from 3.3.1 to 3.4.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/153"
+								>#153</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ca066f3b24408e629b44a4229d8e26dbb3e72776">ca066f3</a>)
+						</li>
+						<li>
+							<strong>@prettier/plugin-xml:</strong> Bump @prettier/plugin-xml from 3.4.1 to 3.4.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/236"
+								>#236</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/2641d97056f2d54364baecb72c70dba76d2345b6">2641d97</a>)
+						</li>
+						<li>
+							<strong>axios:</strong> Bump axios from 1.15.0 to 1.16.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/292"
+								>#292</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ac5a8e39f04d797b8b3af8e1b418c982e9fe2924">ac5a8e3</a>)
+						</li>
+						<li>
+							<strong>axios:</strong> Bump axios from 1.18.1 to 1.20.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/325"
+								>#325</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/b106fc74b734f15d618f7884b9eef6fb407d75bb">b106fc7</a>)
+						</li>
+						<li>
+							<strong>axios:</strong> Bump axios from 1.6.2 to 1.7.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/180"
+								>#180</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/6d643250ba4921de3cafb549f4d36e55a2684a1c">6d64325</a>)
+						</li>
+						<li>
+							<strong>axios:</strong> Bump axios from 1.7.7 to 1.8.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/219"
+								>#219</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/263e90f91777f8a2473f7d172a01adbdaa260a05">263e90f</a>)
+						</li>
+						<li>
+							<strong>axios:</strong> Bump axios from 1.8.2 to 1.15.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/283"
+								>#283</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a0d439300c21c3a8890b014e20ad4719f50fe8e8">a0d4393</a>)
+						</li>
+						<li>
+							Bump @prettier/plugin-xml from 3.2.2 to 3.3.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/0f934faf1251cf76adc325b038608a4b1a379845"
+								>0f934fa</a
+							>)
+						</li>
+						<li>
+							Bump @prettier/plugin-xml from 3.3.1 to 3.4.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ca066f3b24408e629b44a4229d8e26dbb3e72776"
+								>ca066f3</a
+							>)
+						</li>
+						<li>
+							Bump @prettier/plugin-xml from 3.4.1 to 3.4.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/2641d97056f2d54364baecb72c70dba76d2345b6"
+								>2641d97</a
+							>)
+						</li>
+						<li>
+							Bump axios from 1.15.0 to 1.16.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ac5a8e39f04d797b8b3af8e1b418c982e9fe2924"
+								>ac5a8e3</a
+							>)
+						</li>
+						<li>
+							Bump axios from 1.18.1 to 1.20.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/b106fc74b734f15d618f7884b9eef6fb407d75bb"
+								>b106fc7</a
+							>)
+						</li>
+						<li>
+							Bump axios from 1.6.2 to 1.7.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6d643250ba4921de3cafb549f4d36e55a2684a1c"
+								>6d64325</a
+							>)
+						</li>
+						<li>
+							Bump axios from 1.7.7 to 1.8.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/263e90f91777f8a2473f7d172a01adbdaa260a05"
+								>263e90f</a
+							>)
+						</li>
+						<li>
+							Bump axios from 1.8.2 to 1.15.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a0d439300c21c3a8890b014e20ad4719f50fe8e8"
+								>a0d4393</a
+							>)
+						</li>
+						<li>
+							Bump follow-redirects from 1.15.11 to 1.16.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/be89944309c0af7fbc78d4030856a89f9aa68144"
+								>be89944</a
+							>)
+						</li>
+						<li>
+							Bump follow-redirects from 1.15.3 to 1.15.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6f748d12c1826a8cf6e35c47977f9612e3fedb21"
+								>6f748d1</a
+							>)
+						</li>
+						<li>
+							Bump follow-redirects from 1.15.4 to 1.15.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fc023d601806eeca8e289540671eca977376c03c"
+								>fc023d6</a
+							>)
+						</li>
+						<li>
+							Bump follow-redirects from 1.16.0 to 1.16.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e1d4e8b6747dd503202aa2a0380b688fb1fd501b"
+								>e1d4e8b</a
+							>)
+						</li>
+						<li>
+							Bump form-data from 4.0.0 to 4.0.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e605aa32a8bc02a8914384de329f535b7a5ef3aa"
+								>e605aa3</a
+							>)
+						</li>
+						<li>
+							Bump form-data from 4.0.5 to 4.0.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a6d75c5e532b8d16a71fb8b8ca24ce079921b04f"
+								>a6d75c5</a
+							>)
+						</li>
+						<li>
+							Bump husky from 8.0.3 to 9.0.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/3fa55032b3ed97cdb428a19d92d18a8cca6f0cd2"
+								>3fa5503</a
+							>)
+						</li>
+						<li>
+							Bump husky from 9.0.10 to 9.0.11 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/f465e683366480e2b5619a497abd25532bf850d1"
+								>f465e68</a
+							>)
+						</li>
+						<li>
+							Bump husky from 9.0.11 to 9.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c391455244f62f5dad2dc23f8c6fb508b3057507"
+								>c391455</a
+							>)
+						</li>
+						<li>
+							Bump husky from 9.0.6 to 9.0.7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/961b7267e5f73c03e8b88202221a7f60c9716f73"
+								>961b726</a
+							>)
+						</li>
+						<li>
+							Bump husky from 9.0.7 to 9.0.10 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c198edb6dd3525d11dd65b4afe054a6ee7771d8c"
+								>c198edb</a
+							>)
+						</li>
+						<li>
+							Bump husky from 9.1.1 to 9.1.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/99923204f95d851fe364058f56b9c8ef5b69a5dc"
+								>9992320</a
+							>)
+						</li>
+						<li>
+							Bump husky from 9.1.2 to 9.1.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a5c3a98e2895bcd0cf671b192f18f8cf30d67ae8"
+								>a5c3a98</a
+							>)
+						</li>
+						<li>
+							Bump husky from 9.1.3 to 9.1.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/b4e99a87c65cfed5fc5cfcf350b5d6aaf75c9348"
+								>b4e99a8</a
+							>)
+						</li>
+						<li>
+							Bump husky from 9.1.4 to 9.1.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/24c4ca4ab282e8fb9d26c153502fb5cf94a3ebc8"
+								>24c4ca4</a
+							>)
+						</li>
+						<li>
+							Bump husky from 9.1.5 to 9.1.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/2c8c4be73f8af54f6a0ac1bd6642b6facce9e399"
+								>2c8c4be</a
+							>)
+						</li>
+						<li>
+							Bump husky from 9.1.6 to 9.1.7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e7b32485e7bcbeb80e62f8a2744121a91026f37b"
+								>e7b3248</a
+							>)
+						</li>
+						<li>
+							Bump joi from 18.2.3 to 18.2.8 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7a649c659e6d215c1eee92861e42da005a369bec"
+								>7a649c6</a
+							>)
+						</li>
+						<li>
+							Bump joi from 18.2.8 to 18.2.9 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/bf947eb84d318543c80d4825f5bb3e984d449cff"
+								>bf947eb</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.0.2 to 15.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ac33a53ca400f684150dbc318ef804acf2a5bd86"
+								>ac33a53</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.1.0 to 15.2.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e858d7c99bc0c50c7879395d81c9c5339489ef6e"
+								>e858d7c</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.2.0 to 15.2.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7a4dd3f27062d4947d5002c248426175e19a4f4a"
+								>7a4dd3f</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.2.1 to 15.2.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7020e7309a07dd2baecc048a16c77cda2b559841"
+								>7020e73</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.2.10 to 15.2.11 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/947f1e81c293f12ed2036473a94b2cc89daeac97"
+								>947f1e8</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.2.11 to 15.3.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a2c7386c167d1dd712c7812d2adb7b11310faf01"
+								>a2c7386</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.2.4 to 15.2.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/587a05cc3ab34cc6d5b6d2b99c4d5de820125384"
+								>587a05c</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.2.5 to 15.2.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d94607e453ee10664fe2e47ec658439f5bfa55fb"
+								>d94607e</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.2.6 to 15.2.7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/90970fade0aed1384548a2e3213e50ef31038fb4"
+								>90970fa</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.2.7 to 15.2.8 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/8bc34be92b0abdfcfa33c41b164f1c0da617adc0"
+								>8bc34be</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.2.8 to 15.2.9 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/1eeca6f5c320a84cf04ce591ca28ab650eae2ab2"
+								>1eeca6f</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.2.9 to 15.2.10 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/36a44535497fdea0221d3f15944015928b755903"
+								>36a4453</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.3.0 to 15.4.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/758547c44f7a9ce8d96cb51e5e1861b2723b33d1"
+								>758547c</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.4.0 to 15.4.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ef084a702d3d737176d71d11d0963896beaa6bad"
+								>ef084a7</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.4.1 to 15.4.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/77f6d034df05a0d830d166ec807393df38028c63"
+								>77f6d03</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.4.2 to 15.4.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/2284ad9485c137b87613d59f528c99f1d682dd54"
+								>2284ad9</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.4.3 to 15.5.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d85482503c80bb08d6719f40583a873d821ae3c7"
+								>d854825</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.5.0 to 15.5.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/22fc8e7d660598ffa3f0f4ea483096a39c000da3"
+								>22fc8e7</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.5.1 to 15.5.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/bd172d51372aa7e195c4eb7efca36cb601026114"
+								>bd172d5</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 15.5.2 to 16.2.7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/16cdbb3526910cff7cd1d4351b14d15acce1f8fb"
+								>16cdbb3</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 16.2.7 to 16.3.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a012ac5270de9d1985344a09183bbf63b77addef"
+								>a012ac5</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 16.3.1 to 16.3.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fc3b29bf056d7c8c1156ff7d13ab7a15c45971f6"
+								>fc3b29b</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 16.3.2 to 16.3.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/abdbb84227a03afe8b8caa155d0166310a2d0e28"
+								>abdbb84</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 16.3.3 to 16.4.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5900ff171e554a79a6d9a79c0bc4bf2e34933715"
+								>5900ff1</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 16.4.0 to 17.6.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/f93fd5afef134441dcbe0b1f5d32769171d44349"
+								>f93fd5a</a
+							>)
+						</li>
+						<li>
+							Bump lodash from 4.17.21 to 4.17.23 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c80eb9a98348c16a3ecbd9bce71411e37afdb363"
+								>c80eb9a</a
+							>)
+						</li>
+						<li>
+							Bump lodash from 4.17.23 to 4.18.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/b7f1f9b771995f78ce1de908565659d5991e65c6"
+								>b7f1f9b</a
+							>)
+						</li>
+						<li>
+							Bump marked from 10.0.0 to 11.0.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6b60ca50828f8866971a82b73a8a5062f7483fbe"
+								>6b60ca5</a
+							>)
+						</li>
+						<li>
+							Bump marked from 11.0.0 to 11.0.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/2e4f7188113c9ad866e78f01486fe010d21aebb3"
+								>2e4f718</a
+							>)
+						</li>
+						<li>
+							Bump marked from 11.0.1 to 11.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/51637ccf404bb2be9222b18ba5565e4e9d1de49d"
+								>51637cc</a
+							>)
+						</li>
+						<li>
+							Bump marked from 11.1.0 to 11.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fa417b31b09812679a445a89ba626b7c00f6946c"
+								>fa417b3</a
+							>)
+						</li>
+						<li>
+							Bump marked from 11.1.1 to 11.2.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/bf5a329246af99ee279a0683c2062e75830602a4"
+								>bf5a329</a
+							>)
+						</li>
+						<li>
+							Bump marked from 11.2.0 to 12.0.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d02ad866108f7b35904944314ae18902912fdee8"
+								>d02ad86</a
+							>)
+						</li>
+						<li>
+							Bump marked from 12.0.0 to 12.0.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/1ba462c1010a95f7b5a23381aaa8b364306fcd00"
+								>1ba462c</a
+							>)
+						</li>
+						<li>
+							Bump marked from 12.0.1 to 12.0.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/be2d3b440af66fa6cc235115cf6137cb6a6f3fb1"
+								>be2d3b4</a
+							>)
+						</li>
+						<li>
+							Bump marked from 12.0.2 to 13.0.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e1841f46d74b526331a37c8f48bc4d591b16739b"
+								>e1841f4</a
+							>)
+						</li>
+						<li>
+							Bump marked from 13.0.0 to 13.0.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a82595fc0b4a5a8f86389eef27dc448bb425159a"
+								>a82595f</a
+							>)
+						</li>
+						<li>
+							Bump marked from 13.0.1 to 13.0.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c07b212ebe97a1bbb5a9a82ae6208fc58b61b482"
+								>c07b212</a
+							>)
+						</li>
+						<li>
+							Bump marked from 13.0.2 to 13.0.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/07438a8f45209899f3cfcd466870c28bc69e321a"
+								>07438a8</a
+							>)
+						</li>
+						<li>
+							Bump marked from 13.0.3 to 14.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/aac51419065310f02f54ae579b0ba779208c15a9"
+								>aac5141</a
+							>)
+						</li>
+						<li>
+							Bump marked from 14.1.0 to 14.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/633c169056671a49966781757d428e528e5e5d4d"
+								>633c169</a
+							>)
+						</li>
+						<li>
+							Bump marked from 14.1.1 to 14.1.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e750784ba1afce572bbe191f407d62fc90ab9e9c"
+								>e750784</a
+							>)
+						</li>
+						<li>
+							Bump marked from 14.1.2 to 14.1.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/2c76a0b1651886b57de87be12ac0c59475fa7186"
+								>2c76a0b</a
+							>)
+						</li>
+						<li>
+							Bump marked from 14.1.3 to 14.1.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6d3ce0234107b94fde7d04340065754d43002ec0"
+								>6d3ce02</a
+							>)
+						</li>
+						<li>
+							Bump marked from 14.1.4 to 15.0.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/57ceccad18923332fb6178e7800801fb12595092"
+								>57cecca</a
+							>)
+						</li>
+						<li>
+							Bump marked from 15.0.10 to 15.0.11 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e3e7035d814ac21eaa1d501573c443229334a0fe"
+								>e3e7035</a
+							>)
+						</li>
+						<li>
+							Bump marked from 15.0.11 to 15.0.12 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/cc50d246fbdea114da3a111b3bd5e70cd31dd3a2"
+								>cc50d24</a
+							>)
+						</li>
+						<li>
+							Bump marked from 15.0.12 to 18.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/db975eb063634204c86f1943d787458931c3fe1e"
+								>db975eb</a
+							>)
+						</li>
+						<li>
+							Bump marked from 15.0.3 to 15.0.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ca03c48e5bfd296ca1a55eac5173da30d7a18715"
+								>ca03c48</a
+							>)
+						</li>
+						<li>
+							Bump marked from 15.0.4 to 15.0.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e618490039073d2507ea8e2873ee7e171bc0ae26"
+								>e618490</a
+							>)
+						</li>
+						<li>
+							Bump marked from 15.0.5 to 15.0.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e4916dfc3de49d9fe7a81fedc899c3b50b0d4323"
+								>e4916df</a
+							>)
+						</li>
+						<li>
+							Bump marked from 15.0.6 to 15.0.7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/0e8452471b362ab917a091ef1aec016bac908b35"
+								>0e84524</a
+							>)
+						</li>
+						<li>
+							Bump marked from 15.0.7 to 15.0.8 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c8200a9974e3be46ddfdbcc473f8440e2fbe593c"
+								>c8200a9</a
+							>)
+						</li>
+						<li>
+							Bump marked from 15.0.8 to 15.0.9 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/cf60238647aeeb6ccc777e31afe7f1ac96e3ef7a"
+								>cf60238</a
+							>)
+						</li>
+						<li>
+							Bump marked from 15.0.9 to 15.0.10 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fbecb4247cd609e0efd4c0c88b851862a3b6cfd1"
+								>fbecb42</a
+							>)
+						</li>
+						<li>
+							Bump marked from 9.1.5 to 9.1.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/cdb8c1d3b62224c67603c64c2319dd23b59286a4"
+								>cdb8c1d</a
+							>)
+						</li>
+						<li>
+							Bump marked from 9.1.6 to 10.0.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/42405c61ce4bf6cfdcb4da6fdb46d48ec10d6fd0"
+								>42405c6</a
+							>)
+						</li>
+						<li>
+							Bump picomatch from 4.0.3 to 4.0.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ae160898c4e75055fbca2b56f6a4540b310fd258"
+								>ae16089</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.0.3 to 3.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/86c7099c256a6138be2973636a17a1ef80dd1de1"
+								>86c7099</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.1.0 to 3.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/2370c7296b4a04304eaba741df5a11b5397dfb55"
+								>2370c72</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.1.1 to 3.2.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/073654d6602707558c3899ca6185d4082a984728"
+								>073654d</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.2.2 to 3.2.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/633505c8ef6e7c2e8c125065178a32499b4dbd82"
+								>633505c</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.2.4 to 3.2.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/f6e4683d4b59a00da9fb0411180cd5c18c364dca"
+								>f6e4683</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.2.5 to 3.3.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a960b589e4a2e79febd34d3b190728778d03e6be"
+								>a960b58</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.3.0 to 3.3.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ddb8caf72bd0ac9e23bc6c9dba5b03fe5c47f5c6"
+								>ddb8caf</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.3.1 to 3.3.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/243432e5218fea3d9826ccc47600f1f1a926a1f7"
+								>243432e</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.3.2 to 3.3.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/09ccb14b351dfdf9dfa2bc0961b8e2fda4b49a63"
+								>09ccb14</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.3.3 to 3.4.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/b4b1e56838a1866842e26dedca64b45aae5d4994"
+								>b4b1e56</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.4.0 to 3.4.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/8ec015e5e6654d0ada696814aa97878a61c6ee83"
+								>8ec015e</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.4.1 to 3.4.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/16c5af0a30c2087507331b11da0f6d52f2684899"
+								>16c5af0</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.4.2 to 3.5.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/2d4f2541daf47d37380908e0d87eadafc54c32fe"
+								>2d4f254</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.5.0 to 3.5.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/4ec9bdb40872c7498bf4c55a8d61d4395e603932"
+								>4ec9bdb</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.5.1 to 3.5.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/735f160c2af9066cc5598055760d7978b1140bb2"
+								>735f160</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.5.2 to 3.5.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c01e8878decf72d5902235213297d6715fe74f33"
+								>c01e887</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.5.3 to 3.6.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/8ef65a56d3d5de3bff2546feb7bb251136124a7d"
+								>8ef65a5</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.6.0 to 3.6.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/3bcdb421ee0eaaf681c9dc0f0c11a852d08fa3ba"
+								>3bcdb42</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.6.1 to 3.6.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/8d5a9fc6faac8cf0bc669bf867fda5322a89c9fe"
+								>8d5a9fc</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.6.2 to 3.7.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7d07b6bec1bd9f553a43659bbb4ff01db884ddc9"
+								>7d07b6b</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.7.0 to 3.7.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/b36c2a97c28ba7530a15eb806fe29036c1ac8b46"
+								>b36c2a9</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.7.1 to 3.7.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e2e4885afd44fd06d3db1e9930491b27e039b5eb"
+								>e2e4885</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.7.3 to 3.7.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/80a22cd8221f6a1c0e9d99d0eb578741b63ccd63"
+								>80a22cd</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.7.4 to 3.8.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/04b1c2a69f0f52b941364e527dfe59e774ede0b1"
+								>04b1c2a</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.8.0 to 3.8.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/db5cb8801c149e7753c84ef9c89b0962825507d2"
+								>db5cb88</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.8.1 to 3.8.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/af6a54dfe155106ec507d322fe7f58f56f3b49f1"
+								>af6a54d</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.8.2 to 3.8.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a598a99fba2bd3907fe66e54c3599b9324b75ad9"
+								>a598a99</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.8.3 to 3.8.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/f1062fe732a9b822fb10abfd565aee1d7a45c6f9"
+								>f1062fe</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.8.4 to 3.9.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/66bb8b204ad168b13be4dfb9a47f699e20d05ea9"
+								>66bb8b2</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.9.1 to 3.9.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/0152d630ed6b4be4f04f3cecb3dca93bf59855f2"
+								>0152d63</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.9.4 to 3.9.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/f9a66c6f21346984c91b56408978ecdf2aa2d14b"
+								>f9a66c6</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.9.5 to 3.9.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/609bd4c9b4729394969f7555fff0337060d919af"
+								>609bd4c</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.9.6 to 3.9.8 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/00ab0077a01958e8f6246f42995fb65c29fc239f"
+								>00ab007</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.9.8 to 3.9.9 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/cd2fc4783f8debf23a4509562bd2ff8388ead1f0"
+								>cd2fc47</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 3.9.9 to 3.9.10 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/33e078fc6b5c0b6445aa67a7d44387ce120866e8"
+								>33e078f</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.0.1 to 2.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6e1f9b0f33aa0406421538c8104360af17e0f33b"
+								>6e1f9b0</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.1.0 to 2.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/64abe611b440e5d36830bfa8acf1808dbc139c7c"
+								>64abe61</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.1.1 to 2.1.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/65fd8b7b36b3deddbc353eba89988d4fcef8b5a9"
+								>65fd8b7</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.1.2 to 2.1.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/8af113f46787be49543aa651ecef8b2d73034cd3"
+								>8af113f</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.1.3 to 2.1.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/21bb0bbb8d1530de4a9903d6bcb5af94ac25c1a6"
+								>21bb0bb</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.1.4 to 2.1.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e7fd0ffafdb7409605571682bbeea84293839b5e"
+								>e7fd0ff</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.1.5 to 2.2.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c1214575ccaa080d1050ab78f30a5d23fdb2955d"
+								>c121457</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.2.0 to 2.2.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/f71893f613375dd0ae93ba294590457387cc65f4"
+								>f71893f</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.2.1 to 2.2.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/5cc550041bec80ce1dbe494b93f1b52af11a17f9"
+								>5cc5500</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.2.2 to 2.2.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/28a421db212f0d4aee07241e519121577558591f"
+								>28a421d</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.2.3 to 2.2.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/56ebba91f2266f46b31cf664eab946b7e49de201"
+								>56ebba9</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.2.4 to 2.2.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/b82d5e6aa886cc1be0e7a66f50d59c84de928c4c"
+								>b82d5e6</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.2.5 to 2.2.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7937e902f09d0a9d1c3788e34a97334103953ab6"
+								>7937e90</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 2.2.6 to 2.3.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/8e60dcca4dcf494ac16e355ecff385c5fe2a22dd"
+								>8e60dcc</a
+							>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump @prettier/plugin-xml from 3.2.1 to 3.2.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/117"
+								>#117</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/40f758664879975bc463a6d47bdc180a40520a87">40f7586</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump lint-staged from 14.0.1 to 15.0.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/114"
+								>#114</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/da15bd7b5804609437df38b05beea3bdc04948f9">da15bd7</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump lint-staged from 15.0.1 to 15.0.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/116"
+								>#116</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/d7c4275b901bcda774749ed2c175624626b46bb5">d7c4275</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 9.0.3 to 9.1.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/111"
+								>#111</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/dfded7362e8675c522ff5fd37dea1a03cb32bec0">dfded73</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 9.1.0 to 9.1.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/113"
+								>#113</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/569a02c585047c39660eb973aea468ddf4fb4292">569a02c</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 9.1.1 to 9.1.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/115"
+								>#115</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/5d9d122961a0b10b3f6c9641c89fe0fa9ba006ae">5d9d122</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 9.1.2 to 9.1.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/118"
+								>#118</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/17eb45bceed5ce45b022ba18d9bdd9fc65053f82">17eb45b</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 9.1.3 to 9.1.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/119"
+								>#119</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/44bdbefbdaa73361c9bd9b76b7781a6932fa1d66">44bdbef</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 9.1.4 to 9.1.5 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/120"
+								>#120</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c15a36f09ca24078b3df357a5f06f06e8063ac1b">c15a36f</a>)
+						</li>
+						<li>
+							<strong>follow-redirects:</strong> Bump follow-redirects from 1.15.11 to 1.16.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/286"
+								>#286</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/be89944309c0af7fbc78d4030856a89f9aa68144">be89944</a>)
+						</li>
+						<li>
+							<strong>follow-redirects:</strong> Bump follow-redirects from 1.15.3 to 1.15.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/133"
+								>#133</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/6f748d12c1826a8cf6e35c47977f9612e3fedb21">6f748d1</a>)
+						</li>
+						<li>
+							<strong>follow-redirects:</strong> Bump follow-redirects from 1.15.4 to 1.15.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/151"
+								>#151</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/fc023d601806eeca8e289540671eca977376c03c">fc023d6</a>)
+						</li>
+						<li>
+							<strong>follow-redirects:</strong> Bump follow-redirects from 1.16.0 to 1.16.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/334"
+								>#334</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e1d4e8b6747dd503202aa2a0380b688fb1fd501b">e1d4e8b</a>)
+						</li>
+						<li>
+							<strong>form-data:</strong> Bump form-data from 4.0.0 to 4.0.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/239"
+								>#239</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e605aa32a8bc02a8914384de329f535b7a5ef3aa">e605aa3</a>)
+						</li>
+						<li>
+							<strong>form-data:</strong> Bump form-data from 4.0.5 to 4.0.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/299"
+								>#299</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a6d75c5e532b8d16a71fb8b8ca24ce079921b04f">a6d75c5</a>)
+						</li>
+						<li>
+							<strong>github:</strong> Add local branch deletion script (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fe6cded53a22553caf8fd72158c539b0b79d06aa"
+								>fe6cded</a
+							>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 8.0.3 to 9.0.6 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/138"
+								>#138</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/3fa55032b3ed97cdb428a19d92d18a8cca6f0cd2">3fa5503</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 9.0.10 to 9.0.11 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/148"
+								>#148</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f465e683366480e2b5619a497abd25532bf850d1">f465e68</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 9.0.11 to 9.1.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/171"
+								>#171</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c391455244f62f5dad2dc23f8c6fb508b3057507">c391455</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 9.0.6 to 9.0.7 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/140"
+								>#140</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/961b7267e5f73c03e8b88202221a7f60c9716f73">961b726</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 9.0.7 to 9.0.10 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/143"
+								>#143</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c198edb6dd3525d11dd65b4afe054a6ee7771d8c">c198edb</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 9.1.1 to 9.1.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/172"
+								>#172</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/99923204f95d851fe364058f56b9c8ef5b69a5dc">9992320</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 9.1.2 to 9.1.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/174"
+								>#174</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a5c3a98e2895bcd0cf671b192f18f8cf30d67ae8">a5c3a98</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 9.1.3 to 9.1.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/175"
+								>#175</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/b4e99a87c65cfed5fc5cfcf350b5d6aaf75c9348">b4e99a8</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 9.1.4 to 9.1.5 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/179"
+								>#179</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/24c4ca4ab282e8fb9d26c153502fb5cf94a3ebc8">24c4ca4</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 9.1.5 to 9.1.6 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/185"
+								>#185</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/2c8c4be73f8af54f6a0ac1bd6642b6facce9e399">2c8c4be</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Bump husky from 9.1.6 to 9.1.7 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/195"
+								>#195</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e7b32485e7bcbeb80e62f8a2744121a91026f37b">e7b3248</a>)
+						</li>
+						<li>
+							<strong>husky:</strong> Update husky pre-commit (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/336">#336</a>)
+							(<a href="https://github.com/dschach/salesforce-trigger-framework/commit/75a3c5522d387d717cf6941bc8bdcda5019998ce">75a3c55</a>)
+						</li>
+						<li>
+							<strong>joi:</strong> Bump joi from 18.2.3 to 18.2.8 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/317"
+								>#317</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/7a649c659e6d215c1eee92861e42da005a369bec">7a649c6</a>)
+						</li>
+						<li>
+							<strong>joi:</strong> Bump joi from 18.2.8 to 18.2.9 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/327"
+								>#327</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/bf947eb84d318543c80d4825f5bb3e984d449cff">bf947eb</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.0.2 to 15.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/124"
+								>#124</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ac33a53ca400f684150dbc318ef804acf2a5bd86">ac33a53</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.1.0 to 15.2.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/127"
+								>#127</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e858d7c99bc0c50c7879395d81c9c5339489ef6e">e858d7c</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.0 to 15.2.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/141"
+								>#141</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/7a4dd3f27062d4947d5002c248426175e19a4f4a">7a4dd3f</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.1 to 15.2.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/146"
+								>#146</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/7020e7309a07dd2baecc048a16c77cda2b559841">7020e73</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.10 to 15.2.11 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/202"
+								>#202</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/947f1e81c293f12ed2036473a94b2cc89daeac97">947f1e8</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.11 to 15.3.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/204"
+								>#204</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a2c7386c167d1dd712c7812d2adb7b11310faf01">a2c7386</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.2 to 15.2.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/160"
+								>#160</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/7d87961ba1b568636d7bf247bdb71bd4a2a8d71d">7d87961</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.4 to 15.2.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/161"
+								>#161</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/587a05cc3ab34cc6d5b6d2b99c4d5de820125384">587a05c</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.5 to 15.2.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/165"
+								>#165</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/d94607e453ee10664fe2e47ec658439f5bfa55fb">d94607e</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.6 to 15.2.7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/167"
+								>#167</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/90970fade0aed1384548a2e3213e50ef31038fb4">90970fa</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.7 to 15.2.8 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/176"
+								>#176</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8bc34be92b0abdfcfa33c41b164f1c0da617adc0">8bc34be</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.8 to 15.2.9 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/178"
+								>#178</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/1eeca6f5c320a84cf04ce591ca28ab650eae2ab2">1eeca6f</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.2.9 to 15.2.10 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/182"
+								>#182</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/36a44535497fdea0221d3f15944015928b755903">36a4453</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.3.0 to 15.4.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/207"
+								>#207</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/758547c44f7a9ce8d96cb51e5e1861b2723b33d1">758547c</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.4.0 to 15.4.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/208"
+								>#208</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ef084a702d3d737176d71d11d0963896beaa6bad">ef084a7</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.4.1 to 15.4.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/209"
+								>#209</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/77f6d034df05a0d830d166ec807393df38028c63">77f6d03</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.4.2 to 15.4.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/210"
+								>#210</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/2284ad9485c137b87613d59f528c99f1d682dd54">2284ad9</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.4.3 to 15.5.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/220"
+								>#220</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/d85482503c80bb08d6719f40583a873d821ae3c7">d854825</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.5.0 to 15.5.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/223"
+								>#223</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/22fc8e7d660598ffa3f0f4ea483096a39c000da3">22fc8e7</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.5.1 to 15.5.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/227"
+								>#227</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/bd172d51372aa7e195c4eb7efca36cb601026114">bd172d5</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 15.5.2 to 16.2.7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/257"
+								>#257</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/16cdbb3526910cff7cd1d4351b14d15acce1f8fb">16cdbb3</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 16.2.7 to 16.3.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/270"
+								>#270</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a012ac5270de9d1985344a09183bbf63b77addef">a012ac5</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 16.3.1 to 16.3.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/271"
+								>#271</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/fc3b29bf056d7c8c1156ff7d13ab7a15c45971f6">fc3b29b</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 16.3.2 to 16.3.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/273"
+								>#273</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/abdbb84227a03afe8b8caa155d0166310a2d0e28">abdbb84</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 16.3.3 to 16.4.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/274"
+								>#274</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/5900ff171e554a79a6d9a79c0bc4bf2e34933715">5900ff1</a>)
+						</li>
+						<li>
+							<strong>lint-staged:</strong> Bump lint-staged from 16.4.0 to 17.6.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/324"
+								>#324</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f93fd5afef134441dcbe0b1f5d32769171d44349">f93fd5a</a>)
+						</li>
+						<li>
+							<strong>lodash:</strong> Bump lodash from 4.17.21 to 4.17.23 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/266"
+								>#266</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c80eb9a98348c16a3ecbd9bce71411e37afdb363">c80eb9a</a>)
+						</li>
+						<li>
+							<strong>lodash:</strong> Bump lodash from 4.17.23 to 4.18.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/282"
+								>#282</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/b7f1f9b771995f78ce1de908565659d5991e65c6">b7f1f9b</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 10.0.0 to 11.0.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/125"
+								>#125</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/6b60ca50828f8866971a82b73a8a5062f7483fbe">6b60ca5</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 11.0.0 to 11.0.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/128"
+								>#128</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/2e4f7188113c9ad866e78f01486fe010d21aebb3">2e4f718</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 11.0.1 to 11.1.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/131"
+								>#131</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/51637ccf404bb2be9222b18ba5565e4e9d1de49d">51637cc</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 11.1.0 to 11.1.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/132"
+								>#132</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/fa417b31b09812679a445a89ba626b7c00f6946c">fa417b3</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 11.1.1 to 11.2.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/139"
+								>#139</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/bf5a329246af99ee279a0683c2062e75830602a4">bf5a329</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 11.2.0 to 12.0.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/144"
+								>#144</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/d02ad866108f7b35904944314ae18902912fdee8">d02ad86</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 12.0.0 to 12.0.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/150"
+								>#150</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/1ba462c1010a95f7b5a23381aaa8b364306fcd00">1ba462c</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 12.0.1 to 12.0.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/155"
+								>#155</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/be2d3b440af66fa6cc235115cf6137cb6a6f3fb1">be2d3b4</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 12.0.2 to 13.0.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/166"
+								>#166</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e1841f46d74b526331a37c8f48bc4d591b16739b">e1841f4</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 13.0.0 to 13.0.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/168"
+								>#168</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a82595fc0b4a5a8f86389eef27dc448bb425159a">a82595f</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 13.0.1 to 13.0.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/169"
+								>#169</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c07b212ebe97a1bbb5a9a82ae6208fc58b61b482">c07b212</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 13.0.2 to 13.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/173"
+								>#173</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/07438a8f45209899f3cfcd466870c28bc69e321a">07438a8</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 13.0.3 to 14.1.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/181"
+								>#181</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/aac51419065310f02f54ae579b0ba779208c15a9">aac5141</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 14.1.0 to 14.1.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/183"
+								>#183</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/633c169056671a49966781757d428e528e5e5d4d">633c169</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 14.1.1 to 14.1.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/184"
+								>#184</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e750784ba1afce572bbe191f407d62fc90ab9e9c">e750784</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 14.1.2 to 14.1.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/187"
+								>#187</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/2c76a0b1651886b57de87be12ac0c59475fa7186">2c76a0b</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 14.1.3 to 14.1.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/189"
+								>#189</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/6d3ce0234107b94fde7d04340065754d43002ec0">6d3ce02</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 14.1.4 to 15.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/199"
+								>#199</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/57ceccad18923332fb6178e7800801fb12595092">57cecca</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 15.0.10 to 15.0.11 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/226"
+								>#226</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e3e7035d814ac21eaa1d501573c443229334a0fe">e3e7035</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 15.0.11 to 15.0.12 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/229"
+								>#229</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/cc50d246fbdea114da3a111b3bd5e70cd31dd3a2">cc50d24</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 15.0.12 to 18.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/329"
+								>#329</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/db975eb063634204c86f1943d787458931c3fe1e">db975eb</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 15.0.3 to 15.0.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/203"
+								>#203</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ca03c48e5bfd296ca1a55eac5173da30d7a18715">ca03c48</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 15.0.4 to 15.0.5 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/205"
+								>#205</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e618490039073d2507ea8e2873ee7e171bc0ae26">e618490</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 15.0.5 to 15.0.6 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/206"
+								>#206</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e4916dfc3de49d9fe7a81fedc899c3b50b0d4323">e4916df</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 15.0.6 to 15.0.7 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/213"
+								>#213</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/0e8452471b362ab917a091ef1aec016bac908b35">0e84524</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 15.0.7 to 15.0.8 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/222"
+								>#222</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c8200a9974e3be46ddfdbcc473f8440e2fbe593c">c8200a9</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 15.0.8 to 15.0.9 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/224"
+								>#224</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/cf60238647aeeb6ccc777e31afe7f1ac96e3ef7a">cf60238</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 15.0.9 to 15.0.10 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/225"
+								>#225</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/fbecb4247cd609e0efd4c0c88b851862a3b6cfd1">fbecb42</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 9.1.5 to 9.1.6 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/121"
+								>#121</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/cdb8c1d3b62224c67603c64c2319dd23b59286a4">cdb8c1d</a>)
+						</li>
+						<li>
+							<strong>marked:</strong> Bump marked from 9.1.6 to 10.0.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/123"
+								>#123</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/42405c61ce4bf6cfdcb4da6fdb46d48ec10d6fd0">42405c6</a>)
+						</li>
+						<li>
+							<strong>picomatch:</strong> Bump picomatch from 4.0.3 to 4.0.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/276"
+								>#276</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ae160898c4e75055fbca2b56f6a4540b310fd258">ae16089</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.0.1 to 2.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/149"
+								>#149</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/6e1f9b0f33aa0406421538c8104360af17e0f33b">6e1f9b0</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.1.0 to 2.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/156"
+								>#156</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/64abe611b440e5d36830bfa8acf1808dbc139c7c">64abe61</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.1.1 to 2.1.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/157"
+								>#157</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/65fd8b7b36b3deddbc353eba89988d4fcef8b5a9">65fd8b7</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.1.2 to 2.1.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/158"
+								>#158</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8af113f46787be49543aa651ecef8b2d73034cd3">8af113f</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.1.3 to 2.1.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/159"
+								>#159</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/21bb0bbb8d1530de4a9903d6bcb5af94ac25c1a6">21bb0bb</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.1.4 to 2.1.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/186"
+								>#186</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e7fd0ffafdb7409605571682bbeea84293839b5e">e7fd0ff</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.1.5 to 2.2.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/188"
+								>#188</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c1214575ccaa080d1050ab78f30a5d23fdb2955d">c121457</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.2.0 to 2.2.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/190"
+								>#190</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f71893f613375dd0ae93ba294590457387cc65f4">f71893f</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.2.1 to 2.2.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/192"
+								>#192</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/5cc550041bec80ce1dbe494b93f1b52af11a17f9">5cc5500</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.2.2 to 2.2.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/211"
+								>#211</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/28a421db212f0d4aee07241e519121577558591f">28a421d</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.2.3 to 2.2.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/212"
+								>#212</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/56ebba91f2266f46b31cf664eab946b7e49de201">56ebba9</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.2.4 to 2.2.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/218"
+								>#218</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/b82d5e6aa886cc1be0e7a66f50d59c84de928c4c">b82d5e6</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.2.5 to 2.2.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/221"
+								>#221</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/7937e902f09d0a9d1c3788e34a97334103953ab6">7937e90</a>)
+						</li>
+						<li>
+							<strong>prettier-plugin-apex:</strong> Bump prettier-plugin-apex from 2.2.6 to 2.3.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/301"
+								>#301</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8e60dcca4dcf494ac16e355ecff385c5fe2a22dd">8e60dcc</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.0.3 to 3.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/122"
+								>#122</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/86c7099c256a6138be2973636a17a1ef80dd1de1">86c7099</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.1.0 to 3.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/129"
+								>#129</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/2370c7296b4a04304eaba741df5a11b5397dfb55">2370c72</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.1.1 to 3.2.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/134"
+								>#134</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/073654d6602707558c3899ca6185d4082a984728">073654d</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.2.2 to 3.2.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/135"
+								>#135</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/633505c8ef6e7c2e8c125065178a32499b4dbd82">633505c</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.2.4 to 3.2.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/145"
+								>#145</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f6e4683d4b59a00da9fb0411180cd5c18c364dca">f6e4683</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.2.5 to 3.3.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/162"
+								>#162</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a960b589e4a2e79febd34d3b190728778d03e6be">a960b58</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.3.0 to 3.3.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/163"
+								>#163</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ddb8caf72bd0ac9e23bc6c9dba5b03fe5c47f5c6">ddb8caf</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.3.1 to 3.3.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/164"
+								>#164</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/243432e5218fea3d9826ccc47600f1f1a926a1f7">243432e</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.3.2 to 3.3.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/170"
+								>#170</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/09ccb14b351dfdf9dfa2bc0961b8e2fda4b49a63">09ccb14</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.3.3 to 3.4.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/197"
+								>#197</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/b4b1e56838a1866842e26dedca64b45aae5d4994">b4b1e56</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.4.0 to 3.4.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/198"
+								>#198</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8ec015e5e6654d0ada696814aa97878a61c6ee83">8ec015e</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.4.1 to 3.4.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/201"
+								>#201</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/16c5af0a30c2087507331b11da0f6d52f2684899">16c5af0</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.4.2 to 3.5.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/214"
+								>#214</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/2d4f2541daf47d37380908e0d87eadafc54c32fe">2d4f254</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.5.0 to 3.5.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/215"
+								>#215</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/4ec9bdb40872c7498bf4c55a8d61d4395e603932">4ec9bdb</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.5.1 to 3.5.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/216"
+								>#216</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/735f160c2af9066cc5598055760d7978b1140bb2">735f160</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.5.2 to 3.5.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/217"
+								>#217</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c01e8878decf72d5902235213297d6715fe74f33">c01e887</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.5.3 to 3.6.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/232"
+								>#232</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8ef65a56d3d5de3bff2546feb7bb251136124a7d">8ef65a5</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.6.0 to 3.6.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/233"
+								>#233</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/3bcdb421ee0eaaf681c9dc0f0c11a852d08fa3ba">3bcdb42</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.6.1 to 3.6.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/234"
+								>#234</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8d5a9fc6faac8cf0bc669bf867fda5322a89c9fe">8d5a9fc</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.6.2 to 3.7.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/260"
+								>#260</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/7d07b6bec1bd9f553a43659bbb4ff01db884ddc9">7d07b6b</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.7.0 to 3.7.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/261"
+								>#261</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/b36c2a97c28ba7530a15eb806fe29036c1ac8b46">b36c2a9</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.7.1 to 3.7.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/262"
+								>#262</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/e2e4885afd44fd06d3db1e9930491b27e039b5eb">e2e4885</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.7.3 to 3.7.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/263"
+								>#263</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/80a22cd8221f6a1c0e9d99d0eb578741b63ccd63">80a22cd</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.7.4 to 3.8.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/265"
+								>#265</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/04b1c2a69f0f52b941364e527dfe59e774ede0b1">04b1c2a</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.8.0 to 3.8.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/267"
+								>#267</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/db5cb8801c149e7753c84ef9c89b0962825507d2">db5cb88</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.8.1 to 3.8.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/284"
+								>#284</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/af6a54dfe155106ec507d322fe7f58f56f3b49f1">af6a54d</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.8.2 to 3.8.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/285"
+								>#285</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a598a99fba2bd3907fe66e54c3599b9324b75ad9">a598a99</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.8.3 to 3.8.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/298"
+								>#298</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f1062fe732a9b822fb10abfd565aee1d7a45c6f9">f1062fe</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.8.4 to 3.9.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/302"
+								>#302</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/66bb8b204ad168b13be4dfb9a47f699e20d05ea9">66bb8b2</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.9.1 to 3.9.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/303"
+								>#303</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/0152d630ed6b4be4f04f3cecb3dca93bf59855f2">0152d63</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.9.4 to 3.9.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/305"
+								>#305</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f9a66c6f21346984c91b56408978ecdf2aa2d14b">f9a66c6</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.9.5 to 3.9.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/307"
+								>#307</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/609bd4c9b4729394969f7555fff0337060d919af">609bd4c</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.9.6 to 3.9.8 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/321"
+								>#321</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/00ab0077a01958e8f6246f42995fb65c29fc239f">00ab007</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.9.8 to 3.9.9 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/323"
+								>#323</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/cd2fc4783f8debf23a4509562bd2ff8388ead1f0">cd2fc47</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Bump prettier from 3.9.9 to 3.9.10 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/328"
+								>#328</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/33e078fc6b5c0b6445aa67a7d44387ce120866e8">33e078f</a>)
+						</li>
+					</ul>
+					<h3>Continuous Integration</h3>
+					<ul>
+						<li>
+							<strong>actions/cache:</strong> Bump actions/cache from 3 to 4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/136"
+								>#136</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/736f0d3d108588ad7fd0a17654562eef0df237a0">736f0d3</a>)
+						</li>
+						<li>
+							<strong>actions/cache:</strong> Bump actions/cache from 4 to 6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/332"
+								>#332</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/42a5f001370c31126940411ec9bd4fd614fe0a79">42a5f00</a>)
+						</li>
+						<li>
+							<strong>actions/checkout:</strong> Bump actions/checkout from 4 to 6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/258"
+								>#258</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/4886867c28ad2985919b1faa596c4bb0800441a8">4886867</a>)
+						</li>
+						<li>
+							<strong>actions/checkout:</strong> Update actions/checkout action from v6 to v7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/340"
+								>#340</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8bd9f5fe2caacbc70a1d3125b62aaa5ca0dfb801">8bd9f5f</a>)
+						</li>
+						<li>
+							Bump actions/cache from 3 to 4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/736f0d3d108588ad7fd0a17654562eef0df237a0"
+								>736f0d3</a
+							>)
+						</li>
+						<li>
+							Bump actions/cache from 4 to 6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/42a5f001370c31126940411ec9bd4fd614fe0a79"
+								>42a5f00</a
+							>)
+						</li>
+						<li>
+							Bump actions/checkout from 4 to 6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/4886867c28ad2985919b1faa596c4bb0800441a8"
+								>4886867</a
+							>)
+						</li>
+						<li>
+							Bump codecov/codecov-action from 3 to 4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fc459d377dcdcec3d034cdfd3f8d8b91b2a8553f"
+								>fc459d3</a
+							>)
+						</li>
+						<li>
+							Bump codecov/codecov-action from 4 to 5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/04b67ec37576f3820ab87d081bd75a92c6bcdf4e"
+								>04b67ec</a
+							>)
+						</li>
+						<li>
+							Bump codecov/codecov-action from 5 to 7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/54e3856735d3aa23e771bc8da9a9f5051f97cce3"
+								>54e3856</a
+							>)
+						</li>
+						<li>
+							Bump dependabot/fetch-metadata from 1 to 2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/91f18a62c5a9ca3dcf6072d7302394c7f4bb8ea7"
+								>91f18a6</a
+							>)
+						</li>
+						<li>
+							Bump googleapis/release-please-action from 4 to 5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/cecca55424ac5b28cd1d3ea6c699391ee617c4f0"
+								>cecca55</a
+							>)
+						</li>
+						<li>
+							Bump volta-cli/action from 4 to 5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/bb8708a3f1fc614ece9a27f219b5c8e84de64b4d"
+								>bb8708a</a
+							>)
+						</li>
+						<li>
+							<strong>codecov/codecov-action:</strong> Bump codecov/codecov-action from 3 to 4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/142"
+								>#142</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/fc459d377dcdcec3d034cdfd3f8d8b91b2a8553f">fc459d3</a>)
+						</li>
+						<li>
+							<strong>codecov/codecov-action:</strong> Bump codecov/codecov-action from 4 to 5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/193"
+								>#193</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/04b67ec37576f3820ab87d081bd75a92c6bcdf4e">04b67ec</a>)
+						</li>
+						<li>
+							<strong>codecov/codecov-action:</strong> Bump codecov/codecov-action from 5 to 7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/331"
+								>#331</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/54e3856735d3aa23e771bc8da9a9f5051f97cce3">54e3856</a>)
+						</li>
+						<li>
+							<strong>codecov:</strong> Add codecov config items (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/335">#335</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/d9c943a28178f4edb4a8e09342bfc4885d78a8d4">d9c943a</a>)
+						</li>
+						<li>
+							<strong>codecov:</strong> Rename codecov config file (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/01f8f11239a4d9e2972c1305ca49ea0a64fcec9c"
+								>01f8f11</a
+							>)
+						</li>
+						<li>
+							<strong>dependabot/fetch-metadata:</strong> Bump dependabot/fetch-metadata from 1 to 2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/152"
+								>#152</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/91f18a62c5a9ca3dcf6072d7302394c7f4bb8ea7">91f18a6</a>)
+						</li>
+						<li>
+							<strong>dependabot:</strong> Enable PR renaming (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/198c708290f16bc58fd7de483244011034e65abe"
+								>198c708</a
+							>)
+						</li>
+						<li>
+							<strong>dependabot:</strong> Run renaming only for Dependabot PRs (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/def51d38f414606db1cea63fcd3b97c64dd80b18"
+								>def51d3</a
+							>)
+						</li>
+						<li>
+							<strong>dependabot:</strong> Use the x2od reusable Dependabot workflow (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/330"
+								>#330</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/5c396c2ab7846001ca916d6613f8236b0f460aa6">5c396c2</a>)
+						</li>
+						<li>
+							<strong>dependabot:</strong> Use the x2od reusable Dependabot workflow (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/337"
+								>#337</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/4033bd23b65d5085a64c20377fdc75df07e6e4b9">4033bd2</a>)
+						</li>
+						<li>
+							Document the pull_request_target policy and rename the Dependabot workflow (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/74b42e4356ade526dbc57ce900198572e07577f6"
+								>74b42e4</a
+							>)
+						</li>
+						<li>
+							<strong>google-github-actions/release-please-action:</strong> Bump google-github-actions/release-please-action from 3 to 4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/126"
+								>#126</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8baad40defa1f00822b2238f86c08f220da3351f">8baad40</a>)
+						</li>
+						<li>
+							<strong>googleapis/release-please-action:</strong> Bump googleapis/release-please-action from 4 to 5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/289"
+								>#289</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/cecca55424ac5b28cd1d3ea6c699391ee617c4f0">cecca55</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Update .prettierignore to include package-lock.json (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c2bc9a1b88c36a0a59e221206c0eec936181742c"
+								>c2bc9a1</a
+							>)
+						</li>
+						<li>
+							<strong>release-please:</strong> Use new Release-Please organization (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/200"
+								>#200</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/dc7ce8754e492c06b643a552104323b902d61170">dc7ce87</a>)
+						</li>
+						<li>
+							<strong>volta-cli/action:</strong> Bump volta-cli/action from 4 to 5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/278"
+								>#278</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/bb8708a3f1fc614ece9a27f219b5c8e84de64b4d">bb8708a</a>)
+						</li>
+						<li>
+							<strong>workflow security:</strong> Document pull_request_target policy, rename Dependabot workflow (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/338"
+								>#338</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/74b42e4356ade526dbc57ce900198572e07577f6">74b42e4</a>)
+						</li>
+					</ul>
+					<h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.1.1...v1.2.0">1.2.0</a> (2023-10-04)</h2>
+					<h3>Features</h3>
+					<ul>
+						<li>
+							Allow chaining for limits, debug, max loop (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/106">#106</a>) (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/094412afd63fec18d56d882b196a7412b326d1a5"
+								>094412a</a
+							>)
+						</li>
+					</ul>
+					<h3>Performance Improvements</h3>
+					<ul>
+						<li>
+							Disable CI scratch org source tracking (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fcb33bce6c53a2786197290db5ae0a74147ee956"
+								>fcb33bc</a
+							>)
+						</li>
+					</ul>
+					<h3>Miscellaneous Chores</h3>
+					<ul>
+						<li>
+							API to 58.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/110">#110</a>) (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fcb33bce6c53a2786197290db5ae0a74147ee956"
+								>fcb33bc</a
+							>)
+						</li>
+					</ul>
+					<h3>Documentation</h3>
+					<ul>
+						<li>
+							Update ApexDocs, method documentation (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/109">#109</a>) (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6a29eb9d5f8efe16a94137c67bbf29db8d0e6fc8"
+								>6a29eb9</a
+							>)
+						</li>
+					</ul>
+					<h3>Continuous Integration</h3>
+					<ul>
+						<li>
+							<strong>release-please:</strong> Add release type (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/108">#108</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/55549bd8e18f0e0dcc3f84b318a7a846ffc5ad95">55549bd</a>)
+						</li>
+					</ul>
+					<h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.1.0...v1.1.1">1.1.1</a> (2023-09-21)</h2>
+					<h3>Bug Fixes</h3>
+					<ul>
+						<li>
+							<strong>docs:</strong> Fix link to andFinally reference (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/2c055b0605320c89e7e371dbe8c3bcc4894dd769"
+								>2c055b0</a
+							>)
+						</li>
+						<li>
+							<strong>pmd:</strong> Update PMD run to v7 syntax (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/dee76611729a35a903e3d545cd06f98413c2d649"
+								>dee7661</a
+							>)
+						</li>
+					</ul>
+					<h3>Performance Improvements</h3>
+					<ul>
+						<li>
+							Get handler name faster (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/105">#105</a>) (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/2954f3335f402befccb930ab318ca08407269562"
+								>2954f33</a
+							>)
+						</li>
+					</ul>
+					<h3>Documentation</h3>
+					<ul>
+						<li>
+							Sample handler docs cleanup (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/af0292e704da7bcc0fab60e4651a983961dfe85a"
+								>af0292e</a
+							>)
+						</li>
+					</ul>
+					<h3>Build System</h3>
+					<ul>
+						<li>
+							<strong>deps-dev:</strong> Bump @prettier/plugin-xml from 2.2.0 to 3.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/81"
+								>#81</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/56be29f3124e4ded24f68df879c5be7a4e4df3f0">56be29f</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump @prettier/plugin-xml from 3.1.0 to 3.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/82"
+								>#82</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/d8d052ee8591ef29f88feca8604d4335df287713">d8d052e</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump @prettier/plugin-xml from 3.1.1 to 3.2.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/88"
+								>#88</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f91b6be642dfa5c707c1db3e39774190ed03d22e">f91b6be</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump @prettier/plugin-xml from 3.2.0 to 3.2.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/102"
+								>#102</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/50f9740c868ef80ff1b2b4f57452da95064584e1">50f9740</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump lint-staged from 13.1.2 to 13.2.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/57"
+								>#57</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/27b52a5feb5e4d534e5c3ebbbc8c575c329f6bf9">27b52a5</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump lint-staged from 13.2.0 to 13.2.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/63"
+								>#63</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f47f458674636ee4a3fb5e567b7d58e8a33d4d4b">f47f458</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump lint-staged from 13.2.1 to 13.2.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/67"
+								>#67</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/9035084aeb1880e5932d1690dadedeb6a50a1f6a">9035084</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump lint-staged from 13.2.2 to 13.2.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/77"
+								>#77</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/236af4dc9cd192f9280e29b5d289861d97c15c24">236af4d</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump lint-staged from 13.2.3 to 14.0.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/91"
+								>#91</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/bf85a7688bd58bff1d68ac58d79180b99b6653bc">bf85a76</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump lint-staged from 14.0.0 to 14.0.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/95"
+								>#95</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c560abdb15cd402dca4f9508e5f83ba931f0e774">c560abd</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 4.2.12 to 4.3.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/60"
+								>#60</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/2269ea33b1824a1204feda6f6cb3d33b1f7ed350">2269ea3</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 4.3.0 to 5.0.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/70"
+								>#70</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/9bb44fc9591124a1737115f77490f86d5baf8cd1">9bb44fc</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 5.0.2 to 5.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/71"
+								>#71</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f2449416138183f0ddf4d152e996dfc1fd60c8a5">f244941</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 5.0.3 to 5.0.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/72"
+								>#72</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/a54039247f2f9dadcf32bbf51cdbc3f342a6ffe9">a540392</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 5.0.4 to 5.0.5 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/75"
+								>#75</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8bccc6bd67a7b5a8a7e5ce8c7e8d85567a537202">8bccc6b</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 5.0.5 to 5.1.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/76"
+								>#76</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/7085fc799667780a6d5421a0cf6bbe3882d7e565">7085fc7</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 5.1.0 to 5.1.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/80"
+								>#80</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/bc2ae45a904c2d63f45dc4693fc06712325485ad">bc2ae45</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 5.1.1 to 5.1.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/83"
+								>#83</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/dbb73bd6ec440530c40d480091f52cd5689b07e9">dbb73bd</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 5.1.2 to 7.0.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/89"
+								>#89</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/218b1ecbd0e9d3bc1a506a9e8def74648b10ae52">218b1ec</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 7.0.2 to 7.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/92"
+								>#92</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f0d2089e598c19db8e1e809d66767999aa530df9">f0d2089</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 7.0.3 to 7.0.4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/94"
+								>#94</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/951b4ed5ae00e333dfa5451b2fff715f4cb89a2c">951b4ed</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 7.0.4 to 7.0.5 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/96"
+								>#96</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c9523eb2d72a9c0da53da09617ec2df16cba98c9">c9523eb</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 7.0.5 to 8.0.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/98"
+								>#98</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/53b4352aebcdf270fba2ce3b1aea555b83007cd9">53b4352</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 8.0.0 to 8.0.1 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/100"
+								>#100</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/0b5665705984aa909af87b8a53ce896ed4e7439d">0b56657</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 8.0.1 to 9.0.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/101"
+								>#101</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c5b158dce06a9cd93a4f37361672fcd993c1b0d3">c5b158d</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 9.0.0 to 9.0.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/103"
+								>#103</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/4686d7078e02fdbbef70e03a9aa89691b069daeb">4686d70</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump marked from 9.0.2 to 9.0.3 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/104"
+								>#104</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/b851d16f7b89165bb3d04717369622a22dd93500">b851d16</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump prettier and prettier-plugin-apex (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/78"
+								>#78</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/cecc98bdc368b4edb0082fcd59d6cc7d54735d33">cecc98b</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump prettier from 2.8.4 to 2.8.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/58"
+								>#58</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c12857e418e26eafdf444bf7885bb59a4796e598">c12857e</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump prettier from 2.8.5 to 2.8.6 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/59"
+								>#59</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/5771666389c3361800669c1bbaecf278ab14211b">5771666</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump prettier from 2.8.6 to 2.8.7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/61"
+								>#61</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/40da91b46d76e1f7dbd9aab70d05d42df9b18df2">40da91b</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump prettier from 2.8.7 to 2.8.8 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/65"
+								>#65</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8b7158026f01747a30875c3a603b1cd35d5c776f">8b71580</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump prettier from 3.0.0 to 3.0.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/85"
+								>#85</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/4dc9b895d5aa3a8114a18fec679c7cc78152ada7">4dc9b89</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump prettier from 3.0.1 to 3.0.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/93"
+								>#93</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/6cca639228ff6dfec265712e52a7601ffb959c4f">6cca639</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump prettier from 3.0.2 to 3.0.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/97"
+								>#97</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ce2b5fe4e2e8f4cb577badd229e33bc8a67d7264">ce2b5fe</a>)
+						</li>
+						<li>
+							<strong>deps-dev:</strong> Bump prettier-plugin-apex from 1.12.0 to 1.13.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/64"
+								>#64</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/588668609d51fb4357465bb763689f4da64f515c">5886686</a>)
+						</li>
+						<li>
+							<strong>deps:</strong> Bump yaml from 2.2.1 to 2.2.2 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/66">#66</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/57e44775ef981e9a054f089a65609895056f7648">57e4477</a>)
+						</li>
+					</ul>
+					<h3>Continuous Integration</h3>
+					<ul>
+						<li>
+							<strong>deps:</strong> Bump actions/checkout from 3 to 4 (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/99"
+								>#99</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/af3e99da6b57a8e52ea03b8fc30396aecede906c">af3e99d</a>)
+						</li>
+						<li>
+							<strong>PMD:</strong> Update download link for zip (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/74">#74</a>)
+							(<a href="https://github.com/dschach/salesforce-trigger-framework/commit/f70822f468cb6444db12d2471dcfbd40f2f81e70">f70822f</a>)
+						</li>
+						<li>
+							<strong>PMD:</strong> Upgrade to PMD v7 RC (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/300fd7ccbdf3a48be77a94f0e5ebf3d9c356e55b"
+								>300fd7c</a
+							>)
+						</li>
+					</ul>
+					<h3>Miscellaneous Chores</h3>
+					<ul>
+						<li>
+							<strong>GitHub Linguist:</strong> Exclude ApexDox from GH linguist stats (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/73"
+								>#73</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/8e632fdea4b0b4012b91229f48dc16ef76733cb8">8e632fd</a>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Update config for Prettier v3 update (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/90"
+								>#90</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/082d38ec9b3a794fc588f61cca1e592c90e7a41e">082d38e</a>)
+						</li>
+					</ul>
+					<h2><a href="https://github.com/dschach/salesforce-trigger-framework/compare/v1.0.0...v1.1.0">1.1.0</a> (2023-02-27)</h2>
+					<h3>Features</h3>
+					<ul>
+						<li>
+							Add universal andFinally method (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/55">#55</a>) (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/098873264371d811ebd6183ee9991e63b1064e9c"
+								>0988732</a
+							>)
+						</li>
+						<li>
+							AndFinally handler method (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/53">#53</a>) (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a888ced9a19a5a8bc9f503cad0a1dd7947b5fc28"
+								>a888ced</a
+							>)
+						</li>
+						<li>
+							Include andfinally method (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e6caed1e282f5ab0488a92c049258f7eaa342c27"
+								>e6caed1</a
+							>)
+						</li>
+					</ul>
+					<h3>Reverts</h3>
+					<ul>
+						<li>
+							&quot;feat: andFinally handler method&quot; (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/54">#54</a>) (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a2862753d6a239d62012553c8620a19fc135add4"
+								>a286275</a
+							>)
+						</li>
+					</ul>
+					<h3>Miscellaneous Chores</h3>
+					<ul>
+						<li>
+							Issue templates (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/50">#50</a>) (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/90d3cdbeec35c513991eca61de198697615ded85"
+								>90d3cdb</a
+							>)
+						</li>
+					</ul>
+					<h3>Continuous Integration</h3>
+					<ul>
+						<li>
+							<strong>sfdx:</strong> Upgrade sfdx to sf commands (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d026a9189accc95ef03f32c3defd6ebd2e27582f"
+								>d026a91</a
+							>)
+						</li>
+					</ul>
+					<h3>Documentation</h3>
+					<ul>
+						<li>
+							<strong>ApexDox:</strong> AndFinally documentation (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/b4ce9d89af91a7724e9e971af1a1a40b85b6b85a"
+								>b4ce9d8</a
+							>)
+						</li>
+					</ul>
+					<h2><a href="https://github.com/dschach/salesforce-trigger-framework/releases/tag/v1.0.0">1.0.0</a> (2023-02-25)</h2>
+					<h3>Features</h3>
+					<ul>
+						<li>
+							<strong>ApexDox:</strong> Auto-convert README to ApexDox homepage (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/1ca388486f9c93208f4d36c0aebc786cc9008ce4"
+								>1ca3884</a
+							>)
+						</li>
+						<li>
+							Debug additions (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c"
+								>faf8c80</a
+							>)
+						</li>
+						<li>
+							<strong>docs:</strong> Add ApexDox site (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/e312487d38aa1d0e50723a67d0fdc9e3bbaebdbe"
+								>e312487</a
+							>)
+						</li>
+						<li>
+							<strong>docs:</strong> Sample Code (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c"
+								>faf8c80</a
+							>)
+						</li>
+						<li>
+							Release-please to main (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fbccc98070ded120ce7ee15635611cefba5f7d65"
+								>fbccc98</a
+							>)
+						</li>
+						<li>
+							<strong>releases:</strong> GitHub actions config (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/1dc68fb7ad798a9e3704d9b790ad82753edbc2db"
+								>1dc68fb</a
+							>)
+						</li>
+						<li>
+							Update API version to 53.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c"
+								>faf8c80</a
+							>)
+						</li>
+						<li>
+							Update API version to 53.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fb8047966dd711aba5f51240d3a1819d0f05abe9"
+								>fb80479</a
+							>)
+						</li>
+						<li>
+							Upgrade assert methods to Assert class (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c60a6fa52df1716bf45cfc310a72edfaa95fd2c7"
+								>c60a6fa</a
+							>)
+						</li>
+					</ul>
+					<h3>Bug Fixes</h3>
+					<ul>
+						<li>
+							<strong>ci:</strong> Stop using local Prettier server (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/48"
+								>#48</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/cb7c62a4ef063707496abb67d0a62b985d4fa39b">cb7c62a</a>)
+						</li>
+						<li>
+							Dependabot PR prefix (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/345d390b757c349deaa3c03d33ac28e7206726cb"
+								>345d390</a
+							>)
+						</li>
+						<li>
+							PR testing only on SFDC metadata (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/815cb0e884068dd0d877847e493207267a847d32"
+								>815cb0e</a
+							>)
+						</li>
+						<li>
+							<strong>utils:</strong> PMD set up, ApexDox set up (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c"
+								>faf8c80</a
+							>)
+						</li>
+					</ul>
+					<h3>Reverts</h3>
+					<ul>
+						<li>
+							<strong>release-please:</strong> Remove signoff from changelog (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/issues/51"
+								>#51</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/b2c04b1c33aa27498e550cfd20065f0e4dd8ae07">b2c04b1</a>)
+						</li>
+					</ul>
+					<h3>Code Refactoring</h3>
+					<ul>
+						<li>
+							<strong>style:</strong> Prettier formatting fixes (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a6582453d700511efe027affd2a9e453c261f65a"
+								>a658245</a
+							>)
+						</li>
+					</ul>
+					<h3>Documentation</h3>
+					<ul>
+						<li>
+							<strong>ApexDox:</strong> Update ApexDox (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a6582453d700511efe027affd2a9e453c261f65a"
+								>a658245</a
+							>)
+						</li>
+						<li>
+							Comment updates (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/ac5257cfd922560ae2714a810875c60ab24a7c5e"
+								>ac5257c</a
+							>)
+						</li>
+						<li>
+							<strong>style:</strong> ApexDox styling (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ac5257cfd922560ae2714a810875c60ab24a7c5e"
+								>ac5257c</a
+							>)
+						</li>
+					</ul>
+					<h3>Miscellaneous Chores</h3>
+					<ul>
+						<li>
+							API version bump (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/c52075744ab7b585e7e3db66d210445fa73a5bbf"
+								>c520757</a
+							>)
+						</li>
+						<li>
+							Initial commit (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/9889b14e4083400a741940691261a410bc5b419f"
+								>9889b14</a
+							>)
+						</li>
+						<li>
+							Version 1.0 (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c"
+								>faf8c80</a
+							>)
+						</li>
+					</ul>
+					<h3>Build System</h3>
+					<ul>
+						<li>
+							<strong>ApexDox:</strong> Highlight.js to 11.7 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/bb66fe60b4da2da7a34c5ad9865867efc335aa8e"
+								>bb66fe6</a
+							>)
+						</li>
+						<li>
+							<strong>ApexDox:</strong> Version updated; makes better class headers (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c52075744ab7b585e7e3db66d210445fa73a5bbf"
+								>c520757</a
+							>)
+						</li>
+						<li>
+							Bump @sideway/formula from 3.0.0 to 3.0.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ef2916956c64b79b4c94c985ec1d40d80e267e9c"
+								>ef29169</a
+							>)
+						</li>
+						<li>
+							Bump husky from 8.0.1 to 8.0.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/cc182c4ae08eaa2c072ca982f239e1c81402a7e6"
+								>cc182c4</a
+							>)
+						</li>
+						<li>
+							Bump husky from 8.0.2 to 8.0.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/4debae91c11280ac2229fd6058842343638eae8a"
+								>4debae9</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 13.0.2 to 13.0.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ab58d4a10c046aee145e021256a6bf49c45ad91c"
+								>ab58d4a</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 13.0.4 to 13.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a38dee3a66bd470fd74d2768eff1e7917e1d2b36"
+								>a38dee3</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 13.1.0 to 13.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/a20d2b66682c24732ac01a3cb08a72df995fb71b"
+								>a20d2b6</a
+							>)
+						</li>
+						<li>
+							Bump lint-staged from 13.1.1 to 13.1.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/9872a02c812a340267b85863629459cf3f4fec78"
+								>9872a02</a
+							>)
+						</li>
+						<li>
+							Bump marked from 4.0.17 to 4.1.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/c447fbe6e02b003c580b0fc78102cbc9e143d457"
+								>c447fbe</a
+							>)
+						</li>
+						<li>
+							Bump marked from 4.1.0 to 4.1.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/4f8a9372eb395abcb5000e18119c0b4728b877eb"
+								>4f8a937</a
+							>)
+						</li>
+						<li>
+							Bump marked from 4.2.3 to 4.2.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/9659d1d16393f938f864ff15f6fb1b769f53478f"
+								>9659d1d</a
+							>)
+						</li>
+						<li>
+							Bump marked from 4.2.4 to 4.2.5 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/d5493e47a75f318310243823c8d3df4cff467adc"
+								>d5493e4</a
+							>)
+						</li>
+						<li>
+							Bump marked from 4.2.5 to 4.2.12 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/6be4e27b7239cd5111709d7a382b557a302b764a"
+								>6be4e27</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 2.8.0 to 2.8.1 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ed2895990e3c25be2a8cca2adcb0bfa5b6042847"
+								>ed28959</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 2.8.1 to 2.8.2 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/2a794a932e5e0659b731738f1da498f93d2be68c"
+								>2a794a9</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 2.8.2 to 2.8.3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/9daabc5c14c4d71f182e23c03d5a13c9700b229c"
+								>9daabc5</a
+							>)
+						</li>
+						<li>
+							Bump prettier from 2.8.3 to 2.8.4 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/fc1a31d42d37b9c778dcd3bbd65d7ebb8bf62c97"
+								>fc1a31d</a
+							>)
+						</li>
+						<li>
+							Bump prettier-plugin-apex from 1.11.0 to 1.12.0 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/78712528e467a602cd8d350a6e57cd63ab47c97b"
+								>7871252</a
+							>)
+						</li>
+						<li>
+							Change Dependabot auto-prefix (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/1c94916f99ad15035dc6837a4bd79751a801df03"
+								>1c94916</a
+							>)
+						</li>
+						<li>
+							<strong>prettier:</strong> Update Prettier rules (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/ac5257cfd922560ae2714a810875c60ab24a7c5e"
+								>ac5257c</a
+							>)
+						</li>
+						<li>
+							<strong>release-please:</strong> Remove prerelease flag (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/7dd48f7ce27699bf9ee2d3ad790125a51c4ec4e0"
+								>7dd48f7</a
+							>)
+						</li>
+						<li>
+							<strong>release-please:</strong> Update config (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/16ae4df1bd021ddb9f5b417fea438bd40efa3ffa"
+								>16ae4df</a
+							>)
+						</li>
+					</ul>
+					<h3>Continuous Integration</h3>
+					<ul>
+						<li>
+							Bump actions/cache from 1 to 3 (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/42bd34bf23acf5c5744720e2651f5b5c9e83c428"
+								>42bd34b</a
+							>)
+						</li>
+						<li>
+							<strong>dependabot:</strong> Include scope automatically (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/553a5c9548bd03b8bed4e719e5adef11efdf27c5"
+								>553a5c9</a
+							>)
+						</li>
+						<li>
+							<strong>dependabot:</strong> Set github-actions to ci scope (<a
+								href="https://github.com/dschach/salesforce-trigger-framework/commit/38827f6f5ff730ebd834dfa29a8c612e8811ea70"
+								>38827f6</a
+							>)
+						</li>
+						<li>
+							<strong>release-please:</strong> Add signoff to action (<a href="https://github.com/dschach/salesforce-trigger-framework/issues/49"
+								>#49</a
+							>) (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/7e9d689f2ffeff9b0604cb1e49d8dbbdaf865fa1">7e9d689</a>)
+						</li>
+						<li>
+							Set up Codecov (<a href="https://github.com/dschach/salesforce-trigger-framework/commit/faf8c8071b02ffb3732bb59f69317fc8ceeda89c"
+								>faf8c80</a
+							>)
+						</li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td class="footer">
+					<div>
+						<a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer"> Powered By ApexDox VS Code </a>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
 </html>

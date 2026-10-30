@@ -83,22 +83,22 @@ sf plugins install code-analyzer
 
 ## npm scripts
 
-| Script                       | What it does                                                                                              |
-| ---------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `npm run prettier`           | Formats every file Prettier can parse.                                                                    |
-| `npm run prettier:verify`    | Checks formatting, as CI does.                                                                            |
-| `npm run prettier:docs`      | Formats the generated pages in `docs/`.                                                                   |
-| `npm run codeanalyzer:run`   | Runs Code Analyzer with the Recommended and Custom rules, as CI does, and writes the results to `sfca/`. |
+| Script                       | What it does                                                                                                                                                                                                                                        |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `npm run prettier`           | Formats every file Prettier can parse.                                                                                                                                                                                                              |
+| `npm run prettier:verify`    | Checks formatting, as CI does.                                                                                                                                                                                                                      |
+| `npm run prettier:docs`      | Formats only the HTML pages in `docs/` and `doc-assets/`. `npm run prettier` formats them too.                                                                                                                                                      |
+| `npm run codeanalyzer:run`   | Runs Code Analyzer with the Recommended and Custom rules, as CI does, and writes the results to `sfca/`.                                                                                                                                            |
 | `npm run codeanalyzer:setup` | Rewrites `code-analyzer.yml` with every rule and its settings, removes the paths from your machine that the config command writes in comments, and formats the file. The pre-commit hook removes those paths from a staged `code-analyzer.yml` too. |
-| `npm run orginit`            | Runs `scripts/orginit.sh`: replaces the `TriggerFramework` scratch org and deploys everything.            |
-| `npm run prune`              | Deletes local branches whose remote branch is gone.                                                       |
-| `npm run updateHighlight`    | Refreshes `highlight.js` and the documentation pages built from the README, the changelog, and DEPLOY.md. |
+| `npm run orginit`            | Runs `scripts/orginit.sh`: replaces the `TriggerFramework` scratch org and deploys everything.                                                                                                                                                      |
+| `npm run prune`              | Deletes local branches whose remote branch is gone.                                                                                                                                                                                                 |
+| `npm run prepareApexDox`     | Refreshes `highlight.js` and the documentation pages built from the README, the changelog, DEPLOY.md, and the sample README.                                                                                                                        |
 
 ## Update the documentation site
 
 The site in `docs/` is generated from the ApexDoc comments with the ApexDox extension for Visual Studio Code. After a release, on `main`:
 
-1. Run `npm run updateHighlight`.
+1. Run `npm run prepareApexDox`.
 2. In Visual Studio Code, run the command `ApexDox: Run`. It reads `apexdox.yml`.
-3. Run `npm run prettier:docs`.
+3. Run `npm run prettier`. It formats the generated HTML pages with the other files.
 4. Commit the result as `docs(apexdox): regenerate the documentation`.
