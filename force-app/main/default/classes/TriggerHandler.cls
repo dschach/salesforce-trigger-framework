@@ -14,7 +14,7 @@
 @SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.EmptyStatementBlock')
 public inherited sharing virtual class TriggerHandler {
 	/**
-	 * Loop counter per handler name. A handler has an entry only after `setMaxLoopCount()` was called for it, so `getLoopCount()` is 0 for a handler with no limit.
+	 * The loop counter of each handler, by handler name. A handler has a counter only after `setMaxLoopCount()` is called for it, so `getLoopCount()` is 0 for a handler with no limit.
 	 */
 	@TestVisible
 	private static Map<String, LoopCounter> loopCountMap = new Map<String, LoopCounter>();
@@ -124,7 +124,7 @@ public inherited sharing virtual class TriggerHandler {
 	private static final String ERROR_BYPASS_VALUE = 'A bypass value is required';
 
 	/**
-	 * Basic constructor. The handler name is resolved from the runtime class name the first time a bypass or a loop count needs it.
+	 * Basic constructor. The handler name is resolved from the runtime class name the first time a bypass, a loop count, or a debug line needs it.
 	 * <br>That lookup serializes every field of the handler, so pass the name to the other constructor to avoid it.
 	 * @see TriggerHandler.TriggerHandler[1]
 	 * @example
@@ -236,7 +236,7 @@ public inherited sharing virtual class TriggerHandler {
 
 	/**
 	 * Limit the number of times `run()` executes this handler's context methods.
-	 * <br>The count is kept per handler name. Every trigger context and every 200-record chunk consumes 1 count.
+	 * <br>The count is kept per handler name for the whole transaction, and it starts when this method is first called for the handler. Every trigger context and every 200-record chunk counts as 1 run. A bypassed run is not counted, and a run that the limit stops is counted.
 	 * <br>When the limit is exceeded, `run()` logs a warning and returns without calling the context method or `andFinally()`.
 	 * <br>Returning `TriggerHandler` enables method chaining when used in a trigger.
 	 * @author {@link [David Schach](https://github.com/dschach)}
@@ -264,7 +264,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Remove the limit on the number of times this handler can run.
+	 * Remove the limit on the number of times this handler can run. The handler keeps its counter, so its runs are still counted.
 	 * @example
 	 * clearMaxLoopCount(); // in the handler
 	 */
@@ -640,7 +640,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Return the current loop count of a handler.
+	 * Return the number of runs counted for a handler in this transaction, including runs that the loop limit stopped.
 	 * @param handlerName The handler name to check.
 	 * @return            `Integer` The count, or 0 when `setMaxLoopCount()` was never called for the handler.
 	 * @exception TriggerHandlerException when the name is null or blank.
@@ -676,12 +676,12 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Increment the loop count and check whether the limit is exceeded.
-	 * <br>When it is exceeded, log a warning and tell `run()` to return without calling the context method.
+	 * Count this run on the handler's loop counter, when the handler has one, and check the limit.
+	 * <br>When the limit is exceeded, log a warning and tell `run()` to return without calling the context method or `andFinally()`.
 	 *
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @author {@link [fbouzeraa](https://github.com/fbouzeraa)}
-	 * @return   `Boolean` `true` when `run()` should continue, `false` when the limit is exceeded.
+	 * @return   `Boolean` `true` when `run()` should continue: the handler has no counter, or it is within its limit. `false` when the limit is exceeded.
 	 */
 	private Boolean incrementCheckLoopCount() {
 		if (TriggerHandler.loopCountMap.isEmpty()) {
@@ -844,25 +844,25 @@ public inherited sharing virtual class TriggerHandler {
 	@TestVisible
 	private inherited sharing class LoopCounter {
 		/**
-		 * Maximum number of times this handler should be run.
+		 * The maximum number of runs. A negative value means no limit.
 		 */
 		private Integer max;
 		/**
-		 * Number of times this handler has been run.
+		 * The number of runs counted so far, including runs that the limit stopped.
 		 */
 		private Integer loopCount;
 
 		/**
-		 * Standard constructor. The max is `DEFAULT_MAX_LOOP_COUNT`, 5, and the count is 0.
+		 * Constructor with the default maximum, `DEFAULT_MAX_LOOP_COUNT`, which is 5. The count starts at 0.
 		 */
 		public LoopCounter() {
 			this(DEFAULT_MAX_LOOP_COUNT);
 		}
 
 		/**
-		 * Constructor with specified max loops.
+		 * Constructor with a maximum. The count starts at 0.
 		 *
-		 * @param maxCount Max number of loops allowed.
+		 * @param maxCount The maximum number of runs. A negative value means no limit.
 		 */
 		public LoopCounter(Integer maxCount) {
 			this.max = maxCount;
@@ -870,7 +870,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * Increment the internal counter and return `exceeded()`.
+		 * Add 1 to the count and return `exceeded()`.
 		 * @return     `Boolean` true when the new count is greater than a max of 0 or more. A negative max never exceeds.
 		 */
 		public Boolean increment() {
@@ -887,23 +887,23 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * Returns the max loop count.
-		 * @return     `Integer` Max loop count.
+		 * Returns the maximum number of runs.
+		 * @return     `Integer` The maximum. A negative value means no limit.
 		 */
 		public Integer getMax() {
 			return max;
 		}
 
 		/**
-		 * Returns the current loop count.
-		 * @return     `Integer` Current loop count.
+		 * Returns the number of runs counted so far, including runs that the limit stopped.
+		 * @return     `Integer` The count.
 		 */
 		public Integer getCount() {
 			return loopCount;
 		}
 
 		/**
-		 * Sets the max loop count.
+		 * Sets the maximum number of runs. The count does not change.
 		 * @param maxCount The new maximum. A negative value means no limit.
 		 */
 		public void setMax(Integer maxCount) {
