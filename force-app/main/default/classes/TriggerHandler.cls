@@ -158,6 +158,10 @@ public inherited sharing virtual class TriggerHandler {
 	 *   this.newRecordsMap = (Map<Id, Account>) Trigger.newMap;
 	 *   this.oldRecordsMap = (Map<Id, Account>) Trigger.oldMap;
 	 * }
+	 * // in a handler that is an inner class, write the outer class name, a dot, and the inner class name
+	 * public OpportunityTriggerHandler() {
+	 *   super(SalesHandlers.OpportunityTriggerHandler.class);
+	 * }
 	 */
 	protected TriggerHandler(Type handlerType) {
 		requireHandlerType(handlerType);

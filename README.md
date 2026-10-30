@@ -12,6 +12,7 @@
 - [Overview](#overview)
 - [Usage](#usage)
   - [Trigger Handler](#trigger-handler)
+  - [Pass the Handler Class to super()](#pass-the-handler-class-to-super)
   - [Trigger](#trigger)
   - [Data access](#data-access)
 - [Cool Stuff](#cool-stuff)
@@ -103,9 +104,65 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
 }
 ```
 
-Passing the class to `super()` is optional, and it makes the handler faster. Without it, the framework works out the name from the running class the first time a bypass or a loop count needs it, and that lookup serializes every field of the handler, including the record lists. With the class, the handler name is `Type.getName()`, so `TriggerHandler.bypass(OpportunityTriggerHandler.class)` always matches. A handler that is an inner class must pass its class, because the lookup gives only the short name of an inner class.
+Passing the class to `super()` is optional, and it makes the handler faster. Without it, the framework works out the name from the running class the first time a bypass or a loop count needs it, and that lookup serializes every field of the handler, including the record lists. With the class, the handler name is `Type.getName()`, so `TriggerHandler.bypass(OpportunityTriggerHandler.class)` always matches. A handler that is an inner class must pass its class, because the lookup gives only the short name of an inner class. [Pass the Handler Class to super()](#pass-the-handler-class-to-super) has more examples.
 
 A sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes) class has been included in this repository, as well as a sample [trigger](https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger). The sample is not a package directory, so the Deploy to Salesforce button and `sf project deploy start` install only the framework. To try the sample in a scratch org, run `sf project deploy start --source-dir sample-handler`. The [sample README](sample-handler/README.md) describes what it shows.
+
+### Pass the Handler Class to super()
+
+The value to pass is the name of your handler class, followed by `.class`. In Apex, `ClassName.class` is the `Type` of that class. The framework uses `Type.getName()` as the handler name, so a bypass by type always matches the handler.
+
+```apex
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+  public OpportunityTriggerHandler() {
+    super(OpportunityTriggerHandler.class);
+  }
+}
+```
+
+For a handler that is an inner class, write the outer class name, a dot, and the inner class name. The handler name is then `SalesHandlers.OpportunityTriggerHandler`, and `TriggerHandler.bypass(SalesHandlers.OpportunityTriggerHandler.class)` matches it. An inner-class handler must pass its class, because without it the framework finds only the short name, `OpportunityTriggerHandler`.
+
+```apex
+public inherited sharing class SalesHandlers {
+  public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+    public OpportunityTriggerHandler() {
+      super(SalesHandlers.OpportunityTriggerHandler.class);
+    }
+  }
+}
+```
+
+A handler with more than 1 constructor passes the class in the constructor that calls `super()`. The other constructors call that constructor with `this()`.
+
+```apex
+public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
+  private List<Opportunity> newRecords;
+
+  public OpportunityTriggerHandler() {
+    this((List<Opportunity>) Trigger.new);
+  }
+
+  public OpportunityTriggerHandler(List<Opportunity> newRecords) {
+    super(OpportunityTriggerHandler.class);
+    this.newRecords = newRecords;
+  }
+}
+```
+
+To see the name that the framework uses, call `getHandlerName()` in the handler, or `OpportunityTriggerHandler.class.getName()` anywhere.
+
+#### Upgrade From the String Constructor
+
+Version 2.0 removes the constructor that takes the handler name as a String. Replace the name in quotes with the class:
+
+```apex
+// before 2.0
+super('OpportunityTriggerHandler');
+// 2.0 and later
+super(OpportunityTriggerHandler.class);
+```
+
+If you passed a name that is not the class name, for example a short name, a bypass or a loop count that uses that name no longer matches. Change each bypass call to use the class, for example `TriggerHandler.bypass(OpportunityTriggerHandler.class)`, and pass `OpportunityTriggerHandler.class.getName()` to `getLoopCount()`.
 
 ### Trigger
 
