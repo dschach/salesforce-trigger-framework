@@ -16,6 +16,10 @@
       "type": "json",
       "path": "package.json",
       "jsonpath": "$.version"
+    },
+    {
+      "type": "generic",
+      "path": ".github/ISSUE_TEMPLATE/bug_report.yml"
     }
   ],
   "changelog-sections": [
