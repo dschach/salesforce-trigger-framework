@@ -964,8 +964,11 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * `andFinally()` runs after the context method, in every trigger context.
-	 * <br>It does not run when the handler is bypassed, when the loop limit is exceeded, or when the context method throws an exception.
+	 * `andFinally()` runs after the context method returns, in every trigger context, also a context that the handler does not override.
+	 * <br>It does not run when the handler is bypassed or the loop limit stops the run, because then nothing in the handler runs. It also does not run when the context method throws an exception that it does not catch.
+	 * <br>Once a run has started its context method, a bypass cannot stop its `andFinally()`. If the context method bypasses this handler and then updates records of the same object, the run of the handler for that update is skipped completely, and the `andFinally()` of the first run still comes last.
+	 * <br>It also runs when the context method catches its own exception or calls `addError()`.
+	 * <br>If `andFinally()` throws, the exception reaches the caller, and the exit and limits debug lines are not written.
 	 * <br>Credit to James Simone for this idea.
 	 * @see [The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/)
 	 * @author James Simone

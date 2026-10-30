@@ -408,7 +408,23 @@ Nebula Logger keeps entries in memory until `Logger.saveLog()` runs. The `DEBUG`
 
 ### Universal Action
 
-Version 1.1 added a new method/context: `andFinally()` can contain actions that should happen in every trigger context, after all other actions. It does not run when the handler is bypassed, when the loop limit is exceeded, or when the context method throws an exception. Credit to James Simone for this idea. As he writes, "runs after every context - can be used to easily implement something like apex-rollup!" ([The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/))
+Version 1.1 added a new method/context: `andFinally()` can contain actions that should happen in every trigger context, after all other actions. Credit to James Simone for this idea. As he writes, "runs after every context - can be used to easily implement something like apex-rollup!" ([The Joys of Apex](https://www.jamessimone.net/blog/joys-of-apex/lightweight-trigger-handler/))
+
+`andFinally()` runs after the context method returns, in every trigger context, also a context that the handler does not override. It also runs when the context method catches its own exception or calls `addError()`, which is not an exception.
+
+It does not run in these cases:
+
+- When the handler is bypassed by name or type, or all handlers are bypassed. Then nothing in the handler runs.
+- When the loop limit of the trigger operation stops the run. Then nothing in the handler runs either.
+- When the context method throws an exception that it does not catch. The exception reaches the caller and stops everything.
+
+Once a run of the handler has started its context method, a bypass cannot stop the `andFinally()` of that run. For example, an Account handler's `afterUpdate()` bypasses the Account handler, updates other Accounts, and clears the bypass:
+
+1. The first update of an Account starts the first run of the handler, which calls `afterUpdate()`.
+2. `afterUpdate()` bypasses the Account handler and updates the other Accounts. That update starts a second run of the handler, which is bypassed: its `afterUpdate()` and its `andFinally()` do not run.
+3. `afterUpdate()` clears the bypass and returns. The first run then calls its `andFinally()`, which is the last step of the first update.
+
+If `andFinally()` throws, the exception reaches the caller, and the exit and limits debug lines are not written.
 
 ## Test a Handler Without DML
 
