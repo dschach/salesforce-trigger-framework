@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.5.1](https://github.com/dschach/salesforce-trigger-framework/compare/v1.5.0...v1.5.1) (2026-10-30)
+
+
+### Bug Fixes
+
+* **handler:** Trim the handler name given to the String constructor ([b4b7781](https://github.com/dschach/salesforce-trigger-framework/commit/b4b7781fa711f5b2b225595a571b91cdbca78c99))
+
+
+### Miscellaneous Chores
+
+* **apexdox:** Build the sample page from the sample handler README ([b98f560](https://github.com/dschach/salesforce-trigger-framework/commit/b98f56026dea051e744a858d303566f930d31e17))
+* **markdown:** Generate markdown tables of contents with doctoc ([b98f560](https://github.com/dschach/salesforce-trigger-framework/commit/b98f56026dea051e744a858d303566f930d31e17))
+
+
+### Code Refactoring
+
+* **handler:** Clean up TriggerHandler fields, names, and comments ([#374](https://github.com/dschach/salesforce-trigger-framework/issues/374)) ([b4b7781](https://github.com/dschach/salesforce-trigger-framework/commit/b4b7781fa711f5b2b225595a571b91cdbca78c99))
+* **handler:** Rename the inner class LoopCount to LoopCounter ([b4b7781](https://github.com/dschach/salesforce-trigger-framework/commit/b4b7781fa711f5b2b225595a571b91cdbca78c99))
+
+
+### Documentation
+
+* **handler:** Drop the leading description tags from ApexDoc ([b4b7781](https://github.com/dschach/salesforce-trigger-framework/commit/b4b7781fa711f5b2b225595a571b91cdbca78c99))
+* **handler:** Say exactly which runs the loop counter counts ([b4b7781](https://github.com/dschach/salesforce-trigger-framework/commit/b4b7781fa711f5b2b225595a571b91cdbca78c99))
+* **site:** Refresh the documentation site and its markdown sources ([#376](https://github.com/dschach/salesforce-trigger-framework/issues/376)) ([b98f560](https://github.com/dschach/salesforce-trigger-framework/commit/b98f56026dea051e744a858d303566f930d31e17))
+* **site:** Show the current classes, README, and changelog on the site ([b98f560](https://github.com/dschach/salesforce-trigger-framework/commit/b98f56026dea051e744a858d303566f930d31e17))
+
+
+### Continuous Integration
+
+* **apex-tests:** Skip the Apex tests for markdown-only changes ([#377](https://github.com/dschach/salesforce-trigger-framework/issues/377)) ([8385a72](https://github.com/dschach/salesforce-trigger-framework/commit/8385a7264f50af59d264b241886a7a988c0cd61f))
+
 ## [1.5.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.4.2...v1.5.0) (2026-10-30)
 
 

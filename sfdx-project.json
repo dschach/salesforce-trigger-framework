@@ -3,7 +3,7 @@
     {
       "path": "force-app",
       "default": true,
-      "versionNumber": "1.5.0.NEXT"
+      "versionNumber": "1.5.1.NEXT"
     }
   ],
   "name": "Trigger Framework",
