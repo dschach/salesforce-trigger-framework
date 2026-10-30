@@ -18,8 +18,8 @@ This folder holds a sample trigger, a sample trigger handler, and a test for the
 ```apex
 /**
  * The sample trigger for the sample handler. It has no logic: it creates the handler and calls `run()`.
- * <br>It lists all 7 contexts. So you write it once and do not change it again: a new override in the handler runs with no change to the trigger.
- * <br>A context that the handler does not override costs little. `run()` calls the empty base method and then `andFinally()`.
+ * It lists all 7 contexts. So you write it once and do not change it again: a new override in the handler runs with no change to the trigger.
+ * A context that the handler does not override costs little. `run()` calls the empty base method and then `andFinally()`.
  * @group SampleTriggerHandler
  */
 trigger AccountSampleTrigger on Account(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
@@ -44,10 +44,10 @@ trigger AccountSampleTrigger on Account(before insert, before update, before del
 ```apex
 /**
  * A sample Account trigger handler that shows how to use the framework.
- * <br>Before insert and before update, it removes extra spaces from each new or changed Account name.
- * <br>After update, it copies a changed phone number to the child Accounts. It bypasses itself for that update, so the update does not run this handler again.
- * <br>A loop limit stops recursion that the bypass does not stop. `andFinally()` runs after each context.
- * <br>A trigger runs without sharing, so this `inherited sharing` handler does too. Each query and DML statement names `SYSTEM_MODE`, so the handler can update child Accounts that the running user cannot edit.
+ * Before insert and before update, it removes extra spaces from each new or changed Account name.
+ * After update, it copies a changed phone number to the child Accounts. It bypasses itself for that update, so the update does not run this handler again.
+ * A loop limit stops recursion that the bypass does not stop. `andFinally()` runs after each context.
+ * A trigger runs without sharing, so this `inherited sharing` handler does too. Each query and DML statement names `SYSTEM_MODE`, so the handler can update child Accounts that the running user cannot edit.
  * @author David Schach
  * @since 2021
  * @since 2026-10 Rewrite the sample to show the framework in use
@@ -127,8 +127,8 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 
   /**
    * Records the finished operation. A real handler puts work here that must follow each context, for example a rollup.
-   * <br>`andFinally()` runs after each context. For an insert, an update, or a delete, it runs 2 times for each chunk of 200 records. It runs after the before context and again after the after context.
-   * <br>Some work must run only once for each chunk, for example the publication of 1 platform event. Put that work in an `if` block that checks `getTriggerEvent()` for an after context.
+   * `andFinally()` runs after each context. For an insert, an update, or a delete, it runs 2 times for each chunk of 200 records. It runs after the before context and again after the after context.
+   * Some work must run only once for each chunk, for example the publication of 1 platform event. Put that work in an `if` block that checks `getTriggerEvent()` for an after context.
    * @since 2026-10
    * @example
    * // andFinally() runs after the before context and again after the after context.
@@ -156,8 +156,8 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 
   /**
    * Updates the phone number of the child Accounts. The handler is bypassed for that update.
-   * <br>It leaves out a child Account that is in the same trigger run, because a trigger cannot update the records that it runs for.
-   * <br>The query and the update run in system mode, so this method suppresses `FlagSystemMode`. The phone number must reach all child Accounts, also the ones that the running user cannot see or edit.
+   * It leaves out a child Account that is in the same trigger run, because a trigger cannot update the records that it runs for.
+   * The query and the update run in system mode, so this method suppresses `FlagSystemMode`. The phone number must reach all child Accounts, also the ones that the running user cannot see or edit.
    * @param phoneByParentId The new phone number of each parent Account, by Id.
    * @since 2026-10
    */

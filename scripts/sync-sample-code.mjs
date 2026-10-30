@@ -7,7 +7,8 @@
 //
 // The path in the START marker is relative to sample-handler/. The script formats the
 // README with Prettier, which changes the tabs in the code to spaces, so that a commit
-// and the Prettier check do not change the README again.
+// and the Prettier check do not change the README again. Last, it removes each <br> tag,
+// which ApexDoc needs for a line break but which is noise in a markdown code block.
 //
 // The pre-commit hook runs this with --index when a sample file or the sample README is staged, and
 // npm run prepareApexDox runs it before it builds the sample page. CI runs it with --check.
@@ -52,7 +53,8 @@ if (count === 0) {
 	process.exit(1);
 }
 const prettierOptions = await prettier.resolveConfig(README);
-const after = await prettier.format(synced, { ...prettierOptions, filepath: README });
+const formatted = await prettier.format(synced, { ...prettierOptions, filepath: README });
+const after = formatted.replace(/<br\s*\/?>/gi, '');
 if (after === before) {
 	process.exit(0);
 }
