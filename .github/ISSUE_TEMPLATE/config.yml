@@ -1,0 +1,10 @@
+# The links that GitHub shows with the issue forms, when a user creates an issue.
+# Blank issues stay available for a question that does not fit a form.
+blank_issues_enabled: true
+contact_links:
+  - name: 🔒 Report a security vulnerability
+    url: https://github.com/dschach/salesforce-trigger-framework/security/advisories/new
+    about: Report a vulnerability privately. Do not open a public issue. SECURITY.md tells how.
+  - name: 📖 Documentation
+    url: https://davidschach.com/salesforce-trigger-framework/
+    about: Read the framework guide and the class reference before you open an issue.
