@@ -67,12 +67,6 @@ public inherited sharing virtual class TriggerHandler {
 	private String handlerName;
 
 	/**
-	 * The value that `bypassList()` and `bypassSet()` hold when all handlers are bypassed.
-	 */
-	@TestVisible
-	private static final String BYPASS_ALL_ALIAS = 'BypassAll';
-
-	/**
 	 * The maximum loop count of a `LoopCounter` created with no maximum. `setMaxLoopCount()` always gives its own maximum.
 	 */
 	private static final Integer DEFAULT_MAX_LOOP_COUNT = 5;
@@ -470,8 +464,8 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Return a sorted list of the bypassed handlers, as the caller spelled them.
-	 * <br>When all handlers are bypassed, the list holds the alias `BypassAll`, after any named bypasses.
+	 * Return a sorted list of the handlers that are bypassed by name or by type, as the caller spelled them.
+	 * <br>The global bypass is not in the list. Use `isGlobalBypassed()` for it.
 	 * <br>Both `Set` and `List` support `contains(value)`, so this method and `bypassSet()` differ only in the return type.
 	 *
 	 * @return      `List<String>` List of bypassed handlers.
@@ -481,17 +475,12 @@ public inherited sharing virtual class TriggerHandler {
 	public static List<String> bypassList() {
 		List<String> bypasses = new List<String>(TriggerHandler.bypassedHandlers);
 		bypasses.sort();
-		// the alias marks the global bypass; a name added after bypassAll() stays in the collection
-		if (globalBypass) {
-			bypasses.add(BYPASS_ALL_ALIAS);
-		}
-
 		return bypasses;
 	}
 
 	/**
-	 * Return a set of the bypassed handlers, as the caller spelled them.
-	 * <br>When all handlers are bypassed, the set holds the alias `BypassAll`.
+	 * Return a set of the handlers that are bypassed by name or by type, as the caller spelled them.
+	 * <br>The global bypass is not in the set. Use `isGlobalBypassed()` for it.
 	 * <br>Both `Set` and `List` support `contains(value)`, so this method and `bypassList()` differ only in the return type.
 	 *
 	 * @author David Schach
@@ -503,13 +492,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * }
 	 */
 	public static Set<String> bypassSet() {
-		Set<String> bypasses = new Set<String>(TriggerHandler.bypassedHandlers);
-		// the alias marks the global bypass; a name added after bypassAll() stays in the collection
-		if (globalBypass) {
-			bypasses.add(BYPASS_ALL_ALIAS);
-		}
-
-		return bypasses;
+		return new Set<String>(TriggerHandler.bypassedHandlers);
 	}
 
 	/**

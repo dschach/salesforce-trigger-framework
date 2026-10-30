@@ -253,7 +253,7 @@ To bypass all handlers, use the `bypassAll` method:
 TriggerHandler.bypassAll();
 ```
 
-The named bypasses stay, so `clearGlobalBypass()` brings them back. A global bypass adds the entry `BypassAll` to the list from `bypassList()` and the set from `bypassSet()`.
+The named bypasses stay, so `clearGlobalBypass()` brings them back. `bypassList()` and `bypassSet()` return only the named bypasses. To check the global bypass, call `isGlobalBypassed()`.
 
 To clear all bypasses for the transaction, simply use the `clearAllBypasses` method, as in:
 
@@ -488,8 +488,8 @@ Every public member of `TriggerHandler`. The [class documentation](https://david
 | `static isGlobalBypassed()`                                  | Returns `true` when all handlers are bypassed.                                                                                                           |
 | `static isSkipped(String handlerName)`                       | Returns `true` when the handler will not run: it is bypassed by name or type, or all handlers are bypassed.                                              |
 | `static isSkipped(Type handlerType)`                         | The same check, by type.                                                                                                                                 |
-| `static bypassList()`                                        | Returns a sorted list of the bypassed handlers, with `BypassAll` when all handlers are bypassed.                                                         |
-| `static bypassSet()`                                         | Returns a set of the bypassed handlers, with `BypassAll` when all handlers are bypassed.                                                                 |
+| `static bypassList()`                                        | Returns a sorted list of the handlers that are bypassed by name or type.                                                                                 |
+| `static bypassSet()`                                         | Returns a set of the handlers that are bypassed by name or type.                                                                                         |
 | `static setBypass(String handlerName, Boolean desiredValue)` | Bypasses the handler for `true`. For `false`, clears only its named bypass.                                                                              |
 | `static clearAllBypasses()`                                  | Clears the global bypass and the list of named bypasses.                                                                                                 |
 | `static clearGlobalBypass()`                                 | Clears only the global bypass.                                                                                                                           |

@@ -263,14 +263,26 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * The bypass list is sorted, and the global alias comes after the names.
+	 * The bypass list is sorted, and it holds only the named bypasses, also under a global bypass.
 	 */
 	@IsTest
-	private static void bypassListIsSortedWithAliasLast() {
+	private static void bypassListIsSortedWithNamesOnly() {
 		TriggerHandler.bypassAll();
 		TriggerHandler.bypass('Zulu');
 		TriggerHandler.bypass('Alpha');
-		Assert.areEqual(new List<String>{ 'Alpha', 'Zulu', TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassList(), 'the names should be sorted, with the alias last');
+		Assert.areEqual(new List<String>{ 'Alpha', 'Zulu' }, TriggerHandler.bypassList(), 'the names should be sorted, with no entry for the global bypass');
+	}
+
+	/**
+	 * 'BypassAll' is an ordinary handler name: a bypass by that name turns on no global bypass.
+	 */
+	@IsTest
+	private static void bypassAllNameIsAnOrdinaryName() {
+		TriggerHandler.bypass('BypassAll');
+		Assert.isFalse(TriggerHandler.isGlobalBypassed(), 'a bypass named BypassAll should not turn on the global bypass');
+		Assert.areEqual(new List<String>{ 'BypassAll' }, TriggerHandler.bypassList(), 'the bypass list should hold the name');
+		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
+		Assert.areEqual(new List<String>{ 'afterUpdate', 'andFinally' }, calls, 'another handler should still run');
 	}
 
 	// global bypass
@@ -287,8 +299,8 @@ private inherited sharing class TriggerHandlerTest {
 		Assert.isTrue(TriggerHandler.isSkipped(HANDLER_NAME), 'every handler should be skipped');
 		Assert.isTrue(TriggerHandler.isSkipped(OTHER_HANDLER), 'a handler that was never named should be skipped too');
 		Assert.isFalse(TriggerHandler.isBypassed(OTHER_HANDLER), 'isBypassed should answer only the named bypass');
-		Assert.areEqual(new List<String>{ TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassList(), 'the bypass list should hold only the alias');
-		Assert.areEqual(new Set<String>{ TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassSet(), 'the bypass set should hold only the alias');
+		Assert.isTrue(TriggerHandler.bypassList().isEmpty(), 'the bypass list should hold no entry for the global bypass');
+		Assert.isTrue(TriggerHandler.bypassSet().isEmpty(), 'the bypass set should hold no entry for the global bypass');
 	}
 
 	/**
@@ -298,7 +310,7 @@ private inherited sharing class TriggerHandlerTest {
 	private static void bypassAllKeepsNamedBypasses() {
 		TriggerHandler.bypass(HANDLER_NAME);
 		TriggerHandler.bypassAll();
-		Assert.areEqual(new List<String>{ HANDLER_NAME, TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassList(), 'bypassAll() should keep the named bypasses');
+		Assert.areEqual(new List<String>{ HANDLER_NAME }, TriggerHandler.bypassList(), 'bypassAll() should keep the named bypasses');
 		TriggerHandler.clearGlobalBypass();
 		Assert.isTrue(TriggerHandler.isBypassed(HANDLER_NAME), 'the named bypass should stay after the global bypass is cleared');
 		Assert.isFalse(TriggerHandler.isBypassed(OTHER_HANDLER), 'a handler that was not named should no longer be bypassed');
@@ -345,7 +357,7 @@ private inherited sharing class TriggerHandlerTest {
 		TriggerHandler.clearBypassList();
 		Assert.isTrue(TriggerHandler.isGlobalBypassed(), 'the global bypass should stay');
 		Assert.isFalse(TriggerHandler.isBypassed(HANDLER_NAME), 'the named bypass should be cleared');
-		Assert.areEqual(new List<String>{ TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassList(), 'the bypass list should hold only the alias');
+		Assert.isTrue(TriggerHandler.bypassList().isEmpty(), 'the bypass list should be empty');
 		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
 		Assert.isTrue(calls.isEmpty(), 'the handler should still be bypassed');
 	}
@@ -359,7 +371,7 @@ private inherited sharing class TriggerHandlerTest {
 	private static void setBypassTrueBypassesHandler() {
 		TriggerHandler.bypassAll();
 		TriggerHandler.setBypass(HANDLER_NAME, true);
-		Assert.areEqual(new List<String>{ HANDLER_NAME, TriggerHandler.BYPASS_ALL_ALIAS }, TriggerHandler.bypassList(), 'the bypass list should hold the name and the alias');
+		Assert.areEqual(new List<String>{ HANDLER_NAME }, TriggerHandler.bypassList(), 'the bypass list should hold the name');
 
 		TriggerHandler.clearGlobalBypass();
 		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
