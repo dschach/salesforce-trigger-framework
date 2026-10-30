@@ -14,8 +14,8 @@ package-lock.json
 **/*-meta.xml
 **/staticresources/**
 
-# Generated documentation site (ApexDox). After a regeneration, run
-# npm run prettier:docs, which reads .gitignore instead of this file.
+# Scripts of the generated documentation site (ApexDox). Prettier formats
+# its HTML pages with the other files.
 docs/**/*.js
 doc-assets/highlight*.js
 
