@@ -466,7 +466,7 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * Return a sorted list of the handlers that are bypassed by name or by type, as the caller spelled them.
 	 * <br>The global bypass is not in the list. Use `isGlobalBypassed()` for it.
-	 * <br>Both `Set` and `List` support `contains(value)`, so this method and `bypassSet()` differ only in the return type.
+	 * <br>It replaces `bypassSet()`, which is deprecated. A `List` supports `contains(value)` too.
 	 *
 	 * @return      `List<String>` List of bypassed handlers.
 	 * @example
@@ -483,6 +483,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * <br>The global bypass is not in the set. Use `isGlobalBypassed()` for it.
 	 * <br>Both `Set` and `List` support `contains(value)`, so this method and `bypassList()` differ only in the return type.
 	 *
+	 * @deprecated Use `bypassList()`, which holds the same names in sorted order. A later major release removes this method.
 	 * @author David Schach
 	 * @since 2022
 	 * @return      `Set<String>` Set of bypassed handlers.
