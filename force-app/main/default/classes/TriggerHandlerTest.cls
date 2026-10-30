@@ -1,6 +1,7 @@
 /**
  * Tests for the `TriggerHandler` base class.
- * <br>Each test creates its own handler with `newHandler()` and proves 1 behavior through the call log.
+ * <br>Each test proves 1 behavior. Most tests create their handler with `newHandler()` and read the call log.
+ * <br>No real trigger runs in these tests: `setTestContext()` gives each handler its trigger operation. The sample tests, which are outside the package directory, run the real trigger.
  * <br>`NcssCount` is suppressed. The class has 1 test for each behavior of the framework, the bypass and loop counter registries too, so it is large by design.
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @since 2013
@@ -27,7 +28,13 @@ private inherited sharing class TriggerHandlerTest {
 	 * The messages that the `log` override of the test handler received. Each entry is the level, a colon, and the message.
 	 */
 	private static List<String> logs = new List<String>();
+	/**
+	 * The value of `getTriggerEvent()` that the test handler saw in its last run.
+	 */
 	private static System.TriggerOperation lastEventSeen;
+	/**
+	 * The value of `getHandlerName()` that the test handler saw in its last run.
+	 */
 	private static String lastNameSeen;
 	/**
 	 * The name that the test handler gets from the Type constructor: `Type.getName()` of the inner class. It matches `bypass(Type)`.
@@ -369,7 +376,7 @@ private inherited sharing class TriggerHandlerTest {
 	// setBypass
 
 	/**
-	 * `setBypass(name, true)` bypasses the handler and keeps an active global bypass.
+	 * `setBypass(name, true)` bypasses the handler by name, also during a global bypass. The named bypass stays after the global bypass is cleared.
 	 */
 	@IsTest
 	private static void setBypassTrueBypassesHandler() {

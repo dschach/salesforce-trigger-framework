@@ -66,7 +66,14 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
   @TestVisible
   private static List<System.TriggerOperation> finishedOperations = new List<System.TriggerOperation>();
 
+  /**
+   * The new Accounts of the trigger, cast from `Trigger.new`.
+   */
   private List<Account> newRecords;
+
+  /**
+   * The old Accounts of the trigger by Id, cast from `Trigger.oldMap`. It is null in an insert.
+   */
   private Map<Id, Account> oldRecordsMap;
 
   /**
@@ -118,7 +125,8 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
   }
 
   /**
-   * Records the finished operation. A real handler puts work here that must follow each context, for example a rollup or 1 platform event for the full trigger.
+   * Records the finished operation. A real handler puts work here that must follow each context, for example a rollup.
+   * <br>`andFinally()` runs after each context and each chunk of 200 records. For work that must happen only once for a DML statement, such as 1 platform event, check `getTriggerEvent()` first.
    */
   public override void andFinally() {
     finishedOperations.add(getTriggerEvent());
