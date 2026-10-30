@@ -1,8 +1,9 @@
 # Deploys the framework and the sample to a scratch org and runs every Apex test.
 # Runs only when the framework, the sample, or this workflow changes, because each
 # run costs a scratch org. It is not a required check for that reason. A change to
-# sfdx-project.json or the scratch org definition, such as a release version, does
-# not start it; run the workflow by hand when such a change needs a test.
+# a markdown file alone does not start it, because markdown files are not deployed.
+# A change to sfdx-project.json or the scratch org definition, such as a release
+# version, does not start it; run the workflow by hand when such a change needs a test.
 # A push to main that changes an Apex class runs it too, so that Codecov has the
 # coverage of main to compare each pull request with.
 name: Apex tests
@@ -14,6 +15,8 @@ on:
     paths:
       - "force-app/**"
       - "sample-handler/**"
+      # Markdown files are not deployed, so a change to them alone does not start a run
+      - "!**/*.md"
       - ".github/workflows/apex-tests.yml"
   push:
     branches:
