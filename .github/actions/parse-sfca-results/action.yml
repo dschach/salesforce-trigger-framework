@@ -1,5 +1,5 @@
 name: "SFCA results priorities"
-description: "Count the violations in a Salesforce Code Analyzer JSON report by priority, 1 to 5"
+description: "Count the violations in a Salesforce Code Analyzer JSON report by severity, 1 to 5. CI in this repository does not use it."
 author: "David Schach"
 
 inputs:
@@ -10,19 +10,19 @@ inputs:
 
 outputs:
   priority1:
-    description: "Number of violations whose rule has priority 1"
+    description: "Number of severity 1 violations"
     value: ${{ steps.count.outputs.priority1 }}
   priority2:
-    description: "Number of violations whose rule has priority 2"
+    description: "Number of severity 2 violations"
     value: ${{ steps.count.outputs.priority2 }}
   priority3:
-    description: "Number of violations whose rule has priority 3"
+    description: "Number of severity 3 violations"
     value: ${{ steps.count.outputs.priority3 }}
   priority4:
-    description: "Number of violations whose rule has priority 4"
+    description: "Number of severity 4 violations"
     value: ${{ steps.count.outputs.priority4 }}
   priority5:
-    description: "Number of violations whose rule has priority 5"
+    description: "Number of severity 5 violations"
     value: ${{ steps.count.outputs.priority5 }}
   total:
     description: "Number of violations in the report"
@@ -34,7 +34,7 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: "Count violations by priority"
+    - name: "Count violations by severity"
       id: count
       shell: bash
       run: bash "${{ github.action_path }}/count.sh" "${{ inputs.results-file }}"

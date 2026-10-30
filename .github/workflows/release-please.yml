@@ -1,3 +1,6 @@
+# Runs Release Please on each push to main. It opens or updates the release pull
+# request from the commit messages, and it creates the release when that pull
+# request merges.
 name: release-please
 on:
   push:

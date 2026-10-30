@@ -9,7 +9,7 @@
 // README with Prettier, which changes the tabs in the code to spaces, so that a commit
 // and the Prettier check do not change the README again.
 //
-// The pre-commit hook runs this with --index when a sample file is staged, and
+// The pre-commit hook runs this with --index when a sample file or the sample README is staged, and
 // npm run prepareApexDox runs it before it builds the sample page. CI runs it with --check.
 //
 // Usage: node scripts/sync-sample-code.mjs [--index] [--check]
