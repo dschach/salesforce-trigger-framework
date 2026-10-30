@@ -1,5 +1,5 @@
 /**
- * Trigger handler virtual class, the base for every trigger handler.
+ * Trigger handler abstract class, the base for every trigger handler. A handler extends it, and code cannot build the base class itself.
  * @author {@link [Kevin OHara](https://github.com/kevinohara80)}
  * @since 2013
  * @author {@link [David Schach](https://github.com/dschach)}
@@ -12,7 +12,7 @@
  * @see TriggerHandlerTest
  */
 @SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.EmptyStatementBlock')
-public inherited sharing virtual class TriggerHandler {
+public inherited sharing abstract class TriggerHandler {
 	/**
 	 * The loop counters of each handler, by handler name and then by trigger operation. A handler has a counter for an operation only after a limit is set for that operation, so `getLoopCount()` returns `NOT_COUNTED` for an operation with no limit.
 	 */

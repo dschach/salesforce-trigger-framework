@@ -85,20 +85,20 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * The base class runs every operation without an override, and each run counts against the loop limit.
+	 * A handler with no overrides runs the empty base methods for every operation, and each run counts against the loop limit.
 	 */
 	@IsTest
 	private static void baseClassRunsEveryOperationWithoutOverrides() {
-		TriggerHandler baseHandler = new TriggerHandler();
+		TriggerHandlerTest.UntypedHandler baseHandler = new TriggerHandlerTest.UntypedHandler();
 		baseHandler.setMaxLoopCount(10);
 		for (System.TriggerOperation operation : System.TriggerOperation.values()) {
 			baseHandler.setTriggerContext(operation, true);
 			baseHandler.run();
 		}
 		for (System.TriggerOperation operation : System.TriggerOperation.values()) {
-			Assert.areEqual(1, TriggerHandler.getLoopCount('TriggerHandler', operation), 'the base class should complete 1 run of ' + operation);
+			Assert.areEqual(1, TriggerHandler.getLoopCount('UntypedHandler', operation), 'the base class should complete 1 run of ' + operation);
 		}
-		Assert.areEqual(System.TriggerOperation.values().size(), TriggerHandler.getLoopCount('TriggerHandler'), 'the deprecated total should count 1 run for each operation');
+		Assert.areEqual(System.TriggerOperation.values().size(), TriggerHandler.getLoopCount('UntypedHandler'), 'the deprecated total should count 1 run for each operation');
 	}
 
 	// trigger context
@@ -124,7 +124,7 @@ private inherited sharing class TriggerHandlerTest {
 	 */
 	@IsTest
 	private static void nullOperationClearsTriggerContext() {
-		TriggerHandler baseHandler = new TriggerHandler();
+		TriggerHandlerTest.UntypedHandler baseHandler = new TriggerHandlerTest.UntypedHandler();
 		baseHandler.setTriggerContext(null, true);
 		Assert.isFalse(baseHandler.isTriggerExecuting, 'a null operation should leave the handler outside a trigger');
 		Assert.isNull(baseHandler.triggerEvent, 'a null operation should clear the trigger event');
@@ -779,16 +779,16 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * The default `log` hook of the base class writes the debug and limits lines without an error.
+	 * The default `log` hook of the base class writes the debug and limits lines without an error, for a handler that does not override it.
 	 */
 	@IsTest
 	private static void baseLogHookWritesWithoutError() {
-		TriggerHandler baseHandler = new TriggerHandler();
+		TriggerHandlerTest.UntypedHandler baseHandler = new TriggerHandlerTest.UntypedHandler();
 		baseHandler.setTestContext(System.TriggerOperation.BEFORE_INSERT);
 		TriggerHandler.showDebug();
 		TriggerHandler.showLimits();
 		baseHandler.setMaxLoopCount(5).run();
-		Assert.areEqual(1, TriggerHandler.getLoopCount('TriggerHandler', System.TriggerOperation.BEFORE_INSERT), 'the base handler should complete its run with logging on');
+		Assert.areEqual(1, TriggerHandler.getLoopCount('UntypedHandler', System.TriggerOperation.BEFORE_INSERT), 'the base handler should complete its run with logging on');
 	}
 
 	// argument checks
@@ -1012,7 +1012,7 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * A handler with no constructor of its own, so the base class resolves its name at runtime.
+	 * A handler with no constructor and no overrides of its own: the base class resolves its name at runtime, and every context method, `andFinally()`, and `log()` is the base class version.
 	 */
 	private class UntypedHandler extends TriggerHandler {
 	}
