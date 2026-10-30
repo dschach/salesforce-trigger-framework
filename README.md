@@ -332,13 +332,12 @@ trigger OpportunityTrigger on Opportunity(before insert, before update, before d
 
 ### Debug Statements
 
-There are two methods that will show additional information.
+There are two kinds of lines that show additional information:
 
-`TriggerHandler.showLimits()` will debug Apex query and DML limits when the trigger handler has completed.
+- The limits line shows the Apex query and DML limits when the trigger handler has completed.
+- The debug lines show the trigger entry and exit in debug logs. Use them sparingly, as they decrease org performance.
 
-`TriggerHandler.showDebug()` will show trigger entry and exit in debug logs. Use sparingly, as it will decrease org performance.
-
-Both flags are static, so they apply to every handler that runs later in the transaction. To use one or both of these, either add them to the _trigger_
+`TriggerHandler.showLimits()` and `TriggerHandler.showDebug()` turn them on for every handler that runs later in the transaction. To use one or both of these, either add them to the _trigger_
 
 ```apex
 TriggerHandler.showLimits();
@@ -360,19 +359,19 @@ TriggerHandler.showLimits(false);
 TriggerHandler.showDebug(false);
 ```
 
-In version 1.2, the ability to chain methods _in triggers_ was added. Now, you can specify showing debug messages and limits in a single line in your trigger:
+To turn them on for 1 handler only, chain `showHandlerLimits()` and `showHandlerDebug()` in your trigger:
 
 ```apex
 trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
-  new OpportunityTriggerHandler().debug().limits().run(); // debug() is the same as debug(true)
+  new OpportunityTriggerHandler().showHandlerDebug().showHandlerLimits().run();
 }
 ```
 
-Or stop showing them.
+A handler's own setting wins over the setting for all handlers. So `showHandlerDebug(false)` turns the debug lines off for 1 handler while `TriggerHandler.showDebug()` keeps them on for the others, and `showHandlerDebug(null)` makes the handler use the setting for all handlers again.
 
 ```apex
 trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
-  new OpportunityTriggerHandler().debug(false).limits(false).run();
+  new OpportunityTriggerHandler().showHandlerDebug(false).showHandlerLimits(false).run();
 }
 ```
 
@@ -514,7 +513,9 @@ Every public member of `TriggerHandler`. The [class documentation](https://david
 | `static clearGlobalBypass()`                                                 | Clears only the global bypass.                                                                                                                                             |
 | `static clearBypassList()`                                                   | Clears only the list of named bypasses.                                                                                                                                    |
 | `limits()`, `limits(Boolean enabled)`                                        | Turns the limits debug output on, or on and off. Returns the handler, for chaining.                                                                                        |
-| `static showLimits()`, `static showLimits(Boolean enabled)`                  | The same, without chaining.                                                                                                                                                |
+| `static showLimits()`, `static showLimits(Boolean enabled)`                  | Turns the limits line on, or on and off, for every handler that runs later in the transaction.                                                                             |
+| `showHandlerLimits()`, `showHandlerLimits(Boolean enabled)`                  | Turns the limits line on, or on and off, for this handler only. Null makes it use the setting for all handlers. Returns the handler, for chaining.                         |
 | `debug()`, `debug(Boolean enabled)`                                          | Turns the entry and exit debug output on, or on and off. Returns the handler, for chaining.                                                                                |
-| `static showDebug()`, `static showDebug(Boolean enabled)`                    | The same, without chaining.                                                                                                                                                |
+| `static showDebug()`, `static showDebug(Boolean enabled)`                    | Turns the entry and exit lines on, or on and off, for every handler that runs later in the transaction.                                                                    |
+| `showHandlerDebug()`, `showHandlerDebug(Boolean enabled)`                    | Turns the entry and exit lines on, or on and off, for this handler only. Null makes it use the setting for all handlers. Returns the handler, for chaining.                |
 | `TriggerHandler.TriggerHandlerException`                                     | Thrown when `run()` is called outside a trigger, and when a bypass or loop count method gets a null or blank argument.                                                     |

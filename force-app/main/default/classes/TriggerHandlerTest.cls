@@ -710,6 +710,60 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
+	 * `showHandlerDebug()` turns on the entry and exit lines for 1 handler only, and it returns the handler for chaining.
+	 */
+	@IsTest
+	private static void showHandlerDebugIsForOneHandlerOnly() {
+		TriggerHandlerTest.TestHandler debugged = newHandler(System.TriggerOperation.BEFORE_UPDATE);
+		Assert.isTrue(debugged === debugged.showHandlerDebug(), 'showHandlerDebug() should return the same handler');
+		debugged.run();
+		Assert.areEqual(2, logs.size(), 'the handler with its own debug setting should write the entry and exit lines');
+
+		logs.clear();
+		newHandler(System.TriggerOperation.BEFORE_UPDATE).run();
+		Assert.isTrue(logs.isEmpty(), 'another handler should write no debug line');
+		Assert.isFalse(TriggerHandler.doShowDebug, 'showHandlerDebug() should not change the static setting');
+	}
+
+	/**
+	 * A handler's own setting wins over the static setting, and null makes the handler use the static setting again.
+	 */
+	@IsTest
+	private static void handlerDebugSettingWinsOverStatic() {
+		TriggerHandler.showDebug();
+		TriggerHandlerTest.TestHandler quiet = newHandler(System.TriggerOperation.BEFORE_UPDATE);
+		quiet.showHandlerDebug(false).run();
+		Assert.isTrue(logs.isEmpty(), 'showHandlerDebug(false) should turn the lines off for this handler');
+
+		newHandler(System.TriggerOperation.BEFORE_UPDATE).run();
+		Assert.areEqual(2, logs.size(), 'another handler should still use the static setting');
+
+		logs.clear();
+		quiet.showHandlerDebug(null).run();
+		Assert.areEqual(2, logs.size(), 'showHandlerDebug(null) should make the handler use the static setting again');
+	}
+
+	/**
+	 * `showHandlerLimits()` turns on the limits line for 1 handler only, and `showHandlerLimits(false)` wins over the static setting.
+	 */
+	@IsTest
+	private static void showHandlerLimitsIsForOneHandlerOnly() {
+		TriggerHandlerTest.TestHandler limited = newHandler(System.TriggerOperation.BEFORE_UPDATE);
+		Assert.isTrue(limited === limited.showHandlerLimits(), 'showHandlerLimits() should return the same handler');
+		limited.run();
+		Assert.areEqual(1, logs.size(), 'the handler with its own limits setting should write the limits line');
+		Assert.isTrue(logs[0].startsWith('DEBUG: BEFORE_UPDATE on ' + HANDLER_NAME + ' ('), 'the line should be the limits line');
+
+		logs.clear();
+		newHandler(System.TriggerOperation.BEFORE_UPDATE).run();
+		Assert.isTrue(logs.isEmpty(), 'another handler should write no limits line');
+
+		TriggerHandler.showLimits();
+		limited.showHandlerLimits(false).run();
+		Assert.isTrue(logs.isEmpty(), 'showHandlerLimits(false) should turn the line off for this handler');
+	}
+
+	/**
 	 * An exceeded loop limit sends a warning through the `log` hook, also with debug off.
 	 */
 	@IsTest

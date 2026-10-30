@@ -49,6 +49,16 @@ public inherited sharing virtual class TriggerHandler {
 	private static Boolean doShowDebug = false;
 
 	/**
+	 * This handler's own setting for the limits line: `true` or `false`, or null to use `doShowLimits`. `showHandlerLimits()` and `showHandlerLimits(Boolean)` set it.
+	 */
+	private Boolean handlerShowLimits;
+
+	/**
+	 * This handler's own setting for the entry and exit lines: `true` or `false`, or null to use `doShowDebug`. `showHandlerDebug()` and `showHandlerDebug(Boolean)` set it.
+	 */
+	private Boolean handlerShowDebug;
+
+	/**
 	 * The current operation of the trigger. Tests can set it.
 	 */
 	@TestVisible
@@ -196,7 +206,7 @@ public inherited sharing virtual class TriggerHandler {
 			return;
 		}
 
-		if (doShowDebug) {
+		if (isDebugOn()) {
 			log(LoggingLevel.DEBUG, String.format('Entering {0}, fired {1}', new List<String>{ getHandlerName(), triggerEvent.name() }));
 		}
 
@@ -226,7 +236,7 @@ public inherited sharing virtual class TriggerHandler {
 		}
 		andFinally();
 
-		if (doShowLimits) {
+		if (isLimitsOn()) {
 			log(
 				LoggingLevel.DEBUG,
 				String.format(
@@ -242,7 +252,7 @@ public inherited sharing virtual class TriggerHandler {
 				)
 			);
 		}
-		if (doShowDebug) {
+		if (isDebugOn()) {
 			log(LoggingLevel.DEBUG, String.format('Exiting {0}, fired {1}', new List<String>{ getHandlerName(), triggerEvent.name() }));
 		}
 	}
@@ -666,7 +676,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Turn on the limits debug output for every handler that runs later in the transaction.
+	 * Turn on the limits debug output for every handler that runs later in the transaction. A handler with its own setting from `showHandlerLimits()` keeps it.
 	 * <br>Use this in the trigger or handler.
 	 * @see TriggerHandler.showLimits[1]
 	 * @example
@@ -680,7 +690,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Turn the limits debug output on or off for every handler that runs later in the transaction.
+	 * Turn the limits debug output on or off for every handler that runs later in the transaction. A handler with its own setting from `showHandlerLimits()` keeps it.
 	 * <br>Use this in the trigger or handler.
 	 *
 	 * @param enabled `true` to enable, `false` or null to disable.
@@ -723,7 +733,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Turn on the entry and exit debug output for every handler that runs later in the transaction.
+	 * Turn on the entry and exit debug output for every handler that runs later in the transaction. A handler with its own setting from `showHandlerDebug()` keeps it.
 	 * <br>Use this in the trigger or handler.
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2021
@@ -739,7 +749,7 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * Turn the entry and exit debug output on or off for every handler that runs later in the transaction.
+	 * Turn the entry and exit debug output on or off for every handler that runs later in the transaction. A handler with its own setting from `showHandlerDebug()` keeps it.
 	 *
 	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2021
@@ -748,6 +758,72 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	public static void showDebug(Boolean enabled) {
 		doShowDebug = enabled ?? false;
+	}
+
+	/**
+	 * Turn on the limits line for this handler only. Other handlers keep their own setting or the static one.
+	 * @see TriggerHandler.showHandlerLimits[1]
+	 * @example
+	 * new AccountSampleTriggerHandler().showHandlerLimits().run();
+	 *
+	 * @return `TriggerHandler` This instance, which enables method chaining.
+	 */
+	public TriggerHandler showHandlerLimits() {
+		return showHandlerLimits(true);
+	}
+
+	/**
+	 * Turn the limits line on or off for this handler only. This handler's setting wins over the static `showLimits()`.
+	 * @param enabled `true` to turn it on, `false` to turn it off for this handler, or null to use the static setting again.
+	 * @return `TriggerHandler` This instance, which enables method chaining.
+	 * @see TriggerHandler.showHandlerLimits[0]
+	 * @example
+	 * new AccountSampleTriggerHandler().showHandlerLimits(false).run();
+	 */
+	public TriggerHandler showHandlerLimits(Boolean enabled) {
+		handlerShowLimits = enabled;
+		return this;
+	}
+
+	/**
+	 * Turn on the entry and exit lines for this handler only. Other handlers keep their own setting or the static one.
+	 * @see TriggerHandler.showHandlerDebug[1]
+	 * @example
+	 * new AccountSampleTriggerHandler().showHandlerDebug().run();
+	 *
+	 * @return `TriggerHandler` This instance, which enables method chaining.
+	 */
+	public TriggerHandler showHandlerDebug() {
+		return showHandlerDebug(true);
+	}
+
+	/**
+	 * Turn the entry and exit lines on or off for this handler only. This handler's setting wins over the static `showDebug()`.
+	 * @param enabled `true` to turn them on, `false` to turn them off for this handler, or null to use the static setting again.
+	 * @return `TriggerHandler` This instance, which enables method chaining.
+	 * @see TriggerHandler.showHandlerDebug[0]
+	 * @example
+	 * new AccountSampleTriggerHandler().showHandlerDebug(false).run();
+	 */
+	public TriggerHandler showHandlerDebug(Boolean enabled) {
+		handlerShowDebug = enabled;
+		return this;
+	}
+
+	/**
+	 * Whether this handler writes the limits line: its own setting when it has one, or else the static setting.
+	 * @return `Boolean` `true` when the limits line is on for this handler.
+	 */
+	private Boolean isLimitsOn() {
+		return handlerShowLimits ?? doShowLimits;
+	}
+
+	/**
+	 * Whether this handler writes the entry and exit lines: its own setting when it has one, or else the static setting.
+	 * @return `Boolean` `true` when the entry and exit lines are on for this handler.
+	 */
+	private Boolean isDebugOn() {
+		return handlerShowDebug ?? doShowDebug;
 	}
 
 	/**
