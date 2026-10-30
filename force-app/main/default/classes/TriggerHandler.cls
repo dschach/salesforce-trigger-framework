@@ -11,42 +11,42 @@
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
  * @see TriggerHandlerTest
  */
-@SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.FieldDeclarationsShouldBeAtStart, PMD.EmptyStatementBlock')
+@SuppressWarnings('PMD.ExcessivePublicCount, PMD.CyclomaticComplexity, PMD.CognitiveComplexity, PMD.EmptyStatementBlock')
 public inherited sharing virtual class TriggerHandler {
 	/**
 	 * Loop counter per handler name. A handler has an entry only after `setMaxLoopCount()` was called for it, so `getLoopCount()` is 0 for a handler with no limit.
 	 */
 	@TestVisible
-	private static Map<String, LoopCount> loopCountMap;
+	private static Map<String, LoopCount> loopCountMap = new Map<String, LoopCount>();
 
 	/**
 	 * All bypassed handlers, as the caller spelled them.
 	 */
 	@TestVisible
-	private static Set<String> bypassedHandlers;
+	private static Set<String> bypassedHandlers = new Set<String>();
 
 	/**
 	 * Lower-case copy of `bypassedHandlers`, used for every membership check so that a bypass name matches regardless of case.
 	 */
-	private static Set<String> bypassedHandlersLower;
+	private static Set<String> bypassedHandlersLower = new Set<String>();
 
 	/**
 	 * `true` when all handlers are bypassed. The named bypasses are not checked then.
 	 */
 	@TestVisible
-	private static Boolean globalBypass;
+	private static Boolean globalBypass = false;
 
 	/**
 	 * `true` if we include a debug statement for limits.
 	 */
 	@TestVisible
-	private static Boolean showLimits;
+	private static Boolean showLimits = false;
 
 	/**
 	 * `true` if we include a debug statement for trigger entry and exit.
 	 */
 	@TestVisible
-	private static Boolean showDebug;
+	private static Boolean showDebug = false;
 
 	/**
 	 * The current operation of the trigger. Tests can set it.
@@ -62,6 +62,11 @@ public inherited sharing virtual class TriggerHandler {
 	private Boolean isTriggerExecuting;
 
 	/**
+	 * The name of this handler. Set by the String constructor, or resolved by `getHandlerName()` the first time it is needed.
+	 */
+	private String handlerName;
+
+	/**
 	 * The value that `bypassList()` and `bypassSet()` hold when all handlers are bypassed.
 	 */
 	@TestVisible
@@ -72,15 +77,41 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	private static final Integer DEFAULT_MAX_LOOP_COUNT = 5;
 
-	// static initialization variables
-	static {
-		loopCountMap = new Map<String, LoopCount>();
-		bypassedHandlers = new Set<String>();
-		bypassedHandlersLower = new Set<String>();
-		globalBypass = false;
-		showLimits = false;
-		showDebug = false;
-	}
+	/**
+	 * Error text for a run outside a trigger. English only.
+	 */
+	@TestVisible
+	private static final String ERROR_TRIGGERCONTEXT = 'Trigger handler called outside of Trigger execution'; //NOPMD
+
+	/**
+	 * Error text when a handler name is null or blank.
+	 */
+	@TestVisible
+	private static final String ERROR_HANDLER_NAME = 'A handler name is required';
+
+	/**
+	 * Error text when a handler type is null.
+	 */
+	@TestVisible
+	private static final String ERROR_HANDLER_TYPE = 'A handler type is required';
+
+	/**
+	 * Error text when a list of handler names is null.
+	 */
+	@TestVisible
+	private static final String ERROR_HANDLER_NAMES = 'A list of handler names is required';
+
+	/**
+	 * Error text when the maximum loop count is null.
+	 */
+	@TestVisible
+	private static final String ERROR_LOOP_COUNT = 'A maximum loop count is required';
+
+	/**
+	 * Error text when the desired bypass value is null.
+	 */
+	@TestVisible
+	private static final String ERROR_BYPASS_VALUE = 'A bypass value is required';
 
 	/**
 	 * Basic constructor. The handler name is resolved from the runtime class name the first time a bypass or a loop count needs it.
@@ -674,11 +705,6 @@ public inherited sharing virtual class TriggerHandler {
 	}
 
 	/**
-	 * The name of this handler. Set by the String constructor, or resolved by `getHandlerName()` the first time it is needed.
-	 */
-	private String handlerName;
-
-	/**
 	 * The trigger operation this handler is running for. Also set under the test seam, where `Trigger.operationType` is null.
 	 * @return `System.TriggerOperation` The current operation, or null outside a trigger.
 	 */
@@ -918,40 +944,4 @@ public inherited sharing virtual class TriggerHandler {
 	 */
 	public class TriggerHandlerException extends Exception {
 	}
-
-	/**
-	 * Error text for a run outside a trigger. English only.
-	 */
-	@TestVisible
-	private static final String ERROR_TRIGGERCONTEXT = 'Trigger handler called outside of Trigger execution'; //NOPMD
-
-	/**
-	 * Error text when a handler name is null or blank.
-	 */
-	@TestVisible
-	private static final String ERROR_HANDLER_NAME = 'A handler name is required';
-
-	/**
-	 * Error text when a handler type is null.
-	 */
-	@TestVisible
-	private static final String ERROR_HANDLER_TYPE = 'A handler type is required';
-
-	/**
-	 * Error text when a list of handler names is null.
-	 */
-	@TestVisible
-	private static final String ERROR_HANDLER_NAMES = 'A list of handler names is required';
-
-	/**
-	 * Error text when the maximum loop count is null.
-	 */
-	@TestVisible
-	private static final String ERROR_LOOP_COUNT = 'A maximum loop count is required';
-
-	/**
-	 * Error text when the desired bypass value is null.
-	 */
-	@TestVisible
-	private static final String ERROR_BYPASS_VALUE = 'A bypass value is required';
 }
