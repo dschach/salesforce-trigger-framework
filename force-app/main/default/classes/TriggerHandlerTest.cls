@@ -469,13 +469,15 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
-	 * A maximum loop count of 0 stops every run, `andFinally()` included.
+	 * A maximum loop count of 0 means no limit, as a negative value does. The runs are still counted.
 	 */
 	@IsTest
-	private static void maxLoopCountOfZeroStopsEveryRun() {
-		newHandler(System.TriggerOperation.BEFORE_INSERT).setMaxLoopCount(0).run();
-		Assert.isTrue(calls.isEmpty(), 'a maximum of 0 should stop the first run');
-		Assert.areEqual(1, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the stopped run should still count');
+	private static void maxLoopCountOfZeroMeansNoLimit() {
+		TriggerHandlerTest.TestHandler unlimited = newHandler(System.TriggerOperation.BEFORE_INSERT);
+		unlimited.setMaxLoopCount(0).run();
+		unlimited.run();
+		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally', 'beforeInsert', 'andFinally' }, calls, 'a maximum of 0 should stop no run');
+		Assert.areEqual(2, TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT), 'the runs should still be counted');
 	}
 
 	/**
@@ -571,6 +573,20 @@ private inherited sharing class TriggerHandlerTest {
 		Assert.areEqual(TriggerHandler.NOT_COUNTED, TriggerHandler.getLoopCount(OTHER_HANDLER, System.TriggerOperation.BEFORE_INSERT), 'an unknown handler should not be counted');
 		Assert.areEqual(TriggerHandler.NOT_COUNTED, TriggerHandler.getLoopCount(OTHER_HANDLER), 'the deprecated total should not count an unknown handler');
 		Assert.areEqual(-1, TriggerHandler.NOT_COUNTED, 'a count that is not kept should be -1');
+	}
+
+	/**
+	 * The `LoopCounter` class stores a maximum of 0 or less as -1, which means no limit.
+	 */
+	@IsTest
+	private static void loopCounterStoresZeroAsNoLimit() {
+		TriggerHandler.LoopCounter zero = new TriggerHandler.LoopCounter(0);
+		Assert.areEqual(-1, zero.getMax(), 'a maximum of 0 should be stored as -1');
+		Assert.isFalse(zero.increment(), 'a counter with no limit should never be exceeded');
+		zero.setMax(-5);
+		Assert.areEqual(-1, zero.getMax(), 'a negative maximum should be stored as -1');
+		zero.setMax(3);
+		Assert.areEqual(3, zero.getMax(), 'a positive maximum should be stored as given');
 	}
 
 	/**

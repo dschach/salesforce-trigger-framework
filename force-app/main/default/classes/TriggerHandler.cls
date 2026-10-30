@@ -72,7 +72,7 @@ public inherited sharing virtual class TriggerHandler {
 	private static final Integer DEFAULT_MAX_LOOP_COUNT = 5;
 
 	/**
-	 * The maximum loop count that `clearMaxLoopCount()` sets. Any negative maximum means no limit.
+	 * The maximum loop count that means no limit. `clearMaxLoopCount()` sets it, and a `LoopCounter` stores a maximum of 0 or less as this value.
 	 */
 	private static final Integer NO_LOOP_LIMIT = -1;
 
@@ -253,7 +253,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * <br>When the limit of an operation is exceeded, `run()` logs a warning and returns without calling the context method or `andFinally()`.
 	 * <br>Returning `TriggerHandler` enables method chaining when used in a trigger.
 	 * @author {@link [David Schach](https://github.com/dschach)}
-	 * @param  max Maximum number of runs of each operation. 0 means the handler never runs, and a negative value removes the limit.
+	 * @param  max Maximum number of runs of each operation. 0 or a negative value removes the limit.
 	 * @exception TriggerHandlerException when the value is null.
 	 * @throws TriggerHandlerException when the value is null.
 	 * @return      `TriggerHandler` This instance, which enables method chaining.
@@ -277,7 +277,7 @@ public inherited sharing virtual class TriggerHandler {
 	 * Limit the number of times `run()` executes this handler's context method for 1 trigger operation. The other operations keep their limits.
 	 * <br>The count of the operation is kept for the whole transaction, and it starts when a limit is first set for it. Every 200-record chunk counts as 1 run. A bypassed run is not counted, and a run that the limit stops is counted.
 	 * @param  operation The trigger operation to limit.
-	 * @param  max Maximum number of runs of the operation. 0 means the operation never runs, and a negative value removes the limit.
+	 * @param  max Maximum number of runs of the operation. 0 or a negative value removes the limit.
 	 * @exception TriggerHandlerException when the operation or the value is null.
 	 * @throws TriggerHandlerException when the operation or the value is null.
 	 * @return      `TriggerHandler` This instance, which enables method chaining.
@@ -313,7 +313,7 @@ public inherited sharing virtual class TriggerHandler {
 	/**
 	 * Set the limit of 1 trigger operation of this handler, and create its counter when it has none.
 	 * @param operation The trigger operation.
-	 * @param max The maximum number of runs. A negative value means no limit.
+	 * @param max The maximum number of runs. 0 or a negative value means no limit.
 	 */
 	private void setOperationMax(System.TriggerOperation operation, Integer max) {
 		String handlerName = getHandlerName();
@@ -983,7 +983,7 @@ public inherited sharing virtual class TriggerHandler {
 	@TestVisible
 	private inherited sharing class LoopCounter {
 		/**
-		 * The maximum number of runs. A negative value means no limit.
+		 * The maximum number of runs, or `NO_LOOP_LIMIT` for no limit.
 		 */
 		private Integer max;
 		/**
@@ -1001,16 +1001,16 @@ public inherited sharing virtual class TriggerHandler {
 		/**
 		 * Constructor with a maximum. The count starts at 0.
 		 *
-		 * @param maxCount The maximum number of runs. A negative value means no limit.
+		 * @param maxCount The maximum number of runs. 0 or a negative value means no limit.
 		 */
 		public LoopCounter(Integer maxCount) {
-			this.max = maxCount;
+			setMax(maxCount);
 			this.loopCount = 0;
 		}
 
 		/**
 		 * Add 1 to the count and return `exceeded()`.
-		 * @return     `Boolean` true when the new count is greater than a max of 0 or more. A negative max never exceeds.
+		 * @return     `Boolean` true when the new count is greater than the maximum. A counter with no limit never exceeds.
 		 */
 		public Boolean increment() {
 			loopCount++;
@@ -1019,15 +1019,15 @@ public inherited sharing virtual class TriggerHandler {
 
 		/**
 		 * Whether the count has passed the limit.
-		 * @return     `Boolean` true when max is 0 or more and count is greater than max. A negative max means no limit.
+		 * @return     `Boolean` true when the counter has a limit and the count is greater than it.
 		 */
 		public Boolean exceeded() {
-			return max >= 0 && loopCount > max;
+			return max != NO_LOOP_LIMIT && loopCount > max;
 		}
 
 		/**
 		 * Returns the maximum number of runs.
-		 * @return     `Integer` The maximum. A negative value means no limit.
+		 * @return     `Integer` The maximum, or -1 when there is no limit.
 		 */
 		public Integer getMax() {
 			return max;
@@ -1042,11 +1042,11 @@ public inherited sharing virtual class TriggerHandler {
 		}
 
 		/**
-		 * Sets the maximum number of runs. The count does not change.
-		 * @param maxCount The new maximum. A negative value means no limit.
+		 * Sets the maximum number of runs. The count does not change. A maximum of 0 or less is stored as `NO_LOOP_LIMIT`.
+		 * @param maxCount The new maximum. 0 or a negative value means no limit.
 		 */
 		public void setMax(Integer maxCount) {
-			max = maxCount;
+			max = maxCount > 0 ? maxCount : NO_LOOP_LIMIT;
 		}
 	}
 
