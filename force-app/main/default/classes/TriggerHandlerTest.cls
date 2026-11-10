@@ -238,6 +238,22 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
+	 * A set of names bypasses each handler in it. A clear of the set lets the handlers run.
+	 */
+	@IsTest
+	private static void bypassBySetSkipsRunUntilCleared() {
+		TriggerHandler.bypass(new Set<String>{ HANDLER_NAME, OTHER_HANDLER });
+		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
+		Assert.isTrue(calls.isEmpty(), 'a handler bypassed by set should call no method');
+		Assert.isTrue(TriggerHandler.isBypassed(OTHER_HANDLER), 'every name in the set should be bypassed');
+
+		TriggerHandler.clearBypass(new Set<String>{ HANDLER_NAME, OTHER_HANDLER });
+		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
+		Assert.areEqual(new List<String>{ 'afterUpdate', 'andFinally' }, calls, 'the handler should run after the set is cleared');
+		Assert.isTrue(TriggerHandler.bypassList().isEmpty(), 'every name in the set should be cleared');
+	}
+
+	/**
 	 * A bypass by type uses `Type.getName()`. A clear by type lets the handler run.
 	 */
 	@IsTest
@@ -502,6 +518,34 @@ private inherited sharing class TriggerHandlerTest {
 		limited.clearMaxLoopCount();
 		limited.run();
 		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally' }, calls, 'the handler should run after the limit is removed');
+	}
+
+	/**
+	 * `clearMaxLoopCount()` returns the handler, so you can chain `run()` after it.
+	 */
+	@IsTest
+	private static void clearMaxLoopCountReturnsHandler() {
+		TriggerHandlerTest.TestHandler limited = newHandler(System.TriggerOperation.BEFORE_INSERT);
+		limited.setMaxLoopCount(1).run();
+		Assert.isTrue(limited === limited.clearMaxLoopCount(), 'clearMaxLoopCount() should return the same handler');
+
+		calls.clear();
+		limited.clearMaxLoopCount().run();
+		Assert.areEqual(new List<String>{ 'beforeInsert', 'andFinally' }, calls, 'a chained run() should run after the limit is removed');
+	}
+
+	/**
+	 * `getLoopCount()` by type returns the same count as `getLoopCount()` by name.
+	 */
+	@IsTest
+	private static void getLoopCountByTypeMatchesName() {
+		newHandler(System.TriggerOperation.BEFORE_INSERT).setMaxLoopCount(5).run();
+		Assert.areEqual(1, TriggerHandler.getLoopCount(TriggerHandlerTest.TestHandler.class, System.TriggerOperation.BEFORE_INSERT), 'the count by type should be 1 after 1 run');
+		Assert.areEqual(
+			TriggerHandler.getLoopCount(HANDLER_NAME, System.TriggerOperation.BEFORE_INSERT),
+			TriggerHandler.getLoopCount(TriggerHandlerTest.TestHandler.class, System.TriggerOperation.BEFORE_INSERT),
+			'the count by type should match the count by name'
+		);
 	}
 
 	/**
@@ -807,6 +851,53 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
+	 * `hideAllDebug()` wins over the static setting and the setting of each handler. Only `hideAllDebug(false)` ends it, and the settings apply again.
+	 */
+	@IsTest
+	private static void hideAllDebugWinsOverEverySetting() {
+		TriggerHandler.showDebug();
+		TriggerHandler.hideAllDebug();
+		TriggerHandlerTest.TestHandler debugged = newHandler(System.TriggerOperation.BEFORE_UPDATE);
+		debugged.showHandlerDebug();
+		debugged.run();
+		Assert.isTrue(logs.isEmpty(), 'hideAllDebug() should stop the lines of a handler with its own debug setting');
+
+		TriggerHandler.showDebug();
+		newHandler(System.TriggerOperation.BEFORE_UPDATE).run();
+		Assert.isTrue(logs.isEmpty(), 'showDebug() should not end hideAllDebug()');
+
+		TriggerHandler.hideAllDebug(false);
+		debugged.run();
+		Assert.areEqual(2, logs.size(), 'hideAllDebug(false) should make the handler use its own setting again');
+
+		logs.clear();
+		TriggerHandler.hideAllDebug();
+		TriggerHandler.hideAllDebug(null);
+		newHandler(System.TriggerOperation.BEFORE_UPDATE).run();
+		Assert.areEqual(2, logs.size(), 'hideAllDebug(null) should make the handlers use the static setting again');
+	}
+
+	/**
+	 * `hideAllDebug()` stops only the entry and exit lines. The limits line and the loop limit warning stay.
+	 */
+	@IsTest
+	private static void hideAllDebugKeepsLimitsLineAndLoopWarning() {
+		TriggerHandler.hideAllDebug();
+		TriggerHandler.showLimits();
+		newHandler(System.TriggerOperation.BEFORE_UPDATE).run();
+		Assert.areEqual(1, logs.size(), 'the limits line should be the only message');
+		Assert.isTrue(logs[0].startsWith('DEBUG: BEFORE_UPDATE on ' + HANDLER_NAME + ' ('), 'the limits line should stay with hideAllDebug()');
+
+		logs.clear();
+		TriggerHandler.showLimits(false);
+		TriggerHandlerTest.TestHandler limited = newHandler(System.TriggerOperation.BEFORE_INSERT);
+		limited.setMaxLoopCount(1).run();
+		limited.run();
+		Assert.areEqual(1, logs.size(), 'the loop limit warning should be the only message');
+		Assert.isTrue(logs[0].startsWith('WARN: Maximum loop count of 1 exceeded'), 'the loop limit warning should stay with hideAllDebug()');
+	}
+
+	/**
 	 * `showHandlerLimits()` makes only 1 handler write the limits line. `showHandlerLimits(false)` wins over the static setting.
 	 */
 	@IsTest
@@ -867,9 +958,12 @@ private inherited sharing class TriggerHandlerTest {
 			'bypass null type' => TriggerHandler.ERROR_HANDLER_TYPE,
 			'bypass null list' => TriggerHandler.ERROR_HANDLER_NAMES,
 			'bypass list with blank' => TriggerHandler.ERROR_HANDLER_NAME,
+			'bypass null set' => TriggerHandler.ERROR_HANDLER_NAMES,
+			'bypass set with blank' => TriggerHandler.ERROR_HANDLER_NAME,
 			'clearBypass null string' => TriggerHandler.ERROR_HANDLER_NAME,
 			'clearBypass null type' => TriggerHandler.ERROR_HANDLER_TYPE,
 			'clearBypass null list' => TriggerHandler.ERROR_HANDLER_NAMES,
+			'clearBypass null set' => TriggerHandler.ERROR_HANDLER_NAMES,
 			'isBypassed null string' => TriggerHandler.ERROR_HANDLER_NAME,
 			'isBypassed null type' => TriggerHandler.ERROR_HANDLER_TYPE,
 			'isSkipped null string' => TriggerHandler.ERROR_HANDLER_NAME,
@@ -882,6 +976,8 @@ private inherited sharing class TriggerHandlerTest {
 			'setMaxLoopCount operation null value' => TriggerHandler.ERROR_LOOP_COUNT,
 			'getLoopCount null operation' => TriggerHandler.ERROR_TRIGGER_OPERATION,
 			'getLoopCount operation null name' => TriggerHandler.ERROR_HANDLER_NAME,
+			'getLoopCount null type' => TriggerHandler.ERROR_HANDLER_TYPE,
+			'getLoopCount type null operation' => TriggerHandler.ERROR_TRIGGER_OPERATION,
 			'getLoopCount null' => TriggerHandler.ERROR_HANDLER_NAME
 		};
 		for (String scenario : expectedMessages.keySet()) {
@@ -918,6 +1014,12 @@ private inherited sharing class TriggerHandlerTest {
 			when 'bypass list with blank' {
 				TriggerHandler.bypass(new List<String>{ HANDLER_NAME, '' });
 			}
+			when 'bypass null set' {
+				TriggerHandler.bypass((Set<String>) null);
+			}
+			when 'bypass set with blank' {
+				TriggerHandler.bypass(new Set<String>{ HANDLER_NAME, '' });
+			}
 			when 'clearBypass null string' {
 				TriggerHandler.clearBypass((String) null);
 			}
@@ -926,6 +1028,9 @@ private inherited sharing class TriggerHandlerTest {
 			}
 			when 'clearBypass null list' {
 				TriggerHandler.clearBypass((List<String>) null);
+			}
+			when 'clearBypass null set' {
+				TriggerHandler.clearBypass((Set<String>) null);
 			}
 			when 'isBypassed null string' {
 				TriggerHandler.isBypassed((String) null);
@@ -976,7 +1081,13 @@ private inherited sharing class TriggerHandlerTest {
 				TriggerHandler.getLoopCount(HANDLER_NAME, null);
 			}
 			when 'getLoopCount operation null name' {
-				TriggerHandler.getLoopCount(null, System.TriggerOperation.AFTER_UPDATE);
+				TriggerHandler.getLoopCount((String) null, System.TriggerOperation.AFTER_UPDATE);
+			}
+			when 'getLoopCount null type' {
+				TriggerHandler.getLoopCount((Type) null, System.TriggerOperation.AFTER_UPDATE);
+			}
+			when 'getLoopCount type null operation' {
+				TriggerHandler.getLoopCount(TriggerHandlerTest.TestHandler.class, null);
 			}
 			when else {
 				Assert.fail('unknown scenario: ' + scenario);
