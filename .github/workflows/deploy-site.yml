@@ -1,0 +1,82 @@
+# Deploys the documentation site to GitHub Pages from a release tag, so the live site
+# matches the latest release even when docs/ on main is ahead of it.
+# The deploy-site job in ci.yml calls this workflow when Release Please creates a release.
+# The Run workflow button deploys a tag that you name, or the latest release.
+# ApexDox has no command line, so docs/ is generated in Visual Studio Code and committed
+# before the release. This workflow only rebuilds the changelog page from the tag's
+# CHANGELOG.md, which gets the release entry only when the release pull request merges.
+# Pages must use GitHub Actions as its source: Settings, Pages, Build and deployment.
+name: Deploy site
+on:
+  workflow_call:
+    inputs:
+      tag:
+        description: "The release tag to deploy"
+        required: true
+        type: string
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "The release tag to deploy, for example v2.1.0. Empty deploys the latest release."
+        required: false
+        type: string
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - name: "Choose the release tag"
+        id: tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          tag="$INPUT_TAG"
+          if [ -z "$tag" ]; then
+            tag=$(gh release view --repo "$GITHUB_REPOSITORY" --json tagName --jq .tagName)
+          fi
+          echo "Deploying the site from $tag"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+
+      - name: "Checkout the release tag"
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ steps.tag.outputs.tag }}
+
+      - name: "Set up Node.js"
+        uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: "Install npm dependencies"
+        run: npm ci
+
+      - name: "Rebuild the changelog page from the tag's CHANGELOG.md"
+        run: node scripts/rebuild-changelog-page.mjs docs/changelog.html CHANGELOG.md
+
+      - name: "Upload the site"
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    # 1 deploy at a time. A deploy in progress is never cancelled.
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: "Deploy the site of ${{ needs.build.outputs.tag }}"
+        id: deployment
+        uses: actions/deploy-pages@v5

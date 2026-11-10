@@ -2,13 +2,21 @@
 # messages, and it creates the release when that pull request merges.
 # The release-please job in ci.yml calls this workflow after a push to main, but only
 # when format-lint and sfca-analysis pass, so a failing push gets no release PR update
-# until a fix lands. The Run workflow button starts it by hand.
+# until a fix lands. The Run workflow button starts it by hand. Its outputs tell the
+# deploy-site job in ci.yml when a release was created, and its tag.
 name: release-please
 on:
   workflow_call:
     secrets:
       RELEASE_PLEASE_TOKEN:
         required: true
+    outputs:
+      release_created:
+        description: "true when this run created a release"
+        value: ${{ jobs.release-please.outputs.release_created }}
+      tag_name:
+        description: "The tag of the release that this run created"
+        value: ${{ jobs.release-please.outputs.tag_name }}
   workflow_dispatch:
 permissions:
   contents: write
@@ -16,6 +24,9 @@ permissions:
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
     # 1 run at a time, so that 2 quick merges do not update the release PR at once. A
     # run in progress is never cancelled, so a release is never cut off halfway.
     concurrency:
@@ -28,5 +39,6 @@ jobs:
       # checks run without approval. The token needs Contents, Pull requests, and Issues
       # (read and write) on this repository, and it expires: renew it before then.
       - uses: googleapis/release-please-action@v5
+        id: release
         with:
           token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
