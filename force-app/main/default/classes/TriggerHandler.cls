@@ -9,7 +9,7 @@
  * @since 2023-10 Add method chaining to `setMaxLoopCount()`, `limits()`, and `debug()`
  * @since 2026-10 Add a constructor with the handler type, a loop limit for each trigger operation, and the debug settings of 1 handler
  * @since 2026-10 Keep the named bypasses and the global bypass independent
- * @since 2026-11 Add hideAllDebug(), the Set overloads of bypass() and clearBypass(), getLoopCount() by type, and a chainable clearMaxLoopCount()
+ * @since 2026-11 Add hideAllDebug() and showAllDebug(), the Set overloads of bypass() and clearBypass(), getLoopCount() by type, and a chainable clearMaxLoopCount()
  * @group Trigger Handler
  * @see [License](https://github.com/dschach/salesforce-trigger-framework/blob/main/LICENSE)
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
@@ -40,7 +40,7 @@ public inherited sharing abstract class TriggerHandler {
 	private static Boolean doShowDebug = false;
 
 	/**
-	 * `true` when no handler writes the entry and exit lines. It wins over `doShowDebug` and over the setting of each handler. `hideAllDebug()` and `hideAllDebug(Boolean)` set it.
+	 * `true` when no handler writes the entry and exit lines. It wins over `doShowDebug` and over the setting of each handler. `hideAllDebug()`, `hideAllDebug(Boolean)`, and `showAllDebug()` set it.
 	 */
 	private static Boolean doHideAllDebug = false;
 
@@ -762,8 +762,9 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Stops the entry and exit lines of all handlers that run later in the transaction. It wins over `showDebug()` and over the setting of each handler, so no other call can turn the lines back on.
-	 * <br>To write the lines again, call `hideAllDebug(false)`. The handlers then use their earlier settings. It does not stop the limits line or the loop limit warning.
+	 * <br>To write the lines again, call `showAllDebug()` or `hideAllDebug(false)`. The handlers then use their earlier settings. It does not stop the limits line or the loop limit warning.
 	 * @see TriggerHandler.hideAllDebug[1]
+	 * @see TriggerHandler.showAllDebug
 	 * @since 2026-11
 	 * @example
 	 * TriggerHandler.hideAllDebug();
@@ -777,12 +778,28 @@ public inherited sharing abstract class TriggerHandler {
 	 * Sets whether the entry and exit lines of all handlers that run later in the transaction are hidden. While they are hidden, `showDebug()` and `showHandlerDebug()` have no effect.
 	 * @param hidden `true` to hide the lines, `false` or null to use the debug settings again.
 	 * @see TriggerHandler.hideAllDebug[0]
+	 * @see TriggerHandler.showAllDebug
 	 * @since 2026-11
 	 * @example
 	 * TriggerHandler.hideAllDebug(false);
 	 */
 	public static void hideAllDebug(Boolean hidden) {
 		doHideAllDebug = hidden ?? false;
+	}
+
+	/**
+	 * Ends `hideAllDebug()`. Each handler then uses its own setting or the static setting again. It is the same as `hideAllDebug(false)`.
+	 * <br>It does not turn the lines on. A handler writes them only when its setting or `showDebug()` turns them on.
+	 * @see TriggerHandler.hideAllDebug[0]
+	 * @see TriggerHandler.showDebug[0]
+	 * @since 2026-11
+	 * @example
+	 * TriggerHandler.hideAllDebug();
+	 * // run the code that must write no entry or exit line
+	 * TriggerHandler.showAllDebug();
+	 */
+	public static void showAllDebug() {
+		hideAllDebug(false);
 	}
 
 	/**

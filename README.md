@@ -387,12 +387,12 @@ trigger OpportunityTrigger on Opportunity(before insert, before update, before d
 }
 ```
 
-To stop the entry and exit lines of all handlers, call `TriggerHandler.hideAllDebug()`. It wins over `showDebug()` and over the setting of each handler, so no other code can turn the lines back on. Only `TriggerHandler.hideAllDebug(false)` ends it, and then each handler uses its earlier setting again. The limits line and the loop limit warning are not debug lines, so they stay:
+To stop the entry and exit lines of all handlers, call `TriggerHandler.hideAllDebug()`. It wins over `showDebug()` and over the setting of each handler, so no other code can turn the lines back on. Only `TriggerHandler.showAllDebug()` or `TriggerHandler.hideAllDebug(false)` ends it, and then each handler uses its earlier setting again. `showAllDebug()` does not turn the lines on by itself. The limits line and the loop limit warning are not debug lines, so they stay:
 
 ```apex
 TriggerHandler.hideAllDebug();
 new OpportunityTriggerHandler().showHandlerDebug().run(); /* writes no entry or exit line */
-TriggerHandler.hideAllDebug(false);
+TriggerHandler.showAllDebug();
 ```
 
 ### Send the Messages to Your Logging Framework
@@ -592,7 +592,8 @@ This table lists all public members of `TriggerHandler`. The [class documentatio
 | `debug()`, `debug(Boolean enabled)`                                          | Deprecated: use `showHandlerDebug()` or `showDebug()`. Sets whether all handlers write the entry and exit lines. Returns the handler, so you can chain calls. A later major release removes them. |
 | `static showDebug()`, `static showDebug(Boolean enabled)`                    | Sets whether all handlers that run later in the transaction write the entry and exit lines.                                                                                                       |
 | `showHandlerDebug()`, `showHandlerDebug(Boolean enabled)`                    | Sets whether this handler writes the entry and exit lines. With null, the handler uses the setting for all handlers. Returns the handler, so you can chain calls.                                 |
-| `static hideAllDebug()`, `static hideAllDebug(Boolean hidden)`               | Stops the entry and exit lines of all handlers. It wins over every debug setting, and only `hideAllDebug(false)` ends it.                                                                         |
+| `static hideAllDebug()`, `static hideAllDebug(Boolean hidden)`               | Stops the entry and exit lines of all handlers. It wins over every debug setting, and only `showAllDebug()` or `hideAllDebug(false)` ends it.                                                     |
+| `static showAllDebug()`                                                      | Ends `hideAllDebug()`, as `hideAllDebug(false)` does. Each handler then uses its own setting or the static setting again.                                                                         |
 | `TriggerHandler.TriggerHandlerException`                                     | The framework throws it when `run()` is called outside a trigger, and when a bypass or loop count method gets a null or blank argument.                                                           |
 
 ## Contributing

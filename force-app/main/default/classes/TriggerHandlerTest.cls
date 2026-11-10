@@ -878,6 +878,26 @@ private inherited sharing class TriggerHandlerTest {
 	}
 
 	/**
+	 * `showAllDebug()` ends `hideAllDebug()`, and the settings apply again. It does not turn the lines on by itself.
+	 */
+	@IsTest
+	private static void showAllDebugEndsHideAllDebug() {
+		TriggerHandlerTest.TestHandler debugged = newHandler(System.TriggerOperation.BEFORE_UPDATE);
+		debugged.showHandlerDebug();
+		TriggerHandler.hideAllDebug();
+		debugged.run();
+		Assert.isTrue(logs.isEmpty(), 'hideAllDebug() should stop the lines');
+
+		TriggerHandler.showAllDebug();
+		debugged.run();
+		Assert.areEqual(2, logs.size(), 'showAllDebug() should make the handler use its own setting again');
+
+		logs.clear();
+		newHandler(System.TriggerOperation.BEFORE_UPDATE).run();
+		Assert.isTrue(logs.isEmpty(), 'showAllDebug() should not turn on the lines of a handler with debug off');
+	}
+
+	/**
 	 * `hideAllDebug()` stops only the entry and exit lines. The limits line and the loop limit warning stay.
 	 */
 	@IsTest
