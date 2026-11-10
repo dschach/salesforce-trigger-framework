@@ -44,8 +44,10 @@ private inherited sharing class TriggerHandlerBypassPermissionTest {
 
 	/**
 	 * Creates a test user with the profile of the running user, and gives it the `BypassTriggerHandlers` custom permission through a new permission set.
+	 * <br>The setup runs in system mode, so that it does not depend on the rights of the user who runs the tests. So this method suppresses `FlagSystemMode`. The permission check under test runs later, in `System.runAs()` for the test user.
 	 * @return `User` The test user, for `System.runAs()`.
 	 */
+	@SuppressWarnings('PMD.FlagSystemMode')
 	private static User newUserWithBypassPermission() {
 		String uniqueName = 'taf' + String.valueOf(Crypto.getRandomInteger()).remove('-') + '@example.com';
 		User bypassUser = new User(
@@ -59,13 +61,13 @@ private inherited sharing class TriggerHandlerBypassPermissionTest {
 			EmailEncodingKey = 'UTF-8',
 			LanguageLocaleKey = 'en_US'
 		);
-		insert as user bypassUser;
+		insert as system bypassUser;
 
 		PermissionSet bypassSet = new PermissionSet(Name = 'TriggerHandlerTestBypass', Label = 'Trigger Handler Test Bypass');
-		insert as user bypassSet;
-		CustomPermission bypassPermission = [SELECT Id FROM CustomPermission WHERE DeveloperName = :TriggerHandler.BYPASS_PERMISSION WITH USER_MODE LIMIT 1];
-		insert as user new SetupEntityAccess(ParentId = bypassSet.Id, SetupEntityId = bypassPermission.Id);
-		insert as user new PermissionSetAssignment(PermissionSetId = bypassSet.Id, AssigneeId = bypassUser.Id);
+		insert as system bypassSet;
+		CustomPermission bypassPermission = [SELECT Id FROM CustomPermission WHERE DeveloperName = :TriggerHandler.BYPASS_PERMISSION WITH SYSTEM_MODE LIMIT 1];
+		insert as system new SetupEntityAccess(ParentId = bypassSet.Id, SetupEntityId = bypassPermission.Id);
+		insert as system new PermissionSetAssignment(PermissionSetId = bypassSet.Id, AssigneeId = bypassUser.Id);
 		return bypassUser;
 	}
 
