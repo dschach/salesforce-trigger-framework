@@ -1,5 +1,6 @@
 # Formatting and static analysis. Runs on every pull request and every push to
-# main, for every author, so that a required check always has a real result.
+# main, for every author, so that a required check always has a real result. After a
+# push to main, the last job calls the Release Please workflow when both checks pass.
 name: CI
 
 on:
@@ -100,3 +101,15 @@ jobs:
         run: |
           echo "SFCA found ${{ steps.sfca-report.outputs.sev1-count }} severity 1 and ${{ steps.sfca-report.outputs.sev2-count }} severity 2 violation(s). See the job summary and the SFCA Report artifact."
           exit 1
+
+  # Release Please runs last, and only for a push to main where both checks passed. A
+  # failing push gets no release PR update until a fix lands on main.
+  release-please:
+    needs: [format-lint, sfca-analysis]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: ./.github/workflows/release-please.yml
+    secrets:
+      RELEASE_PLEASE_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
