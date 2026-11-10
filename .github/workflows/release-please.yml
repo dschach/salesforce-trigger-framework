@@ -1,23 +1,26 @@
-# Runs Release Please on each push to main. It opens or updates the release pull
-# request from the commit messages, and it creates the release when that pull
-# request merges.
+# Runs Release Please. It opens or updates the release pull request from the commit
+# messages, and it creates the release when that pull request merges.
+# The release-please job in ci.yml calls this workflow after a push to main, but only
+# when format-lint and sfca-analysis pass, so a failing push gets no release PR update
+# until a fix lands. The Run workflow button starts it by hand.
 name: release-please
 on:
-  push:
-    branches:
-      - main
+  workflow_call:
+    secrets:
+      RELEASE_PLEASE_TOKEN:
+        required: true
   workflow_dispatch:
 permissions:
   contents: write
   pull-requests: write
-# 1 run at a time, so that 2 quick merges do not update the release PR at once. A run
-# in progress is never cancelled, so a release is never cut off halfway.
-concurrency:
-  group: release-please
-  cancel-in-progress: false
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    # 1 run at a time, so that 2 quick merges do not update the release PR at once. A
+    # run in progress is never cancelled, so a release is never cut off halfway.
+    concurrency:
+      group: release-please
+      cancel-in-progress: false
     steps:
       # A release PR opened with the default GITHUB_TOKEN belongs to github-actions[bot],
       # and GitHub holds its workflow runs until someone approves them. With this

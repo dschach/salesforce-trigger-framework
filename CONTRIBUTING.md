@@ -83,7 +83,7 @@ sf plugins install code-analyzer
 
 - Write commit messages and pull request titles as [Conventional Commits](https://www.conventionalcommits.org/) with a scope, and start them with a lower-case verb: `fix(handler): guard null arguments`.
 - Pull requests merge by squash only. The pull request title becomes the commit message on `main`, and the description becomes its body. So fill in each section of the pull request template.
-- Do not put version numbers in titles or descriptions. Release Please sets the version and writes the changelog from the commit messages.
+- Do not put version numbers in titles or descriptions. Release Please sets the version and writes the changelog from the commit messages. After a push to `main`, it runs only when `format-lint` and `sfca-analysis` pass, so a failing push gets no release pull request update until a fix lands.
 - 2 checks must pass before a merge: `format-lint` (Prettier and the sample code check) and `sfca-analysis` (Code Analyzer). The `scratch-org-test` check runs the Apex tests when a file in `force-app/` or `sample-handler/` changes, except a markdown file. It needs the Dev Hub secret of the project, so it does not run on a pull request from a fork.
 
 ## npm Scripts
