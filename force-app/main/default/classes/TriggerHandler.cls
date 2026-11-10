@@ -9,6 +9,7 @@
  * @since 2023-10 Add method chaining to `setMaxLoopCount()`, `limits()`, and `debug()`
  * @since 2026-10 Add a constructor with the handler type, a loop limit for each trigger operation, and the debug settings of 1 handler
  * @since 2026-10 Keep the named bypasses and the global bypass independent
+ * @since 2026-11 Add hideAllDebug() and showAllDebug(), the Set overloads of bypass() and clearBypass(), getLoopCount() by type, and a chainable clearMaxLoopCount()
  * @group Trigger Handler
  * @see [License](https://github.com/dschach/salesforce-trigger-framework/blob/main/LICENSE)
  * @see [GitHub](https://github.com/dschach/salesforce-trigger-framework)
@@ -39,12 +40,17 @@ public inherited sharing abstract class TriggerHandler {
 	private static Boolean doShowDebug = false;
 
 	/**
+	 * `true` when no handler writes the entry and exit lines. It wins over `doShowDebug` and over the setting of each handler. `hideAllDebug()`, `hideAllDebug(Boolean)`, and `showAllDebug()` set it.
+	 */
+	private static Boolean doHideAllDebug = false;
+
+	/**
 	 * The limits setting of this handler only: `true`, `false`, or null. With null, the handler uses `doShowLimits`. `showHandlerLimits()` and `showHandlerLimits(Boolean)` set it.
 	 */
 	private Boolean handlerShowLimits;
 
 	/**
-	 * The debug setting of this handler only: `true`, `false`, or null. With null, the handler uses `doShowDebug`. `showHandlerDebug()` and `showHandlerDebug(Boolean)` set it.
+	 * The debug setting of this handler only: `true`, `false`, or null. With null, the handler uses `doShowDebug`. `showHandlerDebug()` and `showHandlerDebug(Boolean)` set it. `doHideAllDebug` wins over it.
 	 */
 	private Boolean handlerShowDebug;
 
@@ -296,11 +302,17 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Removes the limit of all trigger operations of this handler. The handler keeps its counters, so it still counts its runs.
+	 * @return `TriggerHandler` This handler, so that you can chain calls.
+	 * @since 2022
+	 * @since 2026-11 Return the handler, so that you can chain calls
 	 * @example
 	 * clearMaxLoopCount(); // in the handler
+	 * // or in the trigger
+	 * new AccountSampleTriggerHandler().clearMaxLoopCount().run();
 	 */
-	public void clearMaxLoopCount() {
+	public TriggerHandler clearMaxLoopCount() {
 		TriggerHandler.loopCounters.clearMax(getHandlerName());
+		return this;
 	}
 
 	/**
@@ -343,6 +355,20 @@ public inherited sharing abstract class TriggerHandler {
 		for (String handlerName : handlerNames) {
 			TriggerHandler.bypass(handlerName);
 		}
+	}
+
+	/**
+	 * Bypasses a set of handlers by name. It calls `bypass(List<String>)`.
+	 * @param handlerNames The names of the handlers to bypass.
+	 * @exception TriggerHandlerException when the set is null, or a name in it is null or blank.
+	 * @throws TriggerHandlerException when the set is null, or a name in it is null or blank.
+	 * @see TriggerHandler.bypass[2]
+	 * @since 2026-11
+	 * @example
+	 * TriggerHandler.bypass(new Set<String>{ 'AccountSampleTriggerHandler', 'ContactTriggerHandler' });
+	 */
+	public static void bypass(Set<String> handlerNames) {
+		TriggerHandler.bypass(handlerNames == null ? null : new List<String>(handlerNames));
 	}
 
 	/**
@@ -394,6 +420,20 @@ public inherited sharing abstract class TriggerHandler {
 		for (String handlerName : handlerNames) {
 			TriggerHandler.clearBypass(handlerName);
 		}
+	}
+
+	/**
+	 * Clears the bypass of a set of handlers by name. It calls `clearBypass(List<String>)`.
+	 * @param handlerNames The names of the handlers.
+	 * @exception TriggerHandlerException when the set is null, or a name in it is null or blank.
+	 * @throws TriggerHandlerException when the set is null, or a name in it is null or blank.
+	 * @see TriggerHandler.clearBypass[2]
+	 * @since 2026-11
+	 * @example
+	 * TriggerHandler.clearBypass(new Set<String>{ 'AccountSampleTriggerHandler', 'ContactTriggerHandler' });
+	 */
+	public static void clearBypass(Set<String> handlerNames) {
+		TriggerHandler.clearBypass(handlerNames == null ? null : new List<String>(handlerNames));
 	}
 
 	/**
@@ -694,7 +734,7 @@ public inherited sharing abstract class TriggerHandler {
 	}
 
 	/**
-	 * Makes all handlers that run later in the transaction write the entry and exit lines. A handler with its own setting from `showHandlerDebug()` keeps it.
+	 * Makes all handlers that run later in the transaction write the entry and exit lines. A handler with its own setting from `showHandlerDebug()` keeps it. `hideAllDebug()` wins over this setting.
 	 * <br>Call it in the trigger or in a handler.
 	 * @see TriggerHandler.showDebug[1]
 	 * @author {@link [David Schach](https://github.com/dschach)}
@@ -708,7 +748,7 @@ public inherited sharing abstract class TriggerHandler {
 	}
 
 	/**
-	 * Sets whether all handlers that run later in the transaction write the entry and exit lines. A handler with its own setting from `showHandlerDebug()` keeps it.
+	 * Sets whether all handlers that run later in the transaction write the entry and exit lines. A handler with its own setting from `showHandlerDebug()` keeps it. `hideAllDebug()` wins over this setting.
 	 * @param enabled `true` to write the lines, `false` or null to stop them.
 	 * @see TriggerHandler.showDebug[0]
 	 * @author {@link [David Schach](https://github.com/dschach)}
@@ -718,6 +758,48 @@ public inherited sharing abstract class TriggerHandler {
 	 */
 	public static void showDebug(Boolean enabled) {
 		doShowDebug = enabled ?? false;
+	}
+
+	/**
+	 * Stops the entry and exit lines of all handlers that run later in the transaction. It wins over `showDebug()` and over the setting of each handler, so no other call can turn the lines back on.
+	 * <br>To write the lines again, call `showAllDebug()` or `hideAllDebug(false)`. The handlers then use their earlier settings. It does not stop the limits line or the loop limit warning.
+	 * @see TriggerHandler.hideAllDebug[1]
+	 * @see TriggerHandler.showAllDebug
+	 * @since 2026-11
+	 * @example
+	 * TriggerHandler.hideAllDebug();
+	 * new AccountSampleTriggerHandler().showHandlerDebug().run(); // writes no entry or exit line
+	 */
+	public static void hideAllDebug() {
+		hideAllDebug(true);
+	}
+
+	/**
+	 * Sets whether the entry and exit lines of all handlers that run later in the transaction are hidden. While they are hidden, `showDebug()` and `showHandlerDebug()` have no effect.
+	 * @param hidden `true` to hide the lines, `false` or null to use the debug settings again.
+	 * @see TriggerHandler.hideAllDebug[0]
+	 * @see TriggerHandler.showAllDebug
+	 * @since 2026-11
+	 * @example
+	 * TriggerHandler.hideAllDebug(false);
+	 */
+	public static void hideAllDebug(Boolean hidden) {
+		doHideAllDebug = hidden ?? false;
+	}
+
+	/**
+	 * Ends `hideAllDebug()`. Each handler then uses its own setting or the static setting again. It is the same as `hideAllDebug(false)`.
+	 * <br>It does not turn the lines on. A handler writes them only when its setting or `showDebug()` turns them on.
+	 * @see TriggerHandler.hideAllDebug[0]
+	 * @see TriggerHandler.showDebug[0]
+	 * @since 2026-11
+	 * @example
+	 * TriggerHandler.hideAllDebug();
+	 * // run the code that must write no entry or exit line
+	 * TriggerHandler.showAllDebug();
+	 */
+	public static void showAllDebug() {
+		hideAllDebug(false);
 	}
 
 	/**
@@ -747,7 +829,7 @@ public inherited sharing abstract class TriggerHandler {
 	}
 
 	/**
-	 * Makes this handler write the entry and exit lines. Other handlers keep their own setting or the static setting.
+	 * Makes this handler write the entry and exit lines. Other handlers keep their own setting or the static setting. `hideAllDebug()` wins over this setting.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showHandlerDebug[1]
 	 * @since 2026-10
@@ -759,7 +841,7 @@ public inherited sharing abstract class TriggerHandler {
 	}
 
 	/**
-	 * Sets whether this handler writes the entry and exit lines. This setting wins over the static `showDebug()`.
+	 * Sets whether this handler writes the entry and exit lines. This setting wins over the static `showDebug()`. `hideAllDebug()` wins over this setting.
 	 * @param enabled `true` to write the lines, `false` to stop them for this handler, or null to use the static setting again.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @see TriggerHandler.showHandlerDebug[0]
@@ -782,12 +864,12 @@ public inherited sharing abstract class TriggerHandler {
 	}
 
 	/**
-	 * Tells if this handler writes the entry and exit lines. It uses the setting of the handler, or the static setting when the handler has none.
+	 * Tells if this handler writes the entry and exit lines. It uses the setting of the handler, or the static setting when the handler has none. `hideAllDebug()` wins over both.
 	 * @return `Boolean` `true` when this handler writes the entry and exit lines.
 	 * @since 2026-10
 	 */
 	private Boolean isDebugOn() {
-		return handlerShowDebug ?? doShowDebug;
+		return !doHideAllDebug && (handlerShowDebug ?? doShowDebug);
 	}
 
 	/**
@@ -825,6 +907,23 @@ public inherited sharing abstract class TriggerHandler {
 			throw new TriggerHandlerException(ERROR_TRIGGER_OPERATION);
 		}
 		return TriggerHandler.loopCounters.count(handlerName, operation);
+	}
+
+	/**
+	 * Returns the number of runs of 1 trigger operation of a handler in this transaction, by type. The compiler checks the type, so the name has the correct case.
+	 * @param handlerType The handler class, written as `ClassName.class`.
+	 * @param operation The trigger operation.
+	 * @return `Integer` The count, or -1 when `setMaxLoopCount()` was never called for the operation.
+	 * @exception TriggerHandlerException when the type or the operation is null.
+	 * @throws TriggerHandlerException when the type or the operation is null.
+	 * @see TriggerHandler.getLoopCount[1]
+	 * @since 2026-11
+	 * @example
+	 * Integer runs = TriggerHandler.getLoopCount(AccountSampleTriggerHandler.class, System.TriggerOperation.AFTER_UPDATE);
+	 */
+	public static Integer getLoopCount(Type handlerType, System.TriggerOperation operation) {
+		requireHandlerType(handlerType);
+		return TriggerHandler.getLoopCount(handlerType.getName(), operation);
 	}
 
 	/**
