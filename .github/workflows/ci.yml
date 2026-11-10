@@ -1,6 +1,7 @@
 # Formatting and static analysis. Runs on every pull request and every push to
 # main, for every author, so that a required check always has a real result. After a
-# push to main, the last job calls the Release Please workflow when both checks pass.
+# push to main, the release-please job calls the Release Please workflow when both checks
+# pass, and the deploy-site job deploys the site when that run creates a release.
 name: CI
 
 on:
@@ -113,3 +114,16 @@ jobs:
     uses: ./.github/workflows/release-please.yml
     secrets:
       RELEASE_PLEASE_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+
+  # When Release Please creates a release, deploy the site from the release tag. This job
+  # runs on main, which the github-pages environment allows, and checks out the tag.
+  deploy-site:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/deploy-site.yml
+    with:
+      tag: ${{ needs.release-please.outputs.tag_name }}

@@ -109,4 +109,8 @@ ApexDox, an extension for Visual Studio Code, generates the site in `docs/` from
 4. Run `npm run prettier`. It formats the generated HTML pages with the other files.
 5. Commit the result as `docs(site): regenerate the documentation site`, and open a pull request.
 
-The changelog page comes from `CHANGELOG.md`, which Release Please changes only when the release pull request merges. So the changelog page of the site does not show the coming release until the next update of the site.
+The live site changes only with a release. When Release Please creates a release, the `deploy-site` job in `ci.yml` deploys `docs/` from the release tag to GitHub Pages. So a site update on `main` goes live with the next release.
+
+Release Please writes the release entry into `CHANGELOG.md` only when the release pull request merges, so `docs/` does not have it yet. The deploy rebuilds the changelog page from the `CHANGELOG.md` of the tag, so the live page shows the release.
+
+To deploy again without a release, for example after a fix to the site, run the Deploy site workflow with the Run workflow button. Name a tag, or leave the tag empty to deploy the latest release. The site is still deployed from a release tag, so a fix on `main` goes live only with the next release.
