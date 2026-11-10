@@ -2,7 +2,9 @@
 # Prepare the input of the ApexDox site: refresh the highlight.js bundle, and build the
 # HTML pages that the site uses from the README, the changelog, the deploy instructions,
 # and the sample handler README. It also copies the current sample code into
-# sample-handler/README.md, so that file can change in the working tree.
+# sample-handler/README.md, so that file can change in the working tree. On the home
+# page, it replaces each Mermaid diagram of the README with an SVG, which needs Google
+# Chrome or a browser in PUPPETEER_EXECUTABLE_PATH (see scripts/render-mermaid.mjs).
 #
 # Run from the repository root: npm run prepareApexDox
 
@@ -26,6 +28,8 @@ echo >> "doc-assets/homePage.html"
 npx marked -i README.md --gfm >> "doc-assets/homePage.html"
 replace_in_file 's|DEPLOY.md|deploy.html|g' "doc-assets/homePage.html"
 replace_in_file 's|sample-handler/README.md|sampletriggerhandlerhome.html|g' "doc-assets/homePage.html"
+# The site shows the Mermaid diagrams of the README as SVG, because marked shows them as code.
+node scripts/render-mermaid.mjs "doc-assets/homePage.html"
 
 # Changelog to web page
 printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/files/changelog.html"

@@ -17,6 +17,7 @@
   - [Trigger](#trigger)
   - [Data Access](#data-access)
 - [Features](#features)
+  - [How run() Works](#how-run-works)
   - [Bypass API](#bypass-api)
   - [Check Bypass Status](#check-bypass-status)
   - [Global Bypass](#global-bypass)
@@ -204,6 +205,30 @@ A trigger runs without sharing, so a handler declared `inherited sharing` runs w
 If a handler must obey the object, field, and record permissions of the running user, use `WITH USER_MODE` and `AccessLevel.USER_MODE` instead.
 
 ## Features
+
+### How run() Works
+
+The trigger calls `run()`, and `run()` takes these steps in order. A bypass and the loop limit each end the run before the context method, so nothing in the handler runs:
+
+```mermaid
+flowchart TD
+  start("The trigger calls run()") --> context{"In a trigger?"}
+  context -- No --> outside("Throw TriggerHandlerException")
+  context -- Yes --> global{"All handlers bypassed, or the user has BypassTriggerHandlers?"}
+  global -- Yes --> skipped("Return: nothing runs")
+  global -- No --> named{"Handler bypassed by name or by type?"}
+  named -- Yes --> skipped
+  named -- No --> count["Count the run, when the operation has a limit"]
+  count --> limit{"Past the loop limit of the operation?"}
+  limit -- Yes --> warning("Send the loop limit warning to log(), and return")
+  limit -- No --> entry["Write the entry line, when debug is on"]
+  entry --> method["Call the context method, for example afterUpdate()"]
+  method -- "Uncaught exception" --> failed("The exception reaches the caller")
+  method --> finally["Call andFinally()"]
+  finally --> limits["Write the limits line, when limits are on"]
+  limits --> exit["Write the exit line, when debug is on"]
+  exit --> done("Return")
+```
 
 ### Bypass API
 
@@ -454,6 +479,22 @@ After a run of the handler starts its context method, a bypass cannot stop the `
 1. The first update of an Account starts the first run of the handler, which calls `afterUpdate()`.
 2. `afterUpdate()` bypasses the Account handler and updates the other Accounts. That update starts a second run of the handler, which is bypassed: its `afterUpdate()` and its `andFinally()` do not run.
 3. `afterUpdate()` clears the bypass and returns. The first run then calls its `andFinally()`, which is the last step of the first update.
+
+```mermaid
+sequenceDiagram
+  participant Trigger as AccountTrigger
+  participant First as First run of the handler
+  participant Second as Second run of the handler
+  Trigger->>First: run() for after update
+  First->>First: afterUpdate()
+  First->>First: TriggerHandler.bypass(AccountTriggerHandler.class)
+  First->>Trigger: update the other Accounts
+  Trigger->>Second: run() for before update and after update
+  Second-->>Trigger: bypassed: afterUpdate() and andFinally() do not run
+  First->>First: TriggerHandler.clearBypass(AccountTriggerHandler.class)
+  First->>First: andFinally(), the last step of the first update
+  First-->>Trigger: return
+```
 
 If `andFinally()` throws, the exception reaches the caller, and the handler does not write the exit and limits lines.
 
