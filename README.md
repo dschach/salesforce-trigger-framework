@@ -20,6 +20,7 @@
   - [Bypass API](#bypass-api)
   - [Check Bypass Status](#check-bypass-status)
   - [Global Bypass](#global-bypass)
+  - [Bypass Permission](#bypass-permission)
   - [Set Bypass](#set-bypass)
   - [Max Loop Count](#max-loop-count)
   - [Debug Statements](#debug-statements)
@@ -239,11 +240,12 @@ Bypass names match in any case. You can also bypass by type, as in `TriggerHandl
 
 ### Check Bypass Status
 
-A handler can be bypassed by name, or all handlers can be bypassed together. 3 methods tell you which:
+A handler can be bypassed by name, all handlers can be bypassed together, or the running user can hold the bypass permission. 4 methods tell you which:
 
 - `isBypassed(name)` or `isBypassed(type)` is `true` when the handler is bypassed by name or by type. It does not include the global bypass.
 - `isGlobalBypassed()` is `true` when all handlers are bypassed.
-- `isSkipped(name)` or `isSkipped(type)` is `true` when either of them is true, so the handler does not run.
+- `hasBypassPermission()` is `true` when the running user has the `BypassTriggerHandlers` permission. See [Bypass Permission](#bypass-permission).
+- `isSkipped(name)` or `isSkipped(type)` is `true` when any of them is true, so the handler does not run.
 
 ```apex
 if (TriggerHandler.isSkipped(AccountTriggerHandler.class)) {
@@ -272,6 +274,16 @@ TriggerHandler.clearAllBypasses();
 ```
 
 `clearAllBypasses()` clears the named bypasses and the global bypass. To clear only 1 of them, call `clearBypassList()` or `clearGlobalBypass()`.
+
+### Bypass Permission
+
+The framework ships 1 custom permission, `BypassTriggerHandlers`, with the label Bypass Trigger Handlers. A user who has it runs no handler, as if all handlers were bypassed. Use it for work such as a large data load:
+
+1. Add the permission to a permission set.
+2. Assign the permission set to the user directly, and only for as long as the work needs it.
+3. Remove the assignment when the work is done.
+
+Code cannot clear this bypass. `clearAllBypasses()` and `clearGlobalBypass()` do not change it, and `isBypassed()` and `isGlobalBypassed()` do not report it. To check it, call `TriggerHandler.hasBypassPermission()`. A user with the permission skips every check that your handlers make, so assign it with caution.
 
 ### Set Bypass
 
@@ -433,7 +445,7 @@ Nebula Logger keeps the entries in memory until `Logger.saveLog()` runs. The nex
 
 It does not run in these cases:
 
-- The handler is bypassed by name or by type, or all handlers are bypassed. Then nothing in the handler runs.
+- The handler is bypassed by name or by type, all handlers are bypassed, or the running user has the `BypassTriggerHandlers` permission. Then nothing in the handler runs.
 - The loop limit of the trigger operation stops the run. Then only `log()` runs, with the loop limit warning.
 - The context method throws an exception that it does not catch. The exception reaches the caller and stops all processing.
 
@@ -577,7 +589,8 @@ This table lists all public members of `TriggerHandler`. The [class documentatio
 | `static isBypassed(String handlerName)`                                      | Returns `true` when the handler is bypassed by name or by type. The result does not include the global bypass.                                                                                    |
 | `static isBypassed(Type handlerType)`                                        | The same check, by type.                                                                                                                                                                          |
 | `static isGlobalBypassed()`                                                  | Returns `true` when all handlers are bypassed.                                                                                                                                                    |
-| `static isSkipped(String handlerName)`                                       | Returns `true` when the handler does not run: it is bypassed by name or by type, or all handlers are bypassed.                                                                                    |
+| `static hasBypassPermission()`                                               | Returns `true` when the running user has the `BypassTriggerHandlers` custom permission. Such a user runs no handler.                                                                              |
+| `static isSkipped(String handlerName)`                                       | Returns `true` when the handler does not run: it is bypassed by name or by type, all handlers are bypassed, or the running user has the bypass permission.                                        |
 | `static isSkipped(Type handlerType)`                                         | The same check, by type.                                                                                                                                                                          |
 | `static bypassList()`                                                        | Returns a sorted list of the handlers that are bypassed by name or by type.                                                                                                                       |
 | `static bypassSet()`                                                         | Deprecated: use `bypassList()`. Returns a set of the handlers that are bypassed by name or by type. A later major release removes it.                                                             |

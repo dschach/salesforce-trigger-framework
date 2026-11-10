@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+	<description>A user with this permission runs no trigger handler that extends TriggerHandler. Use it for work such as a large data load, and assign it only for as long as the work needs it.</description>
+	<isLicensed>false</isLicensed>
+	<label>Bypass Trigger Handlers</label>
+</CustomPermission>
