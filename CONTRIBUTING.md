@@ -30,14 +30,14 @@ sf plugins install code-analyzer
 
 ## Project Layout
 
-| Path                   | What it holds                                                                                                                |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| `force-app/`           | The framework: `TriggerHandler` and its test. It is the only package directory, so a deploy of the project installs only it. |
-| `sample-handler/`      | A sample trigger, handler, and test. It is not a package directory. Deploy it with `--source-dir sample-handler`.            |
-| `config/`              | The scratch org definition, and the PMD rulesets in `config/pmd/`.                                                           |
-| `code-analyzer.yml`    | The Salesforce Code Analyzer configuration that CI uses.                                                                     |
-| `scripts/`             | Helper scripts. The npm scripts below run them.                                                                              |
-| `docs/`, `doc-assets/` | The generated documentation site and its assets. Do not edit `docs/` by hand.                                                |
+| Path                   | What it holds                                                                                                                                                                 |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `force-app/`           | The framework: `TriggerHandler`, its tests, and the `BypassTriggerHandlers` custom permission. It is the only package directory, so a deploy of the project installs only it. |
+| `sample-handler/`      | A sample trigger, handler, and test. It is not a package directory. Deploy it with `--source-dir sample-handler`.                                                             |
+| `config/`              | The scratch org definition, and the PMD rulesets in `config/pmd/`.                                                                                                            |
+| `code-analyzer.yml`    | The Salesforce Code Analyzer configuration that CI uses.                                                                                                                      |
+| `scripts/`             | Helper scripts. The npm scripts below run them.                                                                                                                               |
+| `docs/`, `doc-assets/` | The generated documentation site and its assets. Do not edit `docs/` by hand.                                                                                                 |
 
 ## Make and Test a Change
 

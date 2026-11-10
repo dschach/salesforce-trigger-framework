@@ -9,6 +9,7 @@
  * @since 2023-10 Add method chaining to `setMaxLoopCount()`, `limits()`, and `debug()`
  * @since 2026-10 Add a constructor with the handler type, a loop limit for each trigger operation, and the debug settings of 1 handler
  * @since 2026-10 Keep the named bypasses and the global bypass independent
+ * @since 2026-11 Bypass all handlers for a user with the BypassTriggerHandlers custom permission
  * @since 2026-11 Add hideAllDebug() and showAllDebug(), the Set overloads of bypass() and clearBypass(), getLoopCount() by type, and a chainable clearMaxLoopCount()
  * @group Trigger Handler
  * @see [License](https://github.com/dschach/salesforce-trigger-framework/blob/main/LICENSE)
@@ -95,6 +96,12 @@ public inherited sharing abstract class TriggerHandler {
 	private static final String ERROR_TRIGGERCONTEXT = 'Trigger handler called outside of Trigger execution';
 
 	/**
+	 * The API name of the custom permission that bypasses all handlers for the user who holds it. The framework ships the permission in `force-app`.
+	 */
+	@TestVisible
+	private static final String BYPASS_PERMISSION = 'BypassTriggerHandlers';
+
+	/**
 	 * The error text when a handler name is null or blank.
 	 */
 	@TestVisible
@@ -178,7 +185,7 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Runs the handler. Call it from the trigger. It calls the context method of the current trigger operation, and then `andFinally()`.
-	 * <br>It does nothing when the handler is bypassed. When the loop limit stops the run, it only sends a warning to `log()`.
+	 * <br>It does nothing when the handler is bypassed, or when the running user has the `BypassTriggerHandlers` permission. When the loop limit stops the run, it only sends a warning to `log()`.
 	 * <br>The switch names all 7 trigger operations, and `validateRun()` rejects a null operation. So this method suppresses `SwitchWithoutWhenElse`.
 	 * @exception TriggerHandlerException when `run()` is called outside a trigger.
 	 * @throws TriggerHandlerException when `run()` is called outside a trigger.
@@ -485,7 +492,22 @@ public inherited sharing abstract class TriggerHandler {
 	}
 
 	/**
-	 * Tells if a handler does not run. A handler does not run when it is bypassed by name or by type, or when all handlers are bypassed. The result does not include the loop limit.
+	 * Tells if the running user has the `BypassTriggerHandlers` custom permission. Such a user runs no handler, as if all handlers were bypassed.
+	 * <br>Code cannot clear this bypass: `clearAllBypasses()` and `clearGlobalBypass()` do not change it. An admin assigns the permission through a permission set, for work such as a large data load.
+	 * @return `Boolean` `true` when the running user has the permission.
+	 * @see TriggerHandler.isSkipped[0]
+	 * @since 2026-11
+	 * @example
+	 * if (TriggerHandler.hasBypassPermission()) {
+	 *   // no handler runs for this user
+	 * }
+	 */
+	public static Boolean hasBypassPermission() {
+		return FeatureManagement.checkPermission(BYPASS_PERMISSION);
+	}
+
+	/**
+	 * Tells if a handler does not run. A handler does not run when it is bypassed by name or by type, when all handlers are bypassed, or when the running user has the `BypassTriggerHandlers` permission. The result does not include the loop limit.
 	 * @param handlerName The name of the handler. It matches in any case.
 	 * @return `Boolean` `true` when the handler does not run.
 	 * @exception TriggerHandlerException when the name is null or blank.
@@ -497,11 +519,11 @@ public inherited sharing abstract class TriggerHandler {
 	 * }
 	 */
 	public static Boolean isSkipped(String handlerName) {
-		return TriggerHandler.isBypassed(handlerName) || TriggerHandler.bypasses.isAllBypassed();
+		return TriggerHandler.isBypassed(handlerName) || TriggerHandler.bypasses.isAllBypassed() || TriggerHandler.hasBypassPermission();
 	}
 
 	/**
-	 * Tells if a handler does not run. A handler does not run when it is bypassed by name or by type, or when all handlers are bypassed. The result does not include the loop limit.
+	 * Tells if a handler does not run. A handler does not run when it is bypassed by name or by type, when all handlers are bypassed, or when the running user has the `BypassTriggerHandlers` permission. The result does not include the loop limit.
 	 * @param handlerType The handler class, written as `ClassName.class`.
 	 * @return `Boolean` `true` when the handler does not run.
 	 * @exception TriggerHandlerException when the type is null.
@@ -513,7 +535,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * }
 	 */
 	public static Boolean isSkipped(Type handlerType) {
-		return TriggerHandler.isBypassed(handlerType) || TriggerHandler.bypasses.isAllBypassed();
+		return TriggerHandler.isBypassed(handlerType) || TriggerHandler.bypasses.isAllBypassed() || TriggerHandler.hasBypassPermission();
 	}
 
 	/**
@@ -965,7 +987,7 @@ public inherited sharing abstract class TriggerHandler {
 		if (!isTriggerExecuting || triggerEvent == null) {
 			throw new TriggerHandlerException(ERROR_TRIGGERCONTEXT);
 		}
-		if (TriggerHandler.bypasses.isAllBypassed()) {
+		if (TriggerHandler.bypasses.isAllBypassed() || TriggerHandler.hasBypassPermission()) {
 			return false;
 		}
 		// the same rule as isSkipped(); with no named bypass, the handler name is not needed
@@ -1081,7 +1103,7 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Runs after the context method returns, in all trigger contexts. It also runs in a context that the handler does not override.
-	 * <br>It does not run when the handler is bypassed. Then nothing in the handler runs.
+	 * <br>It does not run when the handler is bypassed, or when the running user has the `BypassTriggerHandlers` permission. Then nothing in the handler runs.
 	 * <br>It does not run when the loop limit stops the run. Then only `log()` runs, with the loop limit warning.
 	 * <br>It does not run when the context method throws an exception that it does not catch.
 	 * <br>It runs when the context method catches its own exception or calls `addError()`.

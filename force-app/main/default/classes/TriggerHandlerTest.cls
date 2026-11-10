@@ -473,6 +473,19 @@ private inherited sharing class TriggerHandlerTest {
 		Assert.isTrue(TriggerHandler.isSkipped(OTHER_HANDLER), 'the global bypass should skip every handler');
 	}
 
+	// bypass permission
+
+	/**
+	 * A user without the `BypassTriggerHandlers` permission runs the handler.
+	 */
+	@IsTest
+	private static void userWithoutBypassPermissionRunsHandler() {
+		Assert.isFalse(TriggerHandler.hasBypassPermission(), 'the test user should not have the bypass permission');
+		Assert.isFalse(TriggerHandler.isSkipped(HANDLER_NAME), 'the handler should not be skipped without the permission');
+		newHandler(System.TriggerOperation.AFTER_UPDATE).run();
+		Assert.areEqual(new List<String>{ 'afterUpdate', 'andFinally' }, calls, 'the handler should run without the permission');
+	}
+
 	// loop count
 
 	/**
