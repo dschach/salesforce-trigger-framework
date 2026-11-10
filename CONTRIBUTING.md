@@ -97,14 +97,14 @@ sf plugins install code-analyzer
 | `npm run codeanalyzer:setup` | Writes `code-analyzer.yml` again with all rules and their settings, removes the paths of your computer from its comments, and formats the file. The pre-commit hook also removes those paths from a staged `code-analyzer.yml`. |
 | `npm run orginit`            | Runs `scripts/orginit.sh`: replaces the `TriggerFramework` scratch org and deploys everything.                                                                                                                                  |
 | `npm run prune`              | Deletes the local branches whose remote branch is gone.                                                                                                                                                                         |
-| `npm run prepareApexDox`     | Updates `highlight.js` and the documentation pages that come from the README, the changelog, DEPLOY.md, and the sample README.                                                                                                  |
+| `npm run prepareApexDox`     | Updates `highlight.js` and the documentation pages that come from the README, the changelog, DEPLOY.md, and the sample README. It draws the Mermaid diagrams of the README as SVG for the site.                                 |
 
 ## Update the Documentation Site
 
 ApexDox, an extension for Visual Studio Code, generates the site in `docs/` from the ApexDoc comments. Update the site in its own pull request before a release pull request merges:
 
 1. Create a branch from `main`.
-2. Run `npm run prepareApexDox`.
+2. Run `npm run prepareApexDox`. It draws the Mermaid diagrams of the README with the Mermaid command line, which `npx` downloads on the first run. The command line needs Google Chrome, or the path of another Chrome in `PUPPETEER_EXECUTABLE_PATH`.
 3. In Visual Studio Code, run the command `ApexDox: Run`. It reads `apexdox.yml`.
 4. Run `npm run prettier`. It formats the generated HTML pages with the other files.
 5. Commit the result as `docs(site): regenerate the documentation site`, and open a pull request.
