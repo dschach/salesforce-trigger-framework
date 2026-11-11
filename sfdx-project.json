@@ -3,11 +3,15 @@
     {
       "path": "force-app",
       "default": true,
-      "versionNumber": "2.1.0.NEXT"
+      "versionNumber": "2.1.0.NEXT",
+      "package": "Trigger Handler Framework"
     }
   ],
   "name": "Trigger Framework",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "67.0"
+  "sourceApiVersion": "67.0",
+  "packageAliases": {
+    "Trigger Handler Framework": "0HoQm00000001wzKAA"
+  }
 }
