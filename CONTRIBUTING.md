@@ -114,3 +114,24 @@ The live site changes only with a release. When Release Please creates a release
 Release Please writes the release entry into `CHANGELOG.md` only when the release pull request merges, so `docs/` does not have it yet. The deploy rebuilds the changelog page from the `CHANGELOG.md` of the tag, so the live page shows the release.
 
 To deploy again without a release, for example after a fix to the site, run the Deploy site workflow with the Run workflow button. Name a tag, or leave the tag empty to deploy the latest release. The site is still deployed from a release tag, so a fix on `main` goes live only with the next release.
+
+## Release
+
+Do not merge the release pull request by hand. Run the Release workflow with its Run workflow button instead. It runs `scripts/release.mjs`, which does each step in order:
+
+1. It finds the release pull request of Release Please by its `autorelease: pending` label.
+2. It creates 1 beta version of the unlocked package from the release branch, with code coverage. It commits the ids to the branch: the alias in `sfdx-project.json`, `package-version.json`, and the install links in the README and the home page of the site. This takes several minutes.
+3. It waits until `format-lint`, `sfca-analysis`, and `package-ids` pass on that commit.
+4. It squash-merges the release pull request, but only while its head is still that commit.
+
+After the merge, CI on `main` creates the release and the tag, deploys the site from the tag, and promotes the beta. The `promote-package` job also adds the install links to the release notes. The release tag and the release zip file have the ids, because they are in the merged commit.
+
+Before a release, update the documentation site, as the section above tells, so that the home page of the site has the package version markers of the README.
+
+With the dry run box, the workflow creates a beta that skips validation, shows the changes, and stops. It commits, pushes, and merges nothing, and such a beta cannot be promoted. The GitHub API can start the workflow too: `gh workflow run release.yml -f dry_run=true`. The script also runs on a computer that has the `gh` and `sf` command lines signed in and a clean working tree: `node scripts/release.mjs --dry-run`.
+
+While `sfdx-project.json` names no package, the workflow does not log in to the Dev Hub, and a release only waits for the checks and merges.
+
+The `package-ids` check runs only on the release pull request. It fails while the ids do not belong to the code, for example when the release pull request was not released with the workflow, or when another merge changed `force-app/` after the beta. Release Please also rewrites the release branch after each merge to `main`, and that removes the commit with the ids. In each case, run the Release workflow again.
+
+A beta from `main` between releases needs a higher version number than the last release, because Salesforce refuses a new beta of a version number that has a promoted version. Give the number with `--version-number`, for example `sf package version create --package "<package name>" --version-number 2.2.1.NEXT`.

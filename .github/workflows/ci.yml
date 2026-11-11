@@ -103,6 +103,31 @@ jobs:
           echo "SFCA found ${{ steps.sfca-report.outputs.sev1-count }} severity 1 and ${{ steps.sfca-report.outputs.sev2-count }} severity 2 violation(s). See the job summary and the SFCA Report artifact."
           exit 1
 
+  # Runs only on the release pull request. It fails while the package ids do not belong
+  # to the code that the merge would release, for example before the Release workflow
+  # ran, or when another merge changed force-app after the beta. So it also blocks a
+  # merge of the release pull request by hand. The Release workflow writes the ids. On
+  # every other pull request, the job is skipped, and a skipped job counts as passed for
+  # a required check.
+  package-ids:
+    if: ${{ github.event_name == 'pull_request' && startsWith(github.head_ref, 'release-please--branches--main') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout source code"
+        uses: actions/checkout@v7
+
+      - name: "Set up Node.js"
+        uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: "Install npm dependencies"
+        run: npm ci
+
+      - name: "Check that the package ids belong to the code"
+        run: node scripts/package-version.mjs check
+
   # Release Please runs last, and only for a push to main where both checks passed. A
   # failing push gets no release PR update until a fix lands on main.
   release-please:
@@ -127,3 +152,70 @@ jobs:
     uses: ./.github/workflows/deploy-site.yml
     with:
       tag: ${{ needs.release-please.outputs.tag_name }}
+
+  # When Release Please creates a release, promote the beta package version that the
+  # Release workflow built, and add its install links to the release notes. The job reads
+  # package-version.json from the tag. While sfdx-project.json names no package, it only
+  # says so.
+  promote-package:
+    needs: release-please
+    if: ${{ needs.release-please.outputs.release_created == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: "Checkout the release tag"
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.release-please.outputs.tag_name }}
+
+      - name: "Set up Node.js"
+        uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: "Install npm dependencies"
+        run: npm ci
+
+      - name: "Check for a package"
+        id: project
+        run: echo "has-package=$(node scripts/package-version.mjs has-package)" >> "$GITHUB_OUTPUT"
+
+      - name: "Install Salesforce CLI"
+        if: ${{ steps.project.outputs.has-package == 'true' }}
+        run: |
+          npm install --global @salesforce/cli
+          sf --version
+
+      # The secret stays in an environment variable and reaches the CLI through
+      # standard input, so it never appears in a script or a file.
+      - name: "Authenticate Dev Hub"
+        if: ${{ steps.project.outputs.has-package == 'true' }}
+        env:
+          SFDX_AUTH_URL: ${{ secrets.SALESFORCE_AUTH_URL }}
+        run: |
+          if [ -z "$SFDX_AUTH_URL" ]; then
+            echo "The SALESFORCE_AUTH_URL secret is not set."
+            exit 1
+          fi
+          echo "$SFDX_AUTH_URL" | sf org login sfdx-url --alias devhub --set-default-dev-hub --sfdx-url-stdin
+
+      - name: "Promote the package version"
+        if: ${{ steps.project.outputs.has-package == 'true' }}
+        run: node scripts/package-version.mjs promote
+
+      - name: "Add the install links to the release notes"
+        if: ${{ steps.project.outputs.has-package == 'true' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.release-please.outputs.tag_name }}
+        run: |
+          links=$(node scripts/package-version.mjs notes)
+          if [ -z "$links" ]; then
+            echo "The tag has no package version, so the release notes stay as they are."
+            exit 0
+          fi
+          body=$(gh release view "$TAG" --repo "$GITHUB_REPOSITORY" --json body --jq .body)
+          printf '%s\n\n### Install\n\n%s\n' "$body" "$links" > release-notes.md
+          gh release edit "$TAG" --repo "$GITHUB_REPOSITORY" --notes-file release-notes.md
