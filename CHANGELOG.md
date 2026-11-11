@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.2.1](https://github.com/dschach/salesforce-trigger-framework/compare/v2.2.0...v2.2.1) (2026-11-11)
+
+
+### Documentation
+
+* **readme:** Tidy the wording of the usage and sample sections ([3f5200c](https://github.com/dschach/salesforce-trigger-framework/commit/3f5200c205fa6607ea342929822b14e5af342c7c))
+
+
+### Build System
+
+* **release:** Choose whether to promote, and show the build progress ([#402](https://github.com/dschach/salesforce-trigger-framework/issues/402)) ([3f5200c](https://github.com/dschach/salesforce-trigger-framework/commit/3f5200c205fa6607ea342929822b14e5af342c7c))
+
+
+### Continuous Integration
+
+* **release:** Skip Code Analyzer on the release pull request ([#404](https://github.com/dschach/salesforce-trigger-framework/issues/404)) ([b87523d](https://github.com/dschach/salesforce-trigger-framework/commit/b87523d2fc9b766aeab2e380b1bc2e6b06d8cfe6))
+
 ## [2.2.0](https://github.com/dschach/salesforce-trigger-framework/compare/v2.1.0...v2.2.0) (2026-11-11)
 
 
