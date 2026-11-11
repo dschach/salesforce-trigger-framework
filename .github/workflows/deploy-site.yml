@@ -3,9 +3,10 @@
 # The deploy-site job in ci.yml calls this workflow when Release Please creates a release.
 # The Run workflow button deploys a tag that you name, or the latest release.
 # ApexDox has no command line, so docs/ is generated in Visual Studio Code and committed
-# before the release. This workflow only rebuilds the changelog page from the tag's
+# before the release. This workflow rebuilds the changelog page from the tag's
 # CHANGELOG.md, which gets the release entry only when the release pull request merges,
-# and adds the heading ids that marked does not write.
+# and adds the heading ids that marked does not write. It also adds a markdown copy of
+# each page, llms.txt, and a markdown toolbar on each page (scripts/build-markdown-site.mjs).
 # Pages must use GitHub Actions as its source: Settings, Pages, Build and deployment.
 name: Deploy site
 on:
@@ -62,6 +63,10 @@ jobs:
       # marked writes no heading ids, so the links to the release headings need them.
       - name: "Add ids to the headings of the changelog page"
         run: node scripts/add-heading-ids.mjs docs/changelog.html
+
+      # A markdown copy of each page, llms.txt, and the markdown toolbar of each page.
+      - name: "Add the markdown pages, llms.txt, and the toolbar"
+        run: node scripts/build-markdown-site.mjs docs
 
       - name: "Upload the site"
         uses: actions/upload-pages-artifact@v5
