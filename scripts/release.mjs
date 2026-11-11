@@ -20,12 +20,14 @@
 //
 // With --dry-run, step 3 creates a beta with --skip-validation, which cannot be promoted,
 // shows the changes, and stops. Nothing is committed, pushed, or merged.
+// With --keep-beta, the version stays a beta after the release: the promote-package job
+// in ci.yml reads that choice from package-version.json in the tag.
 // --use-current-checkout skips step 2 in a dry run, to test with local changes.
 //
-// Usage: node scripts/release.mjs [--dry-run] [--use-current-checkout] [--target-dev-hub <alias>]
+// Usage: node scripts/release.mjs [--dry-run] [--keep-beta] [--use-current-checkout] [--target-dev-hub <alias>]
 
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -38,6 +40,7 @@ const POLL_SECONDS = 20;
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
+const keepBeta = args.includes('--keep-beta');
 const useCurrentCheckout = args.includes('--use-current-checkout');
 const devHubIndex = args.indexOf('--target-dev-hub');
 const devHub = devHubIndex === -1 ? undefined : args[devHubIndex + 1];
@@ -66,6 +69,11 @@ function run(command, commandArgs) {
 
 function show(command, commandArgs) {
 	execFileSync(command, commandArgs, { stdio: 'inherit' });
+}
+
+// The promote choice in package-version.json. A file without the field means promote.
+function recordedPromote() {
+	return JSON.parse(readFileSync('package-version.json', 'utf8')).promote !== false;
 }
 
 // Runs a command quietly and tells whether it passed.
@@ -131,9 +139,10 @@ let headSha = pull.headRefOid;
 const hasPackage = run('node', ['scripts/package-version.mjs', 'has-package']) === 'true';
 if (!hasPackage) {
 	console.log('sfdx-project.json names no package, so the release has no package version.');
-} else if (!useCurrentCheckout && succeeds('node', ['scripts/package-version.mjs', 'check'])) {
+} else if (!useCurrentCheckout && succeeds('node', ['scripts/package-version.mjs', 'check']) && recordedPromote() === !keepBeta) {
 	// A run that stopped after its push left valid ids on the branch. They still belong to
-	// the code, so this run uses them and builds no extra beta.
+	// the code, and they have the promote choice of this run, so this run uses them and
+	// builds no extra beta.
 	console.log('The release branch already has the ids of a beta that belongs to its code, so no new beta is built.');
 } else {
 	const createArgs = ['scripts/package-version.mjs', 'create'];
@@ -142,6 +151,9 @@ if (!hasPackage) {
 	}
 	if (dryRun) {
 		createArgs.push('--skip-validation');
+	}
+	if (keepBeta) {
+		createArgs.push('--keep-beta');
 	}
 	show('node', createArgs);
 	show('npx', ['prettier', '--write', ...ID_FILES]);
@@ -223,4 +235,6 @@ try {
 }
 restore();
 needsRestore = false;
-console.log(`Merged #${pull.number}. CI on main now creates the release, deploys the site, and promotes the package version.`);
+console.log(
+	`Merged #${pull.number}. CI on main now creates the release, deploys the site, and ${keepBeta ? 'leaves the package version a beta' : 'promotes the package version'}.`
+);

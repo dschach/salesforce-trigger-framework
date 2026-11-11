@@ -155,8 +155,9 @@ jobs:
 
   # When Release Please creates a release, promote the beta package version that the
   # Release workflow built, and add its install links to the release notes. The job reads
-  # package-version.json from the tag. While sfdx-project.json names no package, it only
-  # says so.
+  # package-version.json from the tag. When the Release run chose to keep a beta, the job
+  # does not promote it, and the notes offer only a sandbox. While sfdx-project.json names
+  # no package, it only says so.
   promote-package:
     needs: release-please
     if: ${{ needs.release-please.outputs.release_created == 'true' }}

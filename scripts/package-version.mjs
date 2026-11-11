@@ -9,24 +9,31 @@
 //
 // "create" runs sf package version create with code coverage, so the version can be
 // promoted after the release. With --skip-validation, for a dry run, the beta is faster
-// and uses a separate daily limit, but it cannot be promoted. The CLI adds the alias of
-// the version to packageAliases in sfdx-project.json. The script then writes
-// package-version.json and the install links between the package-version markers of the
-// README and the site home page.
+// and uses a separate daily limit, but it cannot be promoted. The build starts with
+// --wait 0, and the script then reads its status every 30 seconds, for up to 60 minutes,
+// so the log shows its progress. The script adds the alias of the version to
+// packageAliases in sfdx-project.json, in the form that the CLI uses, and it writes
+// package-version.json and the install links
+// between the package-version markers of the README and the site home page.
+// With --keep-beta, package-version.json says that the version stays a beta, and the
+// install links offer only a sandbox, because a beta cannot be installed in production.
 //
 // "check" fails when the ids do not belong to the code: the version number differs from
 // sfdx-project.json, the force-app folder changed after the beta was built, or a file
 // shows another version. It passes with a notice while sfdx-project.json names no package.
 // A site page that has no markers yet is not checked; the README must have them.
 //
-// "promote" promotes the beta in package-version.json, unless it is promoted already.
+// "promote" promotes the beta in package-version.json, unless it is promoted already, or
+// unless package-version.json says that it stays a beta. "links" writes the install links
+// again from package-version.json, for example after a change to their text.
 // "notes" writes the install links as markdown, for the release notes. "has-package"
 // writes true or false: whether sfdx-project.json names a package.
 //
 // Usage:
-//   node scripts/package-version.mjs create [--target-dev-hub <alias>] [--skip-validation]
+//   node scripts/package-version.mjs create [--target-dev-hub <alias>] [--skip-validation] [--keep-beta]
 //   node scripts/package-version.mjs check
 //   node scripts/package-version.mjs promote [--target-dev-hub <alias>]
+//   node scripts/package-version.mjs links
 //   node scripts/package-version.mjs notes
 //   node scripts/package-version.mjs has-package
 
@@ -43,6 +50,9 @@ const START = '<!-- package-version-start -->';
 const END = '<!-- package-version-end -->';
 const INSTALL_URL = 'packaging/installPackage.apexp?p0=';
 const AGAIN = 'Run the Release workflow again, so that it builds a new beta.';
+const BUILD_WAIT_MINUTES = 60;
+const POLL_SECONDS = 30;
+const PROGRESS_MINUTES = 2;
 
 function fail(message) {
 	console.error(message);
@@ -72,6 +82,25 @@ function folderTree() {
 	return execFileSync('git', ['rev-parse', `HEAD:${PACKAGE_FOLDER}`], { encoding: 'utf8' }).trim();
 }
 
+// "less than 1 minute", "about 1 minute", or "about 5 minutes".
+function minutesText(milliseconds) {
+	const minutes = Math.round(milliseconds / 60000);
+	if (minutes === 0) {
+		return 'less than 1 minute';
+	}
+	return `about ${minutes} minute${minutes === 1 ? '' : 's'}`;
+}
+
+function sleep(seconds) {
+	Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, seconds * 1000);
+}
+
+// true unless package-version.json says that the version stays a beta. A file from before
+// the choice existed has no promote field, and its version is promoted.
+function willPromote(recorded) {
+	return recorded.promote !== false;
+}
+
 // Runs a Salesforce CLI command with --json and returns its result, or stops with its error.
 function sf(args, devHub, what) {
 	const fullArgs = [...args, '--json'];
@@ -91,11 +120,23 @@ function sf(args, devHub, what) {
 	return response.result ?? {};
 }
 
-function installMarkdown(release, versionId) {
+function installMarkdown(release, versionId, promoted) {
+	const cli = `With the Salesforce CLI, run \`sf package install --package ${versionId} --target-org <alias> --wait 10\`.`;
+	if (!promoted) {
+		return [
+			`**Install beta version ${release} of the unlocked package** [in a sandbox](https://test.salesforce.com/${INSTALL_URL}${versionId}) or in a scratch org. A beta cannot be installed in production.`,
+			cli
+		].join(' ');
+	}
 	return [
-		`Install version ${release} as an unlocked package: [in production or a Developer Edition org](https://login.salesforce.com/${INSTALL_URL}${versionId}), or [in a sandbox](https://test.salesforce.com/${INSTALL_URL}${versionId}).`,
-		`With the Salesforce CLI, run \`sf package install --package ${versionId} --target-org <alias> --wait 10\`.`
+		`**Install version ${release} as an unlocked package:** [in production or a Developer Edition org](https://login.salesforce.com/${INSTALL_URL}${versionId}), or [in a sandbox](https://test.salesforce.com/${INSTALL_URL}${versionId}).`,
+		cli
 	].join(' ');
+}
+
+// The words that start the install line, so the check can tell a release from a beta.
+function installPhrase(release, promoted) {
+	return promoted ? `Install version ${release} ` : `Install beta version ${release} `;
 }
 
 function blockContent(file, markdown) {
@@ -123,38 +164,45 @@ function readBlock(text) {
 
 // Prettier can wrap the block of an HTML page, so the check reads only what matters: the
 // version number, and that every package version id in the block is the expected one.
-function showsVersion(block, release, versionId) {
+function showsVersion(block, release, versionId, promoted) {
 	const text = block.replace(/\s+/g, ' ');
 	const ids = text.match(/04t[A-Za-z0-9]{12,15}/g) ?? [];
-	return text.includes(`version ${release} `) && ids.length > 0 && ids.every((id) => id === versionId);
+	return text.includes(installPhrase(release, promoted)) && ids.length > 0 && ids.every((id) => id === versionId);
 }
 
-function create(devHub, skipValidation) {
-	const changes = execFileSync('git', ['status', '--porcelain', PACKAGE_FOLDER], { encoding: 'utf8' }).trim();
-	if (changes) {
-		fail(`${PACKAGE_FOLDER} has changes that are not committed. A beta must match a commit.`);
+// Starts the build with --wait 0, then reads its status until it ends, and writes a line
+// when the status changes, and at least every few minutes, so the log shows progress.
+function buildVersion(args, devHub) {
+	const request = sf([...args, '--wait', '0'], devHub, 'The package version create');
+	console.log(`Build request ${request.Id} is ${request.Status}.`);
+	const started = Date.now();
+	let lastStatus = request.Status;
+	let lastLine = started;
+	for (;;) {
+		sleep(POLL_SECONDS);
+		const report = sf(['package', 'version', 'create', 'report', '--package-create-request-id', request.Id], devHub, 'The package version create report');
+		const result = Array.isArray(report) ? report[0] : report;
+		if (result.Status === 'Success') {
+			console.log(`Build finished after ${minutesText(Date.now() - started)}.`);
+			return result;
+		}
+		if (result.Status === 'Error') {
+			fail(`The package version was not created: ${[].concat(result.Error ?? []).join(' ') || 'no error text'}`);
+		}
+		if (result.Status !== lastStatus || Date.now() - lastLine >= PROGRESS_MINUTES * 60000) {
+			console.log(`After ${minutesText(Date.now() - started)}, the build is ${result.Status}.`);
+			lastStatus = result.Status;
+			lastLine = Date.now();
+		}
+		if (Date.now() - started > BUILD_WAIT_MINUTES * 60000) {
+			fail(`The build did not finish in ${BUILD_WAIT_MINUTES} minutes. Read its status with: sf package version create report --package-create-request-id ${request.Id}`);
+		}
 	}
-	const directory = packageDirectory(readJson(PROJECT_FILE));
-	if (!directory.package) {
-		fail(`${PROJECT_FILE} names no package for ${PACKAGE_FOLDER}.`);
-	}
+}
 
-	const validation = skipValidation ? '--skip-validation' : '--code-coverage';
-	console.log(`Creating a beta of ${directory.package} ${directory.versionNumber} with ${validation}. This takes several minutes.`);
-	const result = sf(
-		['package', 'version', 'create', '--package', directory.package, validation, '--installation-key-bypass', '--wait', '60'],
-		devHub,
-		'The package version create'
-	);
-	if (result.Status !== 'Success') {
-		fail(`The package version was not created: ${result.Error ?? result.Status}`);
-	}
-
-	const versionId = result.SubscriberPackageVersionId;
-	const release = releaseNumber(result.VersionNumber);
-	writeFileSync(VERSION_FILE, JSON.stringify({ version: result.VersionNumber, subscriberPackageVersionId: versionId, packageFolderTree: folderTree() }, null, '\t') + '\n');
-
-	const markdown = installMarkdown(release, versionId);
+// Writes the install links between the package-version markers of each file.
+function writeLinks(release, versionId, promoted) {
+	const markdown = installMarkdown(release, versionId, promoted);
 	for (const file of [...MARKDOWN_FILES, ...HTML_FILES]) {
 		if (!existsSync(file)) {
 			continue;
@@ -169,7 +217,37 @@ function create(devHub, skipValidation) {
 		}
 		writeFileSync(file, updated);
 	}
-	console.log(`Created ${result.VersionNumber} (${versionId}) and wrote its ids.`);
+}
+
+function create(devHub, skipValidation, keepBeta) {
+	const changes = execFileSync('git', ['status', '--porcelain', PACKAGE_FOLDER], { encoding: 'utf8' }).trim();
+	if (changes) {
+		fail(`${PACKAGE_FOLDER} has changes that are not committed. A beta must match a commit.`);
+	}
+	const directory = packageDirectory(readJson(PROJECT_FILE));
+	if (!directory.package) {
+		fail(`${PROJECT_FILE} names no package for ${PACKAGE_FOLDER}.`);
+	}
+
+	const validation = skipValidation ? '--skip-validation' : '--code-coverage';
+	console.log(`Creating a beta of ${directory.package} ${directory.versionNumber} with ${validation}. This takes several minutes.`);
+	const result = buildVersion(['package', 'version', 'create', '--package', directory.package, validation, '--installation-key-bypass'], devHub);
+
+	const versionId = result.SubscriberPackageVersionId;
+	const release = releaseNumber(result.VersionNumber);
+	// The CLI writes the alias of the version only when it waits for the build itself, so
+	// after a build that started with --wait 0, the script writes it, in the CLI's form.
+	const project = readJson(PROJECT_FILE);
+	project.packageAliases = { ...project.packageAliases, [`${directory.package}@${release}-${result.VersionNumber.split('.')[3]}`]: versionId };
+	writeFileSync(PROJECT_FILE, JSON.stringify(project, null, 2) + '\n');
+	const promoted = !keepBeta;
+	writeFileSync(
+		VERSION_FILE,
+		JSON.stringify({ version: result.VersionNumber, subscriberPackageVersionId: versionId, packageFolderTree: folderTree(), promote: promoted }, null, '\t') + '\n'
+	);
+
+	writeLinks(release, versionId, promoted);
+	console.log(`Created ${result.VersionNumber} (${versionId}) and wrote its ids.${promoted ? '' : ' It stays a beta after the release.'}`);
 }
 
 function check() {
@@ -208,7 +286,7 @@ function check() {
 			}
 			continue;
 		}
-		if (!showsVersion(block, releaseNumber(recorded.version), recorded.subscriberPackageVersionId)) {
+		if (!showsVersion(block, releaseNumber(recorded.version), recorded.subscriberPackageVersionId, willPromote(recorded))) {
 			problems.push(`${file} does not show the install links of ${recorded.version}.`);
 		}
 	}
@@ -234,6 +312,10 @@ function promote(devHub) {
 	if (!recorded) {
 		return;
 	}
+	if (!willPromote(recorded)) {
+		console.log(`${recorded.version} (${recorded.subscriberPackageVersionId}) stays a beta, as the Release run chose.`);
+		return;
+	}
 	const report = sf(['package', 'version', 'report', '--package', recorded.subscriberPackageVersionId], devHub, 'The package version report');
 	if (report.IsReleased) {
 		console.log(`${recorded.version} (${recorded.subscriberPackageVersionId}) is promoted already.`);
@@ -243,10 +325,20 @@ function promote(devHub) {
 	console.log(`Promoted ${recorded.version} (${recorded.subscriberPackageVersionId}).`);
 }
 
+// Writes the install links again from package-version.json, for example after a change to
+// their text. It changes no id.
+function links() {
+	const recorded = recordedBeta();
+	if (recorded) {
+		writeLinks(releaseNumber(recorded.version), recorded.subscriberPackageVersionId, willPromote(recorded));
+		console.log(`Wrote the install links of ${recorded.version} again.`);
+	}
+}
+
 function notes() {
 	const recorded = recordedBeta();
 	if (recorded) {
-		console.log(installMarkdown(releaseNumber(recorded.version), recorded.subscriberPackageVersionId));
+		console.log(installMarkdown(releaseNumber(recorded.version), recorded.subscriberPackageVersionId, willPromote(recorded)));
 	}
 }
 
@@ -255,15 +347,19 @@ const devHubIndex = options.indexOf('--target-dev-hub');
 const devHub = devHubIndex === -1 ? undefined : options[devHubIndex + 1];
 
 if (command === 'create') {
-	create(devHub, options.includes('--skip-validation'));
+	create(devHub, options.includes('--skip-validation'), options.includes('--keep-beta'));
 } else if (command === 'check') {
 	check();
 } else if (command === 'promote') {
 	promote(devHub);
+} else if (command === 'links') {
+	links();
 } else if (command === 'notes') {
 	notes();
 } else if (command === 'has-package') {
 	console.log(Boolean(packageDirectory(readJson(PROJECT_FILE)).package));
 } else {
-	fail('Usage: node scripts/package-version.mjs create [--target-dev-hub <alias>] [--skip-validation] | check | promote [--target-dev-hub <alias>] | notes | has-package');
+	fail(
+		'Usage: node scripts/package-version.mjs create [--target-dev-hub <alias>] [--skip-validation] [--keep-beta] | check | promote [--target-dev-hub <alias>] | links | notes | has-package'
+	);
 }

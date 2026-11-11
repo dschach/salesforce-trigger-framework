@@ -71,7 +71,7 @@ Most important, the framework is small and simple to use.
 
 <!-- package-version-start -->
 
-Install version 2.2.0 as an unlocked package: [in production or a Developer Edition org](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tQm000003DoOfIAK), or [in a sandbox](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tQm000003DoOfIAK). With the Salesforce CLI, run `sf package install --package 04tQm000003DoOfIAK --target-org <alias> --wait 10`.
+**Install version 2.2.0 as an unlocked package:** [in production or a Developer Edition org](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tQm000003DoOfIAK), or [in a sandbox](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tQm000003DoOfIAK). With the Salesforce CLI, run `sf package install --package 04tQm000003DoOfIAK --target-org <alias> --wait 10`.
 
 <!-- package-version-end -->
 

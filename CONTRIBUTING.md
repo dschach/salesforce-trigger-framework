@@ -128,6 +128,12 @@ After the merge, CI on `main` creates the release and the tag, deploys the site 
 
 Before a release, update the documentation site, as the section above tells, so that the home page of the site has the package version markers of the README.
 
+The promote box is checked by default. Clear it to keep the version a beta after the release: the `promote-package` job then does not promote it, and the install links in the README, the site, and the release notes offer only a sandbox, because a beta cannot be installed in production. The choice is in `package-version.json` of the tag. A beta can be promoted later by hand with `sf package version promote`.
+
+After a change to the text of the install links in `scripts/package-version.mjs`, run `node scripts/package-version.mjs links`. It writes the links of the current version again from `package-version.json` into the README and the site home page, and it changes no id.
+
+The log of the Release run shows the progress of the package build: a line when its status changes, and at least every 2 minutes. The build can take up to 60 minutes.
+
 With the dry run box, the workflow creates a beta that skips validation, shows the changes, and stops. It commits, pushes, and merges nothing, and such a beta cannot be promoted. The GitHub API can start the workflow too: `gh workflow run release.yml -f dry_run=true`. The script also runs on a computer that has the `gh` and `sf` command lines signed in and a clean working tree: `node scripts/release.mjs --dry-run`.
 
 While `sfdx-project.json` names no package, the workflow does not log in to the Dev Hub, and a release only waits for the checks and merges.
