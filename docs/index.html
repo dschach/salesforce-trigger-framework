@@ -205,6 +205,8 @@
 							><img src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png" alt="Deploy"
 						/></a>
 					</p>
+					<!-- package-version-start -->
+					<!-- package-version-end -->
 					<h2 id="what-is-new-in-version-20">What Is New in Version 2.0</h2>
 					<ul>
 						<li>
@@ -1636,6 +1638,13 @@ if (!wasGlobalBypassed) {
 						bypassed run does not count. A run that the limit stops counts. When the count of an operation passes its maximum,
 						<code>run()</code> sends a warning to <code>log()</code> and returns. By default, <code>log()</code> writes it to the debug log. It does
 						not call the context method or <code>andFinally()</code>.
+					</p>
+					<p>
+						A partial-success DML statement uses more runs. With <code>Database.update(records, false)</code>, the Bulk API, or Data Loader,
+						Salesforce rolls back a DML statement in which some records fail. Then it runs the trigger again for the records that did not fail, and it
+						can do this up to 2 times. Static variables keep their values in a retry, so each retry counts as another run. With
+						<code>setMaxLoopCount(1)</code>, the limit stops the retry, and the handler work for the saved records does not happen. For a handler that
+						must run for each saved record, allow 3 runs for each run that you expect, or set no limit.
 					</p>
 					<p>
 						This handler runs its update logic once for an update of up to 200 records. The update in <code>afterUpdate()</code> fires the trigger
