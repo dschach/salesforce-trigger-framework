@@ -262,6 +262,7 @@ public inherited sharing abstract class TriggerHandler {
 	 * Limits how many times `run()` runs this handler. Each trigger operation gets the same limit.
 	 * <br>Each operation has its own count for the transaction. The count starts at the first call of `setMaxLoopCount()`, also with 0 or a negative value. Each chunk of 200 records counts as 1 run. A bypassed run does not count. A run that the limit stops counts.
 	 * <br>When an operation passes its limit, `run()` sends a warning to `log()` and returns. It does not call the context method or `andFinally()`.
+	 * <br>In a partial-success DML statement, Salesforce rolls back and runs the trigger again for the records that did not fail. Static variables keep their values, so each retry counts as another run. A low limit can stop the retry, and then the handler work for the saved records does not happen. The README tells how to set the limit for this case.
 	 * @param  max The maximum number of runs of each operation. 0 or a negative value removes the limit.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
 	 * @exception TriggerHandlerException when the value is null.
@@ -286,6 +287,7 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Limits how many times `run()` runs this handler for 1 trigger operation. The other operations keep their limits.
 	 * <br>The count of the operation starts at the first call of `setMaxLoopCount()` for it, also with 0 or a negative value. Each chunk of 200 records counts as 1 run. A bypassed run does not count. A run that the limit stops counts.
+	 * <br>Each retry of a partial-success DML statement counts as another run, as `setMaxLoopCount(Integer)` tells.
 	 * @param  operation The trigger operation to limit.
 	 * @param  max The maximum number of runs of the operation. 0 or a negative value removes the limit.
 	 * @return `TriggerHandler` This handler, so that you can chain calls.
