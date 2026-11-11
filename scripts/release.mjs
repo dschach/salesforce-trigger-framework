@@ -202,7 +202,9 @@ for (;;) {
 	if (failed.length > 0) {
 		fail(`These required checks failed: ${failed.join(', ')}. Pull request #${pull.number} stays open.`);
 	}
-	if (REQUIRED_CHECKS.every((name) => latest.get(name)?.conclusion === 'SUCCESS')) {
+	// A skipped job counts as passed, as GitHub counts it for a required check. The release
+	// pull request skips sfca-analysis, because it changes no Apex.
+	if (REQUIRED_CHECKS.every((name) => ['SUCCESS', 'SKIPPED'].includes(latest.get(name)?.conclusion))) {
 		break;
 	}
 	if (Date.now() > deadline) {

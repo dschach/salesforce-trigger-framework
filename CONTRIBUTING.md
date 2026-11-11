@@ -84,7 +84,7 @@ sf plugins install code-analyzer
 - Write commit messages and pull request titles as [Conventional Commits](https://www.conventionalcommits.org/) with a scope, and start them with a lower-case verb: `fix(handler): guard null arguments`.
 - Pull requests merge by squash only. The pull request title becomes the commit message on `main`, and the description becomes its body. So fill in each section of the pull request template.
 - Do not put version numbers in titles or descriptions. Release Please sets the version and writes the changelog from the commit messages. After a push to `main`, it runs only when `format-lint` and `sfca-analysis` pass, so a failing push gets no release pull request update until a fix lands.
-- 2 checks must pass before a merge: `format-lint` (Prettier and the sample code check) and `sfca-analysis` (Code Analyzer). The `scratch-org-test` check runs the Apex tests when a file in `force-app/` or `sample-handler/` changes, except a markdown file. It needs the Dev Hub secret of the project, so it does not run on a pull request from a fork.
+- 3 checks must pass before a merge: `format-lint` (Prettier and the sample code check), `sfca-analysis` (Code Analyzer), and `package-ids`. `package-ids` runs only on the release pull request, and the release pull request skips `sfca-analysis`, because it changes no Apex. A skipped check counts as passed. The `scratch-org-test` check runs the Apex tests when a file in `force-app/` or `sample-handler/` changes, except a markdown file. It needs the Dev Hub secret of the project, so it does not run on a pull request from a fork.
 
 ## npm Scripts
 
@@ -121,7 +121,7 @@ Do not merge the release pull request by hand. Run the Release workflow with its
 
 1. It finds the release pull request of Release Please by its `autorelease: pending` label.
 2. It creates 1 beta version of the unlocked package from the release branch, with code coverage. It commits the ids to the branch: the alias in `sfdx-project.json`, `package-version.json`, and the install links in the README and the home page of the site. This takes several minutes.
-3. It waits until `format-lint`, `sfca-analysis`, and `package-ids` pass on that commit.
+3. It waits until `format-lint` and `package-ids` pass on that commit. `sfca-analysis` is skipped there, and a skipped check counts as passed.
 4. It squash-merges the release pull request, but only while its head is still that commit.
 
 After the merge, CI on `main` creates the release and the tag, deploys the site from the tag, and promotes the beta. The `promote-package` job also adds the install links to the release notes. The release tag and the release zip file have the ids, because they are in the merged commit.

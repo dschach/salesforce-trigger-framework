@@ -45,7 +45,12 @@ jobs:
       - name: "Check the sample code in the sample README"
         run: node scripts/sync-sample-code.mjs --check
 
+  # The release pull request of Release Please changes only version numbers, the
+  # changelog, and the package ids, never Apex, so the job is skipped there. A skipped job
+  # counts as passed for a required check. After the release merges, the push to main runs
+  # the job, because the release-please job needs it.
   sfca-analysis:
+    if: ${{ !startsWith(github.head_ref, 'release-please--branches--') }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
