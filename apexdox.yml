@@ -1,9 +1,9 @@
 engine:
   source:
     - path: "${workspaceFolder}/force-app/main/default/classes"
-      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes
+      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main
     - path: "${workspaceFolder}/sample-handler/main/default/classes"
-      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes
+      sourceUrl: https://github.com/dschach/salesforce-trigger-framework/tree/main
   targetDirectory: "${workspaceFolder}/docs"
   #excludes:
   #  - "*Test.cls"
