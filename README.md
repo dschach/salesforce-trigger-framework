@@ -71,7 +71,7 @@ Most important, the framework is small and simple to use.
 
 <!-- package-version-start -->
 
-Install version 2.2.0 as an unlocked package: [in production or a Developer Edition org](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tQm000003DoOfIAK), or [in a sandbox](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tQm000003DoOfIAK). With the Salesforce CLI, run `sf package install --package 04tQm000003DoOfIAK --target-org <alias> --wait 10`.
+**Install version 2.2.0 as an unlocked package:** [in production or a Developer Edition org](https://login.salesforce.com/packaging/installPackage.apexp?p0=04tQm000003DoOfIAK), or [in a sandbox](https://test.salesforce.com/packaging/installPackage.apexp?p0=04tQm000003DoOfIAK). With the Salesforce CLI, run `sf package install --package 04tQm000003DoOfIAK --target-org <alias> --wait 10`.
 
 <!-- package-version-end -->
 
@@ -83,7 +83,7 @@ Install version 2.2.0 as an unlocked package: [in production or a Developer Edit
   - A loop limit for each trigger operation.
   - Named bypasses and a global bypass that are independent, with `isSkipped()` and `isGlobalBypassed()`.
   - Debug and limits settings for 1 handler: `showHandlerDebug()` and `showHandlerLimits()`.
-  - `setTestContext()`, to test a handler without DML, and an overridable `log()`, to send the framework messages to your logging framework.
+  - `setTestContext()` to test a handler without DML, and an overridable `log()` to send the framework messages to your logging framework.
 - **Quality:** 100 percent test coverage of `TriggerHandler`, and no Salesforce Code Analyzer findings.
 - **Documentation:** the ApexDoc, the README, and the project guides are rewritten in plain English. The [sample README](sample-handler/README.md) shows the real sample code, and a script keeps it current. The project has a [security policy](https://github.com/dschach/salesforce-trigger-framework/blob/main/SECURITY.md).
 
@@ -91,7 +91,7 @@ Install version 2.2.0 as an unlocked package: [in production or a Developer Edit
 
 ### Trigger Handler
 
-To create a trigger handler, create a class that extends [TriggerHandler.cls](https://github.com/dschach/salesforce-trigger-framework/blob/main/force-app/main/default/classes/TriggerHandler.cls). This is an Opportunity trigger handler:
+To create a trigger handler, create a class that extends [TriggerHandler.cls](https://github.com/dschach/salesforce-trigger-framework/blob/main/force-app/main/default/classes/TriggerHandler.cls). This is an example Opportunity trigger handler:
 
 ```apex
 public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
@@ -133,7 +133,7 @@ public inherited sharing class OpportunityTriggerHandler extends TriggerHandler 
 
 The class in `super()` is optional, but it makes the handler faster. Without it, the framework finds the name from the running class when a bypass or a loop count first needs it. That lookup serializes all fields of the handler, also the record lists. With the class, the handler name is `Type.getName()`, so `TriggerHandler.bypass(OpportunityTriggerHandler.class)` always matches. A handler that is an inner class must pass its class, because the lookup gives only the short name of an inner class. [Pass the Handler Class to super()](#pass-the-handler-class-to-super) has more examples.
 
-This repository has a sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes) class and a sample [trigger](https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger). The sample is not a package directory, so the Deploy to Salesforce button and `sf project deploy start` install only the framework. To try the sample in a scratch org, run `sf project deploy start --source-dir force-app --source-dir sample-handler`. The [sample README](sample-handler/README.md) tells what the sample shows.
+This repository has a sample [AccountSampleTriggerHandler](https://github.com/dschach/salesforce-trigger-framework/tree/main/sample-handler/main/default/classes) class and a sample [trigger](https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger). The sample is not packaged metadata, so the Deploy to Salesforce button and `sf project deploy start` install only the framework. To try the sample in a scratch org or sandbox, run `sf project deploy start --source-dir force-app --source-dir sample-handler`. The [sample README](sample-handler/README.md) tells what the sample shows.
 
 ### Pass the Handler Class to super()
 
@@ -318,7 +318,7 @@ Code cannot clear this bypass. `clearAllBypasses()` and `clearGlobalBypass()` do
 
 ### Set Bypass
 
-To bypass a handler for a time and then give back its earlier bypass state, use `setBypass()`. You do not have to know the state first:
+To bypass a handler for a time and then give back its earlier bypass state, use `setBypass()`. You do not have to know the initial state:
 
 ```apex
 Boolean isBypassed = TriggerHandler.isBypassed('AccountTriggerHandler');

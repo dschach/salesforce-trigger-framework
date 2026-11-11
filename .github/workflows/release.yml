@@ -7,6 +7,8 @@
 #   gh workflow run release.yml -f dry_run=true
 # A dry run creates a beta that skips validation, which cannot be promoted, shows the
 # changes, and stops. It commits, pushes, and merges nothing.
+# With the promote box clear, the version stays a beta after the release, and the install
+# links offer only a sandbox. The API sets it with -f promote=false.
 # While sfdx-project.json names no package, the workflow does not log in to the Dev Hub,
 # and a release only waits for the checks and merges.
 name: Release
@@ -18,6 +20,10 @@ on:
         description: "Dry run: create a beta that cannot be promoted, and merge nothing"
         type: boolean
         default: false
+      promote:
+        description: "Promote the package version after the release. Clear it to keep the version a beta."
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -78,11 +84,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run }}
+          PROMOTE: ${{ inputs.promote }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          options=()
           if [ "$DRY_RUN" = "true" ]; then
-            node scripts/release.mjs --dry-run
-          else
-            node scripts/release.mjs
+            options+=(--dry-run)
           fi
+          if [ "$PROMOTE" = "false" ]; then
+            options+=(--keep-beta)
+          fi
+          node scripts/release.mjs "${options[@]}"
