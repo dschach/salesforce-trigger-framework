@@ -112,18 +112,18 @@
 				<td class="doc-page">
 					<h2 class="section-title">SampleTriggerHandler</h2>
 					<link href="assets/styling.css" rel="stylesheet" />
-					<h1>Sample Trigger Handler</h1>
+					<h1 id="sample-trigger-handler">Sample Trigger Handler</h1>
 					<p>
 						This folder holds a sample trigger, a sample trigger handler, and a test for the <a href="index.html">Salesforce Trigger Framework</a>. It
 						is not a package directory, so a deploy of the framework does not install it.
 					</p>
-					<h2>Design</h2>
+					<h2 id="design">Design</h2>
 					<ul>
 						<li>Each object has 1 trigger.</li>
 						<li>Each trigger has 1 handler.</li>
 					</ul>
-					<h2>What It Contains</h2>
-					<h3>The Trigger</h3>
+					<h2 id="what-it-contains">What It Contains</h2>
+					<h3 id="the-trigger">The Trigger</h3>
 					<p>
 						<a
 							href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger"
@@ -144,7 +144,7 @@ trigger AccountSampleTrigger on Account(before insert, before update, before del
 }
 </code></pre>
 					<!-- END sample-code -->
-					<h3>The Handler</h3>
+					<h3 id="the-handler">The Handler</h3>
 					<p>
 						<a
 							href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/classes/AccountSampleTriggerHandler.cls"
@@ -320,7 +320,7 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 }
 </code></pre>
 					<!-- END sample-code -->
-					<h3>The Test</h3>
+					<h3 id="the-test">The Test</h3>
 					<p>
 						<a
 							href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/classes/AccountSampleTriggerHandlerTest.cls"
@@ -329,14 +329,14 @@ public inherited sharing class AccountSampleTriggerHandler extends TriggerHandle
 						proves each of these behaviors with real DML, with 1 test for each behavior. It also shows how a test bypasses a handler to set up data.
 						The test class suppresses <code>FlagSystemMode</code> for its own setup and checks.
 					</p>
-					<h2>Try It in a Scratch Org</h2>
+					<h2 id="try-it-in-a-scratch-org">Try It in a Scratch Org</h2>
 					<p>Deploy the framework and the sample together, and run the sample test:</p>
 					<pre><code class="language-bash">sf project deploy start --source-dir force-app --source-dir sample-handler --target-org &lt;alias&gt;
 sf apex run test --class-names AccountSampleTriggerHandlerTest --target-org &lt;alias&gt; --wait 10
 </code></pre>
-					<h2>More Information</h2>
+					<h2 id="more-information">More Information</h2>
 					<p>The <a href="index.html#usage">Usage section of the framework README</a> tells how to write a handler and a trigger.</p>
-					<h2>Credits</h2>
+					<h2 id="credits">Credits</h2>
 					<p>
 						This sample is part of <a href="https://github.com/dschach/salesforce-trigger-framework">salesforce-trigger-framework</a>, which is based
 						on <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a> by Kevin O&#39;Hara.

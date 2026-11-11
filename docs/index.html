@@ -123,7 +123,7 @@
 						/></a>
 						<a href="https://x.com/dschach"><img src="https://img.shields.io/twitter/follow/dschach.svg?style=social" alt="Twitter" /></a>
 					</p>
-					<h1>Salesforce Trigger Framework</h1>
+					<h1 id="salesforce-trigger-framework">Salesforce Trigger Framework</h1>
 					<!-- START doctoc -->
 					<ul>
 						<li><a href="#credit">Credit</a></li>
@@ -174,16 +174,16 @@
 						<li><a href="#license">License</a></li>
 					</ul>
 					<!-- END doctoc -->
-					<h2>Credit</h2>
+					<h2 id="credit">Credit</h2>
 					<p>
 						This framework is based on <a href="https://github.com/kevinohara80/sfdc-trigger-framework">sfdc-trigger-framework</a> by Kevin
 						O&#39;Hara. Its MIT license notice is in <a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/NOTICE">NOTICE</a>.
 					</p>
-					<h2>Documentation</h2>
+					<h2 id="documentation">Documentation</h2>
 					<p><a href="https://davidschach.com/salesforce-trigger-framework/TriggerHandler.html">Class Documentation</a></p>
-					<h3>Changelog</h3>
+					<h3 id="changelog">Changelog</h3>
 					<p><a href="changelog.html">Complete Changelog</a></p>
-					<h2>Overview</h2>
+					<h2 id="overview">Overview</h2>
 					<p>(adapted from Kevin O&#39;Hara)</p>
 					<p>
 						A trigger should have no logic. Logic in a trigger is difficult to test and to maintain. The best practice is to put the trigger logic in
@@ -205,7 +205,7 @@
 							><img src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png" alt="Deploy"
 						/></a>
 					</p>
-					<h2>What Is New in Version 2.0</h2>
+					<h2 id="what-is-new-in-version-20">What Is New in Version 2.0</h2>
 					<ul>
 						<li>
 							<strong>13 breaking changes.</strong> <a href="#upgrade-from-version-1">Upgrade From Version 1</a> tells what to change in your
@@ -231,8 +231,8 @@
 							<a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/SECURITY.md">security policy</a>.
 						</li>
 					</ul>
-					<h2>Usage</h2>
-					<h3>Trigger Handler</h3>
+					<h2 id="usage">Usage</h2>
+					<h3 id="trigger-handler">Trigger Handler</h3>
 					<p>
 						To create a trigger handler, create a class that extends
 						<a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/force-app/main/default/classes/TriggerHandler.cls"
@@ -300,7 +300,7 @@
 						<code>sf project deploy start --source-dir force-app --source-dir sample-handler</code>. The
 						<a href="sampletriggerhandlerhome.html">sample README</a> tells what the sample shows.
 					</p>
-					<h3>Pass the Handler Class to super()</h3>
+					<h3 id="pass-the-handler-class-to-super">Pass the Handler Class to super()</h3>
 					<p>
 						The value to pass is the name of your handler class, followed by <code>.class</code>. In Apex, <code>ClassName.class</code> is the
 						<code>Type</code> of that class. The framework uses <code>Type.getName()</code> as the handler name, so a bypass by type always matches
@@ -361,7 +361,7 @@
 						To see the name that the framework uses, call <code>getHandlerName()</code> in the handler, or
 						<code>OpportunityTriggerHandler.class.getName()</code> from any code.
 					</p>
-					<h3>Trigger</h3>
+					<h3 id="trigger">Trigger</h3>
 					<p>To use the handler, create an instance in the trigger and call <code>run()</code>. This trigger runs the handler above.</p>
 					<p>
 						List all 7 contexts, also the contexts that the handler does not override yet. Then you write the trigger once and do not change it again:
@@ -373,7 +373,7 @@
   new OpportunityTriggerHandler().run();
 }
 </code></pre>
-					<h3>Data Access</h3>
+					<h3 id="data-access">Data Access</h3>
 					<p>
 						A trigger runs without sharing, so a handler declared <code>inherited sharing</code> runs without sharing too. A handler often must read
 						or change records that the running user cannot see or edit, for example related records. So the examples here name
@@ -385,8 +385,8 @@
 						If a handler must obey the object, field, and record permissions of the running user, use <code>WITH USER_MODE</code> and
 						<code>AccessLevel.USER_MODE</code> instead.
 					</p>
-					<h2>Features</h2>
-					<h3>How run() Works</h3>
+					<h2 id="features">Features</h2>
+					<h3 id="how-run-works">How run() Works</h3>
 					<p>
 						The trigger calls <code>run()</code>, and <code>run()</code> takes these steps in order. A bypass and the loop limit each end the run
 						before the context method, so nothing in the handler runs:
@@ -1502,7 +1502,7 @@
 							</linearGradient>
 						</svg>
 					</div>
-					<h3>Bypass API</h3>
+					<h3 id="bypass-api">Bypass API</h3>
 					<p>A handler can stop other handlers for a time. Bypass the other handler, do the DML, and clear the bypass:</p>
 					<pre><code class="language-apex">public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
   private Map&lt;Id, Opportunity&gt; newRecordsMap;
@@ -1535,7 +1535,7 @@
 						<code>Set&lt;String&gt;</code> of names. A null or blank name, a null type, or a null list or set throws
 						<code>TriggerHandler.TriggerHandlerException</code>.
 					</p>
-					<h3>Check Bypass Status</h3>
+					<h3 id="check-bypass-status">Check Bypass Status</h3>
 					<p>
 						A handler can be bypassed by name, all handlers can be bypassed together, or the running user can hold the bypass permission. 4 methods
 						tell you which:
@@ -1558,7 +1558,7 @@
   /* the Account trigger handler does not run */
 }
 </code></pre>
-					<h3>Global Bypass</h3>
+					<h3 id="global-bypass">Global Bypass</h3>
 					<p>To bypass all handlers, call <code>bypassAll()</code>:</p>
 					<pre><code class="language-apex">TriggerHandler.bypassAll();
 </code></pre>
@@ -1577,7 +1577,7 @@ TriggerHandler.clearAllBypasses();
 						<code>clearAllBypasses()</code> clears the named bypasses and the global bypass. To clear only 1 of them, call
 						<code>clearBypassList()</code> or <code>clearGlobalBypass()</code>.
 					</p>
-					<h3>Bypass Permission</h3>
+					<h3 id="bypass-permission">Bypass Permission</h3>
 					<p>
 						The framework ships 1 custom permission, <code>BypassTriggerHandlers</code>, with the label Bypass Trigger Handlers. A user who has it
 						runs no handler, as if all handlers were bypassed. Use it for work such as a large data load:
@@ -1593,7 +1593,7 @@ TriggerHandler.clearAllBypasses();
 						<code>TriggerHandler.hasBypassPermission()</code>. A user with the permission skips every check that your handlers make, so assign it with
 						caution.
 					</p>
-					<h3>Set Bypass</h3>
+					<h3 id="set-bypass">Set Bypass</h3>
 					<p>
 						To bypass a handler for a time and then give back its earlier bypass state, use <code>setBypass()</code>. You do not have to know the
 						state first:
@@ -1624,7 +1624,7 @@ if (!wasGlobalBypassed) {
 }
 </code></pre>
 					<p>The check of <code>isGlobalBypassed()</code> keeps a global bypass that was on before.</p>
-					<h3>Max Loop Count</h3>
+					<h3 id="max-loop-count">Max Loop Count</h3>
 					<p>To limit recursion, set a maximum loop count for a handler. Each trigger operation has its own count:</p>
 					<ul>
 						<li><code>setMaxLoopCount(max)</code> sets the same limit for each operation.</li>
@@ -1669,7 +1669,7 @@ if (!wasGlobalBypassed) {
   new OpportunityTriggerHandler().setMaxLoopCount(5).run();
 }
 </code></pre>
-					<h3>Debug Statements</h3>
+					<h3 id="debug-statements">Debug Statements</h3>
 					<p>The framework can write 2 kinds of lines:</p>
 					<ul>
 						<li>The limits line shows the Apex query and DML limits after a handler runs.</li>
@@ -1723,7 +1723,7 @@ TriggerHandler.showDebug(false);
 new OpportunityTriggerHandler().showHandlerDebug().run(); /* writes no entry or exit line */
 TriggerHandler.showAllDebug();
 </code></pre>
-					<h3>Send the Messages to Your Logging Framework</h3>
+					<h3 id="send-the-messages-to-your-logging-framework">Send the Messages to Your Logging Framework</h3>
 					<p>
 						The framework writes all its messages through 1 protected method, <code>log(LoggingLevel level, String message)</code>. The messages are
 						the entry, exit, and limits lines, and the loop limit warning. By default, <code>log()</code> writes to the debug log. To send the
@@ -1736,7 +1736,7 @@ TriggerHandler.showAllDebug();
   }
 }
 </code></pre>
-					<h4>Example: Nebula Logger</h4>
+					<h4 id="example-nebula-logger">Example: Nebula Logger</h4>
 					<p>
 						With <a href="https://github.com/jongpie/NebulaLogger">Nebula Logger</a> installed, this handler sends each framework message to Nebula
 						Logger. A tag shows where the message came from:
@@ -1757,7 +1757,7 @@ TriggerHandler.showAllDebug();
 						once. Each <code>Logger.saveLog()</code> call publishes a platform event, so do not save each <code>DEBUG</code> entry at once. With the
 						managed package of Nebula Logger, write <code>Nebula.Logger</code> instead of <code>Logger</code>.
 					</p>
-					<h3>Universal Action</h3>
+					<h3 id="universal-action">Universal Action</h3>
 					<p>
 						<code>andFinally()</code> holds the actions that must run in all trigger contexts, after all other actions. Credit to James Simone for
 						this idea. In his words, it &quot;runs after every context - can be used to easily implement something like apex-rollup!&quot; (<a
@@ -2522,7 +2522,7 @@ TriggerHandler.showAllDebug();
 						</svg>
 					</div>
 					<p>If <code>andFinally()</code> throws, the exception reaches the caller, and the handler does not write the exit and limits lines.</p>
-					<h2>Test a Handler Without DML</h2>
+					<h2 id="test-a-handler-without-dml">Test a Handler Without DML</h2>
 					<p>
 						A test can run a handler without an insert. <code>setTestContext(System.TriggerOperation operation)</code> makes the handler run as if a
 						trigger fired the operation. It returns the handler, so that <code>run()</code> can follow. Give the handler its records first, for
@@ -2560,7 +2560,7 @@ private inherited sharing class OpportunityTriggerHandlerTest {
 						Outside a test, <code>setTestContext()</code> changes nothing: the handler keeps the context of the real trigger. A test that needs the
 						full trigger, the sharing, or the database must still insert records.
 					</p>
-					<h2>Overridable Methods</h2>
+					<h2 id="overridable-methods">Overridable Methods</h2>
 					<p>A handler can override these methods. All trigger contexts are supported.</p>
 					<ul>
 						<li><code>beforeInsert()</code></li>
@@ -2579,10 +2579,10 @@ private inherited sharing class OpportunityTriggerHandlerTest {
 						<li><code>getHandlerName()</code> returns the name of the handler.</li>
 						<li><code>setTestContext(System.TriggerOperation operation)</code> lets a test run the handler without DML.</li>
 					</ul>
-					<h2>Upgrade From Version 1</h2>
+					<h2 id="upgrade-from-version-1">Upgrade From Version 1</h2>
 					<p>Version 2.0 has breaking changes. Before you upgrade, check your handlers, your triggers, and your tests for the items below.</p>
 					<p>The classes now use API version 67.0, not 58.0. The target org must support API version 67.0.</p>
-					<h3>Changes for Handlers and Triggers</h3>
+					<h3 id="changes-for-handlers-and-triggers">Changes for Handlers and Triggers</h3>
 					<ul>
 						<li>
 							<p><strong>The String constructor is removed.</strong> Replace the name in quotes with the class:</p>
@@ -2641,7 +2641,7 @@ super(OpportunityTriggerHandler.class);
 							</p>
 						</li>
 					</ul>
-					<h3>Changes for Tests</h3>
+					<h3 id="changes-for-tests">Changes for Tests</h3>
 					<ul>
 						<li>
 							These test-visible members are removed or renamed. A test that used them does not compile:
@@ -2663,7 +2663,7 @@ super(OpportunityTriggerHandler.class);
 							<code>run()</code>, or call the public override of the handler.
 						</li>
 					</ul>
-					<h3>Deprecated Members</h3>
+					<h3 id="deprecated-members">Deprecated Members</h3>
 					<p>These members still work. A later major release removes them.</p>
 					<table>
 						<thead>
@@ -2691,7 +2691,7 @@ super(OpportunityTriggerHandler.class);
 							</tr>
 						</tbody>
 					</table>
-					<h2>API Reference</h2>
+					<h2 id="api-reference">API Reference</h2>
 					<p>
 						This table lists all public members of <code>TriggerHandler</code>. The
 						<a href="https://davidschach.com/salesforce-trigger-framework/TriggerHandler.html">class documentation</a> has the full details and
@@ -2911,13 +2911,13 @@ super(OpportunityTriggerHandler.class);
 							</tr>
 						</tbody>
 					</table>
-					<h2>Contributing</h2>
+					<h2 id="contributing">Contributing</h2>
 					<p>
 						<a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/CONTRIBUTING.md">CONTRIBUTING.md</a> tells how to set up the
 						project, test a change, and open a pull request. Each contributor follows the
 						<a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/CODE_OF_CONDUCT.md">Code of Conduct</a>.
 					</p>
-					<h2>License</h2>
+					<h2 id="license">License</h2>
 					<p>
 						The framework uses the BSD 3-Clause license in
 						<a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/LICENSE">LICENSE</a>.
