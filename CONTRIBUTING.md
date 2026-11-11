@@ -134,4 +134,6 @@ While `sfdx-project.json` names no package, the workflow does not log in to the 
 
 The `package-ids` check runs only on the release pull request. It fails while the ids do not belong to the code, for example when the release pull request was not released with the workflow, or when another merge changed `force-app/` after the beta. Release Please also rewrites the release branch after each merge to `main`, and that removes the commit with the ids. In each case, run the Release workflow again.
 
+If the workflow stops after it pushed the ids, run it again. It finds ids on the branch that still belong to the code, so it builds no new beta and goes on to the checks and the merge.
+
 A beta from `main` between releases needs a higher version number than the last release, because Salesforce refuses a new beta of a version number that has a promoted version. Give the number with `--version-number`, for example `sf package version create --package "<package name>" --version-number 2.2.1.NEXT`.

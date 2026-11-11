@@ -9,7 +9,9 @@
 // 2. Check out its head commit.
 // 3. When sfdx-project.json names a package: create the beta with
 //    scripts/package-version.mjs, format the changed files, check the ids, commit them,
-//    and push the commit to the release branch.
+//    and push the commit to the release branch. When the branch already has ids that
+//    belong to its code, for example after a run that stopped after its push, it skips
+//    this step.
 // 4. Wait until the required checks pass on the head commit of the pull request.
 // 5. Squash-merge the pull request, but only while its head is still that commit. If
 //    another merge to main made Release Please rewrite the branch, the merge stops.
@@ -66,6 +68,16 @@ function show(command, commandArgs) {
 	execFileSync(command, commandArgs, { stdio: 'inherit' });
 }
 
+// Runs a command quietly and tells whether it passed.
+function succeeds(command, commandArgs) {
+	try {
+		execFileSync(command, commandArgs, { stdio: 'ignore' });
+		return true;
+	} catch {
+		return false;
+	}
+}
+
 function sleep(seconds) {
 	Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, seconds * 1000);
 }
@@ -119,6 +131,10 @@ let headSha = pull.headRefOid;
 const hasPackage = run('node', ['scripts/package-version.mjs', 'has-package']) === 'true';
 if (!hasPackage) {
 	console.log('sfdx-project.json names no package, so the release has no package version.');
+} else if (!useCurrentCheckout && succeeds('node', ['scripts/package-version.mjs', 'check'])) {
+	// A run that stopped after its push left valid ids on the branch. They still belong to
+	// the code, so this run uses them and builds no extra beta.
+	console.log('The release branch already has the ids of a beta that belongs to its code, so no new beta is built.');
 } else {
 	const createArgs = ['scripts/package-version.mjs', 'create'];
 	if (devHub) {
@@ -154,6 +170,14 @@ console.log(`Waiting for ${REQUIRED_CHECKS.join(', ')} on ${headSha}.`);
 const deadline = Date.now() + CHECK_WAIT_MINUTES * 60 * 1000;
 for (;;) {
 	const state = JSON.parse(run('gh', ['pr', 'view', String(pull.number), '--repo', repo, '--json', 'headRefOid,statusCheckRollup']));
+	// For some seconds after the push, GitHub can still report the old head. Wait for it.
+	if (state.headRefOid !== headSha && state.headRefOid === pull.headRefOid) {
+		if (Date.now() > deadline) {
+			fail(`GitHub did not show the pushed commit ${headSha} in ${CHECK_WAIT_MINUTES} minutes. Pull request #${pull.number} stays open.`);
+		}
+		sleep(POLL_SECONDS);
+		continue;
+	}
 	if (state.headRefOid !== headSha) {
 		fail(`The release branch changed to ${state.headRefOid} before the merge. Run the Release workflow again.`);
 	}
