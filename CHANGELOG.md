@@ -1,5 +1,43 @@
 # Changelog
 
+## [2.1.0](https://github.com/dschach/salesforce-trigger-framework/compare/v2.0.0...v2.1.0) (2026-11-11)
+
+
+### Features
+
+* **handler:** Add hideAllDebug to hide the debug lines of all handlers ([#392](https://github.com/dschach/salesforce-trigger-framework/issues/392)) ([1334dc5](https://github.com/dschach/salesforce-trigger-framework/commit/1334dc57295cf5605f1cf05a12bfa5d3d2a805e2))
+* **handler:** Bypass all handlers for a user with a custom permission ([#394](https://github.com/dschach/salesforce-trigger-framework/issues/394)) ([2df4eaf](https://github.com/dschach/salesforce-trigger-framework/commit/2df4eaf9e13c4eef626178004e6743a6b465bf5e))
+* **handler:** Bypass and clear a set of handler names ([1334dc5](https://github.com/dschach/salesforce-trigger-framework/commit/1334dc57295cf5605f1cf05a12bfa5d3d2a805e2))
+* **handler:** End hideAllDebug with showAllDebug ([1334dc5](https://github.com/dschach/salesforce-trigger-framework/commit/1334dc57295cf5605f1cf05a12bfa5d3d2a805e2))
+* **handler:** Read the loop count of 1 trigger operation by type ([1334dc5](https://github.com/dschach/salesforce-trigger-framework/commit/1334dc57295cf5605f1cf05a12bfa5d3d2a805e2))
+* **handler:** Return the handler from clearMaxLoopCount ([1334dc5](https://github.com/dschach/salesforce-trigger-framework/commit/1334dc57295cf5605f1cf05a12bfa5d3d2a805e2))
+
+
+### Bug Fixes
+
+* **apexdox:** Add ids to the headings of the site pages ([e51cf9e](https://github.com/dschach/salesforce-trigger-framework/commit/e51cf9e07b26a67985558822a1915bf4c3d4b6f0))
+* **apexdox:** Link each source file from the repository root ([e51cf9e](https://github.com/dschach/salesforce-trigger-framework/commit/e51cf9e07b26a67985558822a1915bf4c3d4b6f0))
+* **site:** Add heading ids to the deployed changelog page ([e51cf9e](https://github.com/dschach/salesforce-trigger-framework/commit/e51cf9e07b26a67985558822a1915bf4c3d4b6f0))
+* **site:** Keep the headings below the sticky panel ([e51cf9e](https://github.com/dschach/salesforce-trigger-framework/commit/e51cf9e07b26a67985558822a1915bf4c3d4b6f0))
+
+
+### Documentation
+
+* **readme:** Add diagrams of the run() flow ([#395](https://github.com/dschach/salesforce-trigger-framework/issues/395)) ([41318c5](https://github.com/dschach/salesforce-trigger-framework/commit/41318c529bf91a5feee6f3b041bcfdcc478df75c))
+* **readme:** Add what is new in version 2.0 ([2f3ceae](https://github.com/dschach/salesforce-trigger-framework/commit/2f3ceaea6de515d159d65749cfaac7d70cb0dbb8))
+* **site:** Refresh the documentation site ([#397](https://github.com/dschach/salesforce-trigger-framework/issues/397)) ([e51cf9e](https://github.com/dschach/salesforce-trigger-framework/commit/e51cf9e07b26a67985558822a1915bf4c3d4b6f0))
+
+
+### Build System
+
+* **marked:** Update devDependency marked from 18.1.2 to 18.2.0 ([#391](https://github.com/dschach/salesforce-trigger-framework/issues/391)) ([33f4b0a](https://github.com/dschach/salesforce-trigger-framework/commit/33f4b0a570923e8f74d9dbfe354294813cdaa289))
+
+
+### Continuous Integration
+
+* **release:** Run Release Please only after the checks pass on main ([#393](https://github.com/dschach/salesforce-trigger-framework/issues/393)) ([3bd3b17](https://github.com/dschach/salesforce-trigger-framework/commit/3bd3b1709065361f302c24bc145cb46f2ac2907e))
+* **site:** Deploy the documentation site from each release tag ([#396](https://github.com/dschach/salesforce-trigger-framework/issues/396)) ([cf4dfef](https://github.com/dschach/salesforce-trigger-framework/commit/cf4dfef8128ccd973229eddd4c59e5a2905e7470))
+
 ## [2.0.0](https://github.com/dschach/salesforce-trigger-framework/compare/v1.5.1...v2.0.0) (2026-10-30)
 
 
