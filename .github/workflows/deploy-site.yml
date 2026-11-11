@@ -4,7 +4,8 @@
 # The Run workflow button deploys a tag that you name, or the latest release.
 # ApexDox has no command line, so docs/ is generated in Visual Studio Code and committed
 # before the release. This workflow only rebuilds the changelog page from the tag's
-# CHANGELOG.md, which gets the release entry only when the release pull request merges.
+# CHANGELOG.md, which gets the release entry only when the release pull request merges,
+# and adds the heading ids that marked does not write.
 # Pages must use GitHub Actions as its source: Settings, Pages, Build and deployment.
 name: Deploy site
 on:
@@ -57,6 +58,10 @@ jobs:
 
       - name: "Rebuild the changelog page from the tag's CHANGELOG.md"
         run: node scripts/rebuild-changelog-page.mjs docs/changelog.html CHANGELOG.md
+
+      # marked writes no heading ids, so the links to the release headings need them.
+      - name: "Add ids to the headings of the changelog page"
+        run: node scripts/add-heading-ids.mjs docs/changelog.html
 
       - name: "Upload the site"
         uses: actions/upload-pages-artifact@v5
