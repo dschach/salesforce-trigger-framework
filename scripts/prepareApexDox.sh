@@ -26,6 +26,8 @@ curl -fsSL "https://cdn.jsdelivr.net/npm/highlightjs-apex/dist/apex.min.js" >> "
 printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/homePage.html"
 echo >> "doc-assets/homePage.html"
 npx marked -i README.md --gfm >> "doc-assets/homePage.html"
+# marked 18 writes no heading ids, so the table of contents links need them (see scripts/add-heading-ids.mjs).
+node scripts/add-heading-ids.mjs "doc-assets/homePage.html"
 replace_in_file 's|DEPLOY.md|deploy.html|g' "doc-assets/homePage.html"
 replace_in_file 's|sample-handler/README.md|sampletriggerhandlerhome.html|g' "doc-assets/homePage.html"
 # The site shows the Mermaid diagrams of the README as SVG, because marked shows them as code.
@@ -35,12 +37,14 @@ node scripts/render-mermaid.mjs "doc-assets/homePage.html"
 printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/files/changelog.html"
 echo >> "doc-assets/files/changelog.html"
 npx marked -i CHANGELOG.md --gfm >> "doc-assets/files/changelog.html"
+node scripts/add-heading-ids.mjs "doc-assets/files/changelog.html"
 replace_in_file 's|CHANGELOG.md|changelog.html|g' "doc-assets/homePage.html"
 
 # Deploy instructions to docs page
 printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/files/deploy.html"
 echo >> "doc-assets/files/deploy.html"
 npx marked -i DEPLOY.md --gfm >> "doc-assets/files/deploy.html"
+node scripts/add-heading-ids.mjs "doc-assets/files/deploy.html"
 replace_in_file 's|href="./|target="_blank" href="https://github.com/dschach/salesforce-trigger-framework/tree/main/|g' "doc-assets/files/deploy.html"
 
 # Sample handler README to the page of the sample group, which the @group-content tag of
@@ -50,4 +54,5 @@ node scripts/sync-sample-code.mjs
 printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/files/sampletriggerhandlerhome.html"
 echo >> "doc-assets/files/sampletriggerhandlerhome.html"
 npx marked -i sample-handler/README.md --gfm >> "doc-assets/files/sampletriggerhandlerhome.html"
+node scripts/add-heading-ids.mjs "doc-assets/files/sampletriggerhandlerhome.html"
 replace_in_file 's|\.\./README\.md|index.html|g' "doc-assets/files/sampletriggerhandlerhome.html"
