@@ -32,9 +32,11 @@
 	<li>
 		<a href="#features">Features</a>
 		<ul>
+			<li><a href="#how-run-works">How run() Works</a></li>
 			<li><a href="#bypass-api">Bypass API</a></li>
 			<li><a href="#check-bypass-status">Check Bypass Status</a></li>
 			<li><a href="#global-bypass">Global Bypass</a></li>
+			<li><a href="#bypass-permission">Bypass Permission</a></li>
 			<li><a href="#set-bypass">Set Bypass</a></li>
 			<li><a href="#max-loop-count">Max Loop Count</a></li>
 			<li><a href="#debug-statements">Debug Statements</a></li>
@@ -260,6 +262,988 @@
 	<code>AccessLevel.USER_MODE</code> instead.
 </p>
 <h2>Features</h2>
+<h3>How run() Works</h3>
+<p>
+	The trigger calls <code>run()</code>, and <code>run()</code> takes these steps in order. A bypass and the loop limit each end the run before the
+	context method, so nothing in the handler runs:
+</p>
+<div class="mermaid-diagram">
+	<svg
+		class="flowchart"
+		id="mermaid-diagram-1"
+		role="graphics-document document"
+		aria-roledescription="flowchart-v2"
+		width="100%"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink"
+		style="max-width: 984.645px; background-color: transparent"
+		viewBox="0 0 984.64453125 2244.7578125">
+		<style>
+			#mermaid-diagram-1 {
+				font-family: arial, sans-serif;
+				font-size: 16px;
+				fill: #000000;
+			}
+			@keyframes edge-animation-frame {
+				from {
+					stroke-dashoffset: 0;
+				}
+			}
+			@keyframes dash {
+				to {
+					stroke-dashoffset: 0;
+				}
+			}
+			#mermaid-diagram-1 .edge-animation-slow {
+				stroke-dasharray: 9, 5 !important;
+				stroke-dashoffset: 900;
+				animation: dash 50s linear infinite;
+				stroke-linecap: round;
+			}
+			#mermaid-diagram-1 .edge-animation-fast {
+				stroke-dasharray: 9, 5 !important;
+				stroke-dashoffset: 900;
+				animation: dash 20s linear infinite;
+				stroke-linecap: round;
+			}
+			#mermaid-diagram-1 .error-icon {
+				fill: #552222;
+			}
+			#mermaid-diagram-1 .error-text {
+				fill: #552222;
+				stroke: #552222;
+			}
+			#mermaid-diagram-1 .edge-thickness-normal {
+				stroke-width: 1px;
+			}
+			#mermaid-diagram-1 .edge-thickness-thick {
+				stroke-width: 3.5px;
+			}
+			#mermaid-diagram-1 .edge-pattern-solid {
+				stroke-dasharray: 0;
+			}
+			#mermaid-diagram-1 .edge-thickness-invisible {
+				stroke-width: 0;
+				fill: none;
+			}
+			#mermaid-diagram-1 .edge-pattern-dashed {
+				stroke-dasharray: 3;
+			}
+			#mermaid-diagram-1 .edge-pattern-dotted {
+				stroke-dasharray: 2;
+			}
+			#mermaid-diagram-1 .marker {
+				fill: #666;
+				stroke: #666;
+			}
+			#mermaid-diagram-1 .marker.cross {
+				stroke: #666;
+			}
+			#mermaid-diagram-1 svg {
+				font-family: arial, sans-serif;
+				font-size: 16px;
+			}
+			#mermaid-diagram-1 p {
+				margin: 0;
+			}
+			#mermaid-diagram-1 .label {
+				font-family: arial, sans-serif;
+				color: #000000;
+			}
+			#mermaid-diagram-1 .cluster-label text {
+				fill: #333;
+			}
+			#mermaid-diagram-1 .cluster-label span {
+				color: #333;
+			}
+			#mermaid-diagram-1 .cluster-label span p {
+				background-color: transparent;
+			}
+			#mermaid-diagram-1 .label text,
+			#mermaid-diagram-1 span {
+				fill: #000000;
+				color: #000000;
+			}
+			#mermaid-diagram-1 .node rect,
+			#mermaid-diagram-1 .node circle,
+			#mermaid-diagram-1 .node ellipse,
+			#mermaid-diagram-1 .node polygon,
+			#mermaid-diagram-1 .node path {
+				fill: #eee;
+				stroke: #999;
+				stroke-width: 1px;
+			}
+			#mermaid-diagram-1 .rough-node .label text,
+			#mermaid-diagram-1 .node .label text,
+			#mermaid-diagram-1 .image-shape .label,
+			#mermaid-diagram-1 .icon-shape .label {
+				text-anchor: middle;
+			}
+			#mermaid-diagram-1 .node .katex path {
+				fill: #000;
+				stroke: #000;
+				stroke-width: 1px;
+			}
+			#mermaid-diagram-1 .rough-node .label,
+			#mermaid-diagram-1 .node .label,
+			#mermaid-diagram-1 .image-shape .label,
+			#mermaid-diagram-1 .icon-shape .label {
+				text-align: center;
+			}
+			#mermaid-diagram-1 .node.clickable {
+				cursor: pointer;
+			}
+			#mermaid-diagram-1 .root .anchor path {
+				fill: #666 !important;
+				stroke-width: 0;
+				stroke: #666;
+			}
+			#mermaid-diagram-1 .arrowheadPath {
+				fill: #333333;
+			}
+			#mermaid-diagram-1 .edgePaths .path {
+				stroke: #666;
+				stroke-width: 1px;
+			}
+			#mermaid-diagram-1 .flowchart-link {
+				stroke: #666;
+				fill: none;
+			}
+			#mermaid-diagram-1 .edgeLabel {
+				background-color: white;
+				text-align: center;
+			}
+			#mermaid-diagram-1 .edgeLabel p {
+				background-color: white;
+			}
+			#mermaid-diagram-1 .edgeLabel rect {
+				opacity: 0.5;
+				background-color: white;
+				fill: white;
+			}
+			#mermaid-diagram-1 .labelBkg {
+				background-color: rgba(255, 255, 255, 0.5);
+			}
+			#mermaid-diagram-1 .cluster rect {
+				fill: hsl(0, 0%, 98.9215686275%);
+				stroke: #707070;
+				stroke-width: 1px;
+			}
+			#mermaid-diagram-1 .cluster text {
+				fill: #333;
+			}
+			#mermaid-diagram-1 .cluster span {
+				color: #333;
+			}
+			#mermaid-diagram-1 .node .collapsed-indicator {
+				fill: #707070;
+				stroke: none;
+				opacity: 0.6;
+			}
+			#mermaid-diagram-1 .node .collapsed-separator {
+				stroke: #707070;
+				stroke-width: 0.75px;
+			}
+			#mermaid-diagram-1 div.mermaidTooltip {
+				position: absolute;
+				text-align: center;
+				max-width: 200px;
+				padding: 2px;
+				font-family: arial, sans-serif;
+				font-size: 12px;
+				background: hsl(-160, 0%, 93.3333333333%);
+				border: 1px solid #707070;
+				border-radius: 2px;
+				pointer-events: none;
+				z-index: 100;
+			}
+			#mermaid-diagram-1 .flowchartTitleText {
+				text-anchor: middle;
+				font-size: 18px;
+				fill: #000000;
+			}
+			#mermaid-diagram-1 rect.text {
+				fill: none;
+				stroke-width: 0;
+			}
+			#mermaid-diagram-1 .icon-shape,
+			#mermaid-diagram-1 .image-shape {
+				background-color: white;
+				text-align: center;
+			}
+			#mermaid-diagram-1 .icon-shape p,
+			#mermaid-diagram-1 .image-shape p {
+				background-color: white;
+				padding: 2px;
+			}
+			#mermaid-diagram-1 .icon-shape .label rect,
+			#mermaid-diagram-1 .image-shape .label rect {
+				opacity: 0.5;
+				background-color: white;
+				fill: white;
+			}
+			#mermaid-diagram-1 .label-icon {
+				display: inline-block;
+				height: 1em;
+				overflow: visible;
+				vertical-align: -0.125em;
+			}
+			#mermaid-diagram-1 .node .label-icon path {
+				fill: currentColor;
+				stroke: revert;
+				stroke-width: revert;
+			}
+			#mermaid-diagram-1 .node .neo-node {
+				stroke: #999;
+			}
+			#mermaid-diagram-1 [data-look="neo"].node rect,
+			#mermaid-diagram-1 [data-look="neo"].cluster rect,
+			#mermaid-diagram-1 [data-look="neo"].node polygon {
+				stroke: url(#mermaid-diagram-1-gradient);
+				filter: drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));
+			}
+			#mermaid-diagram-1 [data-look="neo"].swimlane.cluster rect {
+				filter: none;
+			}
+			#mermaid-diagram-1 [data-look="neo"].node path {
+				stroke: url(#mermaid-diagram-1-gradient);
+				stroke-width: 1px;
+			}
+			#mermaid-diagram-1 [data-look="neo"].node .outer-path {
+				filter: drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));
+			}
+			#mermaid-diagram-1 [data-look="neo"].node .neo-line path {
+				stroke: #999;
+				filter: none;
+			}
+			#mermaid-diagram-1 [data-look="neo"].node circle {
+				stroke: url(#mermaid-diagram-1-gradient);
+				filter: drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));
+			}
+			#mermaid-diagram-1 [data-look="neo"].node circle .state-start {
+				fill: #000000;
+			}
+			#mermaid-diagram-1 [data-look="neo"].icon-shape .icon {
+				fill: url(#mermaid-diagram-1-gradient);
+				filter: drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));
+			}
+			#mermaid-diagram-1 [data-look="neo"].icon-shape .icon-neo path {
+				stroke: url(#mermaid-diagram-1-gradient);
+				filter: drop-shadow(1px 2px 2px rgba(185, 185, 185, 1));
+			}
+			#mermaid-diagram-1 :root {
+				--mermaid-font-family: arial, sans-serif;
+			}
+		</style>
+		<g>
+			<marker
+				class="marker flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-pointEnd"
+				viewBox="0 0 10 10"
+				refX="5"
+				refY="5"
+				markerUnits="userSpaceOnUse"
+				markerWidth="8"
+				markerHeight="8"
+				orient="auto">
+				<path class="arrowMarkerPath" d="M 0 0 L 10 5 L 0 10 z" style="stroke-width: 1; stroke-dasharray: 1, 0" />
+			</marker>
+			<marker
+				class="marker flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-pointStart"
+				viewBox="0 0 10 10"
+				refX="4.5"
+				refY="5"
+				markerUnits="userSpaceOnUse"
+				markerWidth="8"
+				markerHeight="8"
+				orient="auto">
+				<path class="arrowMarkerPath" d="M 0 5 L 10 10 L 10 0 z" style="stroke-width: 1; stroke-dasharray: 1, 0" />
+			</marker>
+			<marker
+				class="marker flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-pointEnd-margin"
+				viewBox="0 0 11.5 14"
+				refX="11.5"
+				refY="7"
+				markerUnits="userSpaceOnUse"
+				markerWidth="10.5"
+				markerHeight="14"
+				orient="auto">
+				<path class="arrowMarkerPath" d="M 0 0 L 11.5 7 L 0 14 z" style="stroke-width: 0; stroke-dasharray: 1, 0" />
+			</marker>
+			<marker
+				class="marker flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-pointStart-margin"
+				viewBox="0 0 11.5 14"
+				refX="1"
+				refY="7"
+				markerUnits="userSpaceOnUse"
+				markerWidth="11.5"
+				markerHeight="14"
+				orient="auto">
+				<polygon class="arrowMarkerPath" points="0,7 11.5,14 11.5,0" style="stroke-width: 0; stroke-dasharray: 1, 0" />
+			</marker>
+			<marker
+				class="marker flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-circleEnd"
+				viewBox="0 0 10 10"
+				refX="11"
+				refY="5"
+				markerUnits="userSpaceOnUse"
+				markerWidth="11"
+				markerHeight="11"
+				orient="auto">
+				<circle class="arrowMarkerPath" cx="5" cy="5" r="5" style="stroke-width: 1; stroke-dasharray: 1, 0" />
+			</marker>
+			<marker
+				class="marker flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-circleStart"
+				viewBox="0 0 10 10"
+				refX="-1"
+				refY="5"
+				markerUnits="userSpaceOnUse"
+				markerWidth="11"
+				markerHeight="11"
+				orient="auto">
+				<circle class="arrowMarkerPath" cx="5" cy="5" r="5" style="stroke-width: 1; stroke-dasharray: 1, 0" />
+			</marker>
+			<marker
+				class="marker flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-circleEnd-margin"
+				viewBox="0 0 10 10"
+				refY="5"
+				refX="12.25"
+				markerUnits="userSpaceOnUse"
+				markerWidth="14"
+				markerHeight="14"
+				orient="auto">
+				<circle class="arrowMarkerPath" cx="5" cy="5" r="5" style="stroke-width: 0; stroke-dasharray: 1, 0" />
+			</marker>
+			<marker
+				class="marker flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-circleStart-margin"
+				viewBox="0 0 10 10"
+				refX="-2"
+				refY="5"
+				markerUnits="userSpaceOnUse"
+				markerWidth="14"
+				markerHeight="14"
+				orient="auto">
+				<circle class="arrowMarkerPath" cx="5" cy="5" r="5" style="stroke-width: 0; stroke-dasharray: 1, 0" />
+			</marker>
+			<marker
+				class="marker cross flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-crossEnd"
+				viewBox="0 0 11 11"
+				refX="12"
+				refY="5.2"
+				markerUnits="userSpaceOnUse"
+				markerWidth="11"
+				markerHeight="11"
+				orient="auto">
+				<path class="arrowMarkerPath" d="M 1,1 l 9,9 M 10,1 l -9,9" style="stroke-width: 2; stroke-dasharray: 1, 0" />
+			</marker>
+			<marker
+				class="marker cross flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-crossStart"
+				viewBox="0 0 11 11"
+				refX="-1"
+				refY="5.2"
+				markerUnits="userSpaceOnUse"
+				markerWidth="11"
+				markerHeight="11"
+				orient="auto">
+				<path class="arrowMarkerPath" d="M 1,1 l 9,9 M 10,1 l -9,9" style="stroke-width: 2; stroke-dasharray: 1, 0" />
+			</marker>
+			<marker
+				class="marker cross flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-crossEnd-margin"
+				viewBox="0 0 15 15"
+				refX="17.7"
+				refY="7.5"
+				markerUnits="userSpaceOnUse"
+				markerWidth="12"
+				markerHeight="12"
+				orient="auto">
+				<path class="arrowMarkerPath" d="M 1,1 L 14,14 M 1,14 L 14,1" style="stroke-width: 2.5" />
+			</marker>
+			<marker
+				class="marker cross flowchart-v2"
+				id="mermaid-diagram-1_flowchart-v2-crossStart-margin"
+				viewBox="0 0 15 15"
+				refX="-3.5"
+				refY="7.5"
+				markerUnits="userSpaceOnUse"
+				markerWidth="12"
+				markerHeight="12"
+				orient="auto">
+				<path class="arrowMarkerPath" d="M 1,1 L 14,14 M 1,14 L 14,1" style="stroke-width: 2.5; stroke-dasharray: 1, 0" />
+			</marker>
+			<g class="root">
+				<g class="clusters" />
+				<g class="edgePaths">
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_start_context_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_start_context_0"
+						data-points="W3sieCI6MjgxLCJ5Ijo2Mn0seyJ4IjoyODEsInkiOjg3fSx7IngiOjI4MSwieSI6MTEyfV0="
+						data-look="classic"
+						d="M281,62L281,66.167C281,70.333,281,78.667,281,86.333C281,94,281,101,281,104.5L281,108"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_context_outside_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_context_outside_0"
+						data-points="W3sieCI6MjM5LjE2MDg4MzM3NDM5NTIsInkiOjIwOS41NTE1MDgzNzQzOTUyfSx7IngiOjEyMywieSI6Mjg2Ljg5MDYyNX0seyJ4IjoxMjMsInkiOjQzNC4zOTA2MjV9XQ=="
+						data-look="classic"
+						d="M239.161,209.552L219.801,222.441C200.441,235.331,161.72,261.111,142.36,297.917C123,334.724,123,382.557,123,406.474L123,430.391"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_context_global_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_context_global_0"
+						data-points="W3sieCI6MzIyLjgzOTExNjYyNTYwNDgsInkiOjIwOS41NTE1MDgzNzQzOTUyfSx7IngiOjQzOSwieSI6Mjg2Ljg5MDYyNX0seyJ4Ijo0MzksInkiOjMyMi4zOTA2MjV9XQ=="
+						data-look="classic"
+						d="M322.839,209.552L342.199,222.441C361.559,235.331,400.28,261.111,419.64,279.251C439,297.391,439,307.891,439,313.141L439,318.391"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_global_skipped_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_global_skipped_0"
+						data-points="W3sieCI6MzcxLjM3MzkzMzE1NjAwNzg3LCJ5Ijo1NTYuNzY0NTU4MTU2MDA3OX0seyJ4IjoyODcuNzI2NTYyNSwieSI6NjU5Ljg5MDYyNX0seyJ4IjoyODcuNzI2NTYyNSwieSI6ODM0LjM5MDYyNX0seyJ4IjoyODcuNzI2NTYyNSwieSI6MTAwOC44OTA2MjV9LHsieCI6Mjk4LjkwMTcxNDU1NTM2OTE1LCJ5IjoxMDU2LjM5MDYyNX1d"
+						data-look="classic"
+						d="M371.374,556.765L357.433,573.952C343.491,591.14,315.609,625.515,301.668,671.786C287.727,718.057,287.727,776.224,287.727,834.391C287.727,892.557,287.727,950.724,289.436,987.075C291.146,1023.426,294.566,1037.961,296.276,1045.229L297.986,1052.497"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_global_named_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_global_named_0"
+						data-points="W3sieCI6NDk1LjA1NDAwOTU2MTMxMjIsInkiOjU2OC4zMzY2MTU0Mzg2ODc4fSx7IngiOjU0OS4xMDU0Njg3NSwieSI6NjU5Ljg5MDYyNX0seyJ4Ijo1NDkuMTA1NDY4NzUsInkiOjY5NS4zOTA2MjV9XQ=="
+						data-look="classic"
+						d="M495.054,568.337L504.063,583.596C513.071,598.855,531.088,629.373,540.097,649.882C549.105,670.391,549.105,680.891,549.105,686.141L549.105,691.391"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_named_skipped_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_named_skipped_0"
+						data-points="W3sieCI6NDg4Ljc5NDIxOTM2Nzc4NDYsInkiOjkxMy4wNzkzNzU2MTc3ODQ2fSx7IngiOjQxNS4zNTkzNzUsInkiOjEwMDguODkwNjI1fSx7IngiOjM0NS4xNTc5MDE2MzU5MDYwNiwieSI6MTA1Ni4zOTA2MjV9XQ=="
+						data-look="classic"
+						d="M488.794,913.079L476.555,929.048C464.316,945.016,439.838,976.954,416.45,1000.465C393.063,1023.977,370.767,1039.063,359.619,1046.606L348.471,1054.149"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_named_count_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_named_count_0"
+						data-points="W3sieCI6NTY1LjY4OTg4NjM4MjY3ODgsInkiOjk1Ni44MDYyMDczNjczMjEyfSx7IngiOjU3Mi43NDYwOTM3NSwieSI6MTAwOC44OTA2MjV9LHsieCI6NTcyLjc0NjA5Mzc1LCJ5IjoxMDQ0LjM5MDYyNX1d"
+						data-look="classic"
+						d="M565.69,956.806L566.866,965.487C568.042,974.168,570.394,991.529,571.57,1005.46C572.746,1019.391,572.746,1029.891,572.746,1035.141L572.746,1040.391"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_count_limit_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_count_limit_0"
+						data-points="W3sieCI6NTcyLjc0NjA5Mzc1LCJ5IjoxMTIyLjM5MDYyNX0seyJ4Ijo1NzIuNzQ2MDkzNzUsInkiOjExNDcuMzkwNjI1fSx7IngiOjU3Mi43NDYwOTM3NSwieSI6MTE3Mi4zOTA2MjV9XQ=="
+						data-look="classic"
+						d="M572.746,1122.391L572.746,1126.557C572.746,1130.724,572.746,1139.057,572.746,1146.724C572.746,1154.391,572.746,1161.391,572.746,1164.891L572.746,1168.391"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_limit_warning_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_limit_warning_0"
+						data-points="W3sieCI6NTA5LjA3MzczMzUwMTU1MjgsInkiOjEzODYuNzE4MjY0NzUxNTUyOX0seyJ4Ijo0MjUuMjQ2MDkzNzUsInkiOjE0ODUuODkwNjI1fSx7IngiOjQyNS4yNDYwOTM3NSwieSI6MTUyMS4zOTA2MjV9XQ=="
+						data-look="classic"
+						d="M509.074,1386.718L495.102,1403.247C481.131,1419.776,453.189,1452.833,439.217,1474.612C425.246,1496.391,425.246,1506.891,425.246,1512.141L425.246,1517.391"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_limit_entry_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_limit_entry_0"
+						data-points="W3sieCI6NjM2LjQxODQ1Mzk5ODQ0NzEsInkiOjEzODYuNzE4MjY0NzUxNTUyOX0seyJ4Ijo3MjAuMjQ2MDkzNzUsInkiOjE0ODUuODkwNjI1fSx7IngiOjcyMC4yNDYwOTM3NSwieSI6MTUyMS4zOTA2MjV9XQ=="
+						data-look="classic"
+						d="M636.418,1386.718L650.39,1403.247C664.361,1419.776,692.304,1452.833,706.275,1474.612C720.246,1496.391,720.246,1506.891,720.246,1512.141L720.246,1517.391"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_entry_method_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_entry_method_0"
+						data-points="W3sieCI6NzIwLjI0NjA5Mzc1LCJ5IjoxNTk5LjM5MDYyNX0seyJ4Ijo3MjAuMjQ2MDkzNzUsInkiOjE2MjQuMzkwNjI1fSx7IngiOjcyMC4yNDYwOTM3NSwieSI6MTY0OS4zOTA2MjV9XQ=="
+						data-look="classic"
+						d="M720.246,1599.391L720.246,1603.557C720.246,1607.724,720.246,1616.057,720.246,1623.724C720.246,1631.391,720.246,1638.391,720.246,1641.891L720.246,1645.391"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_method_failed_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_method_failed_0"
+						data-points="W3sieCI6NjU0LjI0MDQ0NDkxODk5NDIsInkiOjE3MjcuMzkwNjI1fSx7IngiOjU5My44NDc2NTYyNSwieSI6MTc2My4wNzQyMTg3NX0seyJ4Ijo1OTMuODQ3NjU2MjUsInkiOjE3OTguNzU3ODEyNX1d"
+						data-look="classic"
+						d="M654.24,1727.391L644.175,1733.338C634.11,1739.285,613.979,1751.18,603.913,1762.408C593.848,1773.635,593.848,1784.197,593.848,1789.477L593.848,1794.758"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_method_finally_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_method_finally_0"
+						data-points="W3sieCI6Nzg2LjI1MTc0MjU4MTAwNTgsInkiOjE3MjcuMzkwNjI1fSx7IngiOjg0Ni42NDQ1MzEyNSwieSI6MTc2My4wNzQyMTg3NX0seyJ4Ijo4NDYuNjQ0NTMxMjUsInkiOjE4MTAuNzU3ODEyNX1d"
+						data-look="classic"
+						d="M786.252,1727.391L796.317,1733.338C806.383,1739.285,826.514,1751.18,836.579,1764.408C846.645,1777.635,846.645,1792.197,846.645,1799.477L846.645,1806.758"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_finally_limits_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_finally_limits_0"
+						data-points="W3sieCI6ODQ2LjY0NDUzMTI1LCJ5IjoxODY0Ljc1NzgxMjV9LHsieCI6ODQ2LjY0NDUzMTI1LCJ5IjoxOTAxLjc1NzgxMjV9LHsieCI6ODQ2LjY0NDUzMTI1LCJ5IjoxOTI2Ljc1NzgxMjV9XQ=="
+						data-look="classic"
+						d="M846.645,1864.758L846.645,1870.924C846.645,1877.091,846.645,1889.424,846.645,1899.091C846.645,1908.758,846.645,1915.758,846.645,1919.258L846.645,1922.758"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_limits_exit_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_limits_exit_0"
+						data-points="W3sieCI6ODQ2LjY0NDUzMTI1LCJ5IjoyMDA0Ljc1NzgxMjV9LHsieCI6ODQ2LjY0NDUzMTI1LCJ5IjoyMDI5Ljc1NzgxMjV9LHsieCI6ODQ2LjY0NDUzMTI1LCJ5IjoyMDU0Ljc1NzgxMjV9XQ=="
+						data-look="classic"
+						d="M846.645,2004.758L846.645,2008.924C846.645,2013.091,846.645,2021.424,846.645,2029.091C846.645,2036.758,846.645,2043.758,846.645,2047.258L846.645,2050.758"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+					<path
+						class="edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link"
+						id="mermaid-diagram-1-L_exit_done_0"
+						data-edge="true"
+						data-et="edge"
+						data-id="L_exit_done_0"
+						data-points="W3sieCI6ODQ2LjY0NDUzMTI1LCJ5IjoyMTMyLjc1NzgxMjV9LHsieCI6ODQ2LjY0NDUzMTI1LCJ5IjoyMTU3Ljc1NzgxMjV9LHsieCI6ODQ2LjY0NDUzMTI1LCJ5IjoyMTgyLjc1NzgxMjV9XQ=="
+						data-look="classic"
+						d="M846.645,2132.758L846.645,2136.924C846.645,2141.091,846.645,2149.424,846.645,2157.091C846.645,2164.758,846.645,2171.758,846.645,2175.258L846.645,2178.758"
+						style=""
+						marker-end="url(#mermaid-diagram-1_flowchart-v2-pointEnd)" />
+				</g>
+				<g class="edgeLabels">
+					<g class="edgeLabel">
+						<g class="label" data-id="L_start_context_0" transform="translate(0, 0)">
+							<text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle" /></text>
+						</g>
+					</g>
+					<g><rect class="background" style="stroke: none" /></g>
+					<g class="edgeLabel" transform="translate(123, 286.890625)">
+						<g class="label" data-id="L_context_outside_0" transform="translate(0, -10.5)">
+							<g>
+								<rect class="background" style="" x="-12.2265625" y="0" width="24.453125" height="21" />
+								<text y="-10.1" text-anchor="middle" style="">
+									<tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle">
+										<tspan class="text-inner-tspan" font-style="normal" font-weight="normal">No</tspan>
+									</tspan>
+								</text>
+							</g>
+						</g>
+					</g>
+					<g class="edgeLabel" transform="translate(439, 286.890625)">
+						<g class="label" data-id="L_context_global_0" transform="translate(0, -10.5)">
+							<g>
+								<rect class="background" style="" x="-15.0546875" y="0" width="30.109375" height="21" />
+								<text y="-10.1" text-anchor="middle" style="">
+									<tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle">
+										<tspan class="text-inner-tspan" font-style="normal" font-weight="normal">Yes</tspan>
+									</tspan>
+								</text>
+							</g>
+						</g>
+					</g>
+					<g class="edgeLabel" transform="translate(287.7265625, 834.390625)">
+						<g class="label" data-id="L_global_skipped_0" transform="translate(0, -10.5)">
+							<g>
+								<rect class="background" style="" x="-15.0546875" y="0" width="30.109375" height="21" />
+								<text y="-10.1" text-anchor="middle" style="">
+									<tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle">
+										<tspan class="text-inner-tspan" font-style="normal" font-weight="normal">Yes</tspan>
+									</tspan>
+								</text>
+							</g>
+						</g>
+					</g>
+					<g class="edgeLabel" transform="translate(549.10546875, 659.890625)">
+						<g class="label" data-id="L_global_named_0" transform="translate(0, -10.5)">
+							<g>
+								<rect class="background" style="" x="-12.2265625" y="0" width="24.453125" height="21" />
+								<text y="-10.1" text-anchor="middle" style="">
+									<tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle">
+										<tspan class="text-inner-tspan" font-style="normal" font-weight="normal">No</tspan>
+									</tspan>
+								</text>
+							</g>
+						</g>
+					</g>
+					<g class="edgeLabel" transform="translate(426.29556, 994.62206)">
+						<g class="label" data-id="L_named_skipped_0" transform="translate(0, -10.5)">
+							<g>
+								<rect class="background" style="" x="-15.0546875" y="0" width="30.109375" height="21" />
+								<text y="-10.1" text-anchor="middle" style="">
+									<tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle">
+										<tspan class="text-inner-tspan" font-style="normal" font-weight="normal">Yes</tspan>
+									</tspan>
+								</text>
+							</g>
+						</g>
+					</g>
+					<g class="edgeLabel" transform="translate(572.74609375, 1008.890625)">
+						<g class="label" data-id="L_named_count_0" transform="translate(0, -10.5)">
+							<g>
+								<rect class="background" style="" x="-12.2265625" y="0" width="24.453125" height="21" />
+								<text y="-10.1" text-anchor="middle" style="">
+									<tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle">
+										<tspan class="text-inner-tspan" font-style="normal" font-weight="normal">No</tspan>
+									</tspan>
+								</text>
+							</g>
+						</g>
+					</g>
+					<g class="edgeLabel">
+						<g class="label" data-id="L_count_limit_0" transform="translate(0, 0)">
+							<text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle" /></text>
+						</g>
+					</g>
+					<g><rect class="background" style="stroke: none" /></g>
+					<g class="edgeLabel" transform="translate(425.24609375, 1485.890625)">
+						<g class="label" data-id="L_limit_warning_0" transform="translate(0, -10.5)">
+							<g>
+								<rect class="background" style="" x="-15.0546875" y="0" width="30.109375" height="21" />
+								<text y="-10.1" text-anchor="middle" style="">
+									<tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle">
+										<tspan class="text-inner-tspan" font-style="normal" font-weight="normal">Yes</tspan>
+									</tspan>
+								</text>
+							</g>
+						</g>
+					</g>
+					<g class="edgeLabel" transform="translate(720.24609375, 1485.890625)">
+						<g class="label" data-id="L_limit_entry_0" transform="translate(0, -10.5)">
+							<g>
+								<rect class="background" style="" x="-12.2265625" y="0" width="24.453125" height="21" />
+								<text y="-10.1" text-anchor="middle" style="">
+									<tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle">
+										<tspan class="text-inner-tspan" font-style="normal" font-weight="normal">No</tspan>
+									</tspan>
+								</text>
+							</g>
+						</g>
+					</g>
+					<g class="edgeLabel">
+						<g class="label" data-id="L_entry_method_0" transform="translate(0, 0)">
+							<text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle" /></text>
+						</g>
+					</g>
+					<g><rect class="background" style="stroke: none" /></g>
+					<g class="edgeLabel" transform="translate(593.84765625, 1763.07421875)">
+						<g class="label" data-id="L_method_failed_0" transform="translate(0, -10.68359375)">
+							<g>
+								<rect class="background" style="" x="-72.71875" y="0" width="145.4375" height="21.3671875" />
+								<text y="-10.1" text-anchor="middle" style="">
+									<tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle">
+										<tspan class="text-inner-tspan" font-style="normal" font-weight="normal">Uncaught</tspan>
+										<tspan class="text-inner-tspan" font-style="normal" font-weight="normal">exception</tspan>
+									</tspan>
+								</text>
+							</g>
+						</g>
+					</g>
+					<g class="edgeLabel">
+						<g class="label" data-id="L_method_finally_0" transform="translate(0, 0)">
+							<text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle" /></text>
+						</g>
+					</g>
+					<g><rect class="background" style="stroke: none" /></g>
+					<g class="edgeLabel">
+						<g class="label" data-id="L_finally_limits_0" transform="translate(0, 0)">
+							<text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle" /></text>
+						</g>
+					</g>
+					<g><rect class="background" style="stroke: none" /></g>
+					<g class="edgeLabel">
+						<g class="label" data-id="L_limits_exit_0" transform="translate(0, 0)">
+							<text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle" /></text>
+						</g>
+					</g>
+					<g><rect class="background" style="stroke: none" /></g>
+					<g class="edgeLabel">
+						<g class="label" data-id="L_exit_done_0" transform="translate(0, 0)">
+							<text y="-10.1" text-anchor="middle"><tspan class="text-outer-tspan row" x="0" y="-0.1em" dy="1.1em" text-anchor="middle" /></text>
+						</g>
+					</g>
+					<g><rect class="background" style="stroke: none" /></g>
+				</g>
+				<g class="nodes">
+					<g class="node default" id="mermaid-diagram-1-flowchart-start-0" data-look="classic" transform="translate(281, 35)">
+						<rect class="basic label-container" style="" rx="5" ry="5" x="-91.0234375" y="-27" width="182.046875" height="54" />
+						<g class="label" style="" transform="translate(-76.0234375, -12)">
+							<rect />
+							<foreignObject width="152.046875" height="24"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center">
+									<span class="nodeLabel"><p>The trigger calls run()</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-context-1" data-look="classic" transform="translate(281, 181.6953125)">
+						<polygon
+							class="label-container"
+							points="69.6953125,0 139.390625,-69.6953125 69.6953125,-139.390625 0,-69.6953125"
+							transform="translate(-69.1953125, 69.6953125)" />
+						<g class="label" style="" transform="translate(-42.6953125, -12)">
+							<rect />
+							<foreignObject width="85.390625" height="24"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center">
+									<span class="nodeLabel"><p>In a trigger?</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-outside-3" data-look="classic" transform="translate(123, 473.390625)">
+						<rect class="basic label-container" style="" rx="5" ry="5" x="-115" y="-39" width="230" height="78" />
+						<g class="label" style="" transform="translate(-100, -24)">
+							<rect />
+							<foreignObject width="200" height="48"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>Throw TriggerHandlerException</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-global-5" data-look="classic" transform="translate(439, 473.390625)">
+						<polygon class="label-container" points="151,0 302,-151 151,-302 0,-151" transform="translate(-150.5, 151)" />
+						<g class="label" style="" transform="translate(-100, -36)">
+							<rect />
+							<foreignObject width="200" height="72"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>All handlers bypassed, or the user has BypassTriggerHandlers?</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-skipped-7" data-look="classic" transform="translate(305.25390625, 1083.390625)">
+						<rect class="basic label-container" style="" rx="5" ry="5" x="-87.4921875" y="-27" width="174.984375" height="54" />
+						<g class="label" style="" transform="translate(-72.4921875, -12)">
+							<rect />
+							<foreignObject width="144.984375" height="24"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center">
+									<span class="nodeLabel"><p>Return: nothing runs</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-named-9" data-look="classic" transform="translate(549.10546875, 834.390625)">
+						<polygon class="label-container" points="139,0 278,-139 139,-278 0,-139" transform="translate(-138.5, 139)" />
+						<g class="label" style="" transform="translate(-100, -24)">
+							<rect />
+							<foreignObject width="200" height="48"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>Handler bypassed by name or by type?</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-count-13" data-look="classic" transform="translate(572.74609375, 1083.390625)">
+						<rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78" />
+						<g class="label" style="" transform="translate(-100, -24)">
+							<rect />
+							<foreignObject width="200" height="48"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>Count the run, when the operation has a limit</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-limit-15" data-look="classic" transform="translate(572.74609375, 1311.390625)">
+						<polygon class="label-container" points="139,0 278,-139 139,-278 0,-139" transform="translate(-138.5, 139)" />
+						<g class="label" style="" transform="translate(-100, -24)">
+							<rect />
+							<foreignObject width="200" height="48"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>Past the loop limit of the operation?</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-warning-17" data-look="classic" transform="translate(425.24609375, 1560.390625)">
+						<rect class="basic label-container" style="" rx="5" ry="5" x="-115" y="-39" width="230" height="78" />
+						<g class="label" style="" transform="translate(-100, -24)">
+							<rect />
+							<foreignObject width="200" height="48"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>Send the loop limit warning to log(), and return</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-entry-19" data-look="classic" transform="translate(720.24609375, 1560.390625)">
+						<rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78" />
+						<g class="label" style="" transform="translate(-100, -24)">
+							<rect />
+							<foreignObject width="200" height="48"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>Write the entry line, when debug is on</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-method-21" data-look="classic" transform="translate(720.24609375, 1688.390625)">
+						<rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78" />
+						<g class="label" style="" transform="translate(-100, -24)">
+							<rect />
+							<foreignObject width="200" height="48"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>Call the context method, for example afterUpdate()</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-failed-23" data-look="classic" transform="translate(593.84765625, 1837.7578125)">
+						<rect class="basic label-container" style="" rx="5" ry="5" x="-115" y="-39" width="230" height="78" />
+						<g class="label" style="" transform="translate(-100, -24)">
+							<rect />
+							<foreignObject width="200" height="48"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>The exception reaches the caller</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-finally-25" data-look="classic" transform="translate(846.64453125, 1837.7578125)">
+						<rect class="basic label-container" style="" x="-87.796875" y="-27" width="175.59375" height="54" />
+						<g class="label" style="" transform="translate(-57.796875, -12)">
+							<rect />
+							<foreignObject width="115.59375" height="24"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center">
+									<span class="nodeLabel"><p>Call andFinally()</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-limits-27" data-look="classic" transform="translate(846.64453125, 1965.7578125)">
+						<rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78" />
+						<g class="label" style="" transform="translate(-100, -24)">
+							<rect />
+							<foreignObject width="200" height="48"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>Write the limits line, when limits are on</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-exit-29" data-look="classic" transform="translate(846.64453125, 2093.7578125)">
+						<rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78" />
+						<g class="label" style="" transform="translate(-100, -24)">
+							<rect />
+							<foreignObject width="200" height="48"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px">
+									<span class="nodeLabel"><p>Write the exit line, when debug is on</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+					<g class="node default" id="mermaid-diagram-1-flowchart-done-31" data-look="classic" transform="translate(846.64453125, 2209.7578125)">
+						<rect class="basic label-container" style="" rx="5" ry="5" x="-39.015625" y="-27" width="78.03125" height="54" />
+						<g class="label" style="" transform="translate(-24.015625, -12)">
+							<rect />
+							<foreignObject width="48.03125" height="24"
+								><div
+									xmlns="http://www.w3.org/1999/xhtml"
+									style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center">
+									<span class="nodeLabel"><p>Return</p></span>
+								</div></foreignObject
+							>
+						</g>
+					</g>
+				</g>
+			</g>
+		</g>
+		<defs>
+			<filter id="mermaid-diagram-1-drop-shadow" height="130%" width="130%">
+				<feDropShadow dx="4" dy="4" stdDeviation="0" flood-opacity="0.06" flood-color="#000000" />
+			</filter>
+		</defs>
+		<defs>
+			<filter id="mermaid-diagram-1-drop-shadow-small" height="150%" width="150%">
+				<feDropShadow dx="2" dy="2" stdDeviation="0" flood-opacity="0.06" flood-color="#000000" />
+			</filter>
+		</defs>
+		<linearGradient id="mermaid-diagram-1-gradient" gradientUnits="objectBoundingBox" x1="0%" y1="0%" x2="100%" y2="0%">
+			<stop offset="0%" stop-color="hsl(0, 0%, 83.3333333333%)" stop-opacity="1" />
+			<stop offset="100%" stop-color="hsl(0, 0%, 88.9215686275%)" stop-opacity="1" />
+		</linearGradient>
+	</svg>
+</div>
 <h3>Bypass API</h3>
 <p>A handler can stop other handlers for a time. Bypass the other handler, do the DML, and clear the bypass:</p>
 <pre><code class="language-apex">public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
@@ -289,17 +1273,25 @@
 </code></pre>
 <p>
 	Bypass names match in any case. You can also bypass by type, as in <code>TriggerHandler.bypass(AccountTriggerHandler.class)</code>, and the compiler
-	then checks the name. A null or blank name, a null type, or a null list throws <code>TriggerHandler.TriggerHandlerException</code>.
+	then checks the name. To bypass several handlers, pass a <code>List&lt;String&gt;</code> or a <code>Set&lt;String&gt;</code> of names. A null or
+	blank name, a null type, or a null list or set throws <code>TriggerHandler.TriggerHandlerException</code>.
 </p>
 <h3>Check Bypass Status</h3>
-<p>A handler can be bypassed by name, or all handlers can be bypassed together. 3 methods tell you which:</p>
+<p>
+	A handler can be bypassed by name, all handlers can be bypassed together, or the running user can hold the bypass permission. 4 methods tell you
+	which:
+</p>
 <ul>
 	<li>
 		<code>isBypassed(name)</code> or <code>isBypassed(type)</code> is <code>true</code> when the handler is bypassed by name or by type. It does not
 		include the global bypass.
 	</li>
 	<li><code>isGlobalBypassed()</code> is <code>true</code> when all handlers are bypassed.</li>
-	<li><code>isSkipped(name)</code> or <code>isSkipped(type)</code> is <code>true</code> when either of them is true, so the handler does not run.</li>
+	<li>
+		<code>hasBypassPermission()</code> is <code>true</code> when the running user has the <code>BypassTriggerHandlers</code> permission. See
+		<a href="#bypass-permission">Bypass Permission</a>.
+	</li>
+	<li><code>isSkipped(name)</code> or <code>isSkipped(type)</code> is <code>true</code> when any of them is true, so the handler does not run.</li>
 </ul>
 <pre><code class="language-apex">if (TriggerHandler.isSkipped(AccountTriggerHandler.class)) {
   /* the Account trigger handler does not run */
@@ -323,6 +1315,21 @@ TriggerHandler.clearAllBypasses();
 <p>
 	<code>clearAllBypasses()</code> clears the named bypasses and the global bypass. To clear only 1 of them, call <code>clearBypassList()</code> or
 	<code>clearGlobalBypass()</code>.
+</p>
+<h3>Bypass Permission</h3>
+<p>
+	The framework ships 1 custom permission, <code>BypassTriggerHandlers</code>, with the label Bypass Trigger Handlers. A user who has it runs no
+	handler, as if all handlers were bypassed. Use it for work such as a large data load:
+</p>
+<ol>
+	<li>Add the permission to a permission set.</li>
+	<li>Assign the permission set to the user directly, and only for as long as the work needs it.</li>
+	<li>Remove the assignment when the work is done.</li>
+</ol>
+<p>
+	Code cannot clear this bypass. <code>clearAllBypasses()</code> and <code>clearGlobalBypass()</code> do not change it, and
+	<code>isBypassed()</code> and <code>isGlobalBypassed()</code> do not report it. To check it, call <code>TriggerHandler.hasBypassPermission()</code>.
+	A user with the permission skips every check that your handlers make, so assign it with caution.
 </p>
 <h3>Set Bypass</h3>
 <p>
@@ -387,9 +1394,10 @@ if (!wasGlobalBypassed) {
 }
 </code></pre>
 <p>
-	<code>clearMaxLoopCount()</code> removes the limit of all operations, and the counts continue.
-	<code>TriggerHandler.getLoopCount(&#39;OpportunityTriggerHandler&#39;, System.TriggerOperation.AFTER_UPDATE)</code> returns the current count of 1
-	operation. The count is -1 for an operation with no call of <code>setMaxLoopCount()</code>, because the framework does not count its runs. After a
+	<code>clearMaxLoopCount()</code> removes the limit of all operations, and the counts continue. It returns the handler, so you can chain
+	<code>run()</code> after it. <code>TriggerHandler.getLoopCount(OpportunityTriggerHandler.class, System.TriggerOperation.AFTER_UPDATE)</code> returns
+	the current count of 1 operation. The form with the name, <code>getLoopCount(&#39;OpportunityTriggerHandler&#39;, …)</code>, needs the name in the
+	same case. The count is -1 for an operation with no call of <code>setMaxLoopCount()</code>, because the framework does not count its runs. After a
 	call with 0 or a negative value, the framework counts the runs but does not stop any.
 </p>
 <p>You can also set the limit in the trigger, before <code>run()</code>:</p>
@@ -436,6 +1444,16 @@ TriggerHandler.showDebug(false);
 <pre><code class="language-apex">trigger OpportunityTrigger on Opportunity(before insert, before update, before delete, after insert, after update, after delete, after undelete) {
   new OpportunityTriggerHandler().showHandlerDebug(false).showHandlerLimits(false).run();
 }
+</code></pre>
+<p>
+	To stop the entry and exit lines of all handlers, call <code>TriggerHandler.hideAllDebug()</code>. It wins over <code>showDebug()</code> and over
+	the setting of each handler, so no other code can turn the lines back on. Only <code>TriggerHandler.showAllDebug()</code> or
+	<code>TriggerHandler.hideAllDebug(false)</code> ends it, and then each handler uses its earlier setting again. <code>showAllDebug()</code> does not
+	turn the lines on by itself. The limits line and the loop limit warning are not debug lines, so they stay:
+</p>
+<pre><code class="language-apex">TriggerHandler.hideAllDebug();
+new OpportunityTriggerHandler().showHandlerDebug().run(); /* writes no entry or exit line */
+TriggerHandler.showAllDebug();
 </code></pre>
 <h3>Send the Messages to Your Logging Framework</h3>
 <p>
@@ -485,7 +1503,10 @@ TriggerHandler.showDebug(false);
 </p>
 <p>It does not run in these cases:</p>
 <ul>
-	<li>The handler is bypassed by name or by type, or all handlers are bypassed. Then nothing in the handler runs.</li>
+	<li>
+		The handler is bypassed by name or by type, all handlers are bypassed, or the running user has the <code>BypassTriggerHandlers</code> permission.
+		Then nothing in the handler runs.
+	</li>
 	<li>The loop limit of the trigger operation stops the run. Then only <code>log()</code> runs, with the loop limit warning.</li>
 	<li>The context method throws an exception that it does not catch. The exception reaches the caller and stops all processing.</li>
 </ul>
@@ -504,6 +1525,445 @@ TriggerHandler.showDebug(false);
 		first update.
 	</li>
 </ol>
+<div class="mermaid-diagram">
+	<svg
+		id="mermaid-diagram-2"
+		role="graphics-document document"
+		aria-roledescription="sequence"
+		width="100%"
+		xmlns="http://www.w3.org/2000/svg"
+		xmlns:xlink="http://www.w3.org/1999/xlink"
+		style="max-width: 798.5px; background-color: transparent"
+		viewBox="-50 -10 798.5 687">
+		<g>
+			<rect class="actor actor-bottom" name="Second" x="494.5" y="601" fill="#eaeaea" stroke="#666" width="204" height="65" rx="3" ry="3" />
+			<text
+				class="actor actor-box"
+				x="596.5"
+				y="633.5"
+				dominant-baseline="central"
+				alignment-baseline="central"
+				style="text-anchor: middle; font-size: 16px; font-weight: 400; font-family: arial, sans-serif">
+				<tspan x="596.5" dy="0">Second run of the handler</tspan>
+			</text>
+		</g>
+		<g>
+			<rect class="actor actor-bottom" name="First" x="240.5" y="601" fill="#eaeaea" stroke="#666" width="181" height="65" rx="3" ry="3" />
+			<text
+				class="actor actor-box"
+				x="331"
+				y="633.5"
+				dominant-baseline="central"
+				alignment-baseline="central"
+				style="text-anchor: middle; font-size: 16px; font-weight: 400; font-family: arial, sans-serif">
+				<tspan x="331" dy="0">First run of the handler</tspan>
+			</text>
+		</g>
+		<g>
+			<rect class="actor actor-bottom" name="Trigger" x="0" y="601" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" />
+			<text
+				class="actor actor-box"
+				x="75"
+				y="633.5"
+				dominant-baseline="central"
+				alignment-baseline="central"
+				style="text-anchor: middle; font-size: 16px; font-weight: 400; font-family: arial, sans-serif">
+				<tspan x="75" dy="0">AccountTrigger</tspan>
+			</text>
+		</g>
+		<g>
+			<line
+				class="actor-line 200"
+				id="actor2"
+				name="Second"
+				data-et="life-line"
+				data-id="Second"
+				x1="596.5"
+				y1="65"
+				x2="596.5"
+				y2="601"
+				stroke-width="0.5px"
+				stroke="#999" />
+			<g id="root-2" data-et="participant" data-type="participant" data-id="Second">
+				<rect class="actor actor-top" name="Second" x="494.5" y="0" fill="#eaeaea" stroke="#666" width="204" height="65" rx="3" ry="3" />
+				<text
+					class="actor actor-box"
+					x="596.5"
+					y="32.5"
+					dominant-baseline="central"
+					alignment-baseline="central"
+					style="text-anchor: middle; font-size: 16px; font-weight: 400; font-family: arial, sans-serif">
+					<tspan x="596.5" dy="0">Second run of the handler</tspan>
+				</text>
+			</g>
+		</g>
+		<g>
+			<line
+				class="actor-line 200"
+				id="actor1"
+				name="First"
+				data-et="life-line"
+				data-id="First"
+				x1="331"
+				y1="65"
+				x2="331"
+				y2="601"
+				stroke-width="0.5px"
+				stroke="#999" />
+			<g id="root-1" data-et="participant" data-type="participant" data-id="First">
+				<rect class="actor actor-top" name="First" x="240.5" y="0" fill="#eaeaea" stroke="#666" width="181" height="65" rx="3" ry="3" />
+				<text
+					class="actor actor-box"
+					x="331"
+					y="32.5"
+					dominant-baseline="central"
+					alignment-baseline="central"
+					style="text-anchor: middle; font-size: 16px; font-weight: 400; font-family: arial, sans-serif">
+					<tspan x="331" dy="0">First run of the handler</tspan>
+				</text>
+			</g>
+		</g>
+		<g>
+			<line
+				class="actor-line 200"
+				id="actor0"
+				name="Trigger"
+				data-et="life-line"
+				data-id="Trigger"
+				x1="75"
+				y1="65"
+				x2="75"
+				y2="601"
+				stroke-width="0.5px"
+				stroke="#999" />
+			<g id="root-0" data-et="participant" data-type="participant" data-id="Trigger">
+				<rect class="actor actor-top" name="Trigger" x="0" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" />
+				<text
+					class="actor actor-box"
+					x="75"
+					y="32.5"
+					dominant-baseline="central"
+					alignment-baseline="central"
+					style="text-anchor: middle; font-size: 16px; font-weight: 400; font-family: arial, sans-serif">
+					<tspan x="75" dy="0">AccountTrigger</tspan>
+				</text>
+			</g>
+		</g>
+		<style>
+			#mermaid-diagram-2{font-family:arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-diagram-2 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-diagram-2 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-diagram-2 .error-icon{fill:#552222;}#mermaid-diagram-2 .error-text{fill:#552222;stroke:#552222;}#mermaid-diagram-2 .edge-thickness-normal{stroke-width:1px;}#mermaid-diagram-2 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-diagram-2 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-diagram-2 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-diagram-2 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-diagram-2 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-diagram-2 .marker{fill:#666;stroke:#666;}#mermaid-diagram-2 .marker.cross{stroke:#666;}#mermaid-diagram-2 svg{font-family:arial,sans-serif;font-size:16px;}#mermaid-diagram-2 p{margin:0;}#mermaid-diagram-2 .actor{stroke:hsl(0, 0%, 83%);fill:#eee;stroke-width:1;}#mermaid-diagram-2 rect.actor.outer-path[data-look="neo"]{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#mermaid-diagram-2 rect.note[data-look="neo"]{stroke:#999;fill:#666;filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#mermaid-diagram-2 text.actor&gt;tspan{fill:#333;stroke:none;}#mermaid-diagram-2 .actor-line{stroke:hsl(0, 0%, 83%);}#mermaid-diagram-2 .innerArc{stroke-width:1.5;stroke-dasharray:none;}#mermaid-diagram-2 .messageLine0{stroke-width:1.5;stroke-dasharray:none;stroke:#333;}#mermaid-diagram-2 .messageLine1{stroke-width:1.5;stroke-dasharray:2,2;stroke:#333;}#mermaid-diagram-2 [id$="-arrowhead"] path{fill:#333;stroke:#333;}#mermaid-diagram-2 .sequenceNumber{fill:white;}#mermaid-diagram-2 [id$="-sequencenumber"]{fill:#333;}#mermaid-diagram-2 [id$="-crosshead"] path{fill:#333;stroke:#333;}#mermaid-diagram-2 .messageText{fill:#333;stroke:none;}#mermaid-diagram-2 .labelBox{stroke:hsl(0, 0%, 83%);fill:#eee;filter:none;}#mermaid-diagram-2 .labelText,#mermaid-diagram-2 .labelText&gt;tspan{fill:#333;stroke:none;}#mermaid-diagram-2 .loopText,#mermaid-diagram-2 .loopText&gt;tspan{fill:#333;stroke:none;}#mermaid-diagram-2 .sectionTitle,#mermaid-diagram-2 .sectionTitle&gt;tspan{fill:#333;stroke:none;}#mermaid-diagram-2 .loopLine{stroke-width:2px;stroke-dasharray:2,2;stroke:hsl(0, 0%, 83%);fill:hsl(0, 0%, 83%);}#mermaid-diagram-2 .note{stroke:#999;fill:#666;}#mermaid-diagram-2 .noteText,#mermaid-diagram-2 .noteText&gt;tspan{fill:#fff;stroke:none;font-weight:normal;}#mermaid-diagram-2 .activation0{fill:#f4f4f4;stroke:#666;}#mermaid-diagram-2 .activation1{fill:#f4f4f4;stroke:#666;}#mermaid-diagram-2 .activation2{fill:#f4f4f4;stroke:#666;}#mermaid-diagram-2 .actorPopupMenu{position:absolute;}#mermaid-diagram-2 .actorPopupMenuPanel{position:absolute;fill:#eee;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);filter:drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));}#mermaid-diagram-2 .actor-man circle,#mermaid-diagram-2 line{fill:#eee;stroke-width:2px;}#mermaid-diagram-2 g rect.rect{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));stroke:#999;}#mermaid-diagram-2 .node .neo-node{stroke:#999;}#mermaid-diagram-2 [data-look="neo"].node rect,#mermaid-diagram-2 [data-look="neo"].cluster rect,#mermaid-diagram-2 [data-look="neo"].node polygon{stroke:url(#mermaid-diagram-2-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#mermaid-diagram-2 [data-look="neo"].swimlane.cluster rect{filter:none;}#mermaid-diagram-2 [data-look="neo"].node path{stroke:url(#mermaid-diagram-2-gradient);stroke-width:1px;}#mermaid-diagram-2 [data-look="neo"].node .outer-path{filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#mermaid-diagram-2 [data-look="neo"].node .neo-line path{stroke:#999;filter:none;}#mermaid-diagram-2 [data-look="neo"].node circle{stroke:url(#mermaid-diagram-2-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#mermaid-diagram-2 [data-look="neo"].node circle .state-start{fill:#000000;}#mermaid-diagram-2 [data-look="neo"].icon-shape .icon{fill:url(#mermaid-diagram-2-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#mermaid-diagram-2 [data-look="neo"].icon-shape .icon-neo path{stroke:url(#mermaid-diagram-2-gradient);filter:drop-shadow( 1px 2px 2px rgba(185,185,185,1));}#mermaid-diagram-2 :root{--mermaid-font-family:arial,sans-serif;}
+		</style>
+		<g />
+		<defs>
+			<symbol id="mermaid-diagram-2-computer" width="24" height="24">
+				<path
+					transform="scale(.5)"
+					d="M2 2v13h20v-13h-20zm18 11h-16v-9h16v9zm-10.228 6l.466-1h3.524l.467 1h-4.457zm14.228 3h-24l2-6h2.104l-1.33 4h18.45l-1.297-4h2.073l2 6zm-5-10h-14v-7h14v7z" />
+			</symbol>
+		</defs>
+		<defs>
+			<symbol id="mermaid-diagram-2-database" fill-rule="evenodd" clip-rule="evenodd">
+				<path
+					transform="scale(.5)"
+					d="M12.258.001l.256.004.255.005.253.008.251.01.249.012.247.015.246.016.242.019.241.02.239.023.236.024.233.027.231.028.229.031.225.032.223.034.22.036.217.038.214.04.211.041.208.043.205.045.201.046.198.048.194.05.191.051.187.053.183.054.18.056.175.057.172.059.168.06.163.061.16.063.155.064.15.066.074.033.073.033.071.034.07.034.069.035.068.035.067.035.066.035.064.036.064.036.062.036.06.036.06.037.058.037.058.037.055.038.055.038.053.038.052.038.051.039.05.039.048.039.047.039.045.04.044.04.043.04.041.04.04.041.039.041.037.041.036.041.034.041.033.042.032.042.03.042.029.042.027.042.026.043.024.043.023.043.021.043.02.043.018.044.017.043.015.044.013.044.012.044.011.045.009.044.007.045.006.045.004.045.002.045.001.045v17l-.001.045-.002.045-.004.045-.006.045-.007.045-.009.044-.011.045-.012.044-.013.044-.015.044-.017.043-.018.044-.02.043-.021.043-.023.043-.024.043-.026.043-.027.042-.029.042-.03.042-.032.042-.033.042-.034.041-.036.041-.037.041-.039.041-.04.041-.041.04-.043.04-.044.04-.045.04-.047.039-.048.039-.05.039-.051.039-.052.038-.053.038-.055.038-.055.038-.058.037-.058.037-.06.037-.06.036-.062.036-.064.036-.064.036-.066.035-.067.035-.068.035-.069.035-.07.034-.071.034-.073.033-.074.033-.15.066-.155.064-.16.063-.163.061-.168.06-.172.059-.175.057-.18.056-.183.054-.187.053-.191.051-.194.05-.198.048-.201.046-.205.045-.208.043-.211.041-.214.04-.217.038-.22.036-.223.034-.225.032-.229.031-.231.028-.233.027-.236.024-.239.023-.241.02-.242.019-.246.016-.247.015-.249.012-.251.01-.253.008-.255.005-.256.004-.258.001-.258-.001-.256-.004-.255-.005-.253-.008-.251-.01-.249-.012-.247-.015-.245-.016-.243-.019-.241-.02-.238-.023-.236-.024-.234-.027-.231-.028-.228-.031-.226-.032-.223-.034-.22-.036-.217-.038-.214-.04-.211-.041-.208-.043-.204-.045-.201-.046-.198-.048-.195-.05-.19-.051-.187-.053-.184-.054-.179-.056-.176-.057-.172-.059-.167-.06-.164-.061-.159-.063-.155-.064-.151-.066-.074-.033-.072-.033-.072-.034-.07-.034-.069-.035-.068-.035-.067-.035-.066-.035-.064-.036-.063-.036-.062-.036-.061-.036-.06-.037-.058-.037-.057-.037-.056-.038-.055-.038-.053-.038-.052-.038-.051-.039-.049-.039-.049-.039-.046-.039-.046-.04-.044-.04-.043-.04-.041-.04-.04-.041-.039-.041-.037-.041-.036-.041-.034-.041-.033-.042-.032-.042-.03-.042-.029-.042-.027-.042-.026-.043-.024-.043-.023-.043-.021-.043-.02-.043-.018-.044-.017-.043-.015-.044-.013-.044-.012-.044-.011-.045-.009-.044-.007-.045-.006-.045-.004-.045-.002-.045-.001-.045v-17l.001-.045.002-.045.004-.045.006-.045.007-.045.009-.044.011-.045.012-.044.013-.044.015-.044.017-.043.018-.044.02-.043.021-.043.023-.043.024-.043.026-.043.027-.042.029-.042.03-.042.032-.042.033-.042.034-.041.036-.041.037-.041.039-.041.04-.041.041-.04.043-.04.044-.04.046-.04.046-.039.049-.039.049-.039.051-.039.052-.038.053-.038.055-.038.056-.038.057-.037.058-.037.06-.037.061-.036.062-.036.063-.036.064-.036.066-.035.067-.035.068-.035.069-.035.07-.034.072-.034.072-.033.074-.033.151-.066.155-.064.159-.063.164-.061.167-.06.172-.059.176-.057.179-.056.184-.054.187-.053.19-.051.195-.05.198-.048.201-.046.204-.045.208-.043.211-.041.214-.04.217-.038.22-.036.223-.034.226-.032.228-.031.231-.028.234-.027.236-.024.238-.023.241-.02.243-.019.245-.016.247-.015.249-.012.251-.01.253-.008.255-.005.256-.004.258-.001.258.001zm-9.258 20.499v.01l.001.021.003.021.004.022.005.021.006.022.007.022.009.023.01.022.011.023.012.023.013.023.015.023.016.024.017.023.018.024.019.024.021.024.022.025.023.024.024.025.052.049.056.05.061.051.066.051.07.051.075.051.079.052.084.052.088.052.092.052.097.052.102.051.105.052.11.052.114.051.119.051.123.051.127.05.131.05.135.05.139.048.144.049.147.047.152.047.155.047.16.045.163.045.167.043.171.043.176.041.178.041.183.039.187.039.19.037.194.035.197.035.202.033.204.031.209.03.212.029.216.027.219.025.222.024.226.021.23.02.233.018.236.016.24.015.243.012.246.01.249.008.253.005.256.004.259.001.26-.001.257-.004.254-.005.25-.008.247-.011.244-.012.241-.014.237-.016.233-.018.231-.021.226-.021.224-.024.22-.026.216-.027.212-.028.21-.031.205-.031.202-.034.198-.034.194-.036.191-.037.187-.039.183-.04.179-.04.175-.042.172-.043.168-.044.163-.045.16-.046.155-.046.152-.047.148-.048.143-.049.139-.049.136-.05.131-.05.126-.05.123-.051.118-.052.114-.051.11-.052.106-.052.101-.052.096-.052.092-.052.088-.053.083-.051.079-.052.074-.052.07-.051.065-.051.06-.051.056-.05.051-.05.023-.024.023-.025.021-.024.02-.024.019-.024.018-.024.017-.024.015-.023.014-.024.013-.023.012-.023.01-.023.01-.022.008-.022.006-.022.006-.022.004-.022.004-.021.001-.021.001-.021v-4.127l-.077.055-.08.053-.083.054-.085.053-.087.052-.09.052-.093.051-.095.05-.097.05-.1.049-.102.049-.105.048-.106.047-.109.047-.111.046-.114.045-.115.045-.118.044-.12.043-.122.042-.124.042-.126.041-.128.04-.13.04-.132.038-.134.038-.135.037-.138.037-.139.035-.142.035-.143.034-.144.033-.147.032-.148.031-.15.03-.151.03-.153.029-.154.027-.156.027-.158.026-.159.025-.161.024-.162.023-.163.022-.165.021-.166.02-.167.019-.169.018-.169.017-.171.016-.173.015-.173.014-.175.013-.175.012-.177.011-.178.01-.179.008-.179.008-.181.006-.182.005-.182.004-.184.003-.184.002h-.37l-.184-.002-.184-.003-.182-.004-.182-.005-.181-.006-.179-.008-.179-.008-.178-.01-.176-.011-.176-.012-.175-.013-.173-.014-.172-.015-.171-.016-.17-.017-.169-.018-.167-.019-.166-.02-.165-.021-.163-.022-.162-.023-.161-.024-.159-.025-.157-.026-.156-.027-.155-.027-.153-.029-.151-.03-.15-.03-.148-.031-.146-.032-.145-.033-.143-.034-.141-.035-.14-.035-.137-.037-.136-.037-.134-.038-.132-.038-.13-.04-.128-.04-.126-.041-.124-.042-.122-.042-.12-.044-.117-.043-.116-.045-.113-.045-.112-.046-.109-.047-.106-.047-.105-.048-.102-.049-.1-.049-.097-.05-.095-.05-.093-.052-.09-.051-.087-.052-.085-.053-.083-.054-.08-.054-.077-.054v4.127zm0-5.654v.011l.001.021.003.021.004.021.005.022.006.022.007.022.009.022.01.022.011.023.012.023.013.023.015.024.016.023.017.024.018.024.019.024.021.024.022.024.023.025.024.024.052.05.056.05.061.05.066.051.07.051.075.052.079.051.084.052.088.052.092.052.097.052.102.052.105.052.11.051.114.051.119.052.123.05.127.051.131.05.135.049.139.049.144.048.147.048.152.047.155.046.16.045.163.045.167.044.171.042.176.042.178.04.183.04.187.038.19.037.194.036.197.034.202.033.204.032.209.03.212.028.216.027.219.025.222.024.226.022.23.02.233.018.236.016.24.014.243.012.246.01.249.008.253.006.256.003.259.001.26-.001.257-.003.254-.006.25-.008.247-.01.244-.012.241-.015.237-.016.233-.018.231-.02.226-.022.224-.024.22-.025.216-.027.212-.029.21-.03.205-.032.202-.033.198-.035.194-.036.191-.037.187-.039.183-.039.179-.041.175-.042.172-.043.168-.044.163-.045.16-.045.155-.047.152-.047.148-.048.143-.048.139-.05.136-.049.131-.05.126-.051.123-.051.118-.051.114-.052.11-.052.106-.052.101-.052.096-.052.092-.052.088-.052.083-.052.079-.052.074-.051.07-.052.065-.051.06-.05.056-.051.051-.049.023-.025.023-.024.021-.025.02-.024.019-.024.018-.024.017-.024.015-.023.014-.023.013-.024.012-.022.01-.023.01-.023.008-.022.006-.022.006-.022.004-.021.004-.022.001-.021.001-.021v-4.139l-.077.054-.08.054-.083.054-.085.052-.087.053-.09.051-.093.051-.095.051-.097.05-.1.049-.102.049-.105.048-.106.047-.109.047-.111.046-.114.045-.115.044-.118.044-.12.044-.122.042-.124.042-.126.041-.128.04-.13.039-.132.039-.134.038-.135.037-.138.036-.139.036-.142.035-.143.033-.144.033-.147.033-.148.031-.15.03-.151.03-.153.028-.154.028-.156.027-.158.026-.159.025-.161.024-.162.023-.163.022-.165.021-.166.02-.167.019-.169.018-.169.017-.171.016-.173.015-.173.014-.175.013-.175.012-.177.011-.178.009-.179.009-.179.007-.181.007-.182.005-.182.004-.184.003-.184.002h-.37l-.184-.002-.184-.003-.182-.004-.182-.005-.181-.007-.179-.007-.179-.009-.178-.009-.176-.011-.176-.012-.175-.013-.173-.014-.172-.015-.171-.016-.17-.017-.169-.018-.167-.019-.166-.02-.165-.021-.163-.022-.162-.023-.161-.024-.159-.025-.157-.026-.156-.027-.155-.028-.153-.028-.151-.03-.15-.03-.148-.031-.146-.033-.145-.033-.143-.033-.141-.035-.14-.036-.137-.036-.136-.037-.134-.038-.132-.039-.13-.039-.128-.04-.126-.041-.124-.042-.122-.043-.12-.043-.117-.044-.116-.044-.113-.046-.112-.046-.109-.046-.106-.047-.105-.048-.102-.049-.1-.049-.097-.05-.095-.051-.093-.051-.09-.051-.087-.053-.085-.052-.083-.054-.08-.054-.077-.054v4.139zm0-5.666v.011l.001.02.003.022.004.021.005.022.006.021.007.022.009.023.01.022.011.023.012.023.013.023.015.023.016.024.017.024.018.023.019.024.021.025.022.024.023.024.024.025.052.05.056.05.061.05.066.051.07.051.075.052.079.051.084.052.088.052.092.052.097.052.102.052.105.051.11.052.114.051.119.051.123.051.127.05.131.05.135.05.139.049.144.048.147.048.152.047.155.046.16.045.163.045.167.043.171.043.176.042.178.04.183.04.187.038.19.037.194.036.197.034.202.033.204.032.209.03.212.028.216.027.219.025.222.024.226.021.23.02.233.018.236.017.24.014.243.012.246.01.249.008.253.006.256.003.259.001.26-.001.257-.003.254-.006.25-.008.247-.01.244-.013.241-.014.237-.016.233-.018.231-.02.226-.022.224-.024.22-.025.216-.027.212-.029.21-.03.205-.032.202-.033.198-.035.194-.036.191-.037.187-.039.183-.039.179-.041.175-.042.172-.043.168-.044.163-.045.16-.045.155-.047.152-.047.148-.048.143-.049.139-.049.136-.049.131-.051.126-.05.123-.051.118-.052.114-.051.11-.052.106-.052.101-.052.096-.052.092-.052.088-.052.083-.052.079-.052.074-.052.07-.051.065-.051.06-.051.056-.05.051-.049.023-.025.023-.025.021-.024.02-.024.019-.024.018-.024.017-.024.015-.023.014-.024.013-.023.012-.023.01-.022.01-.023.008-.022.006-.022.006-.022.004-.022.004-.021.001-.021.001-.021v-4.153l-.077.054-.08.054-.083.053-.085.053-.087.053-.09.051-.093.051-.095.051-.097.05-.1.049-.102.048-.105.048-.106.048-.109.046-.111.046-.114.046-.115.044-.118.044-.12.043-.122.043-.124.042-.126.041-.128.04-.13.039-.132.039-.134.038-.135.037-.138.036-.139.036-.142.034-.143.034-.144.033-.147.032-.148.032-.15.03-.151.03-.153.028-.154.028-.156.027-.158.026-.159.024-.161.024-.162.023-.163.023-.165.021-.166.02-.167.019-.169.018-.169.017-.171.016-.173.015-.173.014-.175.013-.175.012-.177.01-.178.01-.179.009-.179.007-.181.006-.182.006-.182.004-.184.003-.184.001-.185.001-.185-.001-.184-.001-.184-.003-.182-.004-.182-.006-.181-.006-.179-.007-.179-.009-.178-.01-.176-.01-.176-.012-.175-.013-.173-.014-.172-.015-.171-.016-.17-.017-.169-.018-.167-.019-.166-.02-.165-.021-.163-.023-.162-.023-.161-.024-.159-.024-.157-.026-.156-.027-.155-.028-.153-.028-.151-.03-.15-.03-.148-.032-.146-.032-.145-.033-.143-.034-.141-.034-.14-.036-.137-.036-.136-.037-.134-.038-.132-.039-.13-.039-.128-.041-.126-.041-.124-.041-.122-.043-.12-.043-.117-.044-.116-.044-.113-.046-.112-.046-.109-.046-.106-.048-.105-.048-.102-.048-.1-.05-.097-.049-.095-.051-.093-.051-.09-.052-.087-.052-.085-.053-.083-.053-.08-.054-.077-.054v4.153zm8.74-8.179l-.257.004-.254.005-.25.008-.247.011-.244.012-.241.014-.237.016-.233.018-.231.021-.226.022-.224.023-.22.026-.216.027-.212.028-.21.031-.205.032-.202.033-.198.034-.194.036-.191.038-.187.038-.183.04-.179.041-.175.042-.172.043-.168.043-.163.045-.16.046-.155.046-.152.048-.148.048-.143.048-.139.049-.136.05-.131.05-.126.051-.123.051-.118.051-.114.052-.11.052-.106.052-.101.052-.096.052-.092.052-.088.052-.083.052-.079.052-.074.051-.07.052-.065.051-.06.05-.056.05-.051.05-.023.025-.023.024-.021.024-.02.025-.019.024-.018.024-.017.023-.015.024-.014.023-.013.023-.012.023-.01.023-.01.022-.008.022-.006.023-.006.021-.004.022-.004.021-.001.021-.001.021.001.021.001.021.004.021.004.022.006.021.006.023.008.022.01.022.01.023.012.023.013.023.014.023.015.024.017.023.018.024.019.024.02.025.021.024.023.024.023.025.051.05.056.05.06.05.065.051.07.052.074.051.079.052.083.052.088.052.092.052.096.052.101.052.106.052.11.052.114.052.118.051.123.051.126.051.131.05.136.05.139.049.143.048.148.048.152.048.155.046.16.046.163.045.168.043.172.043.175.042.179.041.183.04.187.038.191.038.194.036.198.034.202.033.205.032.21.031.212.028.216.027.22.026.224.023.226.022.231.021.233.018.237.016.241.014.244.012.247.011.25.008.254.005.257.004.26.001.26-.001.257-.004.254-.005.25-.008.247-.011.244-.012.241-.014.237-.016.233-.018.231-.021.226-.022.224-.023.22-.026.216-.027.212-.028.21-.031.205-.032.202-.033.198-.034.194-.036.191-.038.187-.038.183-.04.179-.041.175-.042.172-.043.168-.043.163-.045.16-.046.155-.046.152-.048.148-.048.143-.048.139-.049.136-.05.131-.05.126-.051.123-.051.118-.051.114-.052.11-.052.106-.052.101-.052.096-.052.092-.052.088-.052.083-.052.079-.052.074-.051.07-.052.065-.051.06-.05.056-.05.051-.05.023-.025.023-.024.021-.024.02-.025.019-.024.018-.024.017-.023.015-.024.014-.023.013-.023.012-.023.01-.023.01-.022.008-.022.006-.023.006-.021.004-.022.004-.021.001-.021.001-.021-.001-.021-.001-.021-.004-.021-.004-.022-.006-.021-.006-.023-.008-.022-.01-.022-.01-.023-.012-.023-.013-.023-.014-.023-.015-.024-.017-.023-.018-.024-.019-.024-.02-.025-.021-.024-.023-.024-.023-.025-.051-.05-.056-.05-.06-.05-.065-.051-.07-.052-.074-.051-.079-.052-.083-.052-.088-.052-.092-.052-.096-.052-.101-.052-.106-.052-.11-.052-.114-.052-.118-.051-.123-.051-.126-.051-.131-.05-.136-.05-.139-.049-.143-.048-.148-.048-.152-.048-.155-.046-.16-.046-.163-.045-.168-.043-.172-.043-.175-.042-.179-.041-.183-.04-.187-.038-.191-.038-.194-.036-.198-.034-.202-.033-.205-.032-.21-.031-.212-.028-.216-.027-.22-.026-.224-.023-.226-.022-.231-.021-.233-.018-.237-.016-.241-.014-.244-.012-.247-.011-.25-.008-.254-.005-.257-.004-.26-.001-.26.001z" />
+			</symbol>
+		</defs>
+		<defs>
+			<symbol id="mermaid-diagram-2-clock" width="24" height="24">
+				<path
+					transform="scale(.5)"
+					d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.848 12.459c.202.038.202.333.001.372-1.907.361-6.045 1.111-6.547 1.111-.719 0-1.301-.582-1.301-1.301 0-.512.77-5.447 1.125-7.445.034-.192.312-.181.343.014l.985 6.238 5.394 1.011z" />
+			</symbol>
+		</defs>
+		<defs>
+			<marker
+				id="mermaid-diagram-2-arrowhead"
+				refX="7.9"
+				refY="5"
+				markerUnits="userSpaceOnUse"
+				markerWidth="12"
+				markerHeight="12"
+				orient="auto-start-reverse">
+				<path d="M -1 0 L 10 5 L 0 10 z" />
+			</marker>
+		</defs>
+		<defs>
+			<marker id="mermaid-diagram-2-crosshead" markerWidth="15" markerHeight="8" orient="auto" refX="4" refY="4.5">
+				<path fill="none" stroke="#000000" stroke-width="1pt" d="M 1,2 L 6,7 M 6,2 L 1,7" style="stroke-dasharray: 0, 0" />
+			</marker>
+		</defs>
+		<defs>
+			<marker id="mermaid-diagram-2-filled-head" refX="15.5" refY="7" markerWidth="20" markerHeight="28" orient="auto">
+				<path d="M 18,7 L9,13 L14,7 L9,1 Z" />
+			</marker>
+		</defs>
+		<defs>
+			<marker id="mermaid-diagram-2-sequencenumber" refX="15" refY="15" markerWidth="60" markerHeight="40" orient="auto">
+				<circle cx="15" cy="15" r="6" />
+			</marker>
+		</defs>
+		<defs>
+			<marker
+				id="mermaid-diagram-2-solidTopArrowHead"
+				refX="7.9"
+				refY="7.25"
+				markerUnits="userSpaceOnUse"
+				markerWidth="12"
+				markerHeight="12"
+				orient="auto-start-reverse">
+				<path d="M 0 0 L 10 8 L 0 8 z" />
+			</marker>
+		</defs>
+		<defs>
+			<marker
+				id="mermaid-diagram-2-solidBottomArrowHead"
+				refX="7.9"
+				refY="0.75"
+				markerUnits="userSpaceOnUse"
+				markerWidth="12"
+				markerHeight="12"
+				orient="auto-start-reverse">
+				<path d="M 0 0 L 10 0 L 0 8 z" />
+			</marker>
+		</defs>
+		<defs>
+			<marker
+				id="mermaid-diagram-2-stickTopArrowHead"
+				refX="7.5"
+				refY="7"
+				markerUnits="userSpaceOnUse"
+				markerWidth="12"
+				markerHeight="12"
+				orient="auto-start-reverse">
+				<path d="M 0 0 L 7 7" stroke="black" stroke-width="1.5" fill="none" />
+			</marker>
+		</defs>
+		<defs>
+			<marker
+				id="mermaid-diagram-2-stickBottomArrowHead"
+				refX="7.5"
+				refY="0"
+				markerUnits="userSpaceOnUse"
+				markerWidth="12"
+				markerHeight="12"
+				orient="auto-start-reverse">
+				<path d="M 0 7 L 7 0" stroke="black" stroke-width="1.5" fill="none" />
+			</marker>
+		</defs>
+		<text
+			class="messageText"
+			x="202"
+			y="80"
+			text-anchor="middle"
+			dominant-baseline="middle"
+			alignment-baseline="middle"
+			dy="1em"
+			style="font-family: arial, sans-serif; font-size: 16px; font-weight: 400">
+			run() for after update
+		</text>
+		<line
+			class="messageLine0"
+			data-et="message"
+			data-id="i0"
+			data-from="Trigger"
+			data-to="First"
+			x1="76"
+			y1="109"
+			x2="327"
+			y2="109"
+			stroke-width="2"
+			stroke="none"
+			marker-end="url(#mermaid-diagram-2-arrowhead)"
+			style="fill: none" />
+		<text
+			class="messageText"
+			x="332"
+			y="124"
+			text-anchor="middle"
+			dominant-baseline="middle"
+			alignment-baseline="middle"
+			dy="1em"
+			style="font-family: arial, sans-serif; font-size: 16px; font-weight: 400">
+			afterUpdate()
+		</text>
+		<path
+			class="messageLine0"
+			data-et="message"
+			data-id="i1"
+			data-from="First"
+			data-to="First"
+			d="M 332,153 C 392,143 392,183 332,173"
+			stroke-width="2"
+			stroke="none"
+			marker-end="url(#mermaid-diagram-2-arrowhead)"
+			style="fill: none" />
+		<text
+			class="messageText"
+			x="332"
+			y="198"
+			text-anchor="middle"
+			dominant-baseline="middle"
+			alignment-baseline="middle"
+			dy="1em"
+			style="font-family: arial, sans-serif; font-size: 16px; font-weight: 400">
+			TriggerHandler.bypass(AccountTriggerHandler.class)
+		</text>
+		<path
+			class="messageLine0"
+			data-et="message"
+			data-id="i2"
+			data-from="First"
+			data-to="First"
+			d="M 332,227 C 392,217 392,257 332,247"
+			stroke-width="2"
+			stroke="none"
+			marker-end="url(#mermaid-diagram-2-arrowhead)"
+			style="fill: none" />
+		<text
+			class="messageText"
+			x="205"
+			y="272"
+			text-anchor="middle"
+			dominant-baseline="middle"
+			alignment-baseline="middle"
+			dy="1em"
+			style="font-family: arial, sans-serif; font-size: 16px; font-weight: 400">
+			update the other Accounts
+		</text>
+		<line
+			class="messageLine0"
+			data-et="message"
+			data-id="i3"
+			data-from="First"
+			data-to="Trigger"
+			x1="330"
+			y1="301"
+			x2="79"
+			y2="301"
+			stroke-width="2"
+			stroke="none"
+			marker-end="url(#mermaid-diagram-2-arrowhead)"
+			style="fill: none" />
+		<text
+			class="messageText"
+			x="334"
+			y="316"
+			text-anchor="middle"
+			dominant-baseline="middle"
+			alignment-baseline="middle"
+			dy="1em"
+			style="font-family: arial, sans-serif; font-size: 16px; font-weight: 400">
+			run() for before update and after update
+		</text>
+		<line
+			class="messageLine0"
+			data-et="message"
+			data-id="i4"
+			data-from="Trigger"
+			data-to="Second"
+			x1="76"
+			y1="345"
+			x2="592.5"
+			y2="345"
+			stroke-width="2"
+			stroke="none"
+			marker-end="url(#mermaid-diagram-2-arrowhead)"
+			style="fill: none" />
+		<text
+			class="messageText"
+			x="337"
+			y="360"
+			text-anchor="middle"
+			dominant-baseline="middle"
+			alignment-baseline="middle"
+			dy="1em"
+			style="font-family: arial, sans-serif; font-size: 16px; font-weight: 400">
+			bypassed: afterUpdate() and andFinally() do not run
+		</text>
+		<line
+			class="messageLine1"
+			data-et="message"
+			data-id="i5"
+			data-from="Second"
+			data-to="Trigger"
+			x1="595.5"
+			y1="389"
+			x2="79"
+			y2="389"
+			stroke-width="2"
+			stroke="none"
+			marker-end="url(#mermaid-diagram-2-arrowhead)"
+			style="stroke-dasharray: 3, 3; fill: none" />
+		<text
+			class="messageText"
+			x="332"
+			y="404"
+			text-anchor="middle"
+			dominant-baseline="middle"
+			alignment-baseline="middle"
+			dy="1em"
+			style="font-family: arial, sans-serif; font-size: 16px; font-weight: 400">
+			TriggerHandler.clearBypass(AccountTriggerHandler.class)
+		</text>
+		<path
+			class="messageLine0"
+			data-et="message"
+			data-id="i6"
+			data-from="First"
+			data-to="First"
+			d="M 332,433 C 392,423 392,463 332,453"
+			stroke-width="2"
+			stroke="none"
+			marker-end="url(#mermaid-diagram-2-arrowhead)"
+			style="fill: none" />
+		<text
+			class="messageText"
+			x="332"
+			y="478"
+			text-anchor="middle"
+			dominant-baseline="middle"
+			alignment-baseline="middle"
+			dy="1em"
+			style="font-family: arial, sans-serif; font-size: 16px; font-weight: 400">
+			andFinally(), the last step of the first update
+		</text>
+		<path
+			class="messageLine0"
+			data-et="message"
+			data-id="i7"
+			data-from="First"
+			data-to="First"
+			d="M 332,507 C 392,497 392,537 332,527"
+			stroke-width="2"
+			stroke="none"
+			marker-end="url(#mermaid-diagram-2-arrowhead)"
+			style="fill: none" />
+		<text
+			class="messageText"
+			x="205"
+			y="552"
+			text-anchor="middle"
+			dominant-baseline="middle"
+			alignment-baseline="middle"
+			dy="1em"
+			style="font-family: arial, sans-serif; font-size: 16px; font-weight: 400">
+			return
+		</text>
+		<line
+			class="messageLine1"
+			data-et="message"
+			data-id="i8"
+			data-from="First"
+			data-to="Trigger"
+			x1="330"
+			y1="581"
+			x2="79"
+			y2="581"
+			stroke-width="2"
+			stroke="none"
+			marker-end="url(#mermaid-diagram-2-arrowhead)"
+			style="stroke-dasharray: 3, 3; fill: none" />
+	</svg>
+</div>
 <p>If <code>andFinally()</code> throws, the exception reaches the caller, and the handler does not write the exit and limits lines.</p>
 <h2>Test a Handler Without DML</h2>
 <p>
@@ -714,7 +2174,7 @@ super(OpportunityTriggerHandler.class);
 		</tr>
 		<tr>
 			<td><code>clearMaxLoopCount()</code></td>
-			<td>Removes the limit of all trigger operations of this handler. The counts continue.</td>
+			<td>Removes the limit of all trigger operations of this handler. The counts continue. Returns the handler, so you can chain calls.</td>
 		</tr>
 		<tr>
 			<td><code>static getLoopCount(String handlerName)</code></td>
@@ -728,6 +2188,10 @@ super(OpportunityTriggerHandler.class);
 			<td>Returns the count of 1 trigger operation of a handler, or -1 when <code>setMaxLoopCount()</code> was never called for it.</td>
 		</tr>
 		<tr>
+			<td><code>static getLoopCount(Type handlerType, System.TriggerOperation operation)</code></td>
+			<td>Returns the count of 1 trigger operation of a handler, by type.</td>
+		</tr>
+		<tr>
 			<td><code>static bypass(String handlerName)</code></td>
 			<td>Bypasses a handler by name. The name matches in any case.</td>
 		</tr>
@@ -738,6 +2202,10 @@ super(OpportunityTriggerHandler.class);
 		<tr>
 			<td><code>static bypass(List&lt;String&gt; handlerNames)</code></td>
 			<td>Bypasses a list of handlers by name.</td>
+		</tr>
+		<tr>
+			<td><code>static bypass(Set&lt;String&gt; handlerNames)</code></td>
+			<td>Bypasses a set of handlers by name.</td>
 		</tr>
 		<tr>
 			<td><code>static bypassAll()</code></td>
@@ -756,6 +2224,10 @@ super(OpportunityTriggerHandler.class);
 			<td>Clears the bypass of a list of handlers by name.</td>
 		</tr>
 		<tr>
+			<td><code>static clearBypass(Set&lt;String&gt; handlerNames)</code></td>
+			<td>Clears the bypass of a set of handlers by name.</td>
+		</tr>
+		<tr>
 			<td><code>static isBypassed(String handlerName)</code></td>
 			<td>Returns <code>true</code> when the handler is bypassed by name or by type. The result does not include the global bypass.</td>
 		</tr>
@@ -768,8 +2240,17 @@ super(OpportunityTriggerHandler.class);
 			<td>Returns <code>true</code> when all handlers are bypassed.</td>
 		</tr>
 		<tr>
+			<td><code>static hasBypassPermission()</code></td>
+			<td>
+				Returns <code>true</code> when the running user has the <code>BypassTriggerHandlers</code> custom permission. Such a user runs no handler.
+			</td>
+		</tr>
+		<tr>
 			<td><code>static isSkipped(String handlerName)</code></td>
-			<td>Returns <code>true</code> when the handler does not run: it is bypassed by name or by type, or all handlers are bypassed.</td>
+			<td>
+				Returns <code>true</code> when the handler does not run: it is bypassed by name or by type, all handlers are bypassed, or the running user has
+				the bypass permission.
+			</td>
 		</tr>
 		<tr>
 			<td><code>static isSkipped(Type handlerType)</code></td>
@@ -840,6 +2321,20 @@ super(OpportunityTriggerHandler.class);
 			<td>
 				Sets whether this handler writes the entry and exit lines. With null, the handler uses the setting for all handlers. Returns the handler, so
 				you can chain calls.
+			</td>
+		</tr>
+		<tr>
+			<td><code>static hideAllDebug()</code>, <code>static hideAllDebug(Boolean hidden)</code></td>
+			<td>
+				Stops the entry and exit lines of all handlers. It wins over every debug setting, and only <code>showAllDebug()</code> or
+				<code>hideAllDebug(false)</code> ends it.
+			</td>
+		</tr>
+		<tr>
+			<td><code>static showAllDebug()</code></td>
+			<td>
+				Ends <code>hideAllDebug()</code>, as <code>hideAllDebug(false)</code> does. Each handler then uses its own setting or the static setting
+				again.
 			</td>
 		</tr>
 		<tr>

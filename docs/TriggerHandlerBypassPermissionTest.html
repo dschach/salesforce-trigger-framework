@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<title>Salesforce Trigger Handler code documentation</title>
+		<meta charset="UTF-8" />
+		<script src="./assets/index.js" type="module"></script>
+		<script src="./assets/search-idx.js" type="module"></script>
+		<script src="./assets/search.js" type="module"></script>
+		<script src="./assets/highlight.js" charset="UTF-8"></script>
+		<script src="./assets/mark.js" charset="UTF-8"></script>
+		<script src="./assets/lunr.js" charset="UTF-8"></script>
+		<link href="./assets/highlight.css" rel="stylesheet" />
+		<link type="text/css" href="./assets/index.css" rel="stylesheet" />
+		<link type="image/png" href="./assets/favicon.png" rel="shortcut icon" />
+	</head>
+
+	<body>
+		<div id="side-bar">
+			<div id="logo-container">
+				<div class="title">Salesforce Trigger Handler code documentation</div>
+				<img src="assets/logo.png" />
+				<div class="subtitle">
+					Documentation for
+					<a href="https://github.com/dschach/salesforce-trigger-framework" target="_blank" rel="noopener noreferrer">Trigger Framework</a>
+				</div>
+			</div>
+			<div id="search-wrapper">
+				<div class="search-icon"></div>
+				<input id="search-input" type="text" autocomplete="off" placeholder="Search..." />
+			</div>
+			<ul class="" id="search-results"></ul>
+			<div class="navbar">
+				<nav role="navigation">
+					<a class="nav-header" id="home" href="javascript:void(0)" onclick="goToLocation('index.html')"> Home </a>
+					<details class="group-name" id="SampleTriggerHandler">
+						<summary class="nav-header" id="header-SampleTriggerHandler">
+							<a href="javascript:void(0)" title="See Class Group info" onclick="goToLocation('sampletriggerhandlerhome.html')"
+								>SampleTriggerHandler</a
+							>
+						</summary>
+						<ul>
+							<!-- menu items -->
+							<li
+								class="nav-item class public"
+								id="item-AccountSampleTriggerHandler"
+								title="AccountSampleTriggerHandler"
+								onclick="goToLocation('AccountSampleTriggerHandler.html')">
+								<a href="javascript:void(0)" tabindex="1">AccountSampleTriggerHandler</a>
+							</li>
+							<li
+								class="nav-item class private"
+								id="item-AccountSampleTriggerHandlerTest"
+								title="AccountSampleTriggerHandlerTest"
+								onclick="goToLocation('AccountSampleTriggerHandlerTest.html')">
+								<a href="javascript:void(0)" tabindex="1">AccountSampleTriggerHandlerTest</a>
+							</li>
+						</ul>
+					</details>
+					<details class="group-name" id="Trigger_Handler">
+						<summary class="nav-header" id="header-Trigger_Handler">
+							<span>Trigger Handler</span>
+						</summary>
+						<ul>
+							<!-- menu items -->
+							<li class="nav-item class public" id="item-TriggerHandler" title="TriggerHandler" onclick="goToLocation('TriggerHandler.html')">
+								<a href="javascript:void(0)" tabindex="1">TriggerHandler</a>
+							</li>
+							<li
+								class="nav-item class private"
+								id="item-TriggerHandlerBypassPermissionTest"
+								title="TriggerHandlerBypassPermissionTest"
+								onclick="goToLocation('TriggerHandlerBypassPermissionTest.html')">
+								<a href="javascript:void(0)" tabindex="1">TriggerHandlerBypassPermissionTest</a>
+							</li>
+							<li
+								class="nav-item class private"
+								id="item-TriggerHandlerTest"
+								title="TriggerHandlerTest"
+								onclick="goToLocation('TriggerHandlerTest.html')">
+								<a href="javascript:void(0)" tabindex="1">TriggerHandlerTest</a>
+							</li>
+						</ul>
+					</details>
+				</nav>
+			</div>
+		</div>
+		<table id="content">
+			<tr>
+				<td class="scoping-panel">
+					Show: <input id="cbx-all" type="checkbox" checked="true" onclick="toggleAllScopes(this.checked)" />
+					<label for="cbx-all">All</label>&nbsp;&nbsp;
+					<input id="cbx-public" type="checkbox" checked="true" onclick="toggleScope('public', this.checked)" />
+					<label for="cbx-public"> public </label>&nbsp;&nbsp;<input
+						id="cbx-private"
+						type="checkbox"
+						checked="true"
+						onclick="toggleScope('private', this.checked)" />
+					<label for="cbx-private"> private </label>&nbsp;&nbsp;<input
+						id="cbx-protected"
+						type="checkbox"
+						checked="true"
+						onclick="toggleScope('protected', this.checked)" />
+					<label for="cbx-protected"> protected </label>&nbsp;&nbsp;<input
+						id="cbx-testmethod"
+						type="checkbox"
+						checked="true"
+						onclick="toggleScope('testmethod', this.checked)" />
+					<label for="cbx-testmethod"> testMethod </label>
+				</td>
+			</tr>
+			<tr>
+				<td class="doc-page">
+					<div class="section">
+						<h2 class="class-title top-level-type" id="TriggerHandlerBypassPermissionTest">
+							<a
+								class="source-link"
+								href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/force-app/main/default/classes/TriggerHandlerBypassPermissionTest.cls#L10"
+								title="Go to source"
+								target="_blank"
+								rel="noopener noreferrer">
+								TriggerHandlerBypassPermissionTest
+							</a>
+						</h2>
+						<div class="class-container">
+							<div class="class-description">
+								Tests for the <code class="code-inline">BypassTriggerHandlers</code> custom permission of
+								<code class="code-inline">TriggerHandler</code>. <br />The test creates a test user and gives it the permission through a permission
+								set. Salesforce allows no DML on permission set objects in a parallel test class, so these tests are in their own class without
+								<code class="code-inline">isParallel</code>.
+							</div>
+							<div class="class-subtitle">Signature</div>
+
+							<div class="class-signature">private inherited sharing class TriggerHandlerBypassPermissionTest</div>
+							<div class="class-subtitle">See</div>
+							<div class="class-subtitle-description">
+								<a href="javascript:void(0)" onclick="goToLocation('TriggerHandler.html')">TriggerHandler</a>,
+								<a href="javascript:void(0)" onclick="goToLocation('TriggerHandlerTest.html')">TriggerHandlerTest</a>
+							</div>
+							<div class="class-subtitle">Since</div>
+							<div class="class-subtitle-description">
+								<li>2026-11</li>
+							</div>
+						</div>
+						<div class="subsection properties TriggerHandlerBypassPermissionTest">
+							<h3 class="subsection-title properties">TriggerHandlerBypassPermissionTest Properties</h3>
+							<table class="attributes-table properties">
+								<tr>
+									<th>Name</th>
+									<th>Signature</th>
+
+									<th>Description</th>
+								</tr>
+								<tr class="property private">
+									<td class="attribute-name">
+										<a
+											class="source-link"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/force-app/main/default/classes/TriggerHandlerBypassPermissionTest.cls#L14"
+											title="Go to source"
+											target="_blank"
+											rel="noopener noreferrer">
+											calls
+										</a>
+									</td>
+									<td>
+										<div class="attribute-signature">private static List&lt;String&gt; calls</div>
+									</td>
+
+									<td class="attribute-description">The methods that the test handler ran, in order. Apex resets it for each test method.</td>
+								</tr>
+								<tr class="property private">
+									<td class="attribute-name">
+										<a
+											class="source-link"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/force-app/main/default/classes/TriggerHandlerBypassPermissionTest.cls#L19"
+											title="Go to source"
+											target="_blank"
+											rel="noopener noreferrer">
+											HANDLER_NAME
+										</a>
+									</td>
+									<td>
+										<div class="attribute-signature">private static final String HANDLER_NAME</div>
+									</td>
+
+									<td class="attribute-description">The name of the test handler, from <code class="code-inline">Type.getName()</code>.</td>
+								</tr>
+							</table>
+						</div>
+						<div class="subsection methods">
+							<h3 class="subsection-title methods">TriggerHandlerBypassPermissionTest Methods</h3>
+							<div class="methods-container">
+								<ul class="methods-toc">
+									<li class="method testmethod">
+										<a class="methods-toc__entry" href="#TriggerHandlerBypassPermissionTest.bypassPermissionSkipsEveryHandler">
+											bypassPermissionSkipsEveryHandler ()
+										</a>
+
+										<div class="methods-toc__description">
+											A user with the <code class="code-inline">BypassTriggerHandlers</code> permission runs no handler: no context method, no
+											<code class="code-inline">andFinally()</code>, and no loop count. The code bypass checks do not report it, and code cannot clear
+											it.
+										</div>
+									</li>
+									<li class="method private">
+										<a class="methods-toc__entry" href="#TriggerHandlerBypassPermissionTest.newHandler"> newHandler () </a>
+
+										<div class="methods-toc__description">Creates a test handler that runs as if a trigger fired after update.</div>
+									</li>
+									<li class="method private">
+										<a class="methods-toc__entry" href="#TriggerHandlerBypassPermissionTest.newUserWithBypassPermission">
+											newUserWithBypassPermission ()
+										</a>
+
+										<div class="methods-toc__description">
+											Creates a test user with the profile of the running user, and gives it the
+											<code class="code-inline">BypassTriggerHandlers</code> custom permission through a new permission set. <br />The setup runs in
+											system mode, so that it does not depend on the rights of the user who runs the tests. So this method suppresses
+											<code class="code-inline">FlagSystemMode</code>. The permission check under test runs later, in
+											<code class="code-inline">System.runAs()</code> for the test user.
+										</div>
+									</li>
+								</ul>
+								<div class="method testmethod">
+									<h4 class="method-title" id="TriggerHandlerBypassPermissionTest.bypassPermissionSkipsEveryHandler">
+										<a
+											class="source-link"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/force-app/main/default/classes/TriggerHandlerBypassPermissionTest.cls#L25"
+											title="Go to source"
+											target="_blank"
+											rel="noopener noreferrer">
+											bypassPermissionSkipsEveryHandler()
+										</a>
+									</h4>
+									<div class="method-description">
+										A user with the <code class="code-inline">BypassTriggerHandlers</code> permission runs no handler: no context method, no
+										<code class="code-inline">andFinally()</code>, and no loop count. The code bypass checks do not report it, and code cannot clear
+										it.
+									</div>
+									<div class="method-subtitle">Signature</div>
+									<div class="method-annotations">@IsTest</div>
+									<div class="method-signature">private static void bypassPermissionSkipsEveryHandler()</div>
+								</div>
+								<div class="method private">
+									<h4 class="method-title" id="TriggerHandlerBypassPermissionTest.newHandler">
+										<a
+											class="source-link"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/force-app/main/default/classes/TriggerHandlerBypassPermissionTest.cls#L78"
+											title="Go to source"
+											target="_blank"
+											rel="noopener noreferrer">
+											newHandler()
+										</a>
+									</h4>
+									<div class="method-description">Creates a test handler that runs as if a trigger fired after update.</div>
+									<div class="method-subtitle">Signature</div>
+
+									<div class="method-signature">private static TriggerHandlerBypassPermissionTest.PermissionHandler newHandler()</div>
+									<div class="method-subtitle">Returns</div>
+									<div class="method-subtitle-description">
+										<code class="code-inline">TriggerHandlerBypassPermissionTest.PermissionHandler</code> A handler with the name
+										<code class="code-inline">HANDLER_NAME</code>.
+									</div>
+								</div>
+								<div class="method private">
+									<h4 class="method-title" id="TriggerHandlerBypassPermissionTest.newUserWithBypassPermission">
+										<a
+											class="source-link"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/force-app/main/default/classes/TriggerHandlerBypassPermissionTest.cls#L51"
+											title="Go to source"
+											target="_blank"
+											rel="noopener noreferrer">
+											newUserWithBypassPermission()
+										</a>
+									</h4>
+									<div class="method-description">
+										Creates a test user with the profile of the running user, and gives it the
+										<code class="code-inline">BypassTriggerHandlers</code> custom permission through a new permission set. <br />The setup runs in
+										system mode, so that it does not depend on the rights of the user who runs the tests. So this method suppresses
+										<code class="code-inline">FlagSystemMode</code>. The permission check under test runs later, in
+										<code class="code-inline">System.runAs()</code> for the test user.
+									</div>
+									<div class="method-subtitle">Signature</div>
+									<div class="method-annotations">@SuppressWarnings('PMD.FlagSystemMode')</div>
+									<div class="method-signature">private static User newUserWithBypassPermission()</div>
+									<div class="method-subtitle">Returns</div>
+									<div class="method-subtitle-description">
+										<code class="code-inline">User</code> The test user, for <code class="code-inline">System.runAs()</code>.
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="section">
+						<h2 class="class-title" id="TriggerHandlerBypassPermissionTest.PermissionHandler">
+							<a
+								class="source-link"
+								href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/force-app/main/default/classes/TriggerHandlerBypassPermissionTest.cls#L87"
+								title="Go to source"
+								target="_blank"
+								rel="noopener noreferrer">
+								TriggerHandlerBypassPermissionTest.PermissionHandler
+							</a>
+						</h2>
+						<div class="class-container">
+							<div class="class-description">
+								A handler that records its after update context and <code class="code-inline">andFinally()</code> in
+								<code class="code-inline">calls</code>.
+							</div>
+							<div class="class-subtitle">Signature</div>
+
+							<div class="class-signature">private inherited sharing class PermissionHandler extends TriggerHandler</div>
+						</div>
+						<div class="subsection methods">
+							<h3 class="subsection-title methods">TriggerHandlerBypassPermissionTest.PermissionHandler Constructors</h3>
+							<div class="methods-container">
+								<ul class="methods-toc">
+									<li class="method private">
+										<a class="methods-toc__entry" href="#TriggerHandlerBypassPermissionTest.PermissionHandler.PermissionHandler">
+											PermissionHandler ()
+										</a>
+
+										<div class="methods-toc__description">
+											Creates the handler with its type, so that its name is <code class="code-inline">HANDLER_NAME</code>.
+										</div>
+									</li>
+								</ul>
+								<div class="method private">
+									<h4 class="method-title" id="TriggerHandlerBypassPermissionTest.PermissionHandler.PermissionHandler">
+										<a
+											class="source-link"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/force-app/main/default/classes/TriggerHandlerBypassPermissionTest.cls#L91"
+											title="Go to source"
+											target="_blank"
+											rel="noopener noreferrer">
+											PermissionHandler()
+										</a>
+									</h4>
+									<div class="method-description">
+										Creates the handler with its type, so that its name is <code class="code-inline">HANDLER_NAME</code>.
+									</div>
+									<div class="method-subtitle">Signature</div>
+
+									<div class="method-signature">private PermissionHandler()</div>
+								</div>
+							</div>
+						</div>
+						<div class="subsection methods">
+							<h3 class="subsection-title methods">TriggerHandlerBypassPermissionTest.PermissionHandler Methods</h3>
+							<div class="methods-container">
+								<ul class="methods-toc">
+									<li class="method public">
+										<a class="methods-toc__entry" href="#TriggerHandlerBypassPermissionTest.PermissionHandler.afterUpdate"> afterUpdate () </a>
+
+										<div class="methods-toc__description">Records the after update context.</div>
+									</li>
+									<li class="method public">
+										<a class="methods-toc__entry" href="#TriggerHandlerBypassPermissionTest.PermissionHandler.andFinally"> andFinally () </a>
+
+										<div class="methods-toc__description">Records <code class="code-inline">andFinally()</code>.</div>
+									</li>
+								</ul>
+								<div class="method public">
+									<h4 class="method-title" id="TriggerHandlerBypassPermissionTest.PermissionHandler.afterUpdate">
+										<a
+											class="source-link"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/force-app/main/default/classes/TriggerHandlerBypassPermissionTest.cls#L98"
+											title="Go to source"
+											target="_blank"
+											rel="noopener noreferrer">
+											afterUpdate()
+										</a>
+									</h4>
+									<div class="method-description">Records the after update context.</div>
+									<div class="method-subtitle">Signature</div>
+
+									<div class="method-signature">public override void afterUpdate()</div>
+								</div>
+								<div class="method public">
+									<h4 class="method-title" id="TriggerHandlerBypassPermissionTest.PermissionHandler.andFinally">
+										<a
+											class="source-link"
+											href="https://github.com/dschach/salesforce-trigger-framework/tree/main/force-app/main/default/classes/force-app/main/default/classes/TriggerHandlerBypassPermissionTest.cls#L105"
+											title="Go to source"
+											target="_blank"
+											rel="noopener noreferrer">
+											andFinally()
+										</a>
+									</h4>
+									<div class="method-description">Records <code class="code-inline">andFinally()</code>.</div>
+									<div class="method-subtitle">Signature</div>
+
+									<div class="method-signature">public override void andFinally()</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td class="footer">
+					<div>
+						<a href="https://github.com/no-stack-dub-sack/apexdox-vs-code" target="_blank" rel="noopener noreferrer"> Powered By ApexDox VS Code </a>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
