@@ -69,6 +69,9 @@ Most important, the framework is small and simple to use.
 **Deploy to a Salesforce org:**
 [![Deploy](https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png)](https://githubsfdeploy.herokuapp.com/?owner=dschach&repo=salesforce-trigger-framework)
 
+<!-- package-version-start -->
+<!-- package-version-end -->
+
 ## What Is New in Version 2.0
 
 - **13 breaking changes.** [Upgrade From Version 1](#upgrade-from-version-1) tells what to change in your handlers, triggers, and tests. The [changelog](CHANGELOG.md) has an upgrade note for each change.

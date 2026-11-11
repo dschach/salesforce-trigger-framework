@@ -1,0 +1,88 @@
+# Releases the framework from a button. Run it instead of merging the release pull request
+# by hand. It runs scripts/release.mjs, which creates the beta package version on the
+# release branch, commits its ids, waits for the required checks, and squash-merges the
+# release pull request. CI on main then creates the release, deploys the site from the
+# tag, and promotes the beta.
+# The Run workflow button starts it. The GitHub API can start it too:
+#   gh workflow run release.yml -f dry_run=true
+# A dry run creates a beta that skips validation, which cannot be promoted, shows the
+# changes, and stops. It commits, pushes, and merges nothing.
+# While sfdx-project.json names no package, the workflow does not log in to the Dev Hub,
+# and a release only waits for the checks and merges.
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: create a beta that cannot be promoted, and merge nothing"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+# 1 release at a time. A release in progress is never cancelled.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      # The Release Please token pushes the commit and merges the pull request. A push or
+      # a merge with the default token would start no workflow, so the checks and the
+      # release would not run.
+      - name: "Checkout source code"
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+
+      - name: "Set up Node.js"
+        uses: actions/setup-node@v7
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: "Install npm dependencies"
+        run: npm ci
+
+      # Reads the sfdx-project.json of main. The release branch has the same package name.
+      - name: "Check for a package"
+        id: project
+        run: echo "has-package=$(node scripts/package-version.mjs has-package)" >> "$GITHUB_OUTPUT"
+
+      - name: "Install Salesforce CLI"
+        if: ${{ steps.project.outputs.has-package == 'true' }}
+        run: |
+          npm install --global @salesforce/cli
+          sf --version
+
+      # The secret stays in an environment variable and reaches the CLI through
+      # standard input, so it never appears in a script or a file.
+      - name: "Authenticate Dev Hub"
+        if: ${{ steps.project.outputs.has-package == 'true' }}
+        env:
+          SFDX_AUTH_URL: ${{ secrets.SALESFORCE_AUTH_URL }}
+        run: |
+          if [ -z "$SFDX_AUTH_URL" ]; then
+            echo "The SALESFORCE_AUTH_URL secret is not set."
+            exit 1
+          fi
+          echo "$SFDX_AUTH_URL" | sf org login sfdx-url --alias devhub --set-default-dev-hub --sfdx-url-stdin
+
+      - name: "Release"
+        env:
+          GH_TOKEN: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/release.mjs --dry-run
+          else
+            node scripts/release.mjs
+          fi
