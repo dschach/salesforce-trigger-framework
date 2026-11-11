@@ -350,6 +350,8 @@ To limit recursion, set a maximum loop count for a handler. Each trigger operati
 
 A DML statement on more than 200 records runs the trigger once for each chunk of 200 records. Each chunk uses 1 run of its operation. A bypassed run does not count. A run that the limit stops counts. When the count of an operation passes its maximum, `run()` sends a warning to `log()` and returns. By default, `log()` writes it to the debug log. It does not call the context method or `andFinally()`.
 
+A partial-success DML statement uses more runs. With `Database.update(records, false)`, the Bulk API, or Data Loader, Salesforce rolls back a DML statement in which some records fail. Then it runs the trigger again for the records that did not fail, and it can do this up to 2 times. Static variables keep their values in a retry, so each retry counts as another run. With `setMaxLoopCount(1)`, the limit stops the retry, and the handler work for the saved records does not happen. For a handler that must run for each saved record, allow 3 runs for each run that you expect, or set no limit.
+
 This handler runs its update logic once for an update of up to 200 records. The update in `afterUpdate()` fires the trigger again, and the loop limit stops those runs.
 
 ```apex
