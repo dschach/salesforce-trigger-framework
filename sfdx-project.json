@@ -3,7 +3,7 @@
     {
       "path": "force-app",
       "default": true,
-      "versionNumber": "2.1.0.NEXT",
+      "versionNumber": "2.2.0.NEXT",
       "package": "Trigger Handler Framework"
     }
   ],

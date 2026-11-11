@@ -1,5 +1,34 @@
 # Changelog
 
+## [2.2.0](https://github.com/dschach/salesforce-trigger-framework/compare/v2.1.0...v2.2.0) (2026-11-11)
+
+
+### Features
+
+* **package:** Release from a button with a beta package version ([#400](https://github.com/dschach/salesforce-trigger-framework/issues/400)) ([04e203a](https://github.com/dschach/salesforce-trigger-framework/commit/04e203a01ed48f550f26ea57e654dc9d85f62fbb))
+
+
+### Bug Fixes
+
+* **release:** Wait for GitHub to show the pushed commit before the merge ([#401](https://github.com/dschach/salesforce-trigger-framework/issues/401)) ([5e57e66](https://github.com/dschach/salesforce-trigger-framework/commit/5e57e6621450cf37d0b960f015d1b5f86579ff63))
+
+
+### Documentation
+
+* **handler:** Warn that a partial-success retry uses loop limit runs ([#398](https://github.com/dschach/salesforce-trigger-framework/issues/398)) ([8f310c2](https://github.com/dschach/salesforce-trigger-framework/commit/8f310c2a5e0c7420e187f587c2725cd727984e9e))
+
+
+### Build System
+
+* **package:** Create beta package versions and write their ids ([04e203a](https://github.com/dschach/salesforce-trigger-framework/commit/04e203a01ed48f550f26ea57e654dc9d85f62fbb))
+* **package:** Name the unlocked package in sfdx-project.json ([04e203a](https://github.com/dschach/salesforce-trigger-framework/commit/04e203a01ed48f550f26ea57e654dc9d85f62fbb))
+
+
+### Continuous Integration
+
+* **package:** Check the package ids and promote the beta after a release ([04e203a](https://github.com/dschach/salesforce-trigger-framework/commit/04e203a01ed48f550f26ea57e654dc9d85f62fbb))
+* **release:** Release from a button that merges the release pull request ([04e203a](https://github.com/dschach/salesforce-trigger-framework/commit/04e203a01ed48f550f26ea57e654dc9d85f62fbb))
+
 ## [2.1.0](https://github.com/dschach/salesforce-trigger-framework/compare/v2.0.0...v2.1.0) (2026-11-11)
 
 
