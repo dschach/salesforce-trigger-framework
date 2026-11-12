@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.2.2](https://github.com/dschach/salesforce-trigger-framework/compare/v2.2.1...v2.2.2) (2026-11-12)
+
+
+### Documentation
+
+* **apexdoc:** Add since tags with release versions to all members ([#411](https://github.com/dschach/salesforce-trigger-framework/issues/411)) ([3a7b82c](https://github.com/dschach/salesforce-trigger-framework/commit/3a7b82c1854da29ce92d02b132c5f8c914202dbe))
+* **site:** Add markdown copies, llms.txt, and a markdown toolbar to the site ([#407](https://github.com/dschach/salesforce-trigger-framework/issues/407)) ([628f77c](https://github.com/dschach/salesforce-trigger-framework/commit/628f77c43f546114fef91fb8b655f2ef8e019c59))
+* **site:** Regenerate the documentation site ([#412](https://github.com/dschach/salesforce-trigger-framework/issues/412)) ([33bf6fd](https://github.com/dschach/salesforce-trigger-framework/commit/33bf6fd83af74a79fc00d9f9cf7c46b199f94e26))
+
+
+### Build System
+
+* **node:** Update Node.js from v24.22.2 to v24.22.3 ([#405](https://github.com/dschach/salesforce-trigger-framework/issues/405)) ([61ba0a2](https://github.com/dschach/salesforce-trigger-framework/commit/61ba0a234d516880923c501871425ba2959dc709))
+* **prettier:** Update devDependency prettier from 3.9.10 to 3.10.0 ([#406](https://github.com/dschach/salesforce-trigger-framework/issues/406)) ([0c615b2](https://github.com/dschach/salesforce-trigger-framework/commit/0c615b212cc269e500dbdf6d1123203d0ffbe859))
+* **site:** Add a local preview of the deployed site ([#410](https://github.com/dschach/salesforce-trigger-framework/issues/410)) ([111173f](https://github.com/dschach/salesforce-trigger-framework/commit/111173f901126103b5e26642c4ffb98061dfca66))
+* **turndown:** Update devDependency turndown from 7.2.4 to 7.2.5 ([#408](https://github.com/dschach/salesforce-trigger-framework/issues/408)) ([ec79953](https://github.com/dschach/salesforce-trigger-framework/commit/ec799539bc4b35ae01ba762876717abd64c04965))
+
 ## [2.2.1](https://github.com/dschach/salesforce-trigger-framework/compare/v2.2.0...v2.2.1) (2026-11-11)
 
 
