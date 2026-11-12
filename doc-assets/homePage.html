@@ -91,14 +91,12 @@
 	/></a>
 </p>
 <!-- package-version-start -->
-
 <p>
 	<strong>Install version 2.2.1 as an unlocked package:</strong>
 	<a href="https://login.salesforce.com/packaging/installPackage.apexp?p0=04tQm000003DolFIAS">in production or a Developer Edition org</a>, or
 	<a href="https://test.salesforce.com/packaging/installPackage.apexp?p0=04tQm000003DolFIAS">in a sandbox</a>. With the Salesforce CLI, run
 	<code>sf package install --package 04tQm000003DolFIAS --target-org &lt;alias&gt; --wait 10</code>.
 </p>
-
 <!-- package-version-end -->
 <h2 id="what-is-new-in-version-20">What Is New in Version 2.0</h2>
 <ul>
@@ -114,7 +112,7 @@
 			<li>Named bypasses and a global bypass that are independent, with <code>isSkipped()</code> and <code>isGlobalBypassed()</code>.</li>
 			<li>Debug and limits settings for 1 handler: <code>showHandlerDebug()</code> and <code>showHandlerLimits()</code>.</li>
 			<li>
-				<code>setTestContext()</code>, to test a handler without DML, and an overridable <code>log()</code>, to send the framework messages to your
+				<code>setTestContext()</code> to test a handler without DML, and an overridable <code>log()</code> to send the framework messages to your
 				logging framework.
 			</li>
 		</ul>
@@ -131,7 +129,7 @@
 <p>
 	To create a trigger handler, create a class that extends
 	<a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/force-app/main/default/classes/TriggerHandler.cls">TriggerHandler.cls</a
-	>. This is an Opportunity trigger handler:
+	>. This is an example Opportunity trigger handler:
 </p>
 <pre><code class="language-apex">public inherited sharing class OpportunityTriggerHandler extends TriggerHandler {
 }
@@ -185,8 +183,8 @@
 	class and a sample
 	<a href="https://github.com/dschach/salesforce-trigger-framework/blob/main/sample-handler/main/default/triggers/AccountSampleTrigger.trigger"
 		>trigger</a
-	>. The sample is not a package directory, so the Deploy to Salesforce button and <code>sf project deploy start</code> install only the framework. To
-	try the sample in a scratch org, run <code>sf project deploy start --source-dir force-app --source-dir sample-handler</code>. The
+	>. The sample is not packaged metadata, so the Deploy to Salesforce button and <code>sf project deploy start</code> install only the framework. To
+	try the sample in a scratch org or sandbox, run <code>sf project deploy start --source-dir force-app --source-dir sample-handler</code>. The
 	<a href="sampletriggerhandlerhome.html">sample README</a> tells what the sample shows.
 </p>
 <h3 id="pass-the-handler-class-to-super">Pass the Handler Class to super()</h3>
@@ -1343,7 +1341,7 @@ TriggerHandler.clearAllBypasses();
 </p>
 <h3 id="set-bypass">Set Bypass</h3>
 <p>
-	To bypass a handler for a time and then give back its earlier bypass state, use <code>setBypass()</code>. You do not have to know the state first:
+	To bypass a handler for a time and then give back its earlier bypass state, use <code>setBypass()</code>. You do not have to know the initial state:
 </p>
 <pre><code class="language-apex">Boolean isBypassed = TriggerHandler.isBypassed(&#39;AccountTriggerHandler&#39;);
 TriggerHandler.bypass(&#39;AccountTriggerHandler&#39;);
