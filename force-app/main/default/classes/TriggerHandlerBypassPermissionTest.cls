@@ -1,6 +1,7 @@
 /**
  * Tests for the `BypassTriggerHandlers` custom permission of `TriggerHandler`.
  * <br>The test creates a test user and gives it the permission through a permission set. Salesforce allows no DML on permission set objects in a parallel test class, so these tests are in their own class without `isParallel`.
+ * @author {@link [David Schach](https://github.com/dschach)}
  * @since 2.1.0
  * @group Trigger Handler
  * @see TriggerHandler

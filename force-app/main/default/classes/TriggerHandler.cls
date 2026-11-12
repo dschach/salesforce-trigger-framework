@@ -1394,7 +1394,8 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Counts the runs of 1 trigger operation of 1 handler, and compares the count with a maximum.
 	 * @author {@link [David Schach](https://github.com/dschach)}
-	 * @since 1.5.1
+	 * @since 1.0.0 Add the class as `LoopCount`
+	 * @since 1.5.1 Rename `LoopCount` to `LoopCounter`
 	 */
 	@TestVisible
 	private inherited sharing class LoopCounter {
