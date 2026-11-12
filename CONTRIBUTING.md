@@ -113,6 +113,8 @@ The live site changes only with a release. When Release Please creates a release
 
 Release Please writes the release entry into `CHANGELOG.md` only when the release pull request merges, so `docs/` does not have it yet. The deploy rebuilds the changelog page from the `CHANGELOG.md` of the tag, so the live page shows the release.
 
+The deploy also runs `scripts/build-markdown-site.mjs`. It writes a markdown copy of each page next to it, for example `deploy.md` for `deploy.html`, and an `llms.txt` that lists the copies, as [llmstxt.org](https://llmstxt.org/) describes. Pages from a markdown file copy that file; the class pages are converted from their HTML. Each page gets a toolbar at the top with Copy as Markdown, View as Markdown, Copy URL to Markdown, View llms.txt, and Copy URL to llms.txt. The toolbar files are in `doc-assets/markdown-tools/`. To see the result before a release, run the script on a copy of `docs/`: `cp -R docs /tmp/site && node scripts/build-markdown-site.mjs /tmp/site`.
+
 To deploy again without a release, for example after a fix to the site, run the Deploy site workflow with the Run workflow button. Name a tag, or leave the tag empty to deploy the latest release. The site is still deployed from a release tag, so a fix on `main` goes live only with the next release.
 
 ## Release

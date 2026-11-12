@@ -1,0 +1,108 @@
+/* The markdown toolbar at the top of each page of the documentation site. It uses the
+   colors of index.css. scripts/build-markdown-site.mjs copies this file to assets/. */
+.markdown-tools {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 4px 0;
+	margin: 0 0 16px;
+	font-size: 1em;
+}
+
+.markdown-tools__action,
+.markdown-tools__toggle,
+.markdown-tools__menu a,
+.markdown-tools__menu button {
+	font: inherit;
+	color: var(--grey-blue-tx, #51638a);
+	background: none;
+	border: none;
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.markdown-tools__action {
+	padding: 2px 12px;
+	font-weight: 600;
+	border-left: 1px solid var(--dark-grey, #c6c6c6);
+}
+
+.markdown-tools__action:first-child {
+	padding-left: 0;
+	border-left: none;
+}
+
+.markdown-tools__action:hover,
+.markdown-tools__menu a:hover,
+.markdown-tools__menu button:hover {
+	color: #2aaae0;
+	text-decoration: underline;
+}
+
+.markdown-tools__more {
+	position: relative;
+	padding-left: 12px;
+	border-left: 1px solid var(--dark-grey, #c6c6c6);
+}
+
+.markdown-tools__toggle {
+	padding: 0 8px;
+	font-weight: 700;
+	border: 1px solid var(--dark-grey, #c6c6c6);
+	border-radius: 4px;
+	line-height: 1.4;
+}
+
+.markdown-tools__toggle[aria-expanded="true"] {
+	background: var(--light-grey, #f7f7f7);
+}
+
+.markdown-tools__menu {
+	position: absolute;
+	top: calc(100% + 6px);
+	left: 0;
+	z-index: 20;
+	min-width: 220px;
+	padding: 8px 0;
+	background: var(--white, #fff);
+	border: 1px solid var(--dark-grey, #c6c6c6);
+	border-radius: 8px;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.markdown-tools__menu[hidden] {
+	display: none;
+}
+
+.markdown-tools__menu a,
+.markdown-tools__menu button {
+	display: block;
+	width: 100%;
+	padding: 6px 16px;
+	text-align: left;
+}
+
+.markdown-tools__heading {
+	margin: 4px 16px;
+	font-weight: 700;
+	color: #000;
+}
+
+.markdown-tools__heading:not(:first-child) {
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var(--light-grey, #f7f7f7);
+}
+
+.markdown-tools__status {
+	margin-left: 12px;
+	color: var(--grey-blue-tx, #51638a);
+	font-style: italic;
+}
+
+.markdown-tools a:focus-visible,
+.markdown-tools button:focus-visible {
+	outline: 2px solid #2aaae0;
+	outline-offset: 2px;
+}
