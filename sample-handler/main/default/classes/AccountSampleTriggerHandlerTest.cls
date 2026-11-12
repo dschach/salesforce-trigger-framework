@@ -177,6 +177,8 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 
 	/**
 	 * The constructor sets the class name through the Type constructor of the base class.
+	 * @author David Schach
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void constructorRegistersTheHandlerName() {

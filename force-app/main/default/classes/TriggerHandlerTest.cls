@@ -148,6 +148,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * The Type constructor sets the name to `Type.getName()`. For an inner class, the name includes the outer class name.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void typeConstructorSetsFullHandlerName() {
@@ -157,6 +159,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * The Type constructor rejects a null type.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void typeConstructorRejectsNullType() {
@@ -171,6 +175,8 @@ private inherited sharing class TriggerHandlerTest {
 	/**
 	 * Without the Type constructor, an inner-class handler gets its name from the runtime class name.
 	 * <br>That name is only the short name, which is not the same as `Type.getName()`. So an inner-class handler must use the Type constructor.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void noArgConstructorResolvesShortInnerClassName() {
@@ -239,6 +245,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * A set of names bypasses each handler in it. A clear of the set lets the handlers run.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.1.0
 	 */
 	@IsTest
 	private static void bypassBySetSkipsRunUntilCleared() {
@@ -291,6 +299,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * The bypass list is sorted. It holds only the named bypasses, also under a global bypass.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void bypassListIsSortedWithNamesOnly() {
@@ -302,6 +312,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * 'BypassAll' is an ordinary handler name. A bypass with that name does not start a global bypass.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void bypassAllNameIsAnOrdinaryName() {
@@ -332,6 +344,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `bypassAll()` keeps the named bypasses. After `clearGlobalBypass()`, they apply again.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void bypassAllKeepsNamedBypasses() {
@@ -407,6 +421,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `setBypass(name, false)` clears only the named bypass. A global bypass stays, so the handler runs only after `clearGlobalBypass()`.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void setBypassFalseClearsOnlyNamedBypass() {
@@ -426,6 +442,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * The save-and-restore example with `isBypassed()` and `setBypass()` gives back the exact earlier state, also under a global bypass.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void setBypassRestoresTheEarlierState() {
@@ -442,6 +460,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `setBypass()` by type sets and clears the named bypass of the handler, as the String form does.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void setBypassByTypeSetsAndClearsNamedBypass() {
@@ -458,6 +478,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `isSkipped()` is true for a named bypass or a global bypass, by name and by type.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void isSkippedCombinesNamedAndGlobalBypass() {
@@ -477,6 +499,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * A user without the `BypassTriggerHandlers` permission runs the handler.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.1.0
 	 */
 	@IsTest
 	private static void userWithoutBypassPermissionRunsHandler() {
@@ -507,6 +531,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * A maximum loop count of 0 means no limit, as a negative value does. The framework still counts the runs.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void maxLoopCountOfZeroMeansNoLimit() {
@@ -535,6 +561,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `clearMaxLoopCount()` returns the handler, so you can chain `run()` after it.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.1.0
 	 */
 	@IsTest
 	private static void clearMaxLoopCountReturnsHandler() {
@@ -549,6 +577,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `getLoopCount()` by type returns the same count as `getLoopCount()` by name.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.1.0
 	 */
 	@IsTest
 	private static void getLoopCountByTypeMatchesName() {
@@ -575,6 +605,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * Each trigger operation has its own count, so a limit of 1 lets each operation run once.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void eachOperationHasItsOwnLoopCount() {
@@ -592,6 +624,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * A limit for 1 operation stops only that operation. The framework does not count the other operations.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void setMaxLoopCountForOneOperationLimitsOnlyIt() {
@@ -614,6 +648,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `clearMaxLoopCount()` on a handler with no limit creates no counter.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void clearMaxLoopCountWithoutLimitCreatesNoCounter() {
@@ -626,6 +662,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * Without a loop limit, the framework does not count the runs. A handler that never had a limit has a count of -1.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void loopCountIsNotCountedWithoutLimit() {
@@ -642,6 +680,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * The `LoopCounter` class stores a maximum of 0 or less as -1, which means no limit.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void loopCounterStoresZeroAsNoLimit() {
@@ -683,6 +723,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * The `BypassRegistry` inner class keeps the named bypasses and the global bypass apart. It matches names in any case.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void bypassRegistryKeepsNamesAndGlobalApart() {
@@ -709,6 +751,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * The `LoopCounterRegistry` inner class keeps 1 counter for each handler and trigger operation. It returns `NOT_COUNTED` where no limit was set.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void loopCounterRegistryCountsEachOperation() {
@@ -831,6 +875,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `showHandlerDebug()` makes only 1 handler write the entry and exit lines. It returns the handler, so you can chain calls.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void showHandlerDebugIsForOneHandlerOnly() {
@@ -847,6 +893,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * The setting of a handler wins over the static setting. With null, the handler uses the static setting again.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void handlerDebugSettingWinsOverStatic() {
@@ -865,6 +913,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `hideAllDebug()` wins over the static setting and the setting of each handler. Only `hideAllDebug(false)` ends it, and the settings apply again.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.1.0
 	 */
 	@IsTest
 	private static void hideAllDebugWinsOverEverySetting() {
@@ -892,6 +942,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `showAllDebug()` ends `hideAllDebug()`, and the settings apply again. It does not turn the lines on by itself.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.1.0
 	 */
 	@IsTest
 	private static void showAllDebugEndsHideAllDebug() {
@@ -912,6 +964,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `hideAllDebug()` stops only the entry and exit lines. The limits line and the loop limit warning stay.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.1.0
 	 */
 	@IsTest
 	private static void hideAllDebugKeepsLimitsLineAndLoopWarning() {
@@ -932,6 +986,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * `showHandlerLimits()` makes only 1 handler write the limits line. `showHandlerLimits(false)` wins over the static setting.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	@IsTest
 	private static void showHandlerLimitsIsForOneHandlerOnly() {
@@ -1095,6 +1151,8 @@ private inherited sharing class TriggerHandlerTest {
 	/**
 	 * Makes 1 loop count call with a null argument. `callWithNullArgument()` passes the loop count scenarios to it.
 	 * @param scenario The call to make.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	private static void callLoopCountWithNullArgument(String scenario) {
 		switch on scenario {
@@ -1174,6 +1232,8 @@ private inherited sharing class TriggerHandlerTest {
 		/**
 		 * Creates the handler with the type that the test gives.
 		 * @param handlerType The handler type.
+		 * @author {@link [David Schach](https://github.com/dschach)}
+		 * @since 2.0.0
 		 */
 		public TestHandler(Type handlerType) {
 			super(handlerType);
@@ -1220,6 +1280,8 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * A handler with no constructor and no overrides. The base class finds its name at runtime, and all context methods, `andFinally()`, and `log()` are the base class versions.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.0.0
 	 */
 	private class UntypedHandler extends TriggerHandler {
 	}
