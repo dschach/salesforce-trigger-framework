@@ -20,21 +20,18 @@
 public inherited sharing abstract class TriggerHandler {
 	/**
 	 * The loop counters of all handlers in the transaction. A trigger operation has a counter after the first call of `setMaxLoopCount()` for it, also with 0 or a negative value. Without a counter, `getLoopCount()` returns `NOT_COUNTED`.
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	private static LoopCounterRegistry loopCounters = new LoopCounterRegistry();
 
 	/**
 	 * The bypasses of the transaction: the named bypasses and the global bypass.
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	private static BypassRegistry bypasses = new BypassRegistry();
 
 	/**
 	 * `true` when all handlers write the limits line after a run. `showLimits()` and `showLimits(Boolean)` set it, and so do the deprecated `limits()` and `limits(Boolean)`.
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	@TestVisible
@@ -42,7 +39,6 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * `true` when all handlers write the entry and exit lines of a run. `showDebug()` and `showDebug(Boolean)` set it, and so do the deprecated `debug()` and `debug(Boolean)`.
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	@TestVisible
@@ -50,21 +46,18 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * `true` when no handler writes the entry and exit lines. It wins over `doShowDebug` and over the setting of each handler. `hideAllDebug()`, `hideAllDebug(Boolean)`, and `showAllDebug()` set it.
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.1.0
 	 */
 	private static Boolean doHideAllDebug = false;
 
 	/**
 	 * The limits setting of this handler only: `true`, `false`, or null. With null, the handler uses `doShowLimits`. `showHandlerLimits()` and `showHandlerLimits(Boolean)` set it.
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	private Boolean handlerShowLimits;
 
 	/**
 	 * The debug setting of this handler only: `true`, `false`, or null. With null, the handler uses `doShowDebug`. `showHandlerDebug()` and `showHandlerDebug(Boolean)` set it. `doHideAllDebug` wins over it.
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	private Boolean handlerShowDebug;
@@ -98,7 +91,6 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * The value that `getLoopCount()` returns when `setMaxLoopCount()` was never called for the operation. The framework does not count those runs.
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	@TestVisible
@@ -119,7 +111,6 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * The API name of the custom permission that bypasses all handlers for the user who holds it. The framework ships the permission in `force-app`.
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.1.0
 	 */
 	@TestVisible
@@ -155,7 +146,6 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * The error text when a trigger operation is null.
-	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	@TestVisible
@@ -1197,19 +1187,16 @@ public inherited sharing abstract class TriggerHandler {
 	private inherited sharing class BypassRegistry {
 		/**
 		 * All handlers that are bypassed by name or by type, as the caller wrote them.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		private Set<String> names = new Set<String>();
 		/**
 		 * A lower-case copy of `names`. All membership checks use it, so a name matches in any case.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		private Set<String> namesLower = new Set<String>();
 		/**
 		 * `true` when all handlers are bypassed.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		private Boolean allBypassed = false;
@@ -1217,7 +1204,6 @@ public inherited sharing abstract class TriggerHandler {
 		/**
 		 * Bypasses a handler by name.
 		 * @param handlerName The name. It is not null or blank.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public void add(String handlerName) {
@@ -1228,7 +1214,6 @@ public inherited sharing abstract class TriggerHandler {
 		/**
 		 * Clears the bypass of a handler by name, in any case. A name that is not bypassed changes nothing.
 		 * @param handlerName The name. It is not null or blank.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public void remove(String handlerName) {
@@ -1246,7 +1231,6 @@ public inherited sharing abstract class TriggerHandler {
 		 * Tells if a handler is bypassed by name, in any case.
 		 * @param handlerName The name. It is not null or blank.
 		 * @return `Boolean` `true` when the name is bypassed.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public Boolean contains(String handlerName) {
@@ -1256,7 +1240,6 @@ public inherited sharing abstract class TriggerHandler {
 		/**
 		 * Tells if 1 or more handlers are bypassed by name.
 		 * @return `Boolean` `true` when 1 or more names are bypassed.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public Boolean hasNames() {
@@ -1266,7 +1249,6 @@ public inherited sharing abstract class TriggerHandler {
 		/**
 		 * Returns the bypassed names in sorted order, as the caller wrote them.
 		 * @return `List<String>` A new sorted list.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public List<String> sortedNames() {
@@ -1278,7 +1260,6 @@ public inherited sharing abstract class TriggerHandler {
 		/**
 		 * Returns the bypassed names, as the caller wrote them.
 		 * @return `Set<String>` A new set.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public Set<String> nameSet() {
@@ -1287,7 +1268,6 @@ public inherited sharing abstract class TriggerHandler {
 
 		/**
 		 * Clears all named bypasses. The global bypass stays.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public void clearNames() {
@@ -1298,7 +1278,6 @@ public inherited sharing abstract class TriggerHandler {
 		/**
 		 * Tells if all handlers are bypassed.
 		 * @return `Boolean` `true` when the global bypass is on.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public Boolean isAllBypassed() {
@@ -1308,7 +1287,6 @@ public inherited sharing abstract class TriggerHandler {
 		/**
 		 * Sets the global bypass. The named bypasses stay.
 		 * @param value `true` to bypass all handlers, `false` to clear the global bypass.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public void setAllBypassed(Boolean value) {
@@ -1325,7 +1303,6 @@ public inherited sharing abstract class TriggerHandler {
 	private inherited sharing class LoopCounterRegistry {
 		/**
 		 * The loop counters of each handler, by handler name and then by trigger operation.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		private Map<String, Map<System.TriggerOperation, LoopCounter>> counters = new Map<String, Map<System.TriggerOperation, LoopCounter>>();
@@ -1333,7 +1310,6 @@ public inherited sharing abstract class TriggerHandler {
 		/**
 		 * Tells if no handler has a counter. Then `run()` does not look up the handler name.
 		 * @return `Boolean` `true` when no handler called `setMaxLoopCount()` in the transaction.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public Boolean isEmpty() {
@@ -1345,7 +1321,6 @@ public inherited sharing abstract class TriggerHandler {
 		 * @param handlerName The name of the handler.
 		 * @param operation The trigger operation.
 		 * @return `LoopCounter` The counter, or null when `setMaxLoopCount()` was never called for the operation.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public LoopCounter get(String handlerName, System.TriggerOperation operation) {
@@ -1357,7 +1332,6 @@ public inherited sharing abstract class TriggerHandler {
 		 * @param handlerName The name of the handler.
 		 * @param operation The trigger operation.
 		 * @param max The maximum number of runs. 0 or a negative value means no limit.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public void setMax(String handlerName, System.TriggerOperation operation, Integer max) {
@@ -1377,7 +1351,6 @@ public inherited sharing abstract class TriggerHandler {
 		/**
 		 * Removes the limit of all counters of a handler. The counters keep their counts. It creates no counter.
 		 * @param handlerName The name of the handler.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public void clearMax(String handlerName) {
@@ -1391,7 +1364,6 @@ public inherited sharing abstract class TriggerHandler {
 		 * @param handlerName The name of the handler.
 		 * @param operation The trigger operation.
 		 * @return `Integer` The count, or `NOT_COUNTED` when `setMaxLoopCount()` was never called for the operation.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public Integer count(String handlerName, System.TriggerOperation operation) {
@@ -1402,7 +1374,6 @@ public inherited sharing abstract class TriggerHandler {
 		 * Returns the total count of all trigger operations of a handler.
 		 * @param handlerName The name of the handler.
 		 * @return `Integer` The total, or `NOT_COUNTED` when `setMaxLoopCount()` was never called for the handler.
-		 * @author {@link [David Schach](https://github.com/dschach)}
 		 * @since 2.0.0
 		 */
 		public Integer total(String handlerName) {
