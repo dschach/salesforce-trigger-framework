@@ -1225,6 +1225,7 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * The exception that a context method throws when `throwIn` names it.
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 1.4.2
 	 */
 	private class TestHandlerException extends Exception {
@@ -1232,6 +1233,7 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * The test handler. Each override writes to the call log.
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 1.0.0
 	 */
 	private class TestHandler extends TriggerHandler {
@@ -1331,6 +1333,7 @@ private inherited sharing class TriggerHandlerTest {
 
 	/**
 	 * A handler with no constructor and no overrides. The base class finds its name at runtime, and all context methods, `andFinally()`, and `log()` are the base class versions.
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	private class UntypedHandler extends TriggerHandler {

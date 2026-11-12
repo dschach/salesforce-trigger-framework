@@ -1181,6 +1181,7 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Holds the bypasses of the transaction: the named bypasses and the global bypass. The 2 are independent.
 	 * <br>`TriggerHandler` keeps 1 instance in `bypasses`, because an inner class cannot have static members. The public static methods check their arguments and then call it.
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	@TestVisible
@@ -1297,6 +1298,7 @@ public inherited sharing abstract class TriggerHandler {
 	/**
 	 * Holds the loop counters of the transaction, by handler name and then by trigger operation.
 	 * <br>`TriggerHandler` keeps 1 instance in `loopCounters`, because an inner class cannot have static members. The public methods check their arguments and then call it.
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.0.0
 	 */
 	@TestVisible
@@ -1391,6 +1393,7 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * Counts the runs of 1 trigger operation of 1 handler, and compares the count with a maximum.
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 1.5.1
 	 */
 	@TestVisible
@@ -1507,6 +1510,7 @@ public inherited sharing abstract class TriggerHandler {
 
 	/**
 	 * The exception that the framework throws for a wrong call.
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 1.0.0
 	 */
 	public class TriggerHandlerException extends Exception {

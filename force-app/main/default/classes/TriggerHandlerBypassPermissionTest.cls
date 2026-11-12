@@ -88,6 +88,7 @@ private inherited sharing class TriggerHandlerBypassPermissionTest {
 
 	/**
 	 * A handler that records its after update context and `andFinally()` in `calls`.
+	 * @author {@link [David Schach](https://github.com/dschach)}
 	 * @since 2.1.0
 	 */
 	private inherited sharing class PermissionHandler extends TriggerHandler {
