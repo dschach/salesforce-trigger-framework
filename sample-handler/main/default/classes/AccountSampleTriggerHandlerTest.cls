@@ -3,8 +3,8 @@
  * <br>`AccountSampleTriggerHandler.finishedOperations` is the call log. `andFinally()` adds each operation that the handler finished.
  * <br>The test DML and the queries that read the results run in system mode, so the class suppresses `FlagSystemMode`. The tests set up and check the data directly. The access under test is the access of the handler, which uses system mode on purpose.
  * @author David Schach
- * @since 2021
- * @since 2026-10 Rewrite with 1 test for each behavior, and the finished operations as the call log
+ * @since 1.0.0
+ * @since 1.4.2 Rewrite with 1 test for each behavior, and the finished operations as the call log
  * @group SampleTriggerHandler
  * @see AccountSampleTriggerHandler
  */
@@ -13,11 +13,13 @@
 private inherited sharing class AccountSampleTriggerHandlerTest {
 	/**
 	 * The name of the sample handler, from `Type.getName()`.
+	 * @since 1.4.2
 	 */
 	private static final String HANDLER_NAME = AccountSampleTriggerHandler.class.getName();
 
 	/**
 	 * An insert removes the extra spaces from the Account name.
+	 * @since 1.4.2
 	 */
 	@IsTest
 	private static void insertNormalizesName() {
@@ -28,6 +30,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 
 	/**
 	 * An update that changes the name removes the extra spaces from the new name.
+	 * @since 1.4.2
 	 */
 	@IsTest
 	private static void updateNormalizesChangedName() {
@@ -39,6 +42,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 
 	/**
 	 * An update that does not change the name keeps the name as it is.
+	 * @since 1.4.2
 	 */
 	@IsTest
 	private static void updateLeavesUnchangedNameAlone() {
@@ -54,6 +58,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 
 	/**
 	 * A changed phone number goes to the child Accounts.
+	 * @since 1.4.2
 	 */
 	@IsTest
 	private static void phoneChangeCopiesToChildAccounts() {
@@ -67,6 +72,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 
 	/**
 	 * A child Account in the same update as its parent keeps the phone number of its own update. A trigger cannot update the records that it runs for.
+	 * @since 1.4.2
 	 */
 	@IsTest
 	private static void childInSameUpdateKeepsItsOwnPhone() {
@@ -81,6 +87,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 
 	/**
 	 * The update of the child Accounts does not run the handler again, because the handler bypasses itself for it.
+	 * @since 1.4.2
 	 */
 	@IsTest
 	private static void childUpdateDoesNotRunHandlerAgain() {
@@ -111,6 +118,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 
 	/**
 	 * The handler clears its own bypass after it updates the child Accounts.
+	 * @since 1.4.2
 	 */
 	@IsTest
 	private static void bypassIsClearedAfterChildUpdate() {
@@ -124,6 +132,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 
 	/**
 	 * `andFinally()` runs after all 7 contexts, also the contexts that the handler does not override.
+	 * @since 1.4.2
 	 */
 	@IsTest
 	private static void andFinallyRunsAfterEveryContext() {
@@ -162,6 +171,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 
 	/**
 	 * A bulk insert of more than 200 records runs in chunks, and the loop limit does not stop a chunk.
+	 * @since 1.4.2
 	 */
 	@IsTest
 	private static void bulkInsertStaysInsideLoopLimit() {
@@ -189,6 +199,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	 * Inserts an Account with the name.
 	 * @param name The Account name.
 	 * @return `Account` The new Account.
+	 * @since 1.4.2
 	 */
 	private static Account insertAccount(String name) {
 		Account newAccount = new Account(Name = name);
@@ -200,6 +211,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	 * Inserts a child Account of the parent.
 	 * @param parentId The Id of the parent Account.
 	 * @return `Account` The new child Account.
+	 * @since 1.4.2
 	 */
 	private static Account insertChildAccount(Id parentId) {
 		Account childAccount = new Account(Name = 'Child Account', ParentId = parentId);
@@ -211,6 +223,7 @@ private inherited sharing class AccountSampleTriggerHandlerTest {
 	 * Reads the stored name of an Account.
 	 * @param accountId The Account Id.
 	 * @return `String` The name in the database.
+	 * @since 1.4.2
 	 */
 	private static String nameOf(Id accountId) {
 		return [SELECT Name FROM Account WHERE Id = :accountId WITH SYSTEM_MODE].Name;
