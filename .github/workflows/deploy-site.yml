@@ -6,7 +6,8 @@
 # before the release. This workflow rebuilds the changelog page from the tag's
 # CHANGELOG.md, which gets the release entry only when the release pull request merges,
 # and adds the heading ids that marked does not write. It also adds a markdown copy of
-# each page, llms.txt, and a markdown toolbar on each page (scripts/build-markdown-site.mjs).
+# each page, llms.txt, and a markdown toolbar on each page. scripts/build-site.mjs runs all
+# of these steps; npm run site:preview runs it on a copy of docs/ and serves the result.
 # Pages must use GitHub Actions as its source: Settings, Pages, Build and deployment.
 name: Deploy site
 on:
@@ -57,16 +58,11 @@ jobs:
       - name: "Install npm dependencies"
         run: npm ci
 
-      - name: "Rebuild the changelog page from the tag's CHANGELOG.md"
-        run: node scripts/rebuild-changelog-page.mjs docs/changelog.html CHANGELOG.md
-
-      # marked writes no heading ids, so the links to the release headings need them.
-      - name: "Add ids to the headings of the changelog page"
-        run: node scripts/add-heading-ids.mjs docs/changelog.html
-
-      # A markdown copy of each page, llms.txt, and the markdown toolbar of each page.
-      - name: "Add the markdown pages, llms.txt, and the toolbar"
-        run: node scripts/build-markdown-site.mjs docs
+      # Rebuilds the changelog page from the tag's CHANGELOG.md, adds the heading ids that
+      # marked does not write, and adds the markdown pages, llms.txt, and the toolbar.
+      # npm run site:preview runs the same script on a copy of docs/.
+      - name: "Build the site from the tag's docs/"
+        run: node scripts/build-site.mjs docs
 
       - name: "Upload the site"
         uses: actions/upload-pages-artifact@v5
