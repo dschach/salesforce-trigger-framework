@@ -98,6 +98,7 @@ sf plugins install code-analyzer
 | `npm run orginit`            | Runs `scripts/orginit.sh`: replaces the `TriggerFramework` scratch org and deploys everything.                                                                                                                                  |
 | `npm run prune`              | Deletes the local branches whose remote branch is gone.                                                                                                                                                                         |
 | `npm run prepareApexDox`     | Updates `highlight.js` and the documentation pages that come from the README, the changelog, DEPLOY.md, and the sample README. It draws the Mermaid diagrams of the README as SVG for the site.                                 |
+| `npm run site:preview`       | Builds a local copy of the site as the deploy builds it, and serves it at http://localhost:4000/salesforce-trigger-framework/. See [Preview the Live Site](#preview-the-live-site).                                             |
 
 ## Update the Documentation Site
 
@@ -113,7 +114,24 @@ The live site changes only with a release. When Release Please creates a release
 
 Release Please writes the release entry into `CHANGELOG.md` only when the release pull request merges, so `docs/` does not have it yet. The deploy rebuilds the changelog page from the `CHANGELOG.md` of the tag, so the live page shows the release.
 
-The deploy also runs `scripts/build-markdown-site.mjs`. It writes a markdown copy of each page next to it, for example `deploy.md` for `deploy.html`, and an `llms.txt` that lists the copies, as [llmstxt.org](https://llmstxt.org/) describes. Pages from a markdown file copy that file; the class pages are converted from their HTML. Each page gets a toolbar at the top with Copy as Markdown, View as Markdown, Copy URL to Markdown, View llms.txt, and Copy URL to llms.txt. The toolbar files are in `doc-assets/markdown-tools/`. To see the result before a release, run the script on a copy of `docs/`: `cp -R docs /tmp/site && node scripts/build-markdown-site.mjs /tmp/site`.
+The deploy also runs `scripts/build-markdown-site.mjs`. It writes a markdown copy of each page next to it, for example `deploy.md` for `deploy.html`, and an `llms.txt` that lists the copies, as [llmstxt.org](https://llmstxt.org/) describes. Pages from a markdown file copy that file; the class pages are converted from their HTML. Each page gets a toolbar at the top with Copy as Markdown, View as Markdown, Copy URL to Markdown, View llms.txt, and Copy URL to llms.txt. The toolbar files are in `doc-assets/markdown-tools/`.
+
+`scripts/build-site.mjs` runs all of these deploy steps on a site folder: the changelog page, its heading ids, and the markdown side. The deploy runs it on `docs/` of the tag.
+
+### Preview the Live Site
+
+To see what the live site will show before a release, build and serve a local copy:
+
+1. Run `npm ci`, if you have not installed the npm dependencies.
+2. Run `npm run site:preview`. It copies `docs/` to a folder in the temporary folder of your computer, runs `scripts/build-site.mjs` on the copy, and starts a local server. `docs/` does not change.
+3. Open http://localhost:4000/salesforce-trigger-framework/, the same path as the live site.
+4. Press Control+C in the terminal to stop the server.
+
+The preview has the markdown copies, `llms.txt`, the toolbar, and the changelog headings with ids. Open it from the server, not as a file: the toolbar loads the markdown copy with `fetch`, which does not work for a file. The server sends the same media types as GitHub Pages, for example `text/markdown` for a `.md` file.
+
+The preview uses your working copy, not a release tag. So it shows the `docs/` and `CHANGELOG.md` of your branch, and the changelog has no entry for the next release until the release pull request merges. The install line of `llms.txt` comes from `package-version.json`.
+
+To use another port, run `PORT=4001 npm run site:preview`. To build the copy and not start the server, run `npm run site:preview -- --build-only`. The script names the folder of the copy.
 
 To deploy again without a release, for example after a fix to the site, run the Deploy site workflow with the Run workflow button. Name a tag, or leave the tag empty to deploy the latest release. The site is still deployed from a release tag, so a fix on `main` goes live only with the next release.
 
