@@ -1,7 +1,8 @@
 /**
  * Tests for the `BypassTriggerHandlers` custom permission of `TriggerHandler`.
  * <br>The test creates a test user and gives it the permission through a permission set. Salesforce allows no DML on permission set objects in a parallel test class, so these tests are in their own class without `isParallel`.
- * @since 2026-11
+ * @author {@link [David Schach](https://github.com/dschach)}
+ * @since 2.1.0
  * @group Trigger Handler
  * @see TriggerHandler
  * @see TriggerHandlerTest
@@ -10,16 +11,19 @@
 private inherited sharing class TriggerHandlerBypassPermissionTest {
 	/**
 	 * The methods that the test handler ran, in order. Apex resets it for each test method.
+	 * @since 2.1.0
 	 */
 	private static List<String> calls = new List<String>();
 
 	/**
 	 * The name of the test handler, from `Type.getName()`.
+	 * @since 2.1.0
 	 */
 	private static final String HANDLER_NAME = TriggerHandlerBypassPermissionTest.PermissionHandler.class.getName();
 
 	/**
 	 * A user with the `BypassTriggerHandlers` permission runs no handler: no context method, no `andFinally()`, and no loop count. The code bypass checks do not report it, and code cannot clear it.
+	 * @since 2.1.0
 	 */
 	@IsTest
 	private static void bypassPermissionSkipsEveryHandler() {
@@ -46,6 +50,7 @@ private inherited sharing class TriggerHandlerBypassPermissionTest {
 	 * Creates a test user with the profile of the running user, and gives it the `BypassTriggerHandlers` custom permission through a new permission set.
 	 * <br>The setup runs in system mode, so that it does not depend on the rights of the user who runs the tests. So this method suppresses `FlagSystemMode`. The permission check under test runs later, in `System.runAs()` for the test user.
 	 * @return `User` The test user, for `System.runAs()`.
+	 * @since 2.1.0
 	 */
 	@SuppressWarnings('PMD.FlagSystemMode')
 	private static User newUserWithBypassPermission() {
@@ -74,6 +79,7 @@ private inherited sharing class TriggerHandlerBypassPermissionTest {
 	/**
 	 * Creates a test handler that runs as if a trigger fired after update.
 	 * @return `TriggerHandlerBypassPermissionTest.PermissionHandler` A handler with the name `HANDLER_NAME`.
+	 * @since 2.1.0
 	 */
 	private static TriggerHandlerBypassPermissionTest.PermissionHandler newHandler() {
 		TriggerHandlerBypassPermissionTest.PermissionHandler fixture = new TriggerHandlerBypassPermissionTest.PermissionHandler();
@@ -83,10 +89,13 @@ private inherited sharing class TriggerHandlerBypassPermissionTest {
 
 	/**
 	 * A handler that records its after update context and `andFinally()` in `calls`.
+	 * @author {@link [David Schach](https://github.com/dschach)}
+	 * @since 2.1.0
 	 */
 	private inherited sharing class PermissionHandler extends TriggerHandler {
 		/**
 		 * Creates the handler with its type, so that its name is `HANDLER_NAME`.
+		 * @since 2.1.0
 		 */
 		private PermissionHandler() {
 			super(TriggerHandlerBypassPermissionTest.PermissionHandler.class);
@@ -94,6 +103,7 @@ private inherited sharing class TriggerHandlerBypassPermissionTest {
 
 		/**
 		 * Records the after update context.
+		 * @since 2.1.0
 		 */
 		public override void afterUpdate() {
 			calls.add('afterUpdate');
@@ -101,6 +111,7 @@ private inherited sharing class TriggerHandlerBypassPermissionTest {
 
 		/**
 		 * Records `andFinally()`.
+		 * @since 2.1.0
 		 */
 		public override void andFinally() {
 			calls.add('andFinally');
