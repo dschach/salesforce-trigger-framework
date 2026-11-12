@@ -1282,40 +1282,78 @@ private inherited sharing class TriggerHandlerTest {
 			super(handlerType);
 		}
 
+		/**
+		 * Saves the trigger operation and the handler name that the subclass reads, and then writes `beforeInsert` to the call log. It throws when `throwIn` names the method.
+		 * @since 1.0.0
+		 */
 		public override void beforeInsert() {
 			TriggerHandlerTest.lastEventSeen = getTriggerEvent();
 			TriggerHandlerTest.lastNameSeen = getHandlerName();
 			record('beforeInsert');
 		}
 
+		/**
+		 * Writes `beforeUpdate` to the call log. It throws when `throwIn` names the method.
+		 * @since 1.0.0
+		 */
 		public override void beforeUpdate() {
 			record('beforeUpdate');
 		}
 
+		/**
+		 * Writes `beforeDelete` to the call log. It throws when `throwIn` names the method.
+		 * @since 1.0.0
+		 */
 		public override void beforeDelete() {
 			record('beforeDelete');
 		}
 
+		/**
+		 * Writes `afterInsert` to the call log. It throws when `throwIn` names the method.
+		 * @since 1.0.0
+		 */
 		public override void afterInsert() {
 			record('afterInsert');
 		}
 
+		/**
+		 * Writes `afterUpdate` to the call log. It throws when `throwIn` names the method.
+		 * @since 1.0.0
+		 */
 		public override void afterUpdate() {
 			record('afterUpdate');
 		}
 
+		/**
+		 * Writes `afterDelete` to the call log. It throws when `throwIn` names the method.
+		 * @since 1.0.0
+		 */
 		public override void afterDelete() {
 			record('afterDelete');
 		}
 
+		/**
+		 * Writes `afterUndelete` to the call log. It throws when `throwIn` names the method.
+		 * @since 1.0.0
+		 */
 		public override void afterUndelete() {
 			record('afterUndelete');
 		}
 
+		/**
+		 * Adds each framework message to `logs`, as the level, a colon, and the message. It does not write to the debug log.
+		 * @param level The logging level of the message.
+		 * @param message The message.
+		 * @since 1.5.0
+		 */
 		public override void log(LoggingLevel level, String message) {
 			TriggerHandlerTest.logs.add(level + ': ' + message);
 		}
 
+		/**
+		 * Writes `andFinally` to the call log. The base class calls it after the context method. It throws when `throwIn` names the method.
+		 * @since 1.4.2
+		 */
 		public override void andFinally() {
 			record('andFinally');
 		}
