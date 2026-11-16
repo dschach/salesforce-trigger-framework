@@ -22,7 +22,7 @@
     "@x2od/prettier-config": "^0.7.0",
     "doctoc": "^2.5.0",
     "husky": "^9.1.7",
-    "lint-staged": "^17.6.0",
+    "lint-staged": "^17.6.1",
     "marked": "^18.2.0",
     "prettier": "^3.10.0",
     "turndown": "^7.2.5",
