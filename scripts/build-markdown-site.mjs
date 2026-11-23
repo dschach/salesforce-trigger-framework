@@ -89,6 +89,12 @@ function rewriteMarkdownLinks(markdown) {
 	});
 }
 
+// Removes the doctoc markers of a table of contents, with the blank line after each. They
+// are for doctoc only, not for the site.
+function removeDoctocMarkers(markdown) {
+	return markdown.replace(/^<!-- (?:START|END) doctoc -->\n\n?/gm, '');
+}
+
 // Returns the HTML inside the content cell. It counts nested cells, because a class page
 // has tables in its content.
 function contentCell(html) {
@@ -249,7 +255,7 @@ for (const page of pages) {
 	const markdownFile = `${page}.md`;
 	let markdown;
 	if (MARKDOWN_SOURCES[page]) {
-		markdown = rewriteMarkdownLinks(readFileSync(MARKDOWN_SOURCES[page], 'utf8'));
+		markdown = rewriteMarkdownLinks(removeDoctocMarkers(readFileSync(MARKDOWN_SOURCES[page], 'utf8')));
 	} else {
 		const cell = contentCell(readFileSync(join(site, `${page}.html`), 'utf8'));
 		if (cell === null) {

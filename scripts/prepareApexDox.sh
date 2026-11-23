@@ -26,6 +26,9 @@ curl -fsSL "https://cdn.jsdelivr.net/npm/highlightjs-apex/dist/apex.min.js" >> "
 printf '<link href="assets/styling.css" rel="stylesheet" />' > "doc-assets/homePage.html"
 echo >> "doc-assets/homePage.html"
 npx marked -i README.md --gfm >> "doc-assets/homePage.html"
+# The doctoc markers of the README table of contents are for doctoc only, not for the site.
+replace_in_file '/^<!-- START doctoc -->$/d' "doc-assets/homePage.html"
+replace_in_file '/^<!-- END doctoc -->$/d' "doc-assets/homePage.html"
 # marked 18 writes no heading ids, so the table of contents links need them (see scripts/add-heading-ids.mjs).
 node scripts/add-heading-ids.mjs "doc-assets/homePage.html"
 replace_in_file 's|DEPLOY.md|deploy.html|g' "doc-assets/homePage.html"
